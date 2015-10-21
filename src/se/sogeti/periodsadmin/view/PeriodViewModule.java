@@ -58,9 +58,9 @@ public class PeriodViewModule extends AnnotatedRESTModule {
 			for (Period p : periodList) {
 				Element period = doc.createElement("Period");
 				XMLUtils.appendNewElement(doc, period, "Name", p.getName());
-				XMLUtils.appendNewElement(doc, period, "FromDate", p.getFromDate());
-				XMLUtils.appendNewElement(doc, period, "ToDate", p.getToDate());
-				XMLUtils.appendNewElement(doc, period, "ID", p.getAlternativeID());
+				XMLUtils.appendNewElement(doc, period, "StartDate", p.getStartDate());
+				XMLUtils.appendNewElement(doc, period, "EndDate", p.getEndDate());
+				XMLUtils.appendNewElement(doc, period, "ID", p.getId());
 				periodsElement.appendChild(period);
 			}
 		}
@@ -87,32 +87,29 @@ public class PeriodViewModule extends AnnotatedRESTModule {
         JsonResponse.initJsonResponse(res, writer, callback);
         
         String name = req.getParameter("new-period-name");
-        String fromdate = req.getParameter("new-period-fromdate");
-        String todate = req.getParameter("new-period-todate");
+        String startdate = req.getParameter("new-period-startdate");
+        String enddate = req.getParameter("new-period-enddate");
         
 		if(name == null || name.isEmpty()) {
 			JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Namn saknas på perioden.\"}", callback, writer);
 			return;
 		}
 		
-		if(fromdate == null || fromdate.isEmpty()) {
+		if(startdate == null || startdate.isEmpty()) {
 			JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Startdatum saknas på perioden.\"}", callback, writer);
 			return;
 		}
 		
-		if(todate == null || todate.isEmpty()) {
+		if(enddate == null || enddate.isEmpty()) {
 			JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Slutdatum saknas på perioden.\"}", callback, writer);
 			return;
 		}
 		
-		Period p1 = periodDAO.getLatestCreatedPeriod();
-		
 		try {
 			Period period = new Period();
 			period.setName(name);
-			period.setFromDate(Date.valueOf(fromdate));
-			period.setToDate(Date.valueOf(todate));
-			period.setQueryID(p1.getQueryID());
+			period.setStartDate(Date.valueOf(startdate));
+			period.setEndDate(Date.valueOf(enddate));
 			periodDAO.save(period);
 			period = periodDAO.getLatestCreatedPeriod();
 			JsonResponse.sendJsonResponse("{\"status\":\"success\", \"data\":" + gson.toJson(period) + "}", callback, writer);
@@ -141,24 +138,19 @@ public class PeriodViewModule extends AnnotatedRESTModule {
         
         ids = new ArrayList<Integer>(new LinkedHashSet<Integer>(ids));
         
-        Period p1;
-        
-        p1 = periodDAO.getLatestCreatedPeriod();
-
         for (Integer id : ids) {
         	log.info("Efter LinkedHashSet: " + id);
         	Period p = new Period();
-        	p.setQueryID(p1.getQueryID());
-        	p.setAlternativeID(id);
+        	p.setId(id);
         	p.setName(req.getParameter("period_name_" + id));
-        	p.setFromDate(Date.valueOf(req.getParameter("period_fromdate_" + id)));
-        	p.setToDate(Date.valueOf(req.getParameter("period_todate_" + id)));
+        	p.setStartDate(Date.valueOf(req.getParameter("period_startdate_" + id)));
+        	p.setEndDate(Date.valueOf(req.getParameter("period_enddate_" + id)));
         	
         	if ((p.getName() == null || p.getName().isEmpty()) || 
-        			p.getFromDate() == null || p.getToDate() == null) {
+        			p.getStartDate() == null || p.getEndDate() == null) {
         		JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Alla fält för perioden måste vara ifyllda.\"}", callback, writer);
         		return;
-        	} else if (p.getAlternativeID() == null) {
+        	} else if (p.getId() == null) {
         		JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Något gick fel: 'ID IS MISSING'.\"}", callback, writer);
         		return;
         	}

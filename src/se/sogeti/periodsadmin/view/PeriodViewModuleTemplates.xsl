@@ -29,14 +29,14 @@
 			
 			<script>
 			$(function() {						
-				$( "input[name*='new-period-fromdate']" ).datepicker({
+				$( "input[name*='new-period-startdate']" ).datepicker({
 					showOn: "button",
 					buttonImage: '<xsl:value-of select="/Document/requestinfo/contextpath"/>/static/f/<xsl:value-of select="/Document/module/sectionID"/>/<xsl:value-of select="/Document/module/moduleID"/>/pics/calendar_grid.png',
 					buttonImageOnly: true,
 					buttonText: 'Startdatum'
 				});
 				
-				$( "input[name*='new-period-todate']" ).datepicker({
+				$( "input[name*='new-period-enddate']" ).datepicker({
 					showOn: "button",
 					buttonImage: '<xsl:value-of select="/Document/requestinfo/contextpath"/>/static/f/<xsl:value-of select="/Document/module/sectionID"/>/<xsl:value-of select="/Document/module/moduleID"/>/pics/calendar_grid.png',
 					buttonImageOnly: true,
@@ -70,8 +70,8 @@
 			<h2 style="margin-top: 24px">Lägg till ny period</h2>
 			<form id="new-period-form">
 				<label for="new-period-name">Namn</label><input type="text" name="new-period-name" required="required"></input>
-				<label for="new-period-fromdate">Startdatum</label><input type="text" name="new-period-fromdate" required="required"></input>
-				<label for="new-period-todate">Slutdatum</label><input type="text" name="new-period-todate" required="required"></input>
+				<label for="new-period-startdate">Startdatum</label><input type="text" name="new-period-startdate" required="required"></input>
+				<label for="new-period-enddate">Slutdatum</label><input type="text" name="new-period-enddate" required="required"></input>
 				<br/>
 				<input style="margin-top: 4px;" id="period-save-new" type="submit" value="Spara"></input>
 			</form>
@@ -84,10 +84,10 @@
 					<input id="period_name_{ID}" type="text" value="{Name}" name="period_name_{ID}"></input>
 			</td>
 			<td>	
-					<input id="period_fromdate_{ID}" type="text" value="{FromDate}" name="period_fromdate_{ID}"></input>
+					<input id="period_startdate_{ID}" type="text" value="{StartDate}" name="period_startdate_{ID}"></input>
 			</td>
 			<td>	
-					<input id="period_todate_{ID}" type="text" value="{ToDate}" name="period_todate_{ID}"></input>
+					<input id="period_enddate_{ID}" type="text" value="{EndDate}" name="period_enddate_{ID}"></input>
 			</td>
 		</tr>
 	</xsl:template>

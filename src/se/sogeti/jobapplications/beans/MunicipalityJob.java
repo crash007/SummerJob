@@ -6,11 +6,13 @@ import java.util.Map;
 
 import se.unlogic.standardutils.dao.annotations.DAOManaged;
 import se.unlogic.standardutils.dao.annotations.Key;
+import se.unlogic.standardutils.dao.annotations.ManyToOne;
 import se.unlogic.standardutils.dao.annotations.OneToMany;
+import se.unlogic.standardutils.dao.annotations.OneToOne;
 import se.unlogic.standardutils.dao.annotations.Table;
 import se.unlogic.standardutils.xml.XMLElement;
 
-@Table(name = "summer_work_municipality_job")
+@Table(name = "summer_job_municipality_job")
 @XMLElement
 public class MunicipalityJob {
 	
@@ -53,7 +55,7 @@ public class MunicipalityJob {
 	
 	@DAOManaged
 	@XMLElement
-	private Date stopDate;
+	private Date endDate;
 	
 	//Work
 	@DAOManaged
@@ -64,21 +66,10 @@ public class MunicipalityJob {
 	@XMLElement
 	private String workDescription;
 	
-	@DAOManaged
+	@DAOManaged(columnName="managerId")
 	@XMLElement
-	private String managersFirstname;
-	
-	@DAOManaged
-	@XMLElement
-	private String managersLastname;
-	
-	@DAOManaged
-	@XMLElement
-	private String managersMobilePhone;
-	
-	@DAOManaged
-	@XMLElement
-	private String managersEmail;
+	@OneToOne(keyField="id")
+	private Manager manager;
 	
 	@DAOManaged
 	@XMLElement

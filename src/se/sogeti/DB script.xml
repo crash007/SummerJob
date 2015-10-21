@@ -14,7 +14,7 @@
 		</Query>
 		<Query>
 			<![CDATA[
-				CREATE TABLE `bosses` (
+				CREATE TABLE `managers` (
 					`id` int(10) unsigned NOT NULL AUTO_INCREMENT,
 					`firstname` varchar(255) DEFAULT NULL,
 					`lastname` varchar(255) DEFAULT NULL,
@@ -52,10 +52,12 @@
 			<![CDATA[
 			CREATE TABLE `requirements` (
 			  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-			  `summerjobId` int(10) unsigned NOT NULL,
+			  `municipalityJobId` int(10) unsigned NOT NULL,
 			  `name` varchar(255) NOT NULL,
+			  `status` tinyint(1) NOT NULL,
 			  PRIMARY KEY (`id`)
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 			]]>
 		</Query>
 	</Script>	
