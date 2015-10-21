@@ -2,7 +2,7 @@
 	<Script version="1">
 		<Query>
 			<![CDATA[
-				CREATE TABLE `mentors` (
+				CREATE TABLE `summer_job_mentors` (
 					`id` int(10) unsigned NOT NULL AUTO_INCREMENT,
 					`firstname` varchar(255) DEFAULT NULL,
 					`lastname` varchar(255) DEFAULT NULL,
@@ -14,7 +14,7 @@
 		</Query>
 		<Query>
 			<![CDATA[
-				CREATE TABLE `managers` (
+				CREATE TABLE `summer_job_managers` (
 					`id` int(10) unsigned NOT NULL AUTO_INCREMENT,
 					`firstname` varchar(255) DEFAULT NULL,
 					`lastname` varchar(255) DEFAULT NULL,
@@ -27,7 +27,7 @@
 		</Query>
 		<Query>
 			<![CDATA[
-			CREATE TABLE `workplace_address` (
+			CREATE TABLE `summer_job_workplace_address` (
 			  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
 			  `address` varchar(255) DEFAULT NULL,
 			  `zipCode` varchar(255) DEFAULT NULL,
@@ -38,7 +38,7 @@
 		</Query>		
 		<Query>
 			<![CDATA[
-			CREATE TABLE `periods` (
+			CREATE TABLE `summer_job_periods` (
 			  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
 			  `name` varchar(255) NOT NULL,
 			  `startDate` date DEFAULT NULL,
@@ -50,14 +50,13 @@
 		</Query>
 		<Query>
 			<![CDATA[
-			CREATE TABLE `requirements` (
+			CREATE TABLE `summer_job_requirements` (
 			  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
 			  `municipalityJobId` int(10) unsigned NOT NULL,
 			  `name` varchar(255) NOT NULL,
 			  `status` tinyint(1) NOT NULL,
 			  PRIMARY KEY (`id`)
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
 			]]>
 		</Query>
 	</Script>	

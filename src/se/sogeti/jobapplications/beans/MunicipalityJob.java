@@ -1,9 +1,11 @@
 package se.sogeti.jobapplications.beans;
 
+import java.lang.annotation.Documented;
 import java.sql.Date;
 import java.util.List;
 import java.util.Map;
 
+import se.sogeti.periodsadmin.beans.Period;
 import se.unlogic.standardutils.dao.annotations.DAOManaged;
 import se.unlogic.standardutils.dao.annotations.Key;
 import se.unlogic.standardutils.dao.annotations.ManyToOne;
@@ -39,23 +41,11 @@ public class MunicipalityJob {
 	//Address
 	@DAOManaged
 	@XMLElement
-	private String streetAddress;
+	private WorkplaceAddress address;
 	
 	@DAOManaged
 	@XMLElement
-	private String postalCode;
-	
-	@DAOManaged
-	@XMLElement
-	private String city;
-	
-	@DAOManaged
-	@XMLElement
-	private Date startDate;
-	
-	@DAOManaged
-	@XMLElement
-	private Date endDate;
+	private Period period;
 	
 	//Work
 	@DAOManaged
@@ -66,22 +56,26 @@ public class MunicipalityJob {
 	@XMLElement
 	private String workDescription;
 	
-	@DAOManaged(columnName="managerId")
+//	@DAOManaged(columnName="managerId")
+//	@XMLElement
+//	@OneToOne(keyField="id")
+	@DAOManaged
 	@XMLElement
-	@OneToOne(keyField="id")
+	@OneToOne(autoGet=true,autoAdd=true, autoUpdate=true)
 	private Manager manager;
 	
 	@DAOManaged
 	@XMLElement
-	private String supervisors;
+	@OneToMany(autoGet=true,autoAdd=true, autoUpdate=true)
+	private List<Mentor> mentors;
 	
 	@DAOManaged
 	@XMLElement
-	private Integer numberOfworkersNeeded;
+	private Integer numberOfWorkersNeeded;
 	
 	@DAOManaged
 	@XMLElement
-	@OneToMany
+	@OneToMany(autoGet=true,autoAdd=true, autoUpdate=true)
 	private List<MunicpalityJobApplication> workers;
 	
 	@DAOManaged

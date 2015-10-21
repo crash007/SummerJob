@@ -1,4 +1,4 @@
-CREATE TABLE `mentors` (
+CREATE TABLE `summer_job_mentors` (
 	`id` int(10) unsigned NOT NULL AUTO_INCREMENT,
 	`municipalityJobId` int(10) unsigned NOT NULL,
 	`firstname` varchar(255) DEFAULT NULL,
@@ -8,7 +8,7 @@ CREATE TABLE `mentors` (
 	PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE `managers` (
+CREATE TABLE `summer_job_managers` (
 	`id` int(10) unsigned NOT NULL AUTO_INCREMENT,
 	`firstname` varchar(255) DEFAULT NULL,
 	`lastname` varchar(255) DEFAULT NULL,
@@ -17,7 +17,7 @@ CREATE TABLE `managers` (
 	PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE `workplace_address` (
+CREATE TABLE `summer_job_workplace_address` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `address` varchar(255) DEFAULT NULL,
   `zipCode` varchar(255) DEFAULT NULL,
@@ -25,7 +25,7 @@ CREATE TABLE `workplace_address` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE `periods` (
+CREATE TABLE `summer_job_periods` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   `startDate` date DEFAULT NULL,
@@ -34,7 +34,7 @@ CREATE TABLE `periods` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE `requirements` (
+CREATE TABLE `summer_job_requirements` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `municipalityJobId` int(10) unsigned NOT NULL,
   `name` varchar(255) NOT NULL,
