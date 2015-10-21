@@ -1,13 +1,11 @@
 package se.sogeti.jobapplications.beans;
 
+import java.lang.annotation.Documented;
 import java.sql.Date;
 import java.util.List;
 import java.util.Map;
 
-import com.nordicpeak.flowengine.beans.FlowInstance;
-import com.nordicpeak.flowengine.queries.dropdownquery.DropDownQueryInstance;
-import com.nordicpeak.flowengine.queries.simpleaddressquery.SimpleAddressQueryInstance;
-
+import se.sogeti.periodsadmin.beans.Period;
 import se.unlogic.standardutils.dao.annotations.DAOManaged;
 import se.unlogic.standardutils.dao.annotations.Key;
 import se.unlogic.standardutils.dao.annotations.ManyToOne;
@@ -16,7 +14,7 @@ import se.unlogic.standardutils.dao.annotations.OneToOne;
 import se.unlogic.standardutils.dao.annotations.Table;
 import se.unlogic.standardutils.xml.XMLElement;
 
-@Table(name = "summer_work_municipality_job")
+@Table(name = "summer_job_municipality_job")
 @XMLElement
 public class MunicipalityJob {
 	
@@ -37,141 +35,61 @@ public class MunicipalityJob {
 	@DAOManaged(columnName="flow_instance_id")
 	private Integer flowInstanceId;
 	
+	@DAOManaged
+	@XMLElement
+	private Date updated;
 	
-	@DAOManaged(columnName="organisation_dropdown_instance_id")	
-	private Integer organisationDropDownQueryInstanceId;
+	@DAOManaged
+	@XMLElement
+	private String organization;
 	
-	//Område tex äldreomsorg
-	@DAOManaged(columnName="field_dropdown_instance_id")
-	private Integer fieldDropDownInstanceId;
+	@DAOManaged
+	@XMLElement
+	private String location;
 	
-	@DAOManaged(columnName="workplace_address_simple_address_id")
-	private Integer workplaceSimpleAdressId;
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public Integer getFlowInstanceId() {
-		return flowInstanceId;
-	}
-
-	public void setFlowInstanceId(Integer flowInstanceId) {
-		this.flowInstanceId = flowInstanceId;
-	}
-
-	public Integer getOrganisationDropDownQueryInstanceId() {
-		return organisationDropDownQueryInstanceId;
-	}
-
-	public void setOrganisationDropDownQueryInstanceId(Integer organisationDropDownQueryInstanceId) {
-		this.organisationDropDownQueryInstanceId = organisationDropDownQueryInstanceId;
-	}
-
-	public Integer getFieldDropDownInstanceId() {
-		return fieldDropDownInstanceId;
-	}
-
-	public void setFieldDropDownInstanceId(Integer fieldDropDownInstanceId) {
-		this.fieldDropDownInstanceId = fieldDropDownInstanceId;
-	}
-
-	public Integer getWorkplaceSimpleAdressId() {
-		return workplaceSimpleAdressId;
-	}
-
-	public void setWorkplaceSimpleAdressId(Integer workplaceSimpleAdressId) {
-		this.workplaceSimpleAdressId = workplaceSimpleAdressId;
-	}
+	//Address
+	@DAOManaged
+	@XMLElement
+	private WorkplaceAddress address;
 	
-
-
+	@DAOManaged
+	@XMLElement
+	private Period period;
 	
+	//Work
+	@DAOManaged
+	@XMLElement
+	private String workTitle;
 	
+	@DAOManaged
+	@XMLElement
+	private String workDescription;
 	
-
-//	@DAOManaged
+//	@DAOManaged(columnName="managerId")
 //	@XMLElement
-//	private Date created;
-//	
-//	@DAOManaged
-//	@XMLElement
-//	private Date updated;
-//	
-//	@DAOManaged
-//	@XMLElement
-//	private String organization;
-//	
-//	@DAOManaged
-//	@XMLElement
-//	private String location;
-//	
-//	//Address
-//	@DAOManaged
-//	@XMLElement
-//	private String streetAddress;
-//	
-//	@DAOManaged
-//	@XMLElement
-//	private String postalCode;
-//	
-//	@DAOManaged
-//	@XMLElement
-//	private String city;
-//	
-//	@DAOManaged
-//	@XMLElement
-//	private Date startDate;
-//	
-//	@DAOManaged
-//	@XMLElement
-//	private Date stopDate;
-//	
-//	//Work
-//	@DAOManaged
-//	@XMLElement
-//	private String workTitle;
-//	
-//	@DAOManaged
-//	@XMLElement
-//	private String workDescription;
-//	
-//	@DAOManaged
-//	@XMLElement
-//	private String managersFirstname;
-//	
-//	@DAOManaged
-//	@XMLElement
-//	private String managersLastname;
-//	
-//	@DAOManaged
-//	@XMLElement
-//	private String managersMobilePhone;
-//	
-//	@DAOManaged
-//	@XMLElement
-//	private String managersEmail;
-//	
-//	@DAOManaged
-//	@XMLElement
-//	private String supervisors;
-//	
-//	@DAOManaged
-//	@XMLElement
-//	private Integer numberOfworkersNeeded;
-//	
-//	@DAOManaged
-//	@XMLElement
-//	@OneToMany
-//	private List<MunicpalityJobApplication> workers;
-//	
-//	@DAOManaged
-//	@XMLElement
-//	@OneToMany
-//	private List<ApplicationRequirement> requirements;
+//	@OneToOne(keyField="id")
+	@DAOManaged
+	@XMLElement
+	@OneToOne(autoGet=true,autoAdd=true, autoUpdate=true)
+	private Manager manager;
+	
+	@DAOManaged
+	@XMLElement
+	@OneToMany(autoGet=true,autoAdd=true, autoUpdate=true)
+	private List<Mentor> mentors;
+	
+	@DAOManaged
+	@XMLElement
+	private Integer numberOfWorkersNeeded;
+	
+	@DAOManaged
+	@XMLElement
+	@OneToMany(autoGet=true,autoAdd=true, autoUpdate=true)
+	private List<MunicpalityJobApplication> workers;
+	
+	@DAOManaged
+	@XMLElement
+	@OneToMany
+	private List<ApplicationRequirement> requirements;
 	
 }

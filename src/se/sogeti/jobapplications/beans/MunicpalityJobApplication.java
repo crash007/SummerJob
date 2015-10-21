@@ -6,7 +6,7 @@ import se.unlogic.standardutils.dao.annotations.ManyToOne;
 import se.unlogic.standardutils.dao.annotations.Table;
 import se.unlogic.standardutils.xml.XMLElement;
 
-@Table(name="summer_work_municipality_job_application")
+@Table(name="summer_job_municipality_job_application")
 @XMLElement
 public class MunicpalityJobApplication {
 	
