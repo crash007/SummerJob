@@ -33,13 +33,13 @@ public class Period {
 	@XMLElement
 	private String name;
 
-	// Anv‰nder java.sql.Date, ska vi anv‰nda det eller java.util.Date?
+	// Anv√§nder java.sql.Date, ska vi anv√§nda det eller java.util.Date?
 	@DAOManaged
 	@WebPopulate(required=true)
 	@XMLElement
 	private Date fromDate;
 	
-	// Anv‰nder java.sql.Date, ska vi anv‰nda det eller java.util.Date?
+	// Anv√§nder java.sql.Date, ska vi anv√§nda det eller java.util.Date?
 	@DAOManaged
 	@WebPopulate(required=true)
 	@XMLElement

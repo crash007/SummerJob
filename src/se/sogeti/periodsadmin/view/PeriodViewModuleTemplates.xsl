@@ -52,17 +52,19 @@
 			
 			<h2 style="margin-top: 24px">Befintliga perioder</h2>
 			<form id="periods-list-form">
-				<table id="periods-table">
-					<thead>
-						<th>Namn</th>
-						<th>Startdatum</th>
-						<th>Slutdatum</th>
-					</thead>
-					<tbody>
-						<xsl:apply-templates select="Periods/Period"/>
-					</tbody>
-				</table>
+				<fieldset>
+					<table id="periods-table">
+						<thead>
+							<th>Namn</th>
+							<th>Startdatum</th>
+							<th>Slutdatum</th>
+						</thead>
+						<tbody>
+							<xsl:apply-templates select="Periods/Period"/>
+						</tbody>
+					</table>
 				<input style="margin-top: 4px;" id="periods-save-changes" type="submit" value="Spara ändringar"></input>
+				</fieldset>				
 			</form>
 			
 			<h2 style="margin-top: 24px">Lägg till ny period</h2>
@@ -71,7 +73,6 @@
 				<label for="new-period-fromdate">Startdatum</label><input type="text" name="new-period-fromdate" required="required"></input>
 				<label for="new-period-todate">Slutdatum</label><input type="text" name="new-period-todate" required="required"></input>
 				<br/>
-				
 				<input style="margin-top: 4px;" id="period-save-new" type="submit" value="Spara"></input>
 			</form>
 						

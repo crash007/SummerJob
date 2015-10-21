@@ -91,17 +91,17 @@ public class PeriodViewModule extends AnnotatedRESTModule {
         String todate = req.getParameter("new-period-todate");
         
 		if(name == null || name.isEmpty()) {
-			JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Namn saknas på perioden.\"}", callback, writer);
+			JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Namn saknas pÃ¥ perioden.\"}", callback, writer);
 			return;
 		}
 		
 		if(fromdate == null || fromdate.isEmpty()) {
-			JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Startdatum saknas på perioden.\"}", callback, writer);
+			JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Startdatum saknas pÃ¥ perioden.\"}", callback, writer);
 			return;
 		}
 		
 		if(todate == null || todate.isEmpty()) {
-			JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Slutdatum saknas på perioden.\"}", callback, writer);
+			JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Slutdatum saknas pÃ¥ perioden.\"}", callback, writer);
 			return;
 		}
 		
@@ -119,7 +119,7 @@ public class PeriodViewModule extends AnnotatedRESTModule {
 			return;
 		} catch (SQLException e) {
 			log.error("SQL exception",e);
-			JsonResponse.sendJsonResponse("{\"status\":\"error\", \"message\":\"Något gick fel.\"}", callback, writer);
+			JsonResponse.sendJsonResponse("{\"status\":\"error\", \"message\":\"NÃ¥got gick fel.\"}", callback, writer);
 			return;
 		}				
 	}
@@ -156,10 +156,10 @@ public class PeriodViewModule extends AnnotatedRESTModule {
         	
         	if ((p.getName() == null || p.getName().isEmpty()) || 
         			p.getFromDate() == null || p.getToDate() == null) {
-        		JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Alla fält för perioden måste vara ifyllda.\"}", callback, writer);
+        		JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Alla fÃ¤lt fÃ¶r perioden mÃ¥ste vara ifyllda.\"}", callback, writer);
         		return;
         	} else if (p.getAlternativeID() == null) {
-        		JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Något gick fel: 'ID IS MISSING'.\"}", callback, writer);
+        		JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"NÃ¥got gick fel: 'ID IS MISSING'.\"}", callback, writer);
         		return;
         	}
         	
@@ -167,11 +167,11 @@ public class PeriodViewModule extends AnnotatedRESTModule {
 				periodDAO.update(p);
 			} catch (SQLException e) {
 	        	log.error("Exception when trying to update the periods: ", e);
-	        	JsonResponse.sendJsonResponse("{\"status\":\"error\", \"message\":\"Något gick fel.\"}", callback, writer);
+	        	JsonResponse.sendJsonResponse("{\"status\":\"error\", \"message\":\"NÃ¥got gick fel.\"}", callback, writer);
 				return;
 			}        	
         }
         
-        JsonResponse.sendJsonResponse("{\"status\":\"success\", \"data\":\"Uppdatering genomförd.\"}", callback, writer);
+        JsonResponse.sendJsonResponse("{\"status\":\"success\", \"data\":\"Uppdatering genomfÃ¶rd.\"}", callback, writer);
 	}
 }
