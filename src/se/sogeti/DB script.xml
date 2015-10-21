@@ -1,0 +1,62 @@
+<DBScripts>
+	<Script version="1">
+		<Query>
+			<![CDATA[
+				CREATE TABLE `mentors` (
+					`id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+					`firstname` varchar(255) DEFAULT NULL,
+					`lastname` varchar(255) DEFAULT NULL,
+					`email` varchar(255) DEFAULT NULL,
+					`mobilePhone` varchar(255) DEFAULT NULL,
+					PRIMARY KEY (`id`)
+				) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+			]]>
+		</Query>
+		<Query>
+			<![CDATA[
+				CREATE TABLE `bosses` (
+					`id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+					`firstname` varchar(255) DEFAULT NULL,
+					`lastname` varchar(255) DEFAULT NULL,
+					`email` varchar(255) DEFAULT NULL,
+					`mobilePhone` varchar(255) DEFAULT NULL,
+					PRIMARY KEY (`id`)
+				) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+				
+			]]>
+		</Query>
+		<Query>
+			<![CDATA[
+			CREATE TABLE `workplace_address` (
+			  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+			  `address` varchar(255) DEFAULT NULL,
+			  `zipCode` varchar(255) DEFAULT NULL,
+			  `postalAddress` varchar(255) DEFAULT NULL,
+			  PRIMARY KEY (`id`)
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+			]]>
+		</Query>		
+		<Query>
+			<![CDATA[
+			CREATE TABLE `periods` (
+			  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+			  `name` varchar(255) NOT NULL,
+			  `startDate` date DEFAULT NULL,
+			  `endDate` date DEFAULT NULL,
+			  `sortIndex` int(10) unsigned DEFAULT NULL,
+			  PRIMARY KEY (`id`)
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+			]]>
+		</Query>
+		<Query>
+			<![CDATA[
+			CREATE TABLE `requirements` (
+			  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+			  `summerjobId` int(10) unsigned NOT NULL,
+			  `name` varchar(255) NOT NULL,
+			  PRIMARY KEY (`id`)
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+			]]>
+		</Query>
+	</Script>	
+</DBScripts>
