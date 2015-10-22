@@ -3,6 +3,8 @@
 	<name>SummerJob</name>
 	<comment></comment>
 	<projects>
+		<project>OpenHierarchy</project>
+		<project>StandardUtils</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
