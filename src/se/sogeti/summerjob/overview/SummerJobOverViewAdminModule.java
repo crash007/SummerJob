@@ -1,4 +1,4 @@
-package se.sogeti.jobapplications;
+package se.sogeti.summerjob.overview;
 
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,7 +22,7 @@ import se.unlogic.standardutils.xml.XMLUtils;
 import se.unlogic.webutils.http.RequestUtils;
 import se.unlogic.webutils.http.URIParser;
 
-public class SummerJobAdminModule extends AnnotatedForegroundModule{
+public class SummerJobOverViewAdminModule extends AnnotatedForegroundModule{
 	
 	
 	//private MunicipalityJobDAO municipalityJobDAO;
