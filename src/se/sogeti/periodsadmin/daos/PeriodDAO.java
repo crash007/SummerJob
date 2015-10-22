@@ -29,9 +29,9 @@ public class PeriodDAO extends AnnotatedDAO<Period> {
 		this.addOrUpdate(bean, null);
 	}
 	
-	public Period getById(Integer alternativeID) throws SQLException {
+	public Period getById(Integer id) throws SQLException {
 		HighLevelQuery<Period> query = new HighLevelQuery<Period>();
-		query.addParameter(this.getParamFactory("alternativeID", Integer.class).getParameter(alternativeID));
+		query.addParameter(this.getParamFactory("id", Integer.class).getParameter(id));
 		return this.get(query);
 	}
 	
@@ -42,7 +42,7 @@ public class PeriodDAO extends AnnotatedDAO<Period> {
 	
 	public List<Period> getPeriodsOrderedByDate() throws SQLException {
 		HighLevelQuery<Period> query = new HighLevelQuery<Period>();
-		query.addOrderByCriteria(this.getOrderByCriteria("fromDate", Order.ASC));
+		query.addOrderByCriteria(this.getOrderByCriteria("startDate", Order.ASC));
 		return this.getAll(query);
 	}
 }

@@ -1,16 +1,13 @@
 package se.sogeti.jobapplications.beans;
 
-import java.lang.annotation.Documented;
 import java.sql.Date;
 import java.util.List;
-import java.util.Map;
 
 import se.sogeti.periodsadmin.beans.Period;
 import se.unlogic.standardutils.dao.annotations.DAOManaged;
 import se.unlogic.standardutils.dao.annotations.Key;
 import se.unlogic.standardutils.dao.annotations.ManyToOne;
 import se.unlogic.standardutils.dao.annotations.OneToMany;
-import se.unlogic.standardutils.dao.annotations.OneToOne;
 import se.unlogic.standardutils.dao.annotations.Table;
 import se.unlogic.standardutils.xml.XMLElement;
 
@@ -30,24 +27,24 @@ public class MunicipalityJob {
 	@XMLElement
 	private Date updated;
 	
-	@DAOManaged
-	@XMLElement
-	private String organization;
+//	@DAOManaged
+//	@XMLElement
+//	private Integer workplaceId;
 	
-	@DAOManaged
+	@DAOManaged(columnName="workplaceId")
 	@XMLElement
-	private String location;
+	@ManyToOne(autoGet=true,autoAdd=true, autoUpdate=true, remoteKeyField="id")
+	private Workplace workplace;
 	
-	//Address
-	@DAOManaged
-	@XMLElement
-	private WorkplaceAddress address;
+//	@DAOManaged
+//	@XMLElement
+//	private Integer periodId;
 	
-	@DAOManaged
+	@DAOManaged(columnName="periodId")
 	@XMLElement
+	@ManyToOne(autoGet=true,autoAdd=true, autoUpdate=true, remoteKeyField="id")
 	private Period period;
 	
-	//Work
 	@DAOManaged
 	@XMLElement
 	private String workTitle;
@@ -56,13 +53,26 @@ public class MunicipalityJob {
 	@XMLElement
 	private String workDescription;
 	
-//	@DAOManaged(columnName="managerId")
-//	@XMLElement
-//	@OneToOne(keyField="id")
+	// Område, t.ex Barnomsorg
 	@DAOManaged
 	@XMLElement
-	@OneToOne(autoGet=true,autoAdd=true, autoUpdate=true)
-	private Manager manager;
+	private String area;
+	
+	@DAOManaged
+	@XMLElement
+	private Integer numberOfWorkersNeeded;
+	
+	@DAOManaged
+	@XMLElement
+	private Boolean approvedWorkplace;
+	
+	@DAOManaged
+	@XMLElement
+	private Date approvedDate;
+	
+	@DAOManaged
+	@XMLElement
+	private String approvedByUser;
 	
 	@DAOManaged
 	@XMLElement
@@ -71,16 +81,20 @@ public class MunicipalityJob {
 	
 	@DAOManaged
 	@XMLElement
-	private Integer numberOfWorkersNeeded;
-	
-	@DAOManaged
-	@XMLElement
 	@OneToMany(autoGet=true,autoAdd=true, autoUpdate=true)
 	private List<MunicpalityJobApplication> workers;
 	
 	@DAOManaged
 	@XMLElement
-	@OneToMany
+	@OneToMany(autoGet=true,autoAdd=true, autoUpdate=true)
 	private List<ApplicationRequirement> requirements;
 	
+	@DAOManaged
+	@XMLElement
+	private String requirementsFreeText;
+
+	@Override
+	public String toString() {
+		return workTitle + "(id: " + id + ")";
+	}
 }

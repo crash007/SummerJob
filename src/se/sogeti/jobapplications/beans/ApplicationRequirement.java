@@ -19,8 +19,48 @@ public class ApplicationRequirement {
 	@DAOManaged
 	private Boolean status;
 	
+//	@DAOManaged(columnName="municipalityJobId")
+//	@OneToOne(keyField="id")
+//	private MunicipalityJob job;
+	
 	@DAOManaged(columnName="municipalityJobId")
-	@OneToOne(keyField="id")
+	@ManyToOne(remoteKeyField="id")
 	private MunicipalityJob job;
 
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public Boolean getStatus() {
+		return status;
+	}
+
+	public void setStatus(Boolean status) {
+		this.status = status;
+	}
+
+	public MunicipalityJob getJob() {
+		return job;
+	}
+
+	public void setJob(MunicipalityJob job) {
+		this.job = job;
+	}
+
+	@Override
+	public String toString() {
+		return name + "(id: " + id + ")";
+	}
 }

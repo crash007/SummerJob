@@ -15,9 +15,13 @@ public class Manager {
 	@XMLElement
 	private Integer id;
 	
-	@DAOManaged(columnName="municipalityJobId")
+//	@DAOManaged
+//	@XMLElement
+//	private Integer workplaceId;
+	
+	@DAOManaged(columnName="workplaceId")
 	@OneToOne(keyField="id")
-	private MunicipalityJob job;
+	private Workplace workplace;
 	
 	@DAOManaged
 	@XMLElement
@@ -43,12 +47,12 @@ public class Manager {
 		this.id = id;
 	}
 	
-	public MunicipalityJob getJob() {
-		return job;
+	public Workplace getWorkplace() {
+		return workplace;
 	}
 	
-	public void setJob(MunicipalityJob job) {
-		this.job = job;
+	public void setWorkplace(Workplace workplace) {
+		this.workplace = workplace;
 	}
 
 	public String getFirstname() {
