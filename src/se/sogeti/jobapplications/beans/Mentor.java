@@ -16,7 +16,7 @@ public class Mentor {
 
 	@DAOManaged
 	@XMLElement
-	private Integer summerjobId;
+	private Integer municipalityJobId;
 	
 	@DAOManaged
 	@XMLElement
@@ -42,12 +42,12 @@ public class Mentor {
 		this.id = id;
 	}
 
-	public Integer getSummerjobId() {
-		return summerjobId;
+	public Integer getMunicipalityJobId() {
+		return municipalityJobId;
 	}
 
-	public void setSummerjobId(Integer summerjobId) {
-		this.summerjobId = summerjobId;
+	public void setMunicipalityJobId(Integer municipalityJobId) {
+		this.municipalityJobId = municipalityJobId;
 	}
 
 	public String getFirstname() {
