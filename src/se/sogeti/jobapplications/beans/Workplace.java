@@ -3,6 +3,7 @@ package se.sogeti.jobapplications.beans;
 import se.unlogic.standardutils.dao.annotations.DAOManaged;
 import se.unlogic.standardutils.dao.annotations.Key;
 import se.unlogic.standardutils.dao.annotations.ManyToOne;
+import se.unlogic.standardutils.dao.annotations.OneToMany;
 import se.unlogic.standardutils.dao.annotations.Table;
 import se.unlogic.standardutils.xml.XMLElement;
 
@@ -13,6 +14,10 @@ public class Workplace {
 	@Key
 	@XMLElement
 	private Integer id;
+	
+	@DAOManaged(columnName="municipality_job_id")
+	@OneToMany
+	private MunicipalityJob municipalityJob;
 	
 	@DAOManaged
 	@XMLElement
@@ -42,10 +47,6 @@ public class Workplace {
 	@DAOManaged
 	@XMLElement
 	private String city;
-	
-//	@DAOManaged
-//	@XMLElement
-//	private Integer managerId;
 	
 	@DAOManaged(columnName="managerId")
 	@XMLElement
