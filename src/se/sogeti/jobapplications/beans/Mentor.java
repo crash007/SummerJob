@@ -2,6 +2,7 @@ package se.sogeti.jobapplications.beans;
 
 import se.unlogic.standardutils.dao.annotations.DAOManaged;
 import se.unlogic.standardutils.dao.annotations.Key;
+import se.unlogic.standardutils.dao.annotations.ManyToOne;
 import se.unlogic.standardutils.dao.annotations.Table;
 import se.unlogic.standardutils.xml.XMLElement;
 
@@ -14,9 +15,13 @@ public class Mentor {
 	@XMLElement
 	private Integer id;
 
-	@DAOManaged
-	@XMLElement
-	private Integer municipalityJobId;
+//	@DAOManaged
+//	@XMLElement
+//	private Integer municipalityJobId;
+	
+	@DAOManaged(columnName="municipalityJobId")
+	@ManyToOne
+	private MunicipalityJob job;
 	
 	@DAOManaged
 	@XMLElement
@@ -42,13 +47,13 @@ public class Mentor {
 		this.id = id;
 	}
 
-	public Integer getMunicipalityJobId() {
-		return municipalityJobId;
-	}
-
-	public void setMunicipalityJobId(Integer municipalityJobId) {
-		this.municipalityJobId = municipalityJobId;
-	}
+//	public Integer getMunicipalityJobId() {
+//		return municipalityJobId;
+//	}
+//
+//	public void setMunicipalityJobId(Integer municipalityJobId) {
+//		this.municipalityJobId = municipalityJobId;
+//	}
 
 	public String getFirstname() {
 		return firstname;
@@ -85,5 +90,13 @@ public class Mentor {
 	@Override
 	public String toString() {
 		return "Mentor (id: " + getId() + ")";
+	}
+
+	public MunicipalityJob getJob() {
+		return job;
+	}
+
+	public void setJob(MunicipalityJob job) {
+		this.job = job;
 	}
 }

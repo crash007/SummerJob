@@ -20,13 +20,13 @@ public class MunicipalityJob {
 	@Key
 	private Integer id;
 	
-	@DAOManaged(columnName="flow_instance_id")
-	private Integer flowInstanceId;
+	@DAOManaged
+	@XMLElement
+	private Date created;
 	
 	@DAOManaged
 	@XMLElement
 	private Date updated;
-	
 	
 	@DAOManaged(columnName="workplaceId")
 	@XMLElement
@@ -47,9 +47,10 @@ public class MunicipalityJob {
 	private String workDescription;
 	
 	// Område, t.ex Barnomsorg
-	@DAOManaged
+	@DAOManaged(columnName="areaId")
 	@XMLElement
-	private String area;
+	@ManyToOne(remoteKeyField = "id", autoAdd = false, autoGet = false, autoUpdate = false)
+	private Area area;
 	
 	@DAOManaged
 	@XMLElement
@@ -75,7 +76,7 @@ public class MunicipalityJob {
 	@DAOManaged
 	@XMLElement
 	@OneToMany(autoGet=true,autoAdd=true, autoUpdate=true)
-	private List<MunicpalityJobApplication> workers;
+	private List<MunicipalityJobApplication> workers;
 	
 	@DAOManaged
 	@XMLElement

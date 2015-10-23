@@ -2,61 +2,167 @@
 	<Script version="1">
 		<Query>
 			<![CDATA[
-				CREATE TABLE `summer_job_mentors` (
-					`id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-					`firstname` varchar(255) DEFAULT NULL,
-					`lastname` varchar(255) DEFAULT NULL,
-					`email` varchar(255) DEFAULT NULL,
-					`mobilePhone` varchar(255) DEFAULT NULL,
-					PRIMARY KEY (`id`)
-				) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+				CREATE TABLE `summer_job_areas` (
+				  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+				  `name` varchar(45) NOT NULL,
+				  `description` varchar(255) NOT NULL,
+				  `canBeChosenInApplication` tinyint(1) unsigned NOT NULL,
+				  PRIMARY KEY (`id`)
+				) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
 			]]>
 		</Query>
 		<Query>
 			<![CDATA[
 				CREATE TABLE `summer_job_managers` (
-					`id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-					`firstname` varchar(255) DEFAULT NULL,
-					`lastname` varchar(255) DEFAULT NULL,
-					`email` varchar(255) DEFAULT NULL,
-					`mobilePhone` varchar(255) DEFAULT NULL,
-					PRIMARY KEY (`id`)
-				) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-				
+				  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+				  `firstname` varchar(255) DEFAULT NULL,
+				  `lastname` varchar(255) DEFAULT NULL,
+				  `email` varchar(255) DEFAULT NULL,
+				  `mobilePhone` varchar(255) DEFAULT NULL,
+				  `workplaceId` int(10) unsigned NOT NULL,
+				  PRIMARY KEY (`id`),
+				  KEY `fk_manager_workplaceId_idx` (`workplaceId`),
+				  CONSTRAINT `fk_manager_workplaceId` FOREIGN KEY (`workplaceId`) REFERENCES `summer_job_workplace` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+				) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 			]]>
 		</Query>
 		<Query>
 			<![CDATA[
-			CREATE TABLE `summer_job_workplace_address` (
-			  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-			  `address` varchar(255) DEFAULT NULL,
-			  `zipCode` varchar(255) DEFAULT NULL,
-			  `postalAddress` varchar(255) DEFAULT NULL,
-			  PRIMARY KEY (`id`)
-			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+				CREATE TABLE `summer_job_mentors` (
+				  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+				  `municipalityJobId` int(10) unsigned NOT NULL,
+				  `firstname` varchar(255) DEFAULT NULL,
+				  `lastname` varchar(255) DEFAULT NULL,
+				  `email` varchar(255) DEFAULT NULL,
+				  `mobilePhone` varchar(255) DEFAULT NULL,
+				  PRIMARY KEY (`id`),
+				  KEY `fk_mentor_municipality_idx` (`municipalityJobId`),
+				  CONSTRAINT `fk_mentor_municipality` FOREIGN KEY (`municipalityJobId`) REFERENCES `summer_job_municipality_job` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+				) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 			]]>
 		</Query>		
 		<Query>
 			<![CDATA[
-			CREATE TABLE `summer_job_periods` (
-			  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-			  `name` varchar(255) NOT NULL,
-			  `startDate` date DEFAULT NULL,
-			  `endDate` date DEFAULT NULL,
-			  `sortIndex` int(10) unsigned DEFAULT NULL,
-			  PRIMARY KEY (`id`)
-			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+				CREATE TABLE `summer_job_municipality_job` (
+				  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+				  `created` date NOT NULL,
+				  `updated` date DEFAULT NULL,
+				  `workplaceId` int(10) unsigned NOT NULL,
+				  `areaId` int(10) unsigned NOT NULL,
+				  `workTitle` varchar(255) NOT NULL,
+				  `workDescription` mediumtext NOT NULL,
+				  `requirementsFreeText` mediumtext,
+				  `numberOfWorkersNeeded` int(10) unsigned NOT NULL,
+				  `periodId` int(10) unsigned NOT NULL,
+				  `approvedWorkplace` tinyint(1) unsigned NOT NULL DEFAULT '0',
+				  `approvedDate` date DEFAULT NULL,
+				  `approvedByUser` varchar(45) DEFAULT NULL,
+				  PRIMARY KEY (`id`),
+				  KEY `fk_municipalityjob_period_idx` (`periodId`),
+				  KEY `fk_municipalityjob_workplace_idx` (`workplaceId`),
+				  KEY `fk_municipalityjob_area_idx` (`areaId`),
+				  CONSTRAINT `fk_municipalityjob_area` FOREIGN KEY (`areaId`) REFERENCES `summer_job_areas` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+				  CONSTRAINT `fk_municipalityjob_period` FOREIGN KEY (`periodId`) REFERENCES `summer_job_periods` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+				  CONSTRAINT `fk_municipalityjob_workplace` FOREIGN KEY (`workplaceId`) REFERENCES `summer_job_workplace` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+				) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 			]]>
 		</Query>
 		<Query>
 			<![CDATA[
-			CREATE TABLE `summer_job_requirements` (
-			  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-			  `municipalityJobId` int(10) unsigned NOT NULL,
-			  `name` varchar(255) NOT NULL,
-			  `status` tinyint(1) NOT NULL,
-			  PRIMARY KEY (`id`)
-			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+				CREATE TABLE `summer_job_municipality_job_application` (
+				  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+				  `municipalityJobId` int(10) unsigned NOT NULL,
+				  `personId` int(10) unsigned NOT NULL,
+				  `enrolledHighSchool` tinyint(1) unsigned DEFAULT '0',
+				  `highSchoolProgram` varchar(64) DEFAULT NULL,
+				  `ranking` int(10) unsigned DEFAULT '0',
+				  `hasDriversLicense` tinyint(1) unsigned DEFAULT '0',
+				  `driversLicenseType` varchar(45) DEFAULT NULL,
+				  `hasAccessToVehicle` tinyint(1) unsigned DEFAULT '0',
+				  `experienceInCare` tinyint(1) unsigned DEFAULT '0',
+				  `preferedAreasId` tinyint(1) unsigned NOT NULL,
+				  `personalLetter` mediumtext,
+				  `cvLocation` varchar(255) DEFAULT NULL,
+				  PRIMARY KEY (`id`),
+				  KEY `fk_application_municipalityJob_idx` (`municipalityJobId`),
+				  KEY `fk_application_person_idx` (`personId`),
+				  CONSTRAINT `fk_application_municipalityJob` FOREIGN KEY (`municipalityJobId`) REFERENCES `summer_job_municipality_job` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+				  CONSTRAINT `fk_application_person` FOREIGN KEY (`personId`) REFERENCES `summer_job_person` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+				) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+			]]>
+		</Query>
+		<Query>
+			<![CDATA[
+				CREATE TABLE `summer_job_periods` (
+				  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+				  `name` varchar(255) NOT NULL,
+				  `startDate` date DEFAULT NULL,
+				  `endDate` date DEFAULT NULL,
+				  `sortIndex` int(10) unsigned DEFAULT NULL,
+				  PRIMARY KEY (`id`)
+				) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+			]]>
+		</Query>
+		<Query>
+			<![CDATA[
+				CREATE TABLE `summer_job_person` (
+				  `id` int(10) unsigned NOT NULL,
+				  `personalCodeNumber` varchar(45) NOT NULL,
+				  `firstname` varchar(45) NOT NULL,
+				  `lastname` varchar(45) NOT NULL,
+				  `streetAddress` varchar(255) NOT NULL,
+				  `zipCode` varchar(45) NOT NULL,
+				  `city` varchar(45) NOT NULL,
+				  `email` varchar(255) DEFAULT NULL,
+				  `phoneNumber` varchar(45) DEFAULT NULL,
+				  `matchedForMunicipalityJob` tinyint(1) unsigned DEFAULT '0',
+				  `matchedJobId` int(10) unsigned DEFAULT NULL,
+				  PRIMARY KEY (`id`)
+				) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+			]]>
+		</Query>
+		<Query>
+			<![CDATA[
+				CREATE TABLE `summer_job_prefered_area` (
+				  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+				  `applicationId` int(10) unsigned NOT NULL,
+				  `areaId` int(10) unsigned NOT NULL,
+				  PRIMARY KEY (`id`)
+				) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+			]]>
+		</Query>
+		<Query>
+			<![CDATA[
+				CREATE TABLE `summer_job_requirements` (
+				  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+				  `municipalityJobId` int(10) unsigned NOT NULL,
+				  `name` varchar(255) NOT NULL,
+				  `status` tinyint(1) NOT NULL DEFAULT '0',
+				  PRIMARY KEY (`id`),
+				  KEY `fk_requirements_municipality_job_idx` (`municipalityJobId`),
+				  CONSTRAINT `fk_requirements_municipality_job` FOREIGN KEY (`municipalityJobId`) REFERENCES `summer_job_municipality_job` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+				) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+			]]>
+		</Query>
+		<Query>
+			<![CDATA[
+				CREATE TABLE `summer_job_workplace` (
+				  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+				  `organization` varchar(255) DEFAULT NULL,
+				  `administration` varchar(255) DEFAULT NULL,
+				  `location` varchar(255) DEFAULT NULL,
+				  `department` varchar(255) DEFAULT NULL,
+				  `streetAddress` varchar(255) DEFAULT NULL,
+				  `zipCode` varchar(255) DEFAULT NULL,
+				  `city` varchar(255) DEFAULT NULL,
+				  `managerId` int(10) unsigned NOT NULL DEFAULT '0',
+				  `municipality_job_id` int(10) unsigned DEFAULT NULL,
+				  PRIMARY KEY (`id`),
+				  KEY `fk_workplace_managerId_idx` (`managerId`),
+				  KEY `fk_workplace_municipality_job_idx` (`municipality_job_id`),
+				  CONSTRAINT `fk_workplace_managerId` FOREIGN KEY (`managerId`) REFERENCES `summer_job_managers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+				  CONSTRAINT `fk_workplace_municipality_job` FOREIGN KEY (`municipality_job_id`) REFERENCES `summer_job_municipality_job` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+				) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 			]]>
 		</Query>
 	</Script>	

@@ -26,7 +26,7 @@ public class ManagerDAO extends AnnotatedDAO<Manager> {
 		this.addOrUpdate(bean, null);
 	}
 	
-	public Manager getById(Integer managerId) throws SQLException {
+	public Manager getManagerById(Integer managerId) throws SQLException {
 		HighLevelQuery<Manager> query = new HighLevelQuery<Manager>();
 		query.addParameter(this.getParamFactory("id", Integer.class).getParameter(managerId));
 		return this.get(query);
