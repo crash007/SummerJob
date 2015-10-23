@@ -51,12 +51,12 @@
 					 
 					
 					  <div class="form-group">
-					   <label for="area">Ange område</label>
+					   <label for="area">Ange versamhetsområde</label>
 						  <table class="table">
 						  	<thead>
 						  		<tr>
 						  			<th>Välj</th>
-						  			<th>Område</th>
+						  			<th>Verksamhetsområde</th>
 						  			<th>Beskrivning</th>
 						  		</tr>
 						  	</thead>
@@ -140,7 +140,7 @@
 				  	</div>
 				  	
 				  	<div class="form-group">
-				  	<label for="period">Välj perioder</label>
+				  		<label for="period">Välj perioder</label>
 				  		<div class="checkbox">
 						  <label>
 						    <input type="checkbox" value="period1">
