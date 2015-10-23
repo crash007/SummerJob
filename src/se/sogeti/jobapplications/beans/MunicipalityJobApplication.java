@@ -1,5 +1,6 @@
 package se.sogeti.jobapplications.beans;
 
+import java.sql.Date;
 import java.util.List;
 
 import se.unlogic.standardutils.dao.annotations.DAOManaged;
@@ -57,4 +58,120 @@ public class MunicipalityJobApplication {
 	@DAOManaged
 	@XMLElement
 	private String cvLocation;
+	
+	@DAOManaged
+	@XMLElement
+	private boolean approvedApplication;
+	
+	@DAOManaged
+	@XMLElement
+	private String approvedByUser;
+	
+	@DAOManaged
+	@XMLElement
+	private Date approvedDate;
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public MunicipalityJob getMunicipalityJob() {
+		return municipalityJob;
+	}
+
+	public void setMunicipalityJob(MunicipalityJob municipalityJob) {
+		this.municipalityJob = municipalityJob;
+	}
+
+	public Person getPerson() {
+		return person;
+	}
+
+	public void setPerson(Person person) {
+		this.person = person;
+	}
+
+	public Integer getRanking() {
+		return ranking;
+	}
+
+	public void setRanking(Integer ranking) {
+		this.ranking = ranking;
+	}
+
+	public boolean isHasDriversLicense() {
+		return hasDriversLicense;
+	}
+
+	public void setHasDriversLicense(boolean hasDriversLicense) {
+		this.hasDriversLicense = hasDriversLicense;
+	}
+
+	public String getDriversLicenseType() {
+		return driversLicenseType;
+	}
+
+	public void setDriversLicenseType(String driversLicenseType) {
+		this.driversLicenseType = driversLicenseType;
+	}
+
+	public boolean isHasAccessToVehicle() {
+		return hasAccessToVehicle;
+	}
+
+	public void setHasAccessToVehicle(boolean hasAccessToVehicle) {
+		this.hasAccessToVehicle = hasAccessToVehicle;
+	}
+
+	public List<PreferedArea> getPreferedAreas() {
+		return preferedAreas;
+	}
+
+	public void setPreferedAreas(List<PreferedArea> preferedAreas) {
+		this.preferedAreas = preferedAreas;
+	}
+
+	public String getPersonalLetter() {
+		return personalLetter;
+	}
+
+	public void setPersonalLetter(String personalLetter) {
+		this.personalLetter = personalLetter;
+	}
+
+	public String getCvLocation() {
+		return cvLocation;
+	}
+
+	public void setCvLocation(String cvLocation) {
+		this.cvLocation = cvLocation;
+	}
+
+	public boolean isApprovedApplication() {
+		return approvedApplication;
+	}
+
+	public void setApprovedApplication(boolean approvedApplication) {
+		this.approvedApplication = approvedApplication;
+	}
+
+	public String getApprovedByUser() {
+		return approvedByUser;
+	}
+
+	public void setApprovedByUser(String approvedByUser) {
+		this.approvedByUser = approvedByUser;
+	}
+
+	public Date getApprovedDate() {
+		return approvedDate;
+	}
+
+	public void setApprovedDate(Date approvedDate) {
+		this.approvedDate = approvedDate;
+	}
 }
