@@ -1,7 +1,10 @@
 package se.sogeti.jobapplications.beans;
 
+import java.util.List;
+
 import se.unlogic.standardutils.dao.annotations.DAOManaged;
 import se.unlogic.standardutils.dao.annotations.Key;
+import se.unlogic.standardutils.dao.annotations.OneToMany;
 import se.unlogic.standardutils.dao.annotations.Table;
 import se.unlogic.standardutils.xml.XMLElement;
 
@@ -12,6 +15,10 @@ public class Person {
 	@Key
 	@XMLElement
 	private Integer id;
+	
+	@DAOManaged
+	@OneToMany
+	List<MunicipalityJobApplication> jobApplications;
 	
 	@DAOManaged
 	@XMLElement
@@ -47,7 +54,7 @@ public class Person {
 	
 	@DAOManaged
 	@XMLElement
-	private boolean matchedForMunicipalityJob;
+	private Boolean matchedForMunicipalityJob;
 	
 	@DAOManaged
 	@XMLElement
@@ -132,5 +139,21 @@ public class Person {
 	@Override
 	public String toString() {
 		return getFullName() + "(id: " + id + ")";
+	}
+
+	public Boolean getMatchedForMunicipalityJob() {
+		return matchedForMunicipalityJob;
+	}
+
+	public void setMatchedForMunicipalityJob(Boolean matchedForMunicipalityJob) {
+		this.matchedForMunicipalityJob = matchedForMunicipalityJob;
+	}
+
+	public String getMatchedJobId() {
+		return matchedJobId;
+	}
+
+	public void setMatchedJobId(String matchedJobId) {
+		this.matchedJobId = matchedJobId;
 	}
 }

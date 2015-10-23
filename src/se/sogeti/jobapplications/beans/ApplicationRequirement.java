@@ -19,10 +19,6 @@ public class ApplicationRequirement {
 	@DAOManaged
 	private Boolean status;
 	
-//	@DAOManaged(columnName="municipalityJobId")
-//	@OneToOne(keyField="id")
-//	private MunicipalityJob job;
-	
 	@DAOManaged(columnName="municipalityJobId")
 	@ManyToOne(remoteKeyField="id")
 	private MunicipalityJob job;

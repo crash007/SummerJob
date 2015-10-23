@@ -1,10 +1,13 @@
 package se.sogeti.periodsadmin.beans;
 
 import java.sql.Date;
+import java.util.List;
 
+import se.sogeti.jobapplications.beans.MunicipalityJob;
 import se.unlogic.standardutils.annotations.WebPopulate;
 import se.unlogic.standardutils.dao.annotations.DAOManaged;
 import se.unlogic.standardutils.dao.annotations.Key;
+import se.unlogic.standardutils.dao.annotations.OneToMany;
 import se.unlogic.standardutils.dao.annotations.OrderBy;
 import se.unlogic.standardutils.dao.annotations.Table;
 import se.unlogic.standardutils.xml.XMLElement;
@@ -15,7 +18,7 @@ import se.unlogic.standardutils.xml.XMLElement;
  *
  */
 
-@Table(name = "periods")
+@Table(name = "summer_job_periods")
 @XMLElement
 public class Period {
 	
@@ -23,9 +26,13 @@ public class Period {
 	@Key
 	@XMLElement
 	private Integer id;
+	
+	@DAOManaged
+	@OneToMany
+	List<MunicipalityJob> jobs;
 
 	@DAOManaged
-	@WebPopulate(required=true,maxLength=255)
+	@WebPopulate(required=true, maxLength=255)
 	@XMLElement
 	private String name;
 
