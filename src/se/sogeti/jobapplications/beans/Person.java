@@ -4,6 +4,7 @@ import java.util.List;
 
 import se.unlogic.standardutils.dao.annotations.DAOManaged;
 import se.unlogic.standardutils.dao.annotations.Key;
+import se.unlogic.standardutils.dao.annotations.ManyToOne;
 import se.unlogic.standardutils.dao.annotations.OneToMany;
 import se.unlogic.standardutils.dao.annotations.Table;
 import se.unlogic.standardutils.xml.XMLElement;
@@ -18,7 +19,19 @@ public class Person {
 	
 	@DAOManaged
 	@OneToMany
-	List<MunicipalityJobApplication> jobApplications;
+	private List<MunicipalityJobApplication> jobApplications;
+	
+	@DAOManaged
+	@OneToMany
+	private List<BusinessSectorJobApplication> businessSectorJobApplications;
+	
+	@DAOManaged(columnName = "matchedForMunicipalityJobId")
+	@ManyToOne
+	private MunicipalityJob matchedForMunicipalityJob;
+	
+	@DAOManaged(columnName="matchedForBusinessSectorJobId")
+	@ManyToOne
+	private BusinessSectorJob matchedForBusinessSectorJob;
 	
 	@DAOManaged
 	@XMLElement
@@ -52,14 +65,6 @@ public class Person {
 	@XMLElement
 	private String phoneNumber;
 	
-	@DAOManaged
-	@XMLElement
-	private Boolean matchedForMunicipalityJob;
-	
-	@DAOManaged
-	@XMLElement
-	private String matchedJobId;
-
 	public Integer getId() {
 		return id;
 	}
@@ -141,19 +146,37 @@ public class Person {
 		return getFullName() + "(id: " + id + ")";
 	}
 
-	public Boolean getMatchedForMunicipalityJob() {
+	public List<MunicipalityJobApplication> getJobApplications() {
+		return jobApplications;
+	}
+
+	public void setJobApplications(List<MunicipalityJobApplication> jobApplications) {
+		this.jobApplications = jobApplications;
+	}
+
+	public List<BusinessSectorJobApplication> getBusinessSectorJobApplications() {
+		return businessSectorJobApplications;
+	}
+
+	public void setBusinessSectorJobApplications(
+			List<BusinessSectorJobApplication> businessSectorJobApplications) {
+		this.businessSectorJobApplications = businessSectorJobApplications;
+	}
+
+	public MunicipalityJob getMatchedForMunicipalityJob() {
 		return matchedForMunicipalityJob;
 	}
 
-	public void setMatchedForMunicipalityJob(Boolean matchedForMunicipalityJob) {
+	public void setMatchedForMunicipalityJob(MunicipalityJob matchedForMunicipalityJob) {
 		this.matchedForMunicipalityJob = matchedForMunicipalityJob;
 	}
 
-	public String getMatchedJobId() {
-		return matchedJobId;
+	public BusinessSectorJob getMatchedForBusinessSectorJob() {
+		return matchedForBusinessSectorJob;
 	}
 
-	public void setMatchedJobId(String matchedJobId) {
-		this.matchedJobId = matchedJobId;
+	public void setMatchedForBusinessSectorJob(
+			BusinessSectorJob matchedForBusinessSectorJob) {
+		this.matchedForBusinessSectorJob = matchedForBusinessSectorJob;
 	}
 }

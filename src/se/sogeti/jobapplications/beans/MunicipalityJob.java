@@ -100,6 +100,11 @@ public class MunicipalityJob {
 	@DAOManaged
 	@XMLElement
 	private String requirementsFreeText;
+	
+	@DAOManaged
+	@XMLElement
+	@OneToMany(autoGet=true,autoAdd=true, autoUpdate=true)
+	private List<Person> matchedPersons;
 
 	
 	public Integer getId() {
@@ -234,5 +239,13 @@ public class MunicipalityJob {
 	@Override
 	public String toString() {
 		return workTitle + "(id: " + id + ")";
+	}
+
+	public List<Person> getMatchedPersons() {
+		return matchedPersons;
+	}
+
+	public void setMatchedPersons(List<Person> matchedPersons) {
+		this.matchedPersons = matchedPersons;
 	}
 }
