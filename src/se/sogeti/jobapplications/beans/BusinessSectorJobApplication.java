@@ -21,13 +21,13 @@ public class BusinessSectorJobApplication {
 	private Integer businessSectorJobId;
 	
 	@DAOManaged(columnName="businessSectorJobId")
-	@ManyToOne(remoteKeyField="id",autoGet=false,autoAdd=false,autoUpdate=false)
+	@ManyToOne(remoteKeyField="id", autoGet=false, autoAdd=false, autoUpdate=false)
 	private BusinessSectorJob businessSectorJob;
 	
 	private Integer personId;
 	
 	@DAOManaged(columnName="personId")
-	@ManyToOne(remoteKeyField="id",autoGet=false,autoAdd=false,autoUpdate=false)
+	@ManyToOne(remoteKeyField="id", autoGet=false, autoAdd=false, autoUpdate=false)
 	private Person person;
 
 	@DAOManaged

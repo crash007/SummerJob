@@ -18,7 +18,6 @@ public class MunicipalityJobApplication {
 	@Key
 	@XMLElement
 	private Integer id;
-
 	
 	@DAOManaged(columnName="municipalityJobId")
 	@ManyToOne(remoteKeyField="id",autoGet=false,autoAdd=false,autoUpdate=false)
@@ -130,14 +129,6 @@ public class MunicipalityJobApplication {
 
 	public void setHasAccessToVehicle(boolean hasAccessToVehicle) {
 		this.hasAccessToVehicle = hasAccessToVehicle;
-	}
-
-	public List<PreferedArea> getPreferedAreas() {
-		return preferedAreas;
-	}
-
-	public void setPreferedAreas(List<PreferedArea> preferedAreas) {
-		this.preferedAreas = preferedAreas;
 	}
 
 	public String getPersonalLetter() {
