@@ -1,9 +1,12 @@
 package se.sogeti.jobapplications.beans;
 
+import java.util.List;
+
 import se.unlogic.standardutils.dao.annotations.DAOManaged;
 import se.unlogic.standardutils.dao.annotations.Key;
 import se.unlogic.standardutils.dao.annotations.ManyToOne;
 import se.unlogic.standardutils.dao.annotations.OneToMany;
+import se.unlogic.standardutils.dao.annotations.OneToOne;
 import se.unlogic.standardutils.dao.annotations.Table;
 import se.unlogic.standardutils.xml.XMLElement;
 
@@ -15,9 +18,9 @@ public class Workplace {
 	@XMLElement
 	private Integer id;
 	
-	@DAOManaged(columnName="municipality_job_id")
-	@OneToMany
-	private MunicipalityJob municipalityJob;
+	@DAOManaged
+	@OneToMany(autoAdd=true)
+	private List<MunicipalityJob> municipalityJob;
 	
 	@DAOManaged
 	@XMLElement
@@ -48,11 +51,6 @@ public class Workplace {
 	@XMLElement
 	private String city;
 	
-	@DAOManaged(columnName="managerId")
-	@XMLElement
-	@ManyToOne(autoGet=true,autoAdd=true, autoUpdate=true, remoteKeyField="id")
-	private Manager manager;
-
 	@Override
 	public String toString() {
 		return "Workplace (id: " + getId() + ")";
@@ -122,11 +120,4 @@ public class Workplace {
 		this.city = city;
 	}
 
-	public Manager getManager() {
-		return manager;
-	}
-
-	public void setManager(Manager manager) {
-		this.manager = manager;
-	}
 }

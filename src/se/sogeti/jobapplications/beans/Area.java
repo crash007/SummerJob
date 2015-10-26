@@ -2,16 +2,22 @@ package se.sogeti.jobapplications.beans;
 
 import java.util.List;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
 import se.unlogic.standardutils.dao.annotations.DAOManaged;
 import se.unlogic.standardutils.dao.annotations.Key;
-import se.unlogic.standardutils.dao.annotations.ManyToMany;
-import se.unlogic.standardutils.dao.annotations.ManyToOne;
+
 import se.unlogic.standardutils.dao.annotations.OneToMany;
 import se.unlogic.standardutils.dao.annotations.Table;
+import se.unlogic.standardutils.xml.Elementable;
 import se.unlogic.standardutils.xml.XMLElement;
+import se.unlogic.standardutils.xml.XMLGenerator;
 
+//Example Barnomsorg, Äldreomsorg
 @Table(name = "summer_job_areas")
-public class Area {
+@XMLElement
+public class Area implements Elementable{
 
 	@DAOManaged
 	@Key
@@ -33,14 +39,19 @@ public class Area {
 	@DAOManaged
 	@OneToMany
 	private List<MunicipalityJob> jobs;
+
 	
-	@DAOManaged
-	@ManyToOne(remoteKeyField="id")
-	private MunicipalityJobApplication application;
-	
-	@DAOManaged
+	@DAOManaged(columnName="prefered_area_1")
 	@OneToMany
-	private List<PreferedArea> preferedAreas;
+	private List<MunicipalityJobApplication> preferedAreas1;
+	
+	@DAOManaged(columnName="prefered_area_2")
+	@OneToMany
+	private List<MunicipalityJobApplication> preferedAreas2;
+	
+	@DAOManaged(columnName="prefered_area_3")
+	@OneToMany
+	private List<MunicipalityJobApplication> preferedAreas3;
 
 	public Integer getId() {
 		return id;
@@ -82,19 +93,9 @@ public class Area {
 		this.jobs = jobs;
 	}
 
-	public MunicipalityJobApplication getApplication() {
-		return application;
+	@Override
+	public Element toXML(Document doc) {
+		return XMLGenerator.toXML(this, doc);
 	}
 
-	public void setApplication(MunicipalityJobApplication application) {
-		this.application = application;
-	}
-
-	public List<PreferedArea> getPreferedAreas() {
-		return preferedAreas;
-	}
-
-	public void setPreferedAreas(List<PreferedArea> preferedAreas) {
-		this.preferedAreas = preferedAreas;
-	}
 }

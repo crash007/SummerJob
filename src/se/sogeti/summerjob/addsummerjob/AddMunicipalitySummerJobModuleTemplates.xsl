@@ -55,28 +55,54 @@
 						  <table class="table">
 						  	<thead>
 						  		<tr>
-						  			<th>Välj</th>
 						  			<th>Verksamhetsområde</th>
 						  			<th>Beskrivning</th>
 						  		</tr>
 						  	</thead>
 						  	<tbody>
-						  		<tr>
-						  			<td><input type="radio" name="area" id="area1" value="Barnomsorg" checked="true"/></td>
-						  			<td>Barnomsorg</td>
-						  			<td>Du kan exempelvis arbeta inom förskola, fritids</td>
-						  		</tr>
-						  		<tr>
-						  			<td><input type="radio" name="area" id="area1" value="Barnomsorg"/></td>
-						  			<td>Äldreomsorg</td>
-						  			<td>Du kan exempelvis arbeta inom hemtjänst, servicehus och äldreboenden.</td>
-						  		</tr>
+						  		<xsl:for-each select="Areas/Area">
+						  			<xsl:if test="canBeChosenInApplication = 'true'">
+								  		<tr>
+								  			<!-- td><input type="radio" name="area" id="area_{id}" value="area_{id}" checked="true"/></td-->
+								  			<td><xsl:value-of select="name"/></td>
+								  			<td><xsl:value-of select="description"/></td>
+								  		</tr>
+							  		</xsl:if>
+						  		</xsl:for-each>						  		
 						  	</tbody>
 						  </table>
-					  
+						</div>
 						
-					  
-						</div>	
+						<div class="form-group">
+					  		<div class="row">
+					  			<div class="col-md-3">
+								    <label for="preferedArea1">Välj verksamhetsområde 1</label>				    
+								    <select class="form-control" name="preferedArea1" id="preferedArea1">
+									  <xsl:for-each select="Areas/Area">
+							  			<xsl:if test="canBeChosenInApplication = 'true'">
+									  		<option value="{id}"><xsl:value-of select="name"/> </option>									  			
+								  		</xsl:if>
+							  		</xsl:for-each>
+									  <option >1</option>
+									  
+									</select>
+								</div>
+								
+								<div class="col-md-3">
+								    <label for="preferedArea2">Välj verksamhetsområde 2</label>				    
+								    <select class="form-control" name="preferedArea2" id="preferedArea2">
+									  <xsl:for-each select="Areas/Area">
+							  			<xsl:if test="canBeChosenInApplication = 'true'">
+									  		<option value="{id}"><xsl:value-of select="name"/> </option>									  			
+								  		</xsl:if>
+							  		</xsl:for-each>
+									  <option >1</option>
+									  
+									</select>
+								</div>
+							</div>
+					  	</div>
+					  		
 					</div>
 				</div>
 				

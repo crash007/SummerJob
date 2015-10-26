@@ -17,10 +17,7 @@ public class MunicipalityJobApplication {
 	@Key
 	@XMLElement
 	private Integer id;
-	
-//	@DAOManaged
-//	@XMLElement
-//	private Integer municipalityJobId;
+
 	
 	@DAOManaged(columnName="municipalityJobId")
 	@ManyToOne(remoteKeyField="id",autoGet=false,autoAdd=false,autoUpdate=false)
@@ -46,9 +43,17 @@ public class MunicipalityJobApplication {
 	@XMLElement
 	private boolean hasAccessToVehicle;
 	
-	@DAOManaged
-	@OneToMany
-	private List<PreferedArea> preferedAreas;
+	@DAOManaged(columnName="prefered_area_1")
+	@ManyToOne(remoteKeyField="id")
+	private Area preferedArea1;
+	
+	@DAOManaged(columnName="prefered_area_2")
+	@ManyToOne(remoteKeyField="id")
+	private Area preferedArea2;
+	
+	@DAOManaged(columnName="prefered_area_3")
+	@ManyToOne(remoteKeyField="id")
+	private Area preferedArea3;
 	
 	@DAOManaged
 	@XMLElement

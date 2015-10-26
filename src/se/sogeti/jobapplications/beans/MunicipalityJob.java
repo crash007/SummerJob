@@ -8,6 +8,7 @@ import se.unlogic.standardutils.dao.annotations.DAOManaged;
 import se.unlogic.standardutils.dao.annotations.Key;
 import se.unlogic.standardutils.dao.annotations.ManyToOne;
 import se.unlogic.standardutils.dao.annotations.OneToMany;
+import se.unlogic.standardutils.dao.annotations.OneToOne;
 import se.unlogic.standardutils.dao.annotations.Table;
 import se.unlogic.standardutils.xml.XMLElement;
 
@@ -33,11 +34,24 @@ public class MunicipalityJob {
 	@ManyToOne(autoGet=true,autoAdd=true, autoUpdate=true, remoteKeyField="id")
 	private Workplace workplace;
 	
+	@DAOManaged(columnName="manager_id")
+	@XMLElement
+	@ManyToOne(autoGet=true,autoAdd=true, autoUpdate=true, remoteKeyField="id")
+	private Manager manager;
+	
 	@DAOManaged(columnName="periodId")
 	@XMLElement
 	@ManyToOne(autoGet=true,autoAdd=true, autoUpdate=true, remoteKeyField="id")
 	private Period period;
 	
+	public Manager getManager() {
+		return manager;
+	}
+
+	public void setManager(Manager manager) {
+		this.manager = manager;
+	}
+
 	@DAOManaged
 	@XMLElement
 	private String workTitle;
@@ -49,7 +63,7 @@ public class MunicipalityJob {
 	// Område, t.ex Barnomsorg
 	@DAOManaged(columnName="areaId")
 	@XMLElement
-	@ManyToOne(remoteKeyField = "id", autoAdd = false, autoGet = false, autoUpdate = false)
+	@ManyToOne(remoteKeyField = "id", autoAdd = true, autoGet = true, autoUpdate = true)
 	private Area area;
 	
 	@DAOManaged
@@ -87,6 +101,136 @@ public class MunicipalityJob {
 	@XMLElement
 	private String requirementsFreeText;
 
+	
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public Date getCreated() {
+		return created;
+	}
+
+	public void setCreated(Date created) {
+		this.created = created;
+	}
+
+	public Date getUpdated() {
+		return updated;
+	}
+
+	public void setUpdated(Date updated) {
+		this.updated = updated;
+	}
+
+	public Workplace getWorkplace() {
+		return workplace;
+	}
+
+	public void setWorkplace(Workplace workplace) {
+		this.workplace = workplace;
+	}
+
+	public Period getPeriod() {
+		return period;
+	}
+
+	public void setPeriod(Period period) {
+		this.period = period;
+	}
+
+	public String getWorkTitle() {
+		return workTitle;
+	}
+
+	public void setWorkTitle(String workTitle) {
+		this.workTitle = workTitle;
+	}
+
+	public String getWorkDescription() {
+		return workDescription;
+	}
+
+	public void setWorkDescription(String workDescription) {
+		this.workDescription = workDescription;
+	}
+
+	public Area getArea() {
+		return area;
+	}
+
+	public void setArea(Area area) {
+		this.area = area;
+	}
+
+	public Integer getNumberOfWorkersNeeded() {
+		return numberOfWorkersNeeded;
+	}
+
+	public void setNumberOfWorkersNeeded(Integer numberOfWorkersNeeded) {
+		this.numberOfWorkersNeeded = numberOfWorkersNeeded;
+	}
+
+	public Boolean getApprovedWorkplace() {
+		return approvedWorkplace;
+	}
+
+	public void setApprovedWorkplace(Boolean approvedWorkplace) {
+		this.approvedWorkplace = approvedWorkplace;
+	}
+
+	public Date getApprovedDate() {
+		return approvedDate;
+	}
+
+	public void setApprovedDate(Date approvedDate) {
+		this.approvedDate = approvedDate;
+	}
+
+	public String getApprovedByUser() {
+		return approvedByUser;
+	}
+
+	public void setApprovedByUser(String approvedByUser) {
+		this.approvedByUser = approvedByUser;
+	}
+
+	public List<Mentor> getMentors() {
+		return mentors;
+	}
+
+	public void setMentors(List<Mentor> mentors) {
+		this.mentors = mentors;
+	}
+
+	public List<MunicipalityJobApplication> getWorkers() {
+		return workers;
+	}
+
+	public void setWorkers(List<MunicipalityJobApplication> workers) {
+		this.workers = workers;
+	}
+
+	public List<ApplicationRequirement> getRequirements() {
+		return requirements;
+	}
+
+	public void setRequirements(List<ApplicationRequirement> requirements) {
+		this.requirements = requirements;
+	}
+
+	public String getRequirementsFreeText() {
+		return requirementsFreeText;
+	}
+
+	public void setRequirementsFreeText(String requirementsFreeText) {
+		this.requirementsFreeText = requirementsFreeText;
+	}
+	
+	
 	@Override
 	public String toString() {
 		return workTitle + "(id: " + id + ")";
