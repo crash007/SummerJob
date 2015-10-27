@@ -14,7 +14,7 @@ import se.unlogic.standardutils.xml.XMLElement;
 @Table(name = "summer_job_municipality_job")
 @XMLElement
 public class MunicipalityJob extends Job{
-	
+
 	@DAOManaged(columnName="manager_id")
 	@XMLElement
 	@ManyToOne(autoGet=true,autoAdd=true, autoUpdate=true, remoteKeyField="id")
@@ -95,5 +95,10 @@ public class MunicipalityJob extends Job{
 		this.area = area;
 	}
 
+	@Override
+	public String toString() {
+		return "MunicipalityJob [manager=" + manager + ", workplace=" + workplace + ", mentors=" + mentors + ", period="
+				+ period + ", matchedApplications=" + matchedApplications + ", area=" + area + "]";
+	}
 
 }

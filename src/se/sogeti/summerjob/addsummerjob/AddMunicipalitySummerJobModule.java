@@ -13,6 +13,7 @@ import javax.sql.DataSource;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import se.sogeti.jobapplications.beans.Mentor;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityJob;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityJobArea;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityManager;
@@ -131,11 +132,16 @@ public class AddMunicipalitySummerJobModule extends AnnotatedRESTModule{
 				if(req.getParameter("period_"+p.getId())!=null){
 					job.setPeriod(p);
 					log.info("saving form for period: "+p.getName());
+					
 					municipalityJobDAO.add(job);
 					job.setId(null);
+					job.getManager().setId(null);
+					
+					for(MunicipalityMentor m:job.getMentors()){
+						m.setId(null);
+					}
 				}
 			}
-			
 		}
 		
 		
