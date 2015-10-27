@@ -10,7 +10,7 @@ import se.unlogic.standardutils.dao.annotations.Table;
 import se.unlogic.standardutils.xml.XMLElement;
 
 @Table(name="summer_job_business_sector_job_application")
-public class BusinessSectorJobApplication extends JobApplication<BusinessSectorJob>{
+public class BusinessSectorJobApplication extends JobApplication{
 	
 
 	

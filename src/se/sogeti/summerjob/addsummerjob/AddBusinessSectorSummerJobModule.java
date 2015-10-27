@@ -24,19 +24,14 @@ import se.unlogic.webutils.http.URIParser;
 public class AddBusinessSectorSummerJobModule extends AnnotatedRESTModule{
 	
 	
-	//private MunicipalityJobDAO municipalityJobDAO;
-	
 	@Override
 	protected void createDAOs(DataSource dataSource) throws Exception {
 		// TODO Auto-generated method stub
 		super.createDAOs(dataSource);
-	//	this.daoFactory = new FlowEngineDAOFactory(dataSource, systemInterface.getUserHandler(), systemInterface.getGroupHandler());
 		
 		HierarchyAnnotatedDAOFactory hierarchyDaoFactory = new HierarchyAnnotatedDAOFactory(dataSource, systemInterface);
 
-			
 		
-		//municipalityJobDAO = new MunicipalityJobDAO(dataSource, MunicipalityJob.class, hierarchyDaoFactory);
 	
 	}
 
