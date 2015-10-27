@@ -5,6 +5,7 @@ import java.util.List;
 
 import se.sogeti.jobapplications.beans.Job;
 import se.sogeti.jobapplications.beans.Manager;
+import se.sogeti.jobapplications.beans.municipality.MunicipalityMentor;
 import se.unlogic.standardutils.dao.annotations.DAOManaged;
 import se.unlogic.standardutils.dao.annotations.ManyToOne;
 import se.unlogic.standardutils.dao.annotations.OneToMany;
@@ -62,6 +63,11 @@ public class BusinessSectorJob extends Job{
 	@OneToMany(autoGet=true,autoAdd=true, autoUpdate=true)
 	private List<BusinessSectorJobApplication> matchedApplications;
 	
+	@DAOManaged
+	@XMLElement
+	@OneToMany(autoGet=true,autoAdd=true, autoUpdate=true)
+	private List<BusinessSectorMentor> mentors;
+	
 	
 	public List<BusinessSectorJobApplication> getAppliedApplications() {
 		return appliedApplications;
@@ -93,5 +99,13 @@ public class BusinessSectorJob extends Job{
 
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
+	}
+
+	public List<BusinessSectorMentor> getMentors() {
+		return mentors;
+	}
+
+	public void setMentors(List<BusinessSectorMentor> mentors) {
+		this.mentors = mentors;
 	}
 }

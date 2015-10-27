@@ -153,16 +153,16 @@ public class AddBusinessSectorSummerJobModule extends AnnotatedRESTModule{
 		}
 		job.setMentors(mentors);
 		
-        String company = req.getParameter("company");
-        if (company == null || company.isEmpty()) {
-        	JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Fältet för företagsnamn kan inte lämnas tomma.\"}", callback, writer);
-        	return;
-        }
-        job.setCompany(company);
         
         String streetAddress = req.getParameter("street");
         String zipCode = req.getParameter("postalCode");
         String city = req.getParameter("postalArea");
+        String company = req.getParameter("company");
+        
+        if (company == null || company.isEmpty()) {
+        	JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Fältet för företagsnamn kan inte lämnas tomma.\"}", callback, writer);
+        	return;
+        }
         
         if (streetAddress == null || zipCode == null || city == null 
         		|| streetAddress.isEmpty() || zipCode.isEmpty() || city.isEmpty()) {
@@ -174,6 +174,7 @@ public class AddBusinessSectorSummerJobModule extends AnnotatedRESTModule{
         workplace.setStreetAddress(streetAddress);
         workplace.setZipCode(zipCode);
         workplace.setCity(city);
+        workplace.setCompany(company);
         
         job.setWorkplace(workplace);
         
@@ -196,13 +197,8 @@ public class AddBusinessSectorSummerJobModule extends AnnotatedRESTModule{
         
         job.setManager(manager);
         
-//        job.setManagerFirstname(managerFirstname);
-//        job.setManagerLastname(managerLastname);
-//        job.setManagerPhonenumber(managerPhone);
-//        job.setManagerEmail(managerEmail);
-        
-//        job.setIsOverEighteen(req.getParameter("isOverEighteen") != null ? true : false);
-//        job.setHasDriversLicense(req.getParameter("hasDriversLicense") != null ? true : false);
+        job.setIsOverEighteen(req.getParameter("isOverEighteen") != null ? true : false);
+        job.setHasDriversLicense(req.getParameter("hasDriversLicense") != null ? true : false);
 //        job.setRequirementsFreeText(req.getParameter("other-requirements"));
         
 		try {

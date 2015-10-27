@@ -18,6 +18,10 @@ public class BusinessSectorWorkplace extends Workplace{
 	@DAOManaged
 	@OneToMany(autoAdd=true)
 	private List<BusinessSectorJob> job;
+	
+	@DAOManaged
+	@XMLElement
+	private String company;
 
 	public List<BusinessSectorJob> getJob() {
 		return job;
@@ -25,6 +29,14 @@ public class BusinessSectorWorkplace extends Workplace{
 
 	public void setJob(List<BusinessSectorJob> job) {
 		this.job = job;
+	}
+
+	public String getCompany() {
+		return company;
+	}
+
+	public void setCompany(String company) {
+		this.company = company;
 	}
 
 }
