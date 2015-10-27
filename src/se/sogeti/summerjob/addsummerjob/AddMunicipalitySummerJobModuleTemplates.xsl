@@ -61,7 +61,7 @@
 						  		</tr>
 						  	</thead>
 						  	<tbody>
-						  		<xsl:for-each select="Areas/Area">
+						  		<xsl:for-each select="Areas/MunicipalityJobArea">
 						  			<xsl:if test="canBeChosenInApplication = 'true'">
 								  		<tr>
 								  			<td><input type="radio" name="area" id="area_{id}" value="{id}" /></td>

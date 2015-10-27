@@ -15,19 +15,19 @@ import se.unlogic.standardutils.dao.HighLevelQuery;
  *
  */
 
-public class ManagerDAO extends AnnotatedDAO<Manager> {
+public class ManagerDAO<T extends Manager> extends AnnotatedDAO<T> {
 
-	public ManagerDAO(DataSource dataSource, Class<Manager> beanClass,
+	public ManagerDAO(DataSource dataSource, Class<T> beanClass,
 			AnnotatedDAOFactory daoFactory) {
 		super(dataSource, beanClass, daoFactory);
 	}
 
-	public void save(Manager bean) throws SQLException {
+	public void save(T bean) throws SQLException {
 		this.addOrUpdate(bean, null);
 	}
 	
 	public Manager getManagerById(Integer managerId) throws SQLException {
-		HighLevelQuery<Manager> query = new HighLevelQuery<Manager>();
+		HighLevelQuery<T> query = new HighLevelQuery<T>();
 		query.addParameter(this.getParamFactory("id", Integer.class).getParameter(managerId));
 		return this.get(query);
 	}

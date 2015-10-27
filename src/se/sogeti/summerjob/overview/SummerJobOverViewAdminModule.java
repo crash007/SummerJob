@@ -11,18 +11,18 @@ import javax.sql.DataSource;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import se.sogeti.jobapplications.beans.Area;
 import se.sogeti.jobapplications.beans.Manager;
 import se.sogeti.jobapplications.beans.Mentor;
-import se.sogeti.jobapplications.beans.MunicipalityJob;
-import se.sogeti.jobapplications.beans.MunicipalityJobApplication;
 import se.sogeti.jobapplications.beans.Person;
 import se.sogeti.jobapplications.beans.Workplace;
+import se.sogeti.jobapplications.beans.municipality.MunicipalityJob;
+import se.sogeti.jobapplications.beans.municipality.MunicipalityJobApplication;
+import se.sogeti.jobapplications.beans.municipality.MunicipalityJobArea;
 import se.sogeti.jobapplications.daos.AreaDAO;
 import se.sogeti.jobapplications.daos.ManagerDAO;
 import se.sogeti.jobapplications.daos.MentorDAO;
-import se.sogeti.jobapplications.daos.MunicipalityJobApplicationDAO;
-import se.sogeti.jobapplications.daos.MunicipalityJobDAO;
+import se.sogeti.jobapplications.daos.JobApplicationDAO;
+import se.sogeti.jobapplications.daos.JobDAO;
 import se.sogeti.jobapplications.daos.PersonDAO;
 import se.sogeti.jobapplications.daos.WorkplaceDAO;
 import se.sogeti.periodsadmin.beans.Period;
@@ -40,11 +40,11 @@ import se.unlogic.webutils.http.URIParser;
 public class SummerJobOverViewAdminModule extends AnnotatedForegroundModule{
 	
 	private AreaDAO areaDAO;
-	private ManagerDAO managerDAO;
-	private MentorDAO mentorDAO;
-	private MunicipalityJobDAO municipalityJobDAO;
-	private MunicipalityJobApplicationDAO municipalityJobApplicationDAO;
-	private PersonDAO personDAO;
+	//private ManagerDAO managerDAO;
+	//private MentorDAO mentorDAO;
+	private JobDAO<MunicipalityJob> municipalityJobDAO;
+	private JobApplicationDAO municipalityJobApplicationDAO;
+	//private PersonDAO personDAO;
 //	private PreferedAreaDAO preferedAreaDAO;
 	private WorkplaceDAO workplaceDAO;
 	
@@ -57,12 +57,12 @@ public class SummerJobOverViewAdminModule extends AnnotatedForegroundModule{
 		super.createDAOs(dataSource);
 	//	this.daoFactory = new FlowEngineDAOFactory(dataSource, systemInterface.getUserHandler(), systemInterface.getGroupHandler());
 		HierarchyAnnotatedDAOFactory daoFactory = new HierarchyAnnotatedDAOFactory(dataSource, systemInterface);	
-		areaDAO = new AreaDAO(dataSource, Area.class, daoFactory);
-		managerDAO = new ManagerDAO(dataSource, Manager.class, daoFactory);
-		mentorDAO = new MentorDAO(dataSource, Mentor.class, daoFactory);
-		municipalityJobDAO = new MunicipalityJobDAO(dataSource, MunicipalityJob.class, daoFactory);
-		municipalityJobApplicationDAO = new MunicipalityJobApplicationDAO(dataSource, MunicipalityJobApplication.class, daoFactory);
-		personDAO = new PersonDAO(dataSource, Person.class, daoFactory);
+		areaDAO = new AreaDAO(dataSource, MunicipalityJobArea.class, daoFactory);
+		//managerDAO = new ManagerDAO(dataSource, Manager.class, daoFactory);
+	//	mentorDAO = new MentorDAO(dataSource, Mentor.class, daoFactory);
+		municipalityJobDAO = new JobDAO(dataSource, MunicipalityJob.class, daoFactory);
+		municipalityJobApplicationDAO = new JobApplicationDAO(dataSource, MunicipalityJobApplication.class, daoFactory);
+		//personDAO = new PersonDAO(dataSource, Person.class, daoFactory);
 //		preferedAreaDAO = new PreferedAreaDAO(dataSource, PreferedArea.class, daoFactory);
 		workplaceDAO = new WorkplaceDAO(dataSource, Workplace.class, daoFactory);
 		

@@ -4,7 +4,7 @@ import java.sql.SQLException;
 
 import javax.sql.DataSource;
 
-import se.sogeti.jobapplications.beans.BusinessSectorJob;
+import se.sogeti.jobapplications.beans.business.BusinessSectorJob;
 import se.unlogic.standardutils.dao.AnnotatedDAO;
 import se.unlogic.standardutils.dao.AnnotatedDAOFactory;
 import se.unlogic.standardutils.dao.HighLevelQuery;

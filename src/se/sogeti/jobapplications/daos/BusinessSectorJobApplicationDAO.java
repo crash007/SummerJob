@@ -5,7 +5,7 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
-import se.sogeti.jobapplications.beans.BusinessSectorJobApplication;
+import se.sogeti.jobapplications.beans.business.BusinessSectorJobApplication;
 import se.unlogic.standardutils.dao.AnnotatedDAO;
 import se.unlogic.standardutils.dao.AnnotatedDAOFactory;
 import se.unlogic.standardutils.dao.HighLevelQuery;

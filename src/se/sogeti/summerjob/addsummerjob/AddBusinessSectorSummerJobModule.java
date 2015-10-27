@@ -18,6 +18,7 @@ import javax.sql.DataSource;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+<<<<<<< HEAD
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -28,6 +29,11 @@ import se.sogeti.jobapplications.beans.Mentor;
 import se.sogeti.jobapplications.daos.BusinessSectorJobDAO;
 import se.sogeti.periodsadmin.JsonResponse;
 import se.sogeti.periodsadmin.beans.Period;
+=======
+import se.sogeti.jobapplications.beans.municipality.MunicipalityJob;
+
+
+>>>>>>> branch 'develop' of https://github.com/crash007/SummerJob.git
 import se.unlogic.hierarchy.core.beans.SimpleForegroundModuleResponse;
 import se.unlogic.hierarchy.core.beans.User;
 import se.unlogic.hierarchy.core.interfaces.ForegroundModuleResponse;

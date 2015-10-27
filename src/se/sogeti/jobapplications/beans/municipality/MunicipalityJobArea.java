@@ -1,4 +1,4 @@
-package se.sogeti.jobapplications.beans;
+package se.sogeti.jobapplications.beans.municipality;
 
 import java.util.List;
 
@@ -17,7 +17,7 @@ import se.unlogic.standardutils.xml.XMLGenerator;
 //Example Barnomsorg, Äldreomsorg
 @Table(name = "summer_job_areas")
 @XMLElement
-public class Area implements Elementable{
+public class MunicipalityJobArea implements Elementable{
 
 	@DAOManaged
 	@Key

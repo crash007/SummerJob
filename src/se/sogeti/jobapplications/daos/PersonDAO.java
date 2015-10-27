@@ -10,25 +10,25 @@ import se.unlogic.standardutils.dao.AnnotatedDAO;
 import se.unlogic.standardutils.dao.AnnotatedDAOFactory;
 import se.unlogic.standardutils.dao.HighLevelQuery;
 
-public class PersonDAO extends AnnotatedDAO<Person> {
+public class PersonDAO<T extends Person> extends AnnotatedDAO<T> {
 
-	public PersonDAO(DataSource dataSource, Class<Person> beanClass,
+	public PersonDAO(DataSource dataSource, Class<T> beanClass,
 			AnnotatedDAOFactory daoFactory) {
 		super(dataSource, beanClass, daoFactory);
 	}
 	
-	public void save(Person bean) throws SQLException {
+	public void save(T bean) throws SQLException {
 		this.addOrUpdate(bean, null);
 	}
 		
 	public Person getById(Integer personId) throws SQLException {
-		HighLevelQuery<Person> query = new HighLevelQuery<Person>();
+		HighLevelQuery<T> query = new HighLevelQuery<T>();
 		query.addParameter(this.getParamFactory("id", Integer.class).getParameter(personId));
 		return this.get(query);
 	}
 	
-	public List<Person> getAllMatchedForMunicipalityJob(boolean matched) throws SQLException {
-		HighLevelQuery<Person> query = new HighLevelQuery<Person>();
+	public List<T> getAllMatchedForMunicipalityJob(boolean matched) throws SQLException {
+		HighLevelQuery<T> query = new HighLevelQuery<T>();
 		query.addParameter(this.getParamFactory("matchedForMunicipalityJob", Boolean.class).getParameter(matched));
 		return this.getAll(query);
 	}
