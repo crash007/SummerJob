@@ -8,9 +8,7 @@ import javax.sql.DataSource;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import se.sogeti.jobapplications.beans.MunicipalityJob;
-
-import se.sogeti.jobapplications.daos.MunicipalityJobDAO;
+import se.sogeti.jobapplications.beans.municipality.MunicipalityJob;
 
 
 import se.unlogic.hierarchy.core.beans.SimpleForegroundModuleResponse;

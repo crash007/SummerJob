@@ -4,13 +4,13 @@ import java.util.List;
 
 import se.unlogic.standardutils.dao.annotations.DAOManaged;
 import se.unlogic.standardutils.dao.annotations.Key;
-import se.unlogic.standardutils.dao.annotations.ManyToOne;
 import se.unlogic.standardutils.dao.annotations.OneToMany;
-import se.unlogic.standardutils.dao.annotations.Table;
 import se.unlogic.standardutils.xml.XMLElement;
 
-@Table(name = "summer_job_person")
-public class Person {
+
+public abstract class Person{
+
+
 	
 	@DAOManaged
 	@Key
@@ -18,17 +18,8 @@ public class Person {
 	private Integer id;
 	
 	@DAOManaged
-	@OneToMany
-	private List<MunicipalityJobApplication> jobApplications;
-	
-	@DAOManaged
-	@OneToMany
-	private List<BusinessSectorJobApplication> businessSectorJobApplications;
-	
-	
-	@DAOManaged
 	@XMLElement
-	private String personalCodeNumber;
+	private String socialSecurityNumber;
 
 	@DAOManaged
 	@XMLElement
@@ -66,12 +57,12 @@ public class Person {
 		this.id = id;
 	}
 
-	public String getPersonalCodeNumber() {
-		return personalCodeNumber;
+	public String getSocialSecurityNumber() {
+		return socialSecurityNumber;
 	}
 
-	public void setPersonalCodeNumber(String personalCodeNumber) {
-		this.personalCodeNumber = personalCodeNumber;
+	public void setSocialSecurityNumber(String socialSecurityNumber) {
+		this.socialSecurityNumber = socialSecurityNumber;
 	}
 
 	public String getFirstname() {
@@ -133,27 +124,10 @@ public class Person {
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}
-
+	
 	@Override
 	public String toString() {
 		return getFullName() + "(id: " + id + ")";
-	}
-
-	public List<MunicipalityJobApplication> getJobApplications() {
-		return jobApplications;
-	}
-
-	public void setJobApplications(List<MunicipalityJobApplication> jobApplications) {
-		this.jobApplications = jobApplications;
-	}
-
-	public List<BusinessSectorJobApplication> getBusinessSectorJobApplications() {
-		return businessSectorJobApplications;
-	}
-
-	public void setBusinessSectorJobApplications(
-			List<BusinessSectorJobApplication> businessSectorJobApplications) {
-		this.businessSectorJobApplications = businessSectorJobApplications;
 	}
 
 }

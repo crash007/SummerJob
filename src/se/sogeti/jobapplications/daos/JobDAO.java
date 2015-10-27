@@ -4,24 +4,25 @@ import java.sql.SQLException;
 
 import javax.sql.DataSource;
 
-import se.sogeti.jobapplications.beans.MunicipalityJob;
+import se.sogeti.jobapplications.beans.Job;
+import se.sogeti.jobapplications.beans.municipality.MunicipalityJob;
 import se.unlogic.standardutils.dao.AnnotatedDAO;
 import se.unlogic.standardutils.dao.AnnotatedDAOFactory;
 import se.unlogic.standardutils.dao.HighLevelQuery;
 
-public class MunicipalityJobDAO extends AnnotatedDAO<MunicipalityJob>{
+public class JobDAO<T extends Job> extends AnnotatedDAO<T>{
 
-	public MunicipalityJobDAO(DataSource dataSource, Class<MunicipalityJob> beanClass,
+	public JobDAO(DataSource dataSource, Class<T> beanClass,
 			AnnotatedDAOFactory daoFactory) {
 		super(dataSource, beanClass, daoFactory);
 	}
 	
-	public void save(MunicipalityJob bean) throws SQLException{
+	public void save(T bean) throws SQLException{
 		this.addOrUpdate(bean, null);
 	}
 	
-	public MunicipalityJob getById(Integer jobId) throws SQLException {
-		HighLevelQuery<MunicipalityJob> query = new HighLevelQuery<MunicipalityJob>();
+	public T getById(Integer jobId) throws SQLException {
+		HighLevelQuery<T> query = new HighLevelQuery<T>();
 		query.addParameter(this.getParamFactory("id", Integer.class).getParameter(jobId));
 		return this.get(query);
 	}
