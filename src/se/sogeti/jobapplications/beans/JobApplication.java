@@ -19,8 +19,6 @@ public abstract class JobApplication{
 	@Key
 	@XMLElement
 	private Integer id;
-	
-
 
 	@DAOManaged
 	@XMLElement

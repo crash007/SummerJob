@@ -7,7 +7,6 @@ import java.io.PrintWriter;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Enumeration;
 import java.util.List;
 
@@ -18,44 +17,42 @@ import javax.sql.DataSource;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-<<<<<<< HEAD
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
-import se.sogeti.jobapplications.beans.BusinessSectorApplicationRequirement;
-import se.sogeti.jobapplications.beans.BusinessSectorJob;
-import se.sogeti.jobapplications.beans.BusinessSectorMentor;
-import se.sogeti.jobapplications.beans.Mentor;
-import se.sogeti.jobapplications.daos.BusinessSectorJobDAO;
+import se.sogeti.jobapplications.beans.business.BusinessSectorJob;
+import se.sogeti.jobapplications.beans.business.BusinessSectorManager;
+import se.sogeti.jobapplications.beans.business.BusinessSectorMentor;
+import se.sogeti.jobapplications.beans.business.BusinessSectorWorkplace;
+import se.sogeti.jobapplications.daos.JobDAO;
 import se.sogeti.periodsadmin.JsonResponse;
-import se.sogeti.periodsadmin.beans.Period;
-=======
-import se.sogeti.jobapplications.beans.municipality.MunicipalityJob;
-
-
->>>>>>> branch 'develop' of https://github.com/crash007/SummerJob.git
-import se.unlogic.hierarchy.core.beans.SimpleForegroundModuleResponse;
 import se.unlogic.hierarchy.core.beans.User;
 import se.unlogic.hierarchy.core.interfaces.ForegroundModuleResponse;
 import se.unlogic.hierarchy.core.utils.HierarchyAnnotatedDAOFactory;
 import se.unlogic.hierarchy.foregroundmodules.rest.AnnotatedRESTModule;
 import se.unlogic.hierarchy.foregroundmodules.rest.RESTMethod;
-import se.unlogic.standardutils.bool.BooleanUtils;
 import se.unlogic.standardutils.numbers.NumberUtils;
 import se.unlogic.standardutils.xml.XMLUtils;
 import se.unlogic.webutils.http.RequestUtils;
 import se.unlogic.webutils.http.URIParser;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+
+//github.com/crash007/SummerJob.git
+import se.unlogic.hierarchy.core.beans.SimpleForegroundModuleResponse;
+
 public class AddBusinessSectorSummerJobModule extends AnnotatedRESTModule{
 	
 	
-	private BusinessSectorJobDAO businessSectorJobDAO;
+	private JobDAO<BusinessSectorJob> businessSectorJobDAO;
 	
 	@Override
 	protected void createDAOs(DataSource dataSource) throws Exception {
 		super.createDAOs(dataSource);
 		HierarchyAnnotatedDAOFactory hierarchyDaoFactory = new HierarchyAnnotatedDAOFactory(dataSource, systemInterface);
-		businessSectorJobDAO = new BusinessSectorJobDAO(dataSource, BusinessSectorJob.class, hierarchyDaoFactory);
+		businessSectorJobDAO = new JobDAO<BusinessSectorJob>(dataSource, BusinessSectorJob.class, hierarchyDaoFactory);
+
+		
+	
 	}
 
 	@Override
@@ -172,9 +169,13 @@ public class AddBusinessSectorSummerJobModule extends AnnotatedRESTModule{
         	JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Fälten för arbetsplatsens adress kan inte lämnas tomma.\"}", callback, writer);
         	return;
         }
-        job.setStreetAddress(streetAddress);
-        job.setZipCode(zipCode);
-        job.setCity(city);
+        
+        BusinessSectorWorkplace workplace = new BusinessSectorWorkplace();
+        workplace.setStreetAddress(streetAddress);
+        workplace.setZipCode(zipCode);
+        workplace.setCity(city);
+        
+        job.setWorkplace(workplace);
         
         String managerFirstname = req.getParameter("manager-firstname");
         String managerLastname = req.getParameter("manager-lastname");
@@ -186,14 +187,23 @@ public class AddBusinessSectorSummerJobModule extends AnnotatedRESTModule{
         	JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Namn- och telefonnummerfälten kan inte lämnas tomma för den ansvarige på arbetsplatsen.\"}", callback, writer);
         	return;
         }
-        job.setManagerFirstname(managerFirstname);
-        job.setManagerLastname(managerLastname);
-        job.setManagerPhonenumber(managerPhone);
-        job.setManagerEmail(managerEmail);
+        
+        BusinessSectorManager manager = new BusinessSectorManager();
+        manager.setFirstname(managerFirstname);
+        manager.setLastname(managerLastname);
+        manager.setMobilePhone(managerPhone);
+        manager.setEmail(managerEmail);
+        
+        job.setManager(manager);
+        
+//        job.setManagerFirstname(managerFirstname);
+//        job.setManagerLastname(managerLastname);
+//        job.setManagerPhonenumber(managerPhone);
+//        job.setManagerEmail(managerEmail);
         
 //        job.setIsOverEighteen(req.getParameter("isOverEighteen") != null ? true : false);
 //        job.setHasDriversLicense(req.getParameter("hasDriversLicense") != null ? true : false);
-        job.setRequirementsFreeText(req.getParameter("other-requirements"));
+//        job.setRequirementsFreeText(req.getParameter("other-requirements"));
         
 		try {
 			businessSectorJobDAO.save(job);
