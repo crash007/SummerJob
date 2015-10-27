@@ -25,13 +25,6 @@ public class Person {
 	@OneToMany
 	private List<BusinessSectorJobApplication> businessSectorJobApplications;
 	
-	@DAOManaged(columnName = "matchedForMunicipalityJobId")
-	@ManyToOne
-	private MunicipalityJob matchedForMunicipalityJob;
-	
-	@DAOManaged(columnName="matchedForBusinessSectorJobId")
-	@ManyToOne
-	private BusinessSectorJob matchedForBusinessSectorJob;
 	
 	@DAOManaged
 	@XMLElement
@@ -163,20 +156,4 @@ public class Person {
 		this.businessSectorJobApplications = businessSectorJobApplications;
 	}
 
-	public MunicipalityJob getMatchedForMunicipalityJob() {
-		return matchedForMunicipalityJob;
-	}
-
-	public void setMatchedForMunicipalityJob(MunicipalityJob matchedForMunicipalityJob) {
-		this.matchedForMunicipalityJob = matchedForMunicipalityJob;
-	}
-
-	public BusinessSectorJob getMatchedForBusinessSectorJob() {
-		return matchedForBusinessSectorJob;
-	}
-
-	public void setMatchedForBusinessSectorJob(
-			BusinessSectorJob matchedForBusinessSectorJob) {
-		this.matchedForBusinessSectorJob = matchedForBusinessSectorJob;
-	}
 }

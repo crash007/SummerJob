@@ -26,10 +26,12 @@ public class Workplace {
 	@XMLElement
 	private String organization;
 	
+	//Förvaltning
 	@DAOManaged
 	@XMLElement
 	private String administration;
 	
+	//Plats
 	@DAOManaged
 	@XMLElement
 	private String location;

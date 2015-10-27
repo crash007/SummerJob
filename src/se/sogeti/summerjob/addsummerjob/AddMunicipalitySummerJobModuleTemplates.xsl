@@ -33,8 +33,8 @@
 					  <div class="form-group">
 					  	<div class="row">
 			  				<div class="col-md-4">
-							    <label for="location">Ange förvaltning</label>
-							    <input type="text" class="form-control" id="location" name="location" placeholder=""/>
+							    <label for="administration">Ange förvaltning</label>
+							    <input type="text" class="form-control" id="administration" name="administration" placeholder=""/>
 							    <p class="help-block">Tex Kultur och fritid</p>
 				    		</div>
 		    			</div>
@@ -49,12 +49,13 @@
 					   	</div>					    
 					  </div>
 					 
-					
+					 
 					  <div class="form-group">
 					   <label for="area">Ange versamhetsområde</label>
 						  <table class="table">
 						  	<thead>
 						  		<tr>
+						  			<th>Välj</th>
 						  			<th>Verksamhetsområde</th>
 						  			<th>Beskrivning</th>
 						  		</tr>
@@ -63,7 +64,7 @@
 						  		<xsl:for-each select="Areas/Area">
 						  			<xsl:if test="canBeChosenInApplication = 'true'">
 								  		<tr>
-								  			<!-- td><input type="radio" name="area" id="area_{id}" value="area_{id}" checked="true"/></td-->
+								  			<td><input type="radio" name="area" id="area_{id}" value="{id}" /></td>
 								  			<td><xsl:value-of select="name"/></td>
 								  			<td><xsl:value-of select="description"/></td>
 								  		</tr>
@@ -72,36 +73,55 @@
 						  	</tbody>
 						  </table>
 						</div>
-						
+					<!--	
 						<div class="form-group">
 					  		<div class="row">
 					  			<div class="col-md-3">
 								    <label for="preferedArea1">Välj verksamhetsområde 1</label>				    
 								    <select class="form-control" name="preferedArea1" id="preferedArea1">
-									  <xsl:for-each select="Areas/Area">
-							  			<xsl:if test="canBeChosenInApplication = 'true'">
-									  		<option value="{id}"><xsl:value-of select="name"/> </option>									  			
-								  		</xsl:if>
-							  		</xsl:for-each>
-									  <option >1</option>
-									  
+										<option value="-1"/>
+										<xsl:for-each select="Areas/Area">
+								  			<xsl:if test="canBeChosenInApplication = 'true'">
+										  		<option value="{id}"><xsl:value-of select="name"/> </option>									  			
+									  		</xsl:if>
+							  			</xsl:for-each>
 									</select>
 								</div>
 								
 								<div class="col-md-3">
 								    <label for="preferedArea2">Välj verksamhetsområde 2</label>				    
 								    <select class="form-control" name="preferedArea2" id="preferedArea2">
-									  <xsl:for-each select="Areas/Area">
-							  			<xsl:if test="canBeChosenInApplication = 'true'">
-									  		<option value="{id}"><xsl:value-of select="name"/> </option>									  			
-								  		</xsl:if>
-							  		</xsl:for-each>
-									  <option >1</option>
-									  
+								    	<option value="-1"/>
+									  	<xsl:for-each select="Areas/Area">
+								  			<xsl:if test="canBeChosenInApplication = 'true'">
+										  		<option value="{id}"><xsl:value-of select="name"/> </option>									  			
+									  		</xsl:if>
+								  		</xsl:for-each>									  
 									</select>
 								</div>
+								<div class="col-md-3">
+								    <label for="preferedArea3">Välj verksamhetsområde 3</label>				    
+								    <select class="form-control" name="preferedArea3" id="preferedArea3">
+								    	<option value="-1"/>
+									 	<xsl:for-each select="Areas/Area">
+								  			<xsl:if test="canBeChosenInApplication = 'true'">
+										  		<option value="{id}"><xsl:value-of select="name"/> </option>									  			
+									  		</xsl:if>
+							  			</xsl:for-each>									  
+									</select>
+								</div>
+						
+						  		<div class="col-md-3">
+							  		<div class="checkbox">
+									  <label for="noPreferedArea">
+									    <input type="checkbox" value="true" name="noPreferedArea" id="noPreferedArea">
+									    	Jag kan tänka mig jobba med vad som helst
+									    </input>
+									  </label>
+									</div>
+								</div>
 							</div>
-					  	</div>
+					  	</div> -->
 					  		
 					</div>
 				</div>
@@ -115,7 +135,7 @@
 				  		<div class="row">
 						    <div class="col-md-5">
 							    <label for="street">Gatuadress</label>				    
-							    <input type="text" class="form-control" id="street" name="stret" placeholder=""/>					    
+							    <input type="text" class="form-control" id="street" name="street" placeholder=""/>					    
 						    </div>
 						    <div class="col-md-3">
 							    <label for="postalcode">Postnumer</label>				    
@@ -130,8 +150,8 @@
 				  	<div class="form-group">
 					  	<div class="row">
 						  	<div class="col-md-5">
-							    <label for="section">Ange avdelning </label>				    
-							     <input type="text" class="form-control" id="section" name="section" placeholder=""/>
+							    <label for="department">Ange avdelning </label>				    
+							     <input type="text" class="form-control" id="department" name="department" placeholder=""/>
 							    <p class="help-block">Avdelning är inte obligatorisk</p>
 						  	</div>
 					  	</div>
@@ -144,6 +164,15 @@
 				    <h3 class="panel-title">Arbete</h3>
 				  </div>
 				  <div class="panel-body">
+				  
+				  <div class="form-group">
+					  	<div class="row">
+						  	<div class="col-md-5">
+							    <label for="work-title">Rubrik</label>				    
+							     <input type="text" class="form-control" id="work-title" name="work-title" placeholder=""/>							    
+						  	</div>
+					  	</div>
+				  	</div>
 				  	<div class="form-group">
 					    <label for="work-description">Arbetsbeskrivning</label>				    
 					    <textarea class="form-control" rows="5" id="work-description" name="work-description"></textarea>							    
@@ -160,48 +189,87 @@
 								  <option>4</option>
 								  <option>5</option>
 								  <option>6</option>
+								  <option>8</option>
+								  <option>9</option>
+								  <option>10</option>
+								  <option>11</option>
+								  <option>12</option>
+								  <option>13</option>
+								  <option>14</option>
+								  <option>15</option>
+								  <option>16</option>
+								  <option>17</option>
+								  <option>18</option>
+								  <option>19</option>
+								  <option>20</option>
 								</select>
 							</div>
 						</div>
 				  	</div>
 				  	
 				  	<div class="form-group">
-				  		<label for="period">Välj perioder</label>
-				  		<div class="checkbox">
-						  <label>
-						    <input type="checkbox" value="period1">
-						    	2016-06-01 -- 2016-07-15
-						    </input>
-						  </label>
-						</div>
+					  	<label for="period">Välj perioder</label>
+						  <table class="table">
+						  	<thead>
+						  		<tr>
+						  			<th>Välj</th>
+						  			<th>Namn</th>
+						  			<th>Startdatum</th>
+						  			<th>Slutdatum</th>
+						  		</tr>
+						  	</thead>
+						  	<tbody>
+						  		<xsl:for-each select="Periods/Period">						  			
+							  		<tr>
+							  			<td>
+							  			    <input type="checkbox" name="period_{id}"/>
+										</td>							  			
+							  			<td><xsl:value-of select="name"/></td>
+							  			<td><xsl:value-of select="startDate"/></td>
+							  			<td><xsl:value-of select="endDate"/></td>
+							  		</tr>
+						  		
+						  		</xsl:for-each>						  		
+						  	</tbody>
+					  	</table>
+					</div>
+					
+					<div class="form-group">
 						<div class="checkbox">
-						  <label>
-						    <input type="checkbox" value="period2">
-						    	2016-07-17 -- 2016-08-30
-						    </input>
-						  </label>
-						</div>				  	
-				  	</div>
-			  		
+						    <label>
+						      <input type="checkbox" name="isOverEighteen">Måste vara över 18 år </input>
+						    </label>
+					  	</div>
+						<div class="checkbox">
+						    <label>
+						      <input type="checkbox" name="hasDriversLicense">Måste ha körkort </input>
+						    </label>
+					  	</div>
+						  	
+							
+					</div>
+				  	
 			  		<div class="form-group">
 			  			<label>Ange chef på arbetsplatsen</label>
 			  			<div class="row">
 				  				<div class="col-md-3">
-								    <label for="manager">Namn</label>				    
-								     <input type="text" class="form-control" id="manager-name" name="manager-name" placeholder=""/>							    
+								    <label for="manager">Förnamn</label>				    
+								     <input type="text" class="form-control" id="manager-firstname" name="manager-firstname" placeholder=""/>							    
+						    	</div>
+						    	<div class="col-md-3">
+								    <label for="manager">Efternamn</label>				    
+								     <input type="text" class="form-control" id="manager-lastname" name="manager-lastname" placeholder=""/>							    
 						    	</div>
 						    	<div class="col-md-3">
 								    <label for="manager">Telefonnummer</label>				    
 								     <input type="text" class="form-control" id="manager-phone" name="manager-phone" placeholder=""/>
 								    
 						    	</div>
-						    
-						    
 				  				<div class="col-md-3">
 								    <label for="manager">E-post</label>				    
 								     <input type="text" class="form-control" id="manager-email" name="manager-email" placeholder=""/>
 								    <p class="help-block">Valfri</p>
-						    	</div>
+						    	</div>						    	
 				    	</div>
 			    	</div>
 			  		
@@ -209,30 +277,6 @@
 			  			<label>Ange Handledare</label>
 			  			<div id="mentors-wrapper">
 				  			
-				    	</div>
-				    	
-				    	<div id="mentor-template">
-				    		<div class="row">
-				  				<div class="col-md-3">
-								    <label for="mentor">Namn</label>				    
-								     <input type="text" class="form-control" id="mentor-name" name="mentor-name" placeholder=""/>							    
-						    	</div>
-						    
-						    
-				  				<div class="col-md-3">
-								    <label for="mentor">Telefonnummer</label>				    
-								     <input type="text" class="form-control" id="mentor-phone" name="mentor-phone" placeholder=""/>
-								    
-						    	</div>
-						    
-						    
-				  				<div class="col-md-3">
-								    <label for="mentor">E-post</label>				    
-								     <input type="text" class="form-control" id="mentor-email" name="mentor-email" placeholder=""/>
-								    <p class="help-block">Valfri</p>
-						    	</div>
-					    	</div>
-				    	
 				    	</div>
 				    	
 				    	<a href="#" class="add-mentor-btn">Lägg till handledare</a>
@@ -244,6 +288,32 @@
 		  		<button type="submit" class="btn btn-default questions-submit">Submit</button>
 				 <span class="glyphicon glyphicon-ok collapse" aria-hidden="true"></span><span class="glyphicon glyphicon-remove collapse" aria-hidden="true"></span>
 			</form>
+			
+			<div id="mentor-template" >
+	    		<div class="row collapse">
+	  				<div class="col-md-3">
+					    <label for="mentor">Förnamn</label>				    
+					     <input type="text" class="form-control" id="mentor-firstname" name="mentor-firstname" placeholder=""/>							    
+			    	</div>
+			    	<div class="col-md-3">
+					    <label for="mentor">Efternamn</label>				    
+					     <input type="text" class="form-control" id="mentor-lastname" name="mentor-lastname" placeholder=""/>							    
+			    	</div>
+			    
+	  				<div class="col-md-3">
+					    <label for="mentor">Telefonnummer</label>				    
+					     <input type="text" class="form-control" id="mentor-phone" name="mentor-phone" placeholder=""/>
+					    
+			    	</div>
+			    
+	  				<div class="col-md-3">
+					    <label for="mentor">E-post</label>				    
+					     <input type="text" class="form-control" id="mentor-email" name="mentor-email" placeholder=""/>
+					    <p class="help-block">Valfri</p>
+			    	</div>
+		    	</div>
+	    	
+	    	</div>
 	</xsl:template>
 	
 </xsl:stylesheet>					

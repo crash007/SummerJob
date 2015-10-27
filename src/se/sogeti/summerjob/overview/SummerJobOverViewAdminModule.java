@@ -11,7 +11,6 @@ import javax.sql.DataSource;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import se.sogeti.jobapplications.beans.ApplicationRequirement;
 import se.sogeti.jobapplications.beans.Area;
 import se.sogeti.jobapplications.beans.Manager;
 import se.sogeti.jobapplications.beans.Mentor;
@@ -19,7 +18,6 @@ import se.sogeti.jobapplications.beans.MunicipalityJob;
 import se.sogeti.jobapplications.beans.MunicipalityJobApplication;
 import se.sogeti.jobapplications.beans.Person;
 import se.sogeti.jobapplications.beans.Workplace;
-import se.sogeti.jobapplications.daos.ApplicationRequirementDAO;
 import se.sogeti.jobapplications.daos.AreaDAO;
 import se.sogeti.jobapplications.daos.ManagerDAO;
 import se.sogeti.jobapplications.daos.MentorDAO;
@@ -41,7 +39,6 @@ import se.unlogic.webutils.http.URIParser;
 
 public class SummerJobOverViewAdminModule extends AnnotatedForegroundModule{
 	
-	private ApplicationRequirementDAO applicationRequirementDAO;
 	private AreaDAO areaDAO;
 	private ManagerDAO managerDAO;
 	private MentorDAO mentorDAO;
@@ -59,8 +56,7 @@ public class SummerJobOverViewAdminModule extends AnnotatedForegroundModule{
 	protected void createDAOs(DataSource dataSource) throws Exception {
 		super.createDAOs(dataSource);
 	//	this.daoFactory = new FlowEngineDAOFactory(dataSource, systemInterface.getUserHandler(), systemInterface.getGroupHandler());
-		HierarchyAnnotatedDAOFactory daoFactory = new HierarchyAnnotatedDAOFactory(dataSource, systemInterface);
-		applicationRequirementDAO = new ApplicationRequirementDAO(dataSource, ApplicationRequirement.class, daoFactory);
+		HierarchyAnnotatedDAOFactory daoFactory = new HierarchyAnnotatedDAOFactory(dataSource, systemInterface);	
 		areaDAO = new AreaDAO(dataSource, Area.class, daoFactory);
 		managerDAO = new ManagerDAO(dataSource, Manager.class, daoFactory);
 		mentorDAO = new MentorDAO(dataSource, Mentor.class, daoFactory);

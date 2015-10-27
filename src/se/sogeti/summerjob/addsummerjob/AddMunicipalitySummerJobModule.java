@@ -3,6 +3,7 @@ package se.sogeti.summerjob.addsummerjob;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Enumeration;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,7 +13,6 @@ import javax.sql.DataSource;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import se.sogeti.jobapplications.beans.ApplicationRequirement;
 import se.sogeti.jobapplications.beans.Area;
 import se.sogeti.jobapplications.beans.Manager;
 import se.sogeti.jobapplications.beans.Mentor;
@@ -21,12 +21,15 @@ import se.sogeti.jobapplications.beans.Workplace;
 import se.sogeti.jobapplications.daos.AreaDAO;
 import se.sogeti.jobapplications.daos.MunicipalityJobDAO;
 import se.sogeti.periodsadmin.beans.Period;
+import se.sogeti.periodsadmin.daos.PeriodDAO;
 import se.unlogic.hierarchy.core.beans.SimpleForegroundModuleResponse;
 import se.unlogic.hierarchy.core.beans.User;
 import se.unlogic.hierarchy.core.interfaces.ForegroundModuleResponse;
 import se.unlogic.hierarchy.core.utils.HierarchyAnnotatedDAOFactory;
 import se.unlogic.hierarchy.foregroundmodules.AnnotatedForegroundModule;
 import se.unlogic.hierarchy.foregroundmodules.rest.AnnotatedRESTModule;
+import se.unlogic.hierarchy.foregroundmodules.rest.RESTMethod;
+import se.unlogic.standardutils.numbers.NumberUtils;
 import se.unlogic.standardutils.xml.XMLUtils;
 import se.unlogic.webutils.http.RequestUtils;
 import se.unlogic.webutils.http.URIParser;
@@ -36,6 +39,7 @@ public class AddMunicipalitySummerJobModule extends AnnotatedRESTModule{
 	
 	private MunicipalityJobDAO municipalityJobDAO;
 	private AreaDAO areaDAO;
+	private PeriodDAO periodDAO;
 	
 	@Override
 	protected void createDAOs(DataSource dataSource) throws Exception {
@@ -46,6 +50,7 @@ public class AddMunicipalitySummerJobModule extends AnnotatedRESTModule{
 		
 		municipalityJobDAO = new MunicipalityJobDAO(dataSource, MunicipalityJob.class, hierarchyDaoFactory);
 		areaDAO = new AreaDAO(dataSource, Area.class, hierarchyDaoFactory);
+		periodDAO = new PeriodDAO(dataSource, Period.class,hierarchyDaoFactory);
 	
 	}
 
@@ -53,6 +58,88 @@ public class AddMunicipalitySummerJobModule extends AnnotatedRESTModule{
 	public ForegroundModuleResponse defaultMethod(HttpServletRequest req, HttpServletResponse res, User user,
 			URIParser uriParser) throws Throwable {
 		// TODO Auto-generated method stub
+		
+		if(req.getMethod().equals("POST")){
+			log.info("POST");
+			MunicipalityJob job = new MunicipalityJob();
+			Workplace place = new Workplace();
+			place.setOrganization(req.getParameter("organisation"));
+			place.setAdministration(req.getParameter("administration"));			//Förvaltning
+			place.setLocation(req.getParameter("location"));
+			
+			
+			place.setCity(req.getParameter("city"));
+			place.setStreetAddress(req.getParameter("street"));
+			place.setZipCode(req.getParameter("postalcode"));
+			place.setCity(req.getParameter("postalarea"));
+			place.setDepartment(req.getParameter("department"));			//Avdelning
+			
+			job.setWorkplace(place);
+			
+			Area area = null;
+			Integer areaId = NumberUtils.toInt((String) req.getParameter("area"));
+			log.info("Selected area id: "+areaId);
+			
+			if(areaId!=null){
+				area = areaDAO.getAreaById(areaId);
+				log.info(area);
+			}
+			
+			job.setArea(area);
+			job.setCreated(new java.sql.Date(new Date().getTime()));
+			
+			if(req.getParameter("isOverEighteen")!=null){
+				job.setIsOverEighteen(true);
+			}else{
+				job.setIsOverEighteen(false);
+			}
+			
+			if(req.getParameter("hasDriversLicense")!=null){
+				job.setHasDriversLicense(true);
+			}else{
+				job.setHasDriversLicense(false);
+			}
+			
+			Manager manager = new Manager();
+			manager.setFirstname(req.getParameter("manager-firstname"));
+			manager.setLastname(req.getParameter("manager-lastname"));
+			manager.setEmail(req.getParameter("manager-email"));
+			manager.setMobilePhone(req.getParameter("manager-phone"));
+			job.setManager(manager);
+			
+			List<Mentor> mentors = new ArrayList<Mentor>();
+			
+			//Find mentor uuids
+			
+			 List<String> mentorUuids =getMentorUuids(req.getParameterNames());
+			 for(String s:mentorUuids){
+				 Mentor mentor = new Mentor();
+				 mentor.setFirstname(req.getParameter("mentor-firstname_"+s));
+				 mentor.setLastname(req.getParameter("mentor-lastname_"+s));
+				 mentor.setEmail(req.getParameter("mentor-email_"+s));
+				 mentor.setMobilePhone(req.getParameter("mentor-phone_"+s));
+				 mentors.add(mentor);
+			 }
+			 
+			job.setMentors(mentors);
+			job.setNumberOfWorkersNeeded(NumberUtils.toInt(req.getParameter("numberOfWorkersNeeded")));
+			job.setApprovedWorkplace(false);
+			job.setWorkDescription(req.getParameter("work-description"));
+			job.setWorkTitle(req.getParameter("work-title"));
+			
+			List<Period> periods = periodDAO.getAll();
+			
+			for(Period p:periods){
+				if(req.getParameter("period_"+p.getId())!=null){
+					job.setPeriod(p);
+					municipalityJobDAO.save(job);
+				}
+			}
+			//job.setFreeTextRequirements(freeTextRequirements);
+			//job.setArea(area);
+			//job.setPeriod(period);
+			
+		}
 		
 		MunicipalityJob job = new MunicipalityJob();
 		job.setCreated(new java.sql.Date(new Date().getTime()));
@@ -80,11 +167,7 @@ public class AddMunicipalitySummerJobModule extends AnnotatedRESTModule{
 		Area area = areaDAO.getAreaById(1);
 		job.setArea(area);
 		
-		List<ApplicationRequirement> requirements = new ArrayList<ApplicationRequirement>();
-		ApplicationRequirement requirement = new ApplicationRequirement();
-		requirement.setName("Hittepåkrav");
-		requirement.setStatus(true);
-		job.setRequirements(requirements);
+		
 		
 		Workplace workplace = new Workplace();
 		workplace.setAdministration("Avdelning x");
@@ -115,18 +198,30 @@ public class AddMunicipalitySummerJobModule extends AnnotatedRESTModule{
 		Element areasElement = doc.createElement("Areas");
 		List<Area> areas = areaDAO.getAll();
 		
-		
 		XMLUtils.append(doc, areasElement,areas);
 		jobForm.appendChild(areasElement);	
 		
-	
+		List<Period> periods = periodDAO.getAll();
+		Element periodsElement =doc.createElement("Periods");
+		XMLUtils.append(doc, periodsElement, periods);
+		jobForm.appendChild(periodsElement);
 		
-		
-				
 		return new SimpleForegroundModuleResponse(doc);
 		
 	}
-	
-	
 
+	private List<String> getMentorUuids(Enumeration<String> paramNames) {
+		List<String> result = new ArrayList<String>();
+		while(paramNames.hasMoreElements()){
+			String s = paramNames.nextElement();
+			if(s.startsWith("mentor-firstname")){
+				log.info(s);
+				String uuid = s.split("_")[1];
+				
+				result.add(uuid);
+			}
+		}
+		return result;
+	}
+	
 }
