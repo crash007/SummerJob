@@ -12,11 +12,6 @@ import se.unlogic.standardutils.xml.XMLElement;
 
 @Table(name = "summer_job_business_sector_job")
 public class BusinessSectorJob extends Job{
-
-	@DAOManaged(columnName="workplaceId")
-	@XMLElement
-	@ManyToOne(autoGet=true,autoAdd=true, autoUpdate=true, remoteKeyField="id")
-	private BusinessSectorWorkplace workplace;
 	
 	@DAOManaged(columnName="manager_id")
 	@XMLElement
@@ -31,6 +26,10 @@ public class BusinessSectorJob extends Job{
 	@DAOManaged
 	@XMLElement
 	private Date endDate;
+	
+	@DAOManaged
+	@XMLElement
+	private String company;
 
 	
 	@DAOManaged
@@ -90,13 +89,6 @@ public class BusinessSectorJob extends Job{
 		this.mentors = mentors;
 	}
 	
-	public BusinessSectorWorkplace getWorkplace() {
-		return workplace;
-	}
-
-	public void setWorkplace(BusinessSectorWorkplace workplace) {
-		this.workplace = workplace;
-	}
 
 	public BusinessSectorManager getManager() {
 		return manager;
@@ -104,5 +96,13 @@ public class BusinessSectorJob extends Job{
 
 	public void setManager(BusinessSectorManager manager) {
 		this.manager = manager;
+	}
+
+	public String getCompany() {
+		return company;
+	}
+
+	public void setCompany(String company) {
+		this.company = company;
 	}
 }

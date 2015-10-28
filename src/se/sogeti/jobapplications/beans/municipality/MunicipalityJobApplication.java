@@ -1,5 +1,6 @@
 package se.sogeti.jobapplications.beans.municipality;
 
+import se.sogeti.jobapplications.beans.GeoArea;
 import se.sogeti.jobapplications.beans.JobApplication;
 import se.unlogic.standardutils.dao.annotations.DAOManaged;
 import se.unlogic.standardutils.dao.annotations.ManyToOne;
@@ -10,13 +11,11 @@ import se.unlogic.standardutils.xml.XMLElement;
 @XMLElement
 public class MunicipalityJobApplication extends JobApplication{
 
+
+
 	@DAOManaged(columnName="jobId")
 	@ManyToOne(remoteKeyField="id",autoGet=false,autoAdd=false,autoUpdate=false)
 	private MunicipalityJob job;
-	
-	@DAOManaged(columnName="personId")
-	@ManyToOne(remoteKeyField="id",autoGet=false,autoAdd=false,autoUpdate=false)
-	private MunicipalityPerson person;
 	
 	@DAOManaged(columnName="prefered_area_1")
 	@ManyToOne(remoteKeyField="id")
@@ -30,6 +29,80 @@ public class MunicipalityJobApplication extends JobApplication{
 	@ManyToOne(remoteKeyField="id")
 	private MunicipalityJobArea preferedArea3;
 	
+	@DAOManaged(columnName="prefered_geo_area_1")
+	@ManyToOne(remoteKeyField="id")
+	private GeoArea preferedGeoArea1;
+	
+	@DAOManaged(columnName="prefered_geo_area_2")
+	@ManyToOne(remoteKeyField="id")
+	private GeoArea preferedGeoArea2;
+	
+	@DAOManaged(columnName="prefered_geo_area_3")
+	@ManyToOne(remoteKeyField="id")
+	private GeoArea preferedGeoArea3;
 
+	public MunicipalityJob getJob() {
+		return job;
+	}
+
+	public void setJob(MunicipalityJob job) {
+		this.job = job;
+	}
+
+	
+	public MunicipalityJobArea getPreferedArea1() {
+		return preferedArea1;
+	}
+
+	public void setPreferedArea1(MunicipalityJobArea preferedArea1) {
+		this.preferedArea1 = preferedArea1;
+	}
+
+	public MunicipalityJobArea getPreferedArea2() {
+		return preferedArea2;
+	}
+
+	public void setPreferedArea2(MunicipalityJobArea preferedArea2) {
+		this.preferedArea2 = preferedArea2;
+	}
+
+	public MunicipalityJobArea getPreferedArea3() {
+		return preferedArea3;
+	}
+
+	public void setPreferedArea3(MunicipalityJobArea preferedArea3) {
+		this.preferedArea3 = preferedArea3;
+	}
+
+	public GeoArea getPreferedGeoArea1() {
+		return preferedGeoArea1;
+	}
+
+	public void setPreferedGeoArea1(GeoArea preferedGeoArea1) {
+		this.preferedGeoArea1 = preferedGeoArea1;
+	}
+
+	public GeoArea getPreferedGeoArea2() {
+		return preferedGeoArea2;
+	}
+
+	public void setPreferedGeoArea2(GeoArea preferedGeoArea2) {
+		this.preferedGeoArea2 = preferedGeoArea2;
+	}
+
+	public GeoArea getPreferedGeoArea3() {
+		return preferedGeoArea3;
+	}
+
+	public void setPreferedGeoArea3(GeoArea preferedGeoArea3) {
+		this.preferedGeoArea3 = preferedGeoArea3;
+	}
+
+	@Override
+	public String toString() {
+		return "MunicipalityJobApplication [job=" + job + ", preferedArea1=" + preferedArea1 + ", preferedArea2="
+				+ preferedArea2 + ", preferedArea3=" + preferedArea3 + ", preferedGeoArea1=" + preferedGeoArea1
+				+ ", preferedGeoArea2=" + preferedGeoArea2 + ", preferedGeoArea3=" + preferedGeoArea3 + "]";
+	}
 
 }

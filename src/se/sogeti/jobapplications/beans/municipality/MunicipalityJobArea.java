@@ -41,18 +41,11 @@ public class MunicipalityJobArea implements Elementable{
 	private List<MunicipalityJob> jobs;
 
 	
-	@DAOManaged(columnName="prefered_area_1")
+	@DAOManaged
 	@OneToMany
-	private List<MunicipalityJobApplication> preferedAreas1;
+	private List<MunicipalityJobApplication> applicationsPreferedAreas;
 	
-	@DAOManaged(columnName="prefered_area_2")
-	@OneToMany
-	private List<MunicipalityJobApplication> preferedAreas2;
 	
-	@DAOManaged(columnName="prefered_area_3")
-	@OneToMany
-	private List<MunicipalityJobApplication> preferedAreas3;
-
 	public Integer getId() {
 		return id;
 	}
@@ -96,6 +89,13 @@ public class MunicipalityJobArea implements Elementable{
 	@Override
 	public Element toXML(Document doc) {
 		return XMLGenerator.toXML(this, doc);
+	}
+
+	@Override
+	public String toString() {
+		return "MunicipalityJobArea [id=" + id + ", name=" + name + ", description=" + description
+				+ ", canBeChosenInApplication=" + canBeChosenInApplication + ", jobs=" + jobs
+				+ ", applicationsPreferedAreas=" + applicationsPreferedAreas + "]";
 	}
 
 }

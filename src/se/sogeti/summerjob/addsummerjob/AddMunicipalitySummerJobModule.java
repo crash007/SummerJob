@@ -3,7 +3,6 @@ package se.sogeti.summerjob.addsummerjob;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Enumeration;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,12 +12,10 @@ import javax.sql.DataSource;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import se.sogeti.jobapplications.beans.Mentor;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityJob;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityJobArea;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityManager;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityMentor;
-import se.sogeti.jobapplications.beans.municipality.MunicipalityWorkplace;
 import se.sogeti.jobapplications.daos.AreaDAO;
 import se.sogeti.jobapplications.daos.JobDAO;
 import se.sogeti.periodsadmin.beans.Period;
@@ -62,19 +59,19 @@ public class AddMunicipalitySummerJobModule extends AnnotatedRESTModule{
 		if(req.getMethod().equals("POST")){
 			log.info("POST");
 			MunicipalityJob job = new MunicipalityJob();
-			MunicipalityWorkplace place = new MunicipalityWorkplace();
-			place.setOrganization(req.getParameter("organisation"));
-			place.setAdministration(req.getParameter("administration"));			//Förvaltning
-			place.setLocation(req.getParameter("location"));
+			
+			job.setOrganization(req.getParameter("organisation"));
+			job.setAdministration(req.getParameter("administration"));			//Förvaltning
+			job.setLocation(req.getParameter("location"));
 			
 			
-			place.setCity(req.getParameter("city"));
-			place.setStreetAddress(req.getParameter("street"));
-			place.setZipCode(req.getParameter("postalcode"));
-			place.setCity(req.getParameter("postalarea"));
-			place.setDepartment(req.getParameter("department"));			//Avdelning
+			job.setCity(req.getParameter("city"));
+			job.setStreetAddress(req.getParameter("street"));
+			job.setZipCode(req.getParameter("postalcode"));
+			job.setCity(req.getParameter("postalarea"));
+			job.setDepartment(req.getParameter("department"));			//Avdelning
 			
-			job.setWorkplace(place);
+			
 			
 			MunicipalityJobArea area = null;
 			Integer areaId = NumberUtils.toInt((String) req.getParameter("area"));

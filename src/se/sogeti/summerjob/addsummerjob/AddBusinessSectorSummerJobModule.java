@@ -7,7 +7,6 @@ import java.io.PrintWriter;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,10 +19,11 @@ import org.w3c.dom.Element;
 import se.sogeti.jobapplications.beans.business.BusinessSectorJob;
 import se.sogeti.jobapplications.beans.business.BusinessSectorManager;
 import se.sogeti.jobapplications.beans.business.BusinessSectorMentor;
-import se.sogeti.jobapplications.beans.business.BusinessSectorWorkplace;
 import se.sogeti.jobapplications.daos.JobDAO;
 import se.sogeti.periodsadmin.JsonResponse;
 import se.sogeti.summerjob.FormUtils;
+//github.com/crash007/SummerJob.git
+import se.unlogic.hierarchy.core.beans.SimpleForegroundModuleResponse;
 import se.unlogic.hierarchy.core.beans.User;
 import se.unlogic.hierarchy.core.interfaces.ForegroundModuleResponse;
 import se.unlogic.hierarchy.core.utils.HierarchyAnnotatedDAOFactory;
@@ -33,13 +33,6 @@ import se.unlogic.standardutils.numbers.NumberUtils;
 import se.unlogic.standardutils.xml.XMLUtils;
 import se.unlogic.webutils.http.RequestUtils;
 import se.unlogic.webutils.http.URIParser;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
-
-//github.com/crash007/SummerJob.git
-import se.unlogic.hierarchy.core.beans.SimpleForegroundModuleResponse;
 
 public class AddBusinessSectorSummerJobModule extends AnnotatedRESTModule{
 	
@@ -170,12 +163,12 @@ public class AddBusinessSectorSummerJobModule extends AnnotatedRESTModule{
         	return;
         }
         
-        BusinessSectorWorkplace workplace = new BusinessSectorWorkplace();
-        workplace.setStreetAddress(streetAddress);
-        workplace.setZipCode(zipCode);
-        workplace.setCity(city);
-        workplace.setCompany(company);
-        job.setWorkplace(workplace);
+       
+        job.setStreetAddress(streetAddress);
+        job.setZipCode(zipCode);
+        job.setCity(city);
+        job.setCompany(company);
+        
         
         String managerFirstname = req.getParameter("manager-firstname");
         String managerLastname = req.getParameter("manager-lastname");
