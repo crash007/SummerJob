@@ -4,8 +4,6 @@ import java.sql.Date;
 import java.util.List;
 
 import se.sogeti.jobapplications.beans.Job;
-import se.sogeti.jobapplications.beans.Manager;
-import se.sogeti.jobapplications.beans.municipality.MunicipalityMentor;
 import se.unlogic.standardutils.dao.annotations.DAOManaged;
 import se.unlogic.standardutils.dao.annotations.ManyToOne;
 import se.unlogic.standardutils.dao.annotations.OneToMany;
@@ -24,23 +22,6 @@ public class BusinessSectorJob extends Job{
 	@XMLElement
 	@ManyToOne(autoGet=true,autoAdd=true, autoUpdate=true, remoteKeyField="id")
 	private BusinessSectorManager manager;
-
-	
-	public BusinessSectorWorkplace getWorkplace() {
-		return workplace;
-	}
-
-	public void setWorkplace(BusinessSectorWorkplace workplace) {
-		this.workplace = workplace;
-	}
-
-	public BusinessSectorManager getManager() {
-		return manager;
-	}
-
-	public void setManager(BusinessSectorManager manager) {
-		this.manager = manager;
-	}
 
 	@DAOManaged
 	@XMLElement
@@ -107,5 +88,21 @@ public class BusinessSectorJob extends Job{
 
 	public void setMentors(List<BusinessSectorMentor> mentors) {
 		this.mentors = mentors;
+	}
+	
+	public BusinessSectorWorkplace getWorkplace() {
+		return workplace;
+	}
+
+	public void setWorkplace(BusinessSectorWorkplace workplace) {
+		this.workplace = workplace;
+	}
+
+	public BusinessSectorManager getManager() {
+		return manager;
+	}
+
+	public void setManager(BusinessSectorManager manager) {
+		this.manager = manager;
 	}
 }
