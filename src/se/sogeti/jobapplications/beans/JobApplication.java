@@ -28,6 +28,10 @@ public abstract class JobApplication {
 	@XMLElement
 	private boolean hasDriversLicense;
 	
+	@DAOManaged
+	@XMLElement
+	private boolean isOverEighteen;
+	
 	@DAOManaged(columnName="driversLicenseType")
 	@ManyToOne(remoteKeyField="id", autoGet = true, autoAdd = true, autoUpdate = true)
 	private DriversLicenseType driversLicenseType;

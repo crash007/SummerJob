@@ -200,5 +200,13 @@ public abstract class Job implements Requirements{
 	public void setCity(String city) {
 		this.city = city;
 	}
+
+	public String getStreetAddress() {
+		return streetAddress;
+	}
+
+	public void setStreetAddress(String streetAddress) {
+		this.streetAddress = streetAddress;
+	}
 	
 }
