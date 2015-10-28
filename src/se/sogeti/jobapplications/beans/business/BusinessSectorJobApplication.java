@@ -3,6 +3,7 @@ package se.sogeti.jobapplications.beans.business;
 import java.sql.Date;
 
 import se.sogeti.jobapplications.beans.JobApplication;
+import se.sogeti.jobapplications.beans.municipality.MunicipalityJob;
 import se.unlogic.standardutils.dao.annotations.DAOManaged;
 import se.unlogic.standardutils.dao.annotations.Key;
 import se.unlogic.standardutils.dao.annotations.ManyToOne;
@@ -13,9 +14,13 @@ import se.unlogic.standardutils.xml.XMLElement;
 public class BusinessSectorJobApplication extends JobApplication{
 	
 
+	@DAOManaged(columnName="jobId")
+	@ManyToOne(remoteKeyField="id",autoGet=false,autoAdd=false,autoUpdate=false)
+	private BusinessSectorJob job;
 	
 	@DAOManaged(columnName="personId")
 	@ManyToOne(remoteKeyField="id", autoGet=false, autoAdd=false, autoUpdate=false)
 	private BusinessSectorPerson person;
+	
 
 }

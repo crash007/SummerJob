@@ -23,6 +23,7 @@ import se.sogeti.jobapplications.beans.business.BusinessSectorMentor;
 import se.sogeti.jobapplications.beans.business.BusinessSectorWorkplace;
 import se.sogeti.jobapplications.daos.JobDAO;
 import se.sogeti.periodsadmin.JsonResponse;
+import se.sogeti.summerjob.FormUtils;
 import se.unlogic.hierarchy.core.beans.User;
 import se.unlogic.hierarchy.core.interfaces.ForegroundModuleResponse;
 import se.unlogic.hierarchy.core.utils.HierarchyAnnotatedDAOFactory;
@@ -142,7 +143,7 @@ public class AddBusinessSectorSummerJobModule extends AnnotatedRESTModule{
         job.setEndDate(Date.valueOf(endDate));
         
         List<BusinessSectorMentor> mentors = new ArrayList<BusinessSectorMentor>();
-        List<String> mentorUuids = getMentorUuids(req.getParameterNames());
+        List<String> mentorUuids = FormUtils.getMentorUuids(req.getParameterNames());
 		for(String s : mentorUuids){
 			 BusinessSectorMentor mentor = new BusinessSectorMentor();
 			 mentor.setFirstname(req.getParameter("mentor-firstname_" + s));
@@ -212,16 +213,5 @@ public class AddBusinessSectorSummerJobModule extends AnnotatedRESTModule{
 		}				
 	}
 	
-	private List<String> getMentorUuids(Enumeration<String> paramNames) {
-		List<String> result = new ArrayList<String>();
-		while(paramNames.hasMoreElements()) {
-			String s = paramNames.nextElement();
-			if(s.startsWith("mentor-firstname")) {
-				log.info(s);
-				String uuid = s.split("_")[1];
-				result.add(uuid);
-			}
-		}
-		return result;
-	}
+	
 }

@@ -1,4 +1,4 @@
-package se.sogeti.summerjob.addsummerjob;
+package se.sogeti.summerjob.addsummerjobapplication;
 
 
 import java.util.ArrayList;
@@ -23,7 +23,6 @@ import se.sogeti.jobapplications.daos.AreaDAO;
 import se.sogeti.jobapplications.daos.JobDAO;
 import se.sogeti.periodsadmin.beans.Period;
 import se.sogeti.periodsadmin.daos.PeriodDAO;
-import se.sogeti.summerjob.FormUtils;
 import se.unlogic.hierarchy.core.beans.SimpleForegroundModuleResponse;
 import se.unlogic.hierarchy.core.beans.User;
 import se.unlogic.hierarchy.core.interfaces.ForegroundModuleResponse;
@@ -111,7 +110,7 @@ public class AddMunicipalitySummerJobModule extends AnnotatedRESTModule{
 			
 			//Find mentor uuids
 			
-			 List<String> mentorUuids =FormUtils.getMentorUuids(req.getParameterNames());
+			 List<String> mentorUuids =getMentorUuids(req.getParameterNames());
 			 for(String s:mentorUuids){
 				 MunicipalityMentor mentor = new MunicipalityMentor();
 				 mentor.setFirstname(req.getParameter("mentor-firstname_"+s));
@@ -170,6 +169,18 @@ public class AddMunicipalitySummerJobModule extends AnnotatedRESTModule{
 		
 	}
 
-	
+	private List<String> getMentorUuids(Enumeration<String> paramNames) {
+		List<String> result = new ArrayList<String>();
+		while(paramNames.hasMoreElements()){
+			String s = paramNames.nextElement();
+			if(s.startsWith("mentor-firstname")){
+				log.info(s);
+				String uuid = s.split("_")[1];
+				
+				result.add(uuid);
+			}
+		}
+		return result;
+	}
 	
 }
