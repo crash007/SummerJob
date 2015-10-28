@@ -1,9 +1,6 @@
 package se.sogeti.summerjob.addsummerjobapplication;
 
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Enumeration;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,14 +10,12 @@ import javax.sql.DataSource;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import se.sogeti.jobapplications.beans.Mentor;
-import se.sogeti.jobapplications.beans.municipality.MunicipalityJob;
+import se.sogeti.jobapplications.beans.GeoArea;
+import se.sogeti.jobapplications.beans.municipality.MunicipalityJobApplication;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityJobArea;
-import se.sogeti.jobapplications.beans.municipality.MunicipalityManager;
-import se.sogeti.jobapplications.beans.municipality.MunicipalityMentor;
-import se.sogeti.jobapplications.beans.municipality.MunicipalityWorkplace;
 import se.sogeti.jobapplications.daos.AreaDAO;
-import se.sogeti.jobapplications.daos.JobDAO;
+import se.sogeti.jobapplications.daos.GeoAreaDAO;
+import se.sogeti.jobapplications.daos.JobApplicationDAO;
 import se.sogeti.periodsadmin.beans.Period;
 import se.sogeti.periodsadmin.daos.PeriodDAO;
 import se.unlogic.hierarchy.core.beans.SimpleForegroundModuleResponse;
@@ -33,12 +28,13 @@ import se.unlogic.standardutils.xml.XMLUtils;
 import se.unlogic.webutils.http.RequestUtils;
 import se.unlogic.webutils.http.URIParser;
 
-public class AddMunicipalitySummerJobModule extends AnnotatedRESTModule{
+public class AddMunicipalitySummerJobApplicationModule extends AnnotatedRESTModule{
 	
 	
-	private JobDAO<MunicipalityJob> municipalityJobDAO;
+	private JobApplicationDAO<MunicipalityJobApplication> jobApplicationDAO;
 	private AreaDAO areaDAO;
 	private PeriodDAO periodDAO;
+	private GeoAreaDAO geoAreaDAO;
 	
 	@Override
 	protected void createDAOs(DataSource dataSource) throws Exception {
@@ -47,9 +43,10 @@ public class AddMunicipalitySummerJobModule extends AnnotatedRESTModule{
 		
 		HierarchyAnnotatedDAOFactory hierarchyDaoFactory = new HierarchyAnnotatedDAOFactory(dataSource, systemInterface);
 		
-		municipalityJobDAO = new JobDAO<MunicipalityJob>(dataSource, MunicipalityJob.class, hierarchyDaoFactory);
+		jobApplicationDAO = new JobApplicationDAO<MunicipalityJobApplication>(dataSource, MunicipalityJobApplication.class, hierarchyDaoFactory);
 		areaDAO = new AreaDAO(dataSource, MunicipalityJobArea.class, hierarchyDaoFactory);
-		periodDAO = new PeriodDAO(dataSource, Period.class,hierarchyDaoFactory);
+		periodDAO = new PeriodDAO(dataSource, Period.class, hierarchyDaoFactory);
+		geoAreaDAO = new GeoAreaDAO(dataSource, GeoArea.class, hierarchyDaoFactory);
 	
 	}
 
@@ -60,7 +57,58 @@ public class AddMunicipalitySummerJobModule extends AnnotatedRESTModule{
 		
 		if(req.getMethod().equals("POST")){
 			log.info("POST");
-			MunicipalityJob job = new MunicipalityJob();
+			MunicipalityJobApplication app = new MunicipalityJobApplication();
+			app.setApprovedApplication(false);
+			app.setCvLocation(req.getParameter("cvFile"));
+			
+			app.setHasDriversLicense(req.getParameter("hasDriversLicense") !=null ? true:false);
+			app.setOverEighteen(req.getParameter("isOverEighteen") !=null ? true:false);
+			
+			
+			app.setCity(req.getParameter("postalarea"));
+			app.setEmail(req.getParameter("email"));
+			app.setFirstname(req.getParameter("firstname"));
+			app.setLastname(req.getParameter("lastname"));
+			app.setPhoneNumber(req.getParameter("phone"));
+			app.setSocialSecurityNumber(req.getParameter("socialSecurityNumber"));
+			app.setStreetAddress(req.getParameter("street"));
+			app.setZipCode(req.getParameter("postalcode"));
+			
+			//app.setPerson(person);
+			app.setPersonalLetter(req.getParameter("personal-letter"));
+			
+			Integer preferedArea1 = NumberUtils.toInt(req.getParameter("preferedArea1"));
+			Integer preferedArea2 = NumberUtils.toInt(req.getParameter("preferedArea2"));
+			Integer preferedArea3 = NumberUtils.toInt(req.getParameter("preferedArea3"));
+			MunicipalityJobArea area1 = areaDAO.getAreaById(preferedArea1);
+			MunicipalityJobArea area2 = areaDAO.getAreaById(preferedArea2);
+			MunicipalityJobArea area3 = areaDAO.getAreaById(preferedArea3);
+			
+			
+			app.setPreferedArea1(area1);
+			app.setPreferedArea2(area2);
+			app.setPreferedArea3(area3);
+			
+			Integer preferedGeoArea1 = NumberUtils.toInt(req.getParameter("geoArea1"));
+			Integer preferedGeoArea2 = NumberUtils.toInt(req.getParameter("geoArea2"));
+			Integer preferedGeoArea3 = NumberUtils.toInt(req.getParameter("geoArea3"));
+			GeoArea geoArea1 = geoAreaDAO.getAreaById(preferedGeoArea1);
+			GeoArea geoArea2 = geoAreaDAO.getAreaById(preferedGeoArea2);
+			GeoArea geoArea3 = geoAreaDAO.getAreaById(preferedGeoArea3);
+			
+			app.setPreferedGeoArea1(geoArea1);
+			app.setPreferedGeoArea2(geoArea2);
+			app.setPreferedGeoArea3(geoArea3);
+			
+			app.setApprovedApplication(false);
+			app.setRanking(3);
+			log.info(app);
+			
+			
+		
+			jobApplicationDAO.add(app);
+			
+			/*MunicipalityJob job = new MunicipalityJob();
 			MunicipalityWorkplace place = new MunicipalityWorkplace();
 			place.setOrganization(req.getParameter("organisation"));
 			place.setAdministration(req.getParameter("administration"));			//Förvaltning
@@ -110,15 +158,7 @@ public class AddMunicipalitySummerJobModule extends AnnotatedRESTModule{
 			
 			//Find mentor uuids
 			
-			 List<String> mentorUuids =getMentorUuids(req.getParameterNames());
-			 for(String s:mentorUuids){
-				 MunicipalityMentor mentor = new MunicipalityMentor();
-				 mentor.setFirstname(req.getParameter("mentor-firstname_"+s));
-				 mentor.setLastname(req.getParameter("mentor-lastname_"+s));
-				 mentor.setEmail(req.getParameter("mentor-email_"+s));
-				 mentor.setMobilePhone(req.getParameter("mentor-phone_"+s));
-				 mentors.add(mentor);
-			 }
+			
 			 
 			job.setMentors(mentors);
 			job.setNumberOfWorkersNeeded(NumberUtils.toInt(req.getParameter("numberOfWorkersNeeded")));
@@ -141,7 +181,7 @@ public class AddMunicipalitySummerJobModule extends AnnotatedRESTModule{
 						m.setId(null);
 					}
 				}
-			}
+			}*/
 		}
 		
 		
@@ -151,36 +191,22 @@ public class AddMunicipalitySummerJobModule extends AnnotatedRESTModule{
 		element.appendChild(this.sectionInterface.getSectionDescriptor().toXML(doc));
 		element.appendChild(this.moduleDescriptor.toXML(doc));
 		doc.appendChild(element);
-		Element jobForm = doc.createElement("MunicipalityJobForm");
-		doc.getFirstChild().appendChild(jobForm);
+		Element form = doc.createElement("MunicipalityJobApplicationForm");
+		doc.getFirstChild().appendChild(form);
 		
 		Element areasElement = doc.createElement("Areas");
-		List<MunicipalityJobArea> areas = areaDAO.getAll();
-		
+		List<MunicipalityJobArea> areas = areaDAO.getAll();		
 		XMLUtils.append(doc, areasElement,areas);
-		jobForm.appendChild(areasElement);	
+		form.appendChild(areasElement);	
 		
-		List<Period> periods = periodDAO.getAll();
-		Element periodsElement =doc.createElement("Periods");
-		XMLUtils.append(doc, periodsElement, periods);
-		jobForm.appendChild(periodsElement);
+		Element geoAreasElement = doc.createElement("GeoAreas");
+		List<GeoArea> geoAreas = geoAreaDAO.getAll();
+		XMLUtils.append(doc, geoAreasElement, geoAreas);
+		form.appendChild(geoAreasElement);
+		
 		
 		return new SimpleForegroundModuleResponse(doc);
 		
-	}
-
-	private List<String> getMentorUuids(Enumeration<String> paramNames) {
-		List<String> result = new ArrayList<String>();
-		while(paramNames.hasMoreElements()){
-			String s = paramNames.nextElement();
-			if(s.startsWith("mentor-firstname")){
-				log.info(s);
-				String uuid = s.split("_")[1];
-				
-				result.add(uuid);
-			}
-		}
-		return result;
 	}
 	
 }

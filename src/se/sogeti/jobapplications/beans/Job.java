@@ -63,6 +63,18 @@ public abstract class Job implements Requirements{
 	@XMLElement
 	private String freeTextRequirements;
 	
+	@DAOManaged
+	@XMLElement
+	private String streetAddress;
+	
+	@DAOManaged
+	@XMLElement
+	private String zipCode;
+	
+	@DAOManaged
+	@XMLElement
+	private String city;
+	
 	
 	public Integer getId() {
 		return id;
@@ -171,6 +183,30 @@ public abstract class Job implements Requirements{
 
 	public void setDriversLicenseType(DriversLicenseType driversLicenseType) {
 		this.driversLicenseType = driversLicenseType;
+	}
+
+	public String getZipCode() {
+		return zipCode;
+	}
+
+	public void setZipCode(String zipCode) {
+		this.zipCode = zipCode;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public String getStreetAddress() {
+		return streetAddress;
+	}
+
+	public void setStreetAddress(String streetAddress) {
+		this.streetAddress = streetAddress;
 	}
 	
 }

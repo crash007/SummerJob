@@ -19,12 +19,6 @@ public class MunicipalityJob extends Job{
 	@XMLElement
 	@ManyToOne(autoGet=true,autoAdd=true, autoUpdate=true, remoteKeyField="id")
 	private MunicipalityManager manager;
-
-	@DAOManaged(columnName="workplaceId")
-	@XMLElement
-	@ManyToOne(autoGet=true,autoAdd=true, autoUpdate=true, remoteKeyField="id")
-	private MunicipalityWorkplace workplace;
-	
 	 
 	@DAOManaged
 	@XMLElement
@@ -46,6 +40,25 @@ public class MunicipalityJob extends Job{
 	@XMLElement
 	@ManyToOne(remoteKeyField = "id", autoAdd = true, autoGet = true, autoUpdate = true)
 	private MunicipalityJobArea area;
+	
+	@DAOManaged
+	@XMLElement
+	private String organization;
+	
+	//Förvaltning
+	@DAOManaged
+	@XMLElement
+	private String administration;
+	
+	//Plats
+	@DAOManaged
+	@XMLElement
+	private String location;
+	
+	// Fritext för avdelning
+	@DAOManaged
+	@XMLElement
+	private String department;
 	
 	public Period getPeriod() {
 		return period;
@@ -71,14 +84,6 @@ public class MunicipalityJob extends Job{
 		this.manager = manager;
 	}
 
-	public MunicipalityWorkplace getWorkplace() {
-		return workplace;
-	}
-
-	public void setWorkplace(MunicipalityWorkplace workplace) {
-		this.workplace = workplace;
-	}
-
 	public List<MunicipalityMentor> getMentors() {
 		return mentors;
 	}
@@ -95,10 +100,43 @@ public class MunicipalityJob extends Job{
 		this.area = area;
 	}
 
+	public String getOrganization() {
+		return organization;
+	}
+
+	public void setOrganization(String organization) {
+		this.organization = organization;
+	}
+
+	public String getAdministration() {
+		return administration;
+	}
+
+	public void setAdministration(String administration) {
+		this.administration = administration;
+	}
+
+	public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
+	}
+
+	public String getDepartment() {
+		return department;
+	}
+
+	public void setDepartment(String department) {
+		this.department = department;
+	}
+
 	@Override
 	public String toString() {
-		return "MunicipalityJob [manager=" + manager + ", workplace=" + workplace + ", mentors=" + mentors + ", period="
-				+ period + ", matchedApplications=" + matchedApplications + ", area=" + area + "]";
+		return "MunicipalityJob [manager=" + manager + ", mentors=" + mentors + ", period=" + period
+				+ ", matchedApplications=" + matchedApplications + ", area=" + area + ", organization=" + organization
+				+ ", administration=" + administration + ", location=" + location + ", department=" + department + "]";
 	}
 
 }

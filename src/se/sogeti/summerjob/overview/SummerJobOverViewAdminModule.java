@@ -11,20 +11,12 @@ import javax.sql.DataSource;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import se.sogeti.jobapplications.beans.Manager;
-import se.sogeti.jobapplications.beans.Mentor;
-import se.sogeti.jobapplications.beans.Person;
-import se.sogeti.jobapplications.beans.Workplace;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityJob;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityJobApplication;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityJobArea;
 import se.sogeti.jobapplications.daos.AreaDAO;
-import se.sogeti.jobapplications.daos.ManagerDAO;
-import se.sogeti.jobapplications.daos.MentorDAO;
 import se.sogeti.jobapplications.daos.JobApplicationDAO;
 import se.sogeti.jobapplications.daos.JobDAO;
-import se.sogeti.jobapplications.daos.PersonDAO;
-import se.sogeti.jobapplications.daos.WorkplaceDAO;
 import se.sogeti.periodsadmin.beans.Period;
 import se.sogeti.periodsadmin.daos.PeriodDAO;
 import se.unlogic.hierarchy.core.beans.SimpleForegroundModuleResponse;
@@ -46,7 +38,6 @@ public class SummerJobOverViewAdminModule extends AnnotatedForegroundModule{
 	private JobApplicationDAO municipalityJobApplicationDAO;
 	//private PersonDAO personDAO;
 //	private PreferedAreaDAO preferedAreaDAO;
-	private WorkplaceDAO workplaceDAO;
 	
 	private PeriodDAO periodDAO;
 	
@@ -64,7 +55,6 @@ public class SummerJobOverViewAdminModule extends AnnotatedForegroundModule{
 		municipalityJobApplicationDAO = new JobApplicationDAO(dataSource, MunicipalityJobApplication.class, daoFactory);
 		//personDAO = new PersonDAO(dataSource, Person.class, daoFactory);
 //		preferedAreaDAO = new PreferedAreaDAO(dataSource, PreferedArea.class, daoFactory);
-		workplaceDAO = new WorkplaceDAO(dataSource, Workplace.class, daoFactory);
 		
 		periodDAO = new PeriodDAO(dataSource, Period.class, daoFactory);
 	}

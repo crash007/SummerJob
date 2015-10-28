@@ -17,10 +17,5 @@ public class BusinessSectorJobApplication extends JobApplication{
 	@DAOManaged(columnName="jobId")
 	@ManyToOne(remoteKeyField="id",autoGet=false,autoAdd=false,autoUpdate=false)
 	private BusinessSectorJob job;
-	
-	@DAOManaged(columnName="personId")
-	@ManyToOne(remoteKeyField="id", autoGet=false, autoAdd=false, autoUpdate=false)
-	private BusinessSectorPerson person;
-	
 
 }
