@@ -1,11 +1,34 @@
 package se.sogeti.jobapplications.beans;
 
-import se.unlogic.standardutils.dao.annotations.DAOManaged;
-import se.unlogic.standardutils.xml.XMLElement;
+import java.util.List;
 
-public class DriversLicenseType {
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
+import se.sogeti.jobapplications.beans.business.BusinessSectorJob;
+import se.sogeti.jobapplications.beans.municipality.MunicipalityJob;
+import se.unlogic.standardutils.dao.annotations.DAOManaged;
+import se.unlogic.standardutils.dao.annotations.Key;
+import se.unlogic.standardutils.dao.annotations.OneToMany;
+import se.unlogic.standardutils.dao.annotations.Table;
+import se.unlogic.standardutils.xml.Elementable;
+import se.unlogic.standardutils.xml.XMLElement;
+import se.unlogic.standardutils.xml.XMLGenerator;
+
+@XMLElement
+@Table(name = "summer_job_driverslicensetype")
+public class DriversLicenseType implements Elementable {
 	
 	@DAOManaged
+	@OneToMany
+	private List<MunicipalityJob> municipalityJobs;
+
+	@DAOManaged
+	@OneToMany
+	private List<BusinessSectorJob> businessSectorJobs;
+	
+	@DAOManaged
+	@Key
 	@XMLElement
 	private Integer id;
 	
@@ -39,5 +62,26 @@ public class DriversLicenseType {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	@Override
+	public Element toXML(Document doc) {
+		return XMLGenerator.toXML(this, doc);
+	}
+
+	public List<BusinessSectorJob> getBusinessSectorJobs() {
+		return businessSectorJobs;
+	}
+
+	public void setBusinessSectorJobs(List<BusinessSectorJob> businessSectorJobs) {
+		this.businessSectorJobs = businessSectorJobs;
+	}
+
+	public List<MunicipalityJob> getMunicipalityJobs() {
+		return municipalityJobs;
+	}
+
+	public void setMunicipalityJobs(List<MunicipalityJob> municipalityJobs) {
+		this.municipalityJobs = municipalityJobs;
 	}
 }
