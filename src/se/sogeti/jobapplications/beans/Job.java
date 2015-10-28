@@ -5,6 +5,7 @@ import java.sql.Date;
 import se.sogeti.jobapplications.interfaces.Requirements;
 import se.unlogic.standardutils.dao.annotations.DAOManaged;
 import se.unlogic.standardutils.dao.annotations.Key;
+import se.unlogic.standardutils.dao.annotations.ManyToOne;
 import se.unlogic.standardutils.xml.XMLElement;
 
 @XMLElement
@@ -53,6 +54,10 @@ public abstract class Job implements Requirements{
 	@DAOManaged
 	@XMLElement
 	private Boolean hasDriversLicense;
+	
+	@DAOManaged(columnName="driversLicenseType")
+	@ManyToOne(remoteKeyField="id", autoGet = true, autoAdd = true, autoUpdate = true)
+	private DriversLicenseType driversLicenseType;
 	
 	@DAOManaged
 	@XMLElement
@@ -158,6 +163,14 @@ public abstract class Job implements Requirements{
 
 	public void setHasDriversLicense(Boolean hasDriversLicense) {
 		this.hasDriversLicense = hasDriversLicense;
+	}
+
+	public DriversLicenseType getDriversLicenseType() {
+		return driversLicenseType;
+	}
+
+	public void setDriversLicenseType(DriversLicenseType driversLicenseType) {
+		this.driversLicenseType = driversLicenseType;
 	}
 	
 }

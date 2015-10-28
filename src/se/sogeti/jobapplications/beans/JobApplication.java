@@ -28,9 +28,13 @@ public abstract class JobApplication{
 	@XMLElement
 	private boolean hasDriversLicense;
 	
-	@DAOManaged
-	@XMLElement
-	private String driversLicenseType;
+	@DAOManaged(columnName="driversLicenseType")
+	@ManyToOne(remoteKeyField="id", autoGet = true, autoAdd = true, autoUpdate = true)
+	private DriversLicenseType driversLicenseType;
+	
+//	@DAOManaged
+//	@XMLElement
+//	private Integer driversLicenseType;
 	
 	@DAOManaged
 	@XMLElement
@@ -81,11 +85,11 @@ public abstract class JobApplication{
 		this.hasDriversLicense = hasDriversLicense;
 	}
 
-	public String getDriversLicenseType() {
+	public DriversLicenseType getDriversLicenseType() {
 		return driversLicenseType;
 	}
 
-	public void setDriversLicenseType(String driversLicenseType) {
+	public void setDriversLicenseType(DriversLicenseType driversLicenseType) {
 		this.driversLicenseType = driversLicenseType;
 	}
 
