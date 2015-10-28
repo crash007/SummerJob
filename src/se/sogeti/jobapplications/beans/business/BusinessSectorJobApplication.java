@@ -2,6 +2,7 @@ package se.sogeti.jobapplications.beans.business;
 
 import java.sql.Date;
 
+import se.sogeti.jobapplications.beans.DriversLicenseType;
 import se.sogeti.jobapplications.beans.JobApplication;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityJob;
 import se.unlogic.standardutils.dao.annotations.DAOManaged;
@@ -17,5 +18,9 @@ public class BusinessSectorJobApplication extends JobApplication{
 	@DAOManaged(columnName="jobId")
 	@ManyToOne(remoteKeyField="id",autoGet=false,autoAdd=false,autoUpdate=false)
 	private BusinessSectorJob job;
+	
+	@DAOManaged(columnName="driversLicenseTypeId")
+	@ManyToOne(remoteKeyField="id")
+	private DriversLicenseType driversLicenseType;
 
 }
