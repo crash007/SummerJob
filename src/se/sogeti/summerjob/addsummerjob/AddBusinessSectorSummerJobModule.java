@@ -103,8 +103,8 @@ public class AddBusinessSectorSummerJobModule extends AnnotatedRESTModule{
 	@RESTMethod(alias="add/businesssectorsummerjob.json", method="post")
 	public void addSummerjob(HttpServletRequest req, HttpServletResponse res, User user, URIParser uriParser) throws IOException, SQLException {
 		
-		GsonBuilder builder = new GsonBuilder();
-        Gson gson = builder.setDateFormat("yyyy-MM-dd").create();
+//		GsonBuilder builder = new GsonBuilder();
+//        Gson gson = builder.setDateFormat("yyyy-MM-dd").create();
         
         PrintWriter writer = res.getWriter();
         String callback = req.getParameter("callback"); 
@@ -152,15 +152,14 @@ public class AddBusinessSectorSummerJobModule extends AnnotatedRESTModule{
 			 mentors.add(mentor);
 		}
 		job.setMentors(mentors);
-		
         
+		String company = req.getParameter("company");
         String streetAddress = req.getParameter("street");
         String zipCode = req.getParameter("postalCode");
         String city = req.getParameter("postalArea");
-        String company = req.getParameter("company");
         
         if (company == null || company.isEmpty()) {
-        	JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Fältet för företagsnamn kan inte lämnas tomma.\"}", callback, writer);
+        	JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Fältet för företagsnamn kan inte lämnas tomt.\"}", callback, writer);
         	return;
         }
         
@@ -175,7 +174,6 @@ public class AddBusinessSectorSummerJobModule extends AnnotatedRESTModule{
         workplace.setZipCode(zipCode);
         workplace.setCity(city);
         workplace.setCompany(company);
-        
         job.setWorkplace(workplace);
         
         String managerFirstname = req.getParameter("manager-firstname");
@@ -194,11 +192,13 @@ public class AddBusinessSectorSummerJobModule extends AnnotatedRESTModule{
         manager.setLastname(managerLastname);
         manager.setMobilePhone(managerPhone);
         manager.setEmail(managerEmail);
-        
         job.setManager(manager);
         
         job.setIsOverEighteen(req.getParameter("isOverEighteen") != null ? true : false);
+        log.info("isOverEighteen: " + req.getParameter("isOverEighteen"));
         job.setHasDriversLicense(req.getParameter("hasDriversLicense") != null ? true : false);
+        log.info("hasDriversLicense: " + req.getParameter("hasDriversLicense"));
+        job.setFreeTextRequirements(req.getParameter("other-requirements"));
 //        job.setRequirementsFreeText(req.getParameter("other-requirements"));
         
 		try {
@@ -208,7 +208,7 @@ public class AddBusinessSectorSummerJobModule extends AnnotatedRESTModule{
 			return;
 		} catch (SQLException e) {
 			log.error("SQL exception", e);
-			JsonResponse.sendJsonResponse("{\"status\":\"error\", \"message\":\"Något gick fel.\"}", callback, writer);
+			JsonResponse.sendJsonResponse("{\"status\":\"error\", \"message\":\"Något gick fel när annonsen skulle sparas.\"}", callback, writer);
 		}				
 	}
 	
