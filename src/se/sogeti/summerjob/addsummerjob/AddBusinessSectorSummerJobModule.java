@@ -7,7 +7,7 @@ import java.io.PrintWriter;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Enumeration;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,13 +17,17 @@ import javax.sql.DataSource;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import se.sogeti.jobapplications.beans.DriversLicenseType;
 import se.sogeti.jobapplications.beans.business.BusinessSectorJob;
 import se.sogeti.jobapplications.beans.business.BusinessSectorManager;
 import se.sogeti.jobapplications.beans.business.BusinessSectorMentor;
 import se.sogeti.jobapplications.beans.business.BusinessSectorWorkplace;
+import se.sogeti.jobapplications.daos.DriversLicenseTypeDAO;
 import se.sogeti.jobapplications.daos.JobDAO;
 import se.sogeti.periodsadmin.JsonResponse;
 import se.sogeti.summerjob.FormUtils;
+//github.com/crash007/SummerJob.git
+import se.unlogic.hierarchy.core.beans.SimpleForegroundModuleResponse;
 import se.unlogic.hierarchy.core.beans.User;
 import se.unlogic.hierarchy.core.interfaces.ForegroundModuleResponse;
 import se.unlogic.hierarchy.core.utils.HierarchyAnnotatedDAOFactory;
@@ -34,60 +38,23 @@ import se.unlogic.standardutils.xml.XMLUtils;
 import se.unlogic.webutils.http.RequestUtils;
 import se.unlogic.webutils.http.URIParser;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
-
-//github.com/crash007/SummerJob.git
-import se.unlogic.hierarchy.core.beans.SimpleForegroundModuleResponse;
-
 public class AddBusinessSectorSummerJobModule extends AnnotatedRESTModule{
 	
 	
 	private JobDAO<BusinessSectorJob> businessSectorJobDAO;
+	private DriversLicenseTypeDAO driversLicenseTypeDAO;
 	
 	@Override
 	protected void createDAOs(DataSource dataSource) throws Exception {
 		super.createDAOs(dataSource);
 		HierarchyAnnotatedDAOFactory hierarchyDaoFactory = new HierarchyAnnotatedDAOFactory(dataSource, systemInterface);
 		businessSectorJobDAO = new JobDAO<BusinessSectorJob>(dataSource, BusinessSectorJob.class, hierarchyDaoFactory);
-
-		
-	
+		driversLicenseTypeDAO = new DriversLicenseTypeDAO(dataSource, DriversLicenseType.class, hierarchyDaoFactory);
 	}
 
 	@Override
 	public ForegroundModuleResponse defaultMethod(HttpServletRequest req, HttpServletResponse res, User user,
 			URIParser uriParser) throws Throwable {
-		
-//		Calendar calendar = Calendar.getInstance();
-//		calendar.set(calendar.get(Calendar.YEAR), 11, 10);
-//		
-//		BusinessSectorJob job = new BusinessSectorJob();
-//		job.setCreated(new java.sql.Date(new Date().getTime()));
-//		job.setApprovedWorkplace(false);
-//		job.setNumberOfWorkersNeeded(10);
-//		job.setWorkDescription("Det snöar mycket på sommaren därför behöver vi snöskottare.");
-//		job.setRequirementsFreeText("Var högerhänt");
-//		job.setWorkTitle("Snöskottare - Näringsliv");
-//		job.setStreetAddress("Blablagatan 12");
-//		job.setZipCode("85238");
-//		job.setCity("Sundsvall");
-//		job.setStartDate(new java.sql.Date(calendar.getTimeInMillis()));
-//		
-//		calendar.set(Calendar.MONTH, 12);
-//		job.setEndDate(new java.sql.Date(calendar.getTimeInMillis()));
-//		job.setManagerFirstname("Petter");
-//		job.setManagerLastname("Johansson");
-//		job.setManagerEmail("test@test.se");
-//		job.setManagerPhonenumber("555-121515");
-//		
-//		List<BusinessSectorApplicationRequirement> requirements = new ArrayList<BusinessSectorApplicationRequirement>();
-//		BusinessSectorApplicationRequirement requirement = new BusinessSectorApplicationRequirement();
-//		requirement.setName("Hittepåkrav");
-//		requirement.setStatus(true);
-//		job.setRequirements(requirements);
-		
 		
 		Document doc = XMLUtils.createDomDocument();
 		Element element = doc.createElement("Document");
@@ -97,7 +64,13 @@ public class AddBusinessSectorSummerJobModule extends AnnotatedRESTModule{
 		doc.appendChild(element);
 		Element jobForm = doc.createElement("BusinessSectorJobForm");
 		doc.getFirstChild().appendChild(jobForm);
-				
+		
+		Element driversLicenseElement = doc.createElement("DriversLicenseTypes");
+		List<DriversLicenseType> driverslicenseTypes = driversLicenseTypeDAO.getAll();
+		jobForm.appendChild(driversLicenseElement);
+		
+		XMLUtils.append(doc, driversLicenseElement, driverslicenseTypes);
+		
 		return new SimpleForegroundModuleResponse(doc);
 	}
 	
@@ -156,8 +129,8 @@ public class AddBusinessSectorSummerJobModule extends AnnotatedRESTModule{
         
 		String company = req.getParameter("company");
         String streetAddress = req.getParameter("street");
-        String zipCode = req.getParameter("postalCode");
-        String city = req.getParameter("postalArea");
+        String zipCode = req.getParameter("postalcode");
+        String city = req.getParameter("postalarea");
         
         if (company == null || company.isEmpty()) {
         	JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Fältet för företagsnamn kan inte lämnas tomt.\"}", callback, writer);
@@ -197,10 +170,22 @@ public class AddBusinessSectorSummerJobModule extends AnnotatedRESTModule{
         
         job.setIsOverEighteen(req.getParameter("isOverEighteen") != null ? true : false);
         log.info("isOverEighteen: " + req.getParameter("isOverEighteen"));
-        job.setHasDriversLicense(req.getParameter("hasDriversLicense") != null ? true : false);
-        log.info("hasDriversLicense: " + req.getParameter("hasDriversLicense"));
+        boolean hasDriversLicense = req.getParameter("hasDriversLicense") != null ? true : false;
+        job.setHasDriversLicense(hasDriversLicense);
+        log.info("hasDriversLicense: " + hasDriversLicense);
+        
+        if (hasDriversLicense) {
+        	Integer typeId = NumberUtils.toInt(req.getParameter("driversLicenseType"));
+        	
+        	if (typeId != null) {
+        		DriversLicenseType licenseType = driversLicenseTypeDAO.getTypeById(typeId);
+        		job.setDriversLicenseType(licenseType);
+        	}
+        }
+        
         job.setFreeTextRequirements(req.getParameter("other-requirements"));
         
+        job.setCreated(new Date(Calendar.getInstance().getTimeInMillis()));
 		try {
 			businessSectorJobDAO.save(job);
 			JsonResponse.sendJsonResponse("{\"status\":\"success\", \"message\":\"Annonsen har nu sparats. En handläggare kommer att granska annonsen innan den är synlig för sökande.\"}", callback, writer);

@@ -28,6 +28,10 @@
 					showOn: "button",
 					buttonImage: '<xsl:value-of select="/Document/requestinfo/contextpath"/>/static/f/<xsl:value-of select="/Document/module/sectionID"/>/<xsl:value-of select="/Document/module/moduleID"/>/pics/calendar_grid.png',
 					buttonImageOnly: true,
+					minDate: new Date(),
+					onSelect : function(selected) {
+						$("input[name*='endDate']").datepicker("option", "minDate", selected);
+					},
 					buttonText: 'Startdatum'
 				});
 				
@@ -35,6 +39,10 @@
 					showOn: "button",
 					buttonImage: '<xsl:value-of select="/Document/requestinfo/contextpath"/>/static/f/<xsl:value-of select="/Document/module/sectionID"/>/<xsl:value-of select="/Document/module/moduleID"/>/pics/calendar_grid.png',
 					buttonImageOnly: true,
+					minDate: new Date(),
+					onSelect : function(selected) {
+						$("input[name*='startDate']").datepicker("option", "maxDate", selected);
+					},
 					buttonText: 'Slutdatum'
 				});								    							  									
 			});	
@@ -45,7 +53,7 @@
 	</xsl:template>
 	
 	<xsl:template match="BusinessSectorJobForm">
-		<form method="POST" id="business-sector-job-form">
+		<form method="POST" id="business-sector-add-job-form">
 		
 			  	<div class="panel panel-default">
 				  <div class="panel-heading">
@@ -76,23 +84,19 @@
 				  	</div>
 				  	
 				  	<div class="form-group">
-<!-- 				  	<label for="period">Period</label> -->
 					  	<div class="form-group form-inline">
 						  	<div class="row">
 				  				<div class="col-md-3">
 								    <label for="startDate">Startdatum*</label>
 								    <input type="text" class="form-control" id="startDate" name="startDate" placeholder="" required="required"/>
-<!-- 								    <p class="help-block">Datum när arbetet börjar</p> -->
 					    		</div>
 					    		<div class="col-md-3">
 								    <label for="endDate">Slutdatum*</label>
 								    <input type="text" class="form-control" id="endDate" name="endDate" placeholder="" required="required"/>
-<!-- 								    <p class="help-block">Datum när arbetet avslutas</p> -->
 					    		</div>
 			    			</div>
-						  </div>
+						</div>
 				  	</div>
-			  		
 			  		
 			  		<div class="form-group" style="margin-top: 8px;">
 			  			<label>Ange handledare</label>
@@ -100,32 +104,6 @@
 			  			
 				    	</div>
 				    	
-<!-- 				    	<div id="mentor-template"> -->
-<!-- 				    		<div class="row" style="margin-bottom: 8px;"> -->
-<!-- 				  				<div class="col-md-3"> -->
-<!-- 								    <label for="mentor-firstname">FÃ¶rnamn</label>				     -->
-<!-- 								    <input type="text" class="form-control" id="mentor-firstname" name="mentor-firstname" placeholder=""/>	 -->
-<!-- 						    	</div> -->
-						    
-<!-- 						    	<div class="col-md-3"> -->
-<!-- 						    	 	<label for="mentor-lastname">Efternamn</label>	 -->
-<!-- 								    <input type="text" class="form-control" id="mentor-lastname" name="mentor-lastname" placeholder=""/>						   -->
-<!-- 						    	</div> -->
-						    
-<!-- 				  				<div class="col-md-3"> -->
-<!-- 								    <label for="mentor-phone">Telefonnummer</label>				     -->
-<!-- 								     <input type="text" class="form-control" id="mentor-phone" name="mentor-phone" placeholder=""/> -->
-								    
-<!-- 						    	</div> -->
-						    
-<!-- 				  				<div class="col-md-3"> -->
-<!-- 								    <label for="mentor-email">E-post</label>				     -->
-<!-- 								     <input type="text" class="form-control" id="mentor-email" name="mentor-email" placeholder=""/> -->
-<!-- 							    <p class="help-block">Valfri</p> -->
-<!-- 						    	</div> -->
-<!-- 					    	</div> -->
-				    	
-<!-- 				    	</div> -->
 				    	<a href="#" class="add-mentor-btn">Lägg till ny handledare</a>
 				  	</div>
 				  	
@@ -215,18 +193,11 @@
 					  		<div class="col-md-3">
 							    <label for="driversLicenseType">Välj körkortstyp</label>				    
 							    <select class="form-control" name="driversLicenseType" id="driversLicenseType">
-									<option>AM - Moped klass I</option>
-									<option>A1 - Lätt motorcykel</option>
-									<option>A2 - Mellanstor motorcykel</option>
-									<option>A - Tung motorcykel</option>
-									<option>B - Personbil och lätt lastbil</option>
-									<option>BE - Personbil med tungt släp</option>
-									<option>C1/C1E - Medeltung lastbil</option>
-									<option>C/CE - Tung lastbil</option>
-									<option>D1/D1E - Mellanstor buss</option>
-									<option>D/DE - Buss</option>
+									<xsl:for-each select="DriversLicenseTypes/DriversLicenseType">
+										<option value="{id}"><xsl:value-of select="name" /> - <xsl:value-of select="description" /></option>
+									</xsl:for-each>
 								</select>
-								</div>
+							</div>
 						</div>
 					  	
 						<div class="form-group">
@@ -244,7 +215,7 @@
 			  		</div>  
 			  		<div class="panel-body">	
 			  			<div>Efter att annonsen skickats in kommer en handläggare behöva godkänna den. När en handläggare godkänt annonsen kommer den vara synlig för sökande.</div>
-			  			<button style="margin-top: 4px;" type="submit" class="btn btn-default questions-submit">Skicka</button>
+			  			<button style="margin-top: 4px;" id="submit-business-sector-job" type="submit" class="btn btn-default questions-submit">Skicka</button>
 						 <span class="glyphicon glyphicon-ok collapse" aria-hidden="true"></span><span class="glyphicon glyphicon-remove collapse" aria-hidden="true"></span>
 					</div>
 			  </div>
