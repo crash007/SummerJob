@@ -1,17 +1,10 @@
 package se.sogeti.jobapplications.beans;
 
 import java.sql.Date;
-import java.util.List;
 
-import se.sogeti.jobapplications.beans.municipality.MunicipalityJobArea;
 import se.sogeti.jobapplications.interfaces.Requirements;
-import se.sogeti.periodsadmin.beans.Period;
 import se.unlogic.standardutils.dao.annotations.DAOManaged;
 import se.unlogic.standardutils.dao.annotations.Key;
-import se.unlogic.standardutils.dao.annotations.ManyToOne;
-import se.unlogic.standardutils.dao.annotations.OneToMany;
-import se.unlogic.standardutils.dao.annotations.OneToOne;
-import se.unlogic.standardutils.dao.annotations.Table;
 import se.unlogic.standardutils.xml.XMLElement;
 
 @XMLElement
