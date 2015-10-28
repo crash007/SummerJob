@@ -1,5 +1,6 @@
 package se.sogeti.jobapplications.beans.municipality;
 
+import se.sogeti.jobapplications.beans.DriversLicenseType;
 import se.sogeti.jobapplications.beans.GeoArea;
 import se.sogeti.jobapplications.beans.JobApplication;
 import se.unlogic.standardutils.dao.annotations.DAOManaged;
@@ -40,6 +41,11 @@ public class MunicipalityJobApplication extends JobApplication{
 	@DAOManaged(columnName="prefered_geo_area_3")
 	@ManyToOne(remoteKeyField="id")
 	private GeoArea preferedGeoArea3;
+	
+	@DAOManaged(columnName="driversLicenseTypeId")
+	@ManyToOne(remoteKeyField="id")
+	private DriversLicenseType driversLicenseType;
+	
 
 	public MunicipalityJob getJob() {
 		return job;

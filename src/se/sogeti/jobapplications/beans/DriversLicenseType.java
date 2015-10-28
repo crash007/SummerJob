@@ -6,7 +6,9 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import se.sogeti.jobapplications.beans.business.BusinessSectorJob;
+import se.sogeti.jobapplications.beans.business.BusinessSectorJobApplication;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityJob;
+import se.sogeti.jobapplications.beans.municipality.MunicipalityJobApplication;
 import se.unlogic.standardutils.dao.annotations.DAOManaged;
 import se.unlogic.standardutils.dao.annotations.Key;
 import se.unlogic.standardutils.dao.annotations.OneToMany;
@@ -26,6 +28,14 @@ public class DriversLicenseType implements Elementable {
 	@DAOManaged
 	@OneToMany
 	private List<BusinessSectorJob> businessSectorJobs;
+
+	@DAOManaged
+	@OneToMany
+	private List<MunicipalityJobApplication> municipalityJobApplications;
+
+	@DAOManaged
+	@OneToMany
+	private List<BusinessSectorJobApplication> businessSectorJobApplications;
 	
 	@DAOManaged
 	@Key

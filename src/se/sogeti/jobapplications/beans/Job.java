@@ -55,7 +55,7 @@ public abstract class Job implements Requirements{
 	@XMLElement
 	private Boolean hasDriversLicense;
 	
-	@DAOManaged(columnName="driversLicenseType")
+	@DAOManaged(columnName="driversLicenseTypeId")
 	@ManyToOne(remoteKeyField="id", autoGet = true, autoAdd = true, autoUpdate = true)
 	private DriversLicenseType driversLicenseType;
 	
