@@ -193,11 +193,9 @@ public class AddBusinessSectorSummerJobModule extends AnnotatedRESTModule{
         job.setHasDriversLicense(req.getParameter("hasDriversLicense") != null ? true : false);
         log.info("hasDriversLicense: " + req.getParameter("hasDriversLicense"));
         job.setFreeTextRequirements(req.getParameter("other-requirements"));
-//        job.setRequirementsFreeText(req.getParameter("other-requirements"));
         
 		try {
 			businessSectorJobDAO.save(job);
-//			JsonResponse.sendJsonResponse("{\"status\":\"success\", \"data\":" + gson.toJson(job) + "}", callback, writer);
 			JsonResponse.sendJsonResponse("{\"status\":\"success\", \"message\":\"Annonsen har nu sparats. En handläggare kommer att granska annonsen innan den är synlig för sökande.\"}", callback, writer);
 			return;
 		} catch (SQLException e) {
@@ -205,6 +203,5 @@ public class AddBusinessSectorSummerJobModule extends AnnotatedRESTModule{
 			JsonResponse.sendJsonResponse("{\"status\":\"error\", \"message\":\"Något gick fel när annonsen skulle sparas.\"}", callback, writer);
 		}				
 	}
-	
 	
 }
