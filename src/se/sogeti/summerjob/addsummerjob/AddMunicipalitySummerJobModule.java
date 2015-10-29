@@ -120,7 +120,8 @@ public class AddMunicipalitySummerJobModule extends AnnotatedRESTModule{
 			 
 			job.setMentors(mentors);
 			job.setNumberOfWorkersNeeded(NumberUtils.toInt(req.getParameter("numberOfWorkersNeeded")));
-			job.setApprovedWorkplace(false);
+			job.setApproved(false);
+			job.setControlled(false);
 			job.setWorkDescription(req.getParameter("work-description"));
 			job.setWorkTitle(req.getParameter("work-title"));
 			

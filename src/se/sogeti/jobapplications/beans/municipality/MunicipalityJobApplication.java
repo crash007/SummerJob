@@ -1,5 +1,8 @@
 package se.sogeti.jobapplications.beans.municipality;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
 import se.sogeti.jobapplications.beans.DriversLicenseType;
 import se.sogeti.jobapplications.beans.GeoArea;
 import se.sogeti.jobapplications.beans.JobApplication;
@@ -7,6 +10,7 @@ import se.unlogic.standardutils.dao.annotations.DAOManaged;
 import se.unlogic.standardutils.dao.annotations.ManyToOne;
 import se.unlogic.standardutils.dao.annotations.Table;
 import se.unlogic.standardutils.xml.XMLElement;
+import se.unlogic.standardutils.xml.XMLGenerator;
 
 @Table(name="summer_job_municipality_job_application")
 @XMLElement
@@ -18,32 +22,39 @@ public class MunicipalityJobApplication extends JobApplication{
 	@ManyToOne(remoteKeyField="id",autoGet=false,autoAdd=false,autoUpdate=false)
 	private MunicipalityJob job;
 	
+	@XMLElement
 	@DAOManaged(columnName="prefered_area_1")
-	@ManyToOne(remoteKeyField="id")
+	@ManyToOne(remoteKeyField="id",autoGet=true)
 	private MunicipalityJobArea preferedArea1;
 	
+	@XMLElement
 	@DAOManaged(columnName="prefered_area_2")
-	@ManyToOne(remoteKeyField="id")
+	@ManyToOne(remoteKeyField="id",autoGet=true)
 	private MunicipalityJobArea preferedArea2;
 	
+	@XMLElement
 	@DAOManaged(columnName="prefered_area_3")
-	@ManyToOne(remoteKeyField="id")
+	@ManyToOne(remoteKeyField="id",autoGet=true)
 	private MunicipalityJobArea preferedArea3;
 	
+	@XMLElement
 	@DAOManaged(columnName="prefered_geo_area_1")
-	@ManyToOne(remoteKeyField="id")
+	@ManyToOne(remoteKeyField="id",autoGet=true)
 	private GeoArea preferedGeoArea1;
 	
+	@XMLElement
 	@DAOManaged(columnName="prefered_geo_area_2")
-	@ManyToOne(remoteKeyField="id")
+	@ManyToOne(remoteKeyField="id",autoGet=true)
 	private GeoArea preferedGeoArea2;
 	
+	@XMLElement
 	@DAOManaged(columnName="prefered_geo_area_3")
-	@ManyToOne(remoteKeyField="id")
+	@ManyToOne(remoteKeyField="id",autoGet=true)
 	private GeoArea preferedGeoArea3;
 	
+	@XMLElement
 	@DAOManaged(columnName="driversLicenseTypeId")
-	@ManyToOne(remoteKeyField="id")
+	@ManyToOne(remoteKeyField="id",autoGet=true)
 	private DriversLicenseType driversLicenseType;
 	
 
@@ -109,6 +120,12 @@ public class MunicipalityJobApplication extends JobApplication{
 		return "MunicipalityJobApplication [job=" + job + ", preferedArea1=" + preferedArea1 + ", preferedArea2="
 				+ preferedArea2 + ", preferedArea3=" + preferedArea3 + ", preferedGeoArea1=" + preferedGeoArea1
 				+ ", preferedGeoArea2=" + preferedGeoArea2 + ", preferedGeoArea3=" + preferedGeoArea3 + "]";
+	}
+
+	@Override
+	public Element toXML(Document doc) {
+		// TODO Auto-generated method stub
+		return XMLGenerator.toXML(this, doc);
 	}
 
 }

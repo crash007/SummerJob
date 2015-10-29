@@ -23,12 +23,6 @@ public class JobApplicationDAO<T extends JobApplication> extends AnnotatedDAO<T>
 	public void save(T bean) throws SQLException {
 		this.addOrUpdate(bean, null);
 	}
-	
-	public T getApplicationById(Integer jobApplicationId) throws SQLException {
-		HighLevelQuery<T> query = new HighLevelQuery<T>();
-		query.addParameter(this.getParamFactory("id", Integer.class).getParameter(jobApplicationId));
-		return this.get(query);
-	}
 
 	/**
 	 * To get all applications that has been matched to a certain job.
@@ -37,6 +31,13 @@ public class JobApplicationDAO<T extends JobApplication> extends AnnotatedDAO<T>
 		HighLevelQuery<T> query = new HighLevelQuery<T>();
 		//TODO kolla vilket id 
 		query.addParameter(this.getParamFactory("id", Integer.class).getParameter(jobApplicationId));
+		return this.getAll(query);
+	}
+	
+	public List<T> getAllUncontrolled() throws SQLException {
+		HighLevelQuery<T> query = new HighLevelQuery<T>();
+		//TODO kolla vilket id 
+		query.addParameter(this.getParamFactory("controlled", boolean.class).getParameter(false));
 		return this.getAll(query);
 	}
 	

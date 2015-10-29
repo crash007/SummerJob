@@ -5,6 +5,7 @@ import java.util.List;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import se.sogeti.jobapplications.beans.municipality.MunicipalityJob;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityJobApplication;
 import se.unlogic.standardutils.dao.annotations.DAOManaged;
 import se.unlogic.standardutils.dao.annotations.Key;
@@ -28,6 +29,10 @@ public class GeoArea implements Elementable{
 	@DAOManaged
 	@OneToMany
 	private List<MunicipalityJobApplication> applicationsPreferedGeoArea;
+	
+	@DAOManaged
+	@OneToMany
+	private List<MunicipalityJob> muncipalityJobs;
 	
 	
 	@DAOManaged(columnName="name")

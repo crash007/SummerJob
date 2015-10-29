@@ -3,6 +3,7 @@ package se.sogeti.summerjob.overview;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -31,32 +32,18 @@ import se.unlogic.webutils.http.URIParser;
 
 public class SummerJobOverViewAdminModule extends AnnotatedForegroundModule{
 	
-	private AreaDAO areaDAO;
-	//private ManagerDAO managerDAO;
-	//private MentorDAO mentorDAO;
+
 	private JobDAO<MunicipalityJob> municipalityJobDAO;
-	private JobApplicationDAO municipalityJobApplicationDAO;
-	//private PersonDAO personDAO;
-//	private PreferedAreaDAO preferedAreaDAO;
-	
-	private PeriodDAO periodDAO;
-	
-	
+	private JobApplicationDAO<MunicipalityJobApplication> municipalityJobApplicationDAO;
 	
 	@Override
 	protected void createDAOs(DataSource dataSource) throws Exception {
-		super.createDAOs(dataSource);
-	//	this.daoFactory = new FlowEngineDAOFactory(dataSource, systemInterface.getUserHandler(), systemInterface.getGroupHandler());
-		HierarchyAnnotatedDAOFactory daoFactory = new HierarchyAnnotatedDAOFactory(dataSource, systemInterface);	
-		areaDAO = new AreaDAO(dataSource, MunicipalityJobArea.class, daoFactory);
-		//managerDAO = new ManagerDAO(dataSource, Manager.class, daoFactory);
-	//	mentorDAO = new MentorDAO(dataSource, Mentor.class, daoFactory);
-		municipalityJobDAO = new JobDAO(dataSource, MunicipalityJob.class, daoFactory);
-		municipalityJobApplicationDAO = new JobApplicationDAO(dataSource, MunicipalityJobApplication.class, daoFactory);
-		//personDAO = new PersonDAO(dataSource, Person.class, daoFactory);
-//		preferedAreaDAO = new PreferedAreaDAO(dataSource, PreferedArea.class, daoFactory);
-		
-		periodDAO = new PeriodDAO(dataSource, Period.class, daoFactory);
+		super.createDAOs(dataSource);	
+		HierarchyAnnotatedDAOFactory daoFactory = new HierarchyAnnotatedDAOFactory(dataSource, systemInterface);		
+
+		municipalityJobDAO = new JobDAO<MunicipalityJob>(dataSource, MunicipalityJob.class, daoFactory);
+		municipalityJobApplicationDAO = new JobApplicationDAO<MunicipalityJobApplication>(dataSource, MunicipalityJobApplication.class, daoFactory);
+
 	}
 
 	@Override
@@ -72,19 +59,42 @@ public class SummerJobOverViewAdminModule extends AnnotatedForegroundModule{
 		Element overView = doc.createElement("OverView");
 		doc.getFirstChild().appendChild(overView);
 		
-		Element newJobs = doc.createElement("NewJobs");
-		Element newApplications = doc.createElement("NewApplications");
+		Element newMunicipalityJobsElement = doc.createElement("NewMunicipalityJobs");
+		List<MunicipalityJob> newJobs = municipalityJobDAO.getAllUncontrolled();
+		XMLUtils.append(doc,newMunicipalityJobsElement, newJobs);
 		
-		overView.appendChild(newJobs);
-		overView.appendChild(newApplications);
+		overView.appendChild(newMunicipalityJobsElement);
+		
+		
+		Element newMunicipalityApplicationsElem = doc.createElement("NewMunicipalityApplications");
+		List<MunicipalityJobApplication> newMunicipalityApplications = municipalityJobApplicationDAO.getAllUncontrolled();
+	
+		for(MunicipalityJobApplication app: newMunicipalityApplications){
+			Element municipalityApplication = doc.createElement("MunicipalityApplication");
+			XMLUtils.appendNewElement(doc, municipalityApplication, "firstname", app.getFirstname());
+			XMLUtils.appendNewElement(doc, municipalityApplication, "lastname", app.getLastname());
+			
+			XMLUtils.appendNewElement(doc, municipalityApplication, "preferedArea1", app.getPreferedArea1().getName());
+			XMLUtils.appendNewElement(doc, municipalityApplication, "preferedArea2", app.getPreferedArea2().getName());
+			XMLUtils.appendNewElement(doc, municipalityApplication, "preferedArea3", app.getPreferedArea3().getName());
+			
+			XMLUtils.appendNewElement(doc, municipalityApplication, "preferedGeoArea1", app.getPreferedGeoArea1().getName());
+			XMLUtils.appendNewElement(doc, municipalityApplication, "preferedGeoArea2", app.getPreferedGeoArea2().getName());
+			XMLUtils.appendNewElement(doc, municipalityApplication, "preferedGeoArea3", app.getPreferedGeoArea3().getName());
+			XMLUtils.appendNewElement(doc, municipalityApplication, "created", app.getCreated());
+			
+			if(app.getDriversLicenseType()!=null){
+				XMLUtils.appendNewElement(doc, municipalityApplication, "driversLicenseType", app.getDriversLicenseType().getName());
+			}
+			newMunicipalityApplicationsElem.appendChild(municipalityApplication);
+		}
+		
+		XMLUtils.append(doc,newMunicipalityApplicationsElem, newMunicipalityApplications);
+		overView.appendChild(newMunicipalityApplicationsElem);
 		
 		
 		
 		return new SimpleForegroundModuleResponse(doc);
 	}
 	
-	@RESTMethod(alias="add/summerjob.json", method="post")
-	public void addSummerjob(HttpServletRequest req, HttpServletResponse res, User user, URIParser uriParser) throws IOException, SQLException {
-	
-	}
 }
