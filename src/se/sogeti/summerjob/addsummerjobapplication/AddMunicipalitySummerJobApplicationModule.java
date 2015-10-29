@@ -1,6 +1,7 @@
 package se.sogeti.summerjob.addsummerjobapplication;
 
 
+import java.sql.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -58,7 +59,8 @@ public class AddMunicipalitySummerJobApplicationModule extends AnnotatedRESTModu
 		if(req.getMethod().equals("POST")){
 			log.info("POST");
 			MunicipalityJobApplication app = new MunicipalityJobApplication();
-			app.setApprovedApplication(false);
+			app.setApproved(false);
+			app.setControlled(false);
 			app.setCvLocation(req.getParameter("cvFile"));
 			
 			app.setHasDriversLicense(req.getParameter("hasDriversLicense") !=null ? true:false);
@@ -100,8 +102,9 @@ public class AddMunicipalitySummerJobApplicationModule extends AnnotatedRESTModu
 			app.setPreferedGeoArea2(geoArea2);
 			app.setPreferedGeoArea3(geoArea3);
 			
-			app.setApprovedApplication(false);
+			
 			app.setRanking(3);
+			app.setCreated(new Date(new java.util.Date().getTime()));
 			log.info(app);
 			
 			

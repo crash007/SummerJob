@@ -187,6 +187,8 @@ public class AddBusinessSectorSummerJobModule extends AnnotatedRESTModule{
         manager.setMobilePhone(managerPhone);
         manager.setEmail(managerEmail);
         job.setManager(manager);
+        job.setApproved(false);
+        job.setControlled(false);
         
         job.setIsOverEighteen(req.getParameter("isOverEighteen") != null ? true : false);
         log.info("isOverEighteen: " + req.getParameter("isOverEighteen"));

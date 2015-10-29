@@ -3,12 +3,16 @@ package se.sogeti.jobapplications.beans.business;
 import java.sql.Date;
 import java.util.List;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
 import se.sogeti.jobapplications.beans.Job;
 import se.unlogic.standardutils.dao.annotations.DAOManaged;
 import se.unlogic.standardutils.dao.annotations.ManyToOne;
 import se.unlogic.standardutils.dao.annotations.OneToMany;
 import se.unlogic.standardutils.dao.annotations.Table;
 import se.unlogic.standardutils.xml.XMLElement;
+import se.unlogic.standardutils.xml.XMLGenerator;
 
 @Table(name = "summer_job_business_sector_job")
 public class BusinessSectorJob extends Job{
@@ -104,5 +108,10 @@ public class BusinessSectorJob extends Job{
 
 	public void setCompany(String company) {
 		this.company = company;
+	}
+
+	@Override
+	public Element toXML(Document doc) {
+		return XMLGenerator.toXML(this, doc);
 	}
 }

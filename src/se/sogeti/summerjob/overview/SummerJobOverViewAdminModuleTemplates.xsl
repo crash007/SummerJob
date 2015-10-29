@@ -18,54 +18,30 @@
 		  <div class="col-xs-9 col-md-6">
 		  	<div class="panel panel-default">
 			  <div class="panel-heading">
-			    <h3 class="panel-title">Nya arbetsplatser</h3>
+			    <h3 class="panel-title">Nya inkomna arbetsplatser</h3>
 			  </div>
 			  <div class="panel-body">
 			    <table class="table table-bordered">
 				  <thead>
 				  	<tr>
 				  		<th>Förvaltning</th>
-	     				<th>Chef</th>
+	     				<th>Verksamhetsområde</th>
+	     				<th>Geografiskt område</th>
 	     				<th>Antal platser</th>
+	     				<th>Skapad</th>
 				  	</tr>
 				  </thead>
 				  
 				  <tbody>
-				   	<xsl:apply-templates select="NewJobs/Job"/>				   	
-				  </tbody>
-				</table>
-			  </div>
-			</div>
-		  </div>
-		  <div class="col-xs-9 col-md-6">
-		  	<div class="panel panel-default">
-			  <div class="panel-heading">
-			    <h3 class="panel-title">Nya ansökningar</h3>
-			  </div>
-			  <div class="panel-body">
-			    <table class="table table-bordered">
-				  <thead>
-				  	<tr>
-				  		
-				  		<th>Förnamn</th>
-	     				<th>Efternamn</th>
-	     				<th>Område 1</th>
-				  		<th>Område 2</th>
-				  		<th>Område 3</th>
-				  		<th>Datum</th>
-				  		
-				  	</tr>
-				  </thead>
-				  	<xsl:apply-templates select="NewApplications/Application"/>
-				  <tbody>
-				  
+				   	<xsl:apply-templates select="NewMunicipalityJobs/MunicipalityJob"/>				   	
 				  </tbody>
 				</table>
 			  </div>
 			</div>
 		  </div>
 		  
-		  <div class="col-xs-9 col-md-6">
+		  
+  		  <div class="col-xs-9 col-md-6">
 		  	<div class="panel panel-default">
 			  <div class="panel-heading">
 			    <h3 class="panel-title">Godkända arbetsplatser</h3>
@@ -104,7 +80,42 @@
 			  </div>
 			</div>
 		  </div>
-		  <div class="col-xs-9 col-md-6">
+		  
+		  <div class="col-xs-18 col-md-12">
+		  	<div class="panel panel-default">
+			  <div class="panel-heading">
+			    <h3 class="panel-title">Nya ansökningar</h3>
+			  </div>
+			  <div class="panel-body">
+			    <table class="table table-bordered">
+				  <thead>
+				  	<tr>
+				  		
+				  		<th>Förnamn</th>
+	     				<th>Efternamn</th>
+	     				<th>Verksamhetsområde 1</th>
+				  		<th>Verksamhetsområde 2</th>
+				  		<th>Verksamhetsområde 3</th>
+				  		<th>Område 1</th>
+				  		<th>Område 2</th>
+				  		<th>Område 3</th>
+				  		<th>Körtkortstyp</th>
+				  		
+				  		<th>Datum</th>
+				  		
+				  	</tr>
+				  </thead>
+				  	<xsl:apply-templates select="NewMunicipalityApplications/MunicipalityApplication"/>
+				  <tbody>
+				  
+				  </tbody>
+				</table>
+			  </div>
+			</div>
+		  </div>
+		  
+
+		  <div class="col-xs-18 col-md-12">
 		  	<div class="panel panel-default">
 			  <div class="panel-heading">
 			    <h3 class="panel-title">Godkända ansökningar</h3>
@@ -282,37 +293,58 @@
 	
 	</xsl:template>
 	
-	<xsl:template match="Job">
+	<xsl:template match="MunicipalityJob">
 		<tr>
-   			<xsl:value-of select="location"></xsl:value-of>
+			<td>
+	   			<xsl:value-of select="organization"></xsl:value-of>
+	   		</td>
+	   		<td>
+	   			<xsl:value-of select="MunicipalityJobArea/name"/>
+	   		</td>
+	   		<td>
+	   			<xsl:value-of select="GeoArea/name"/>
+	   		</td>
+	   		<td>
+	   			<xsl:value-of select="numberOfWorkersNeeded"></xsl:value-of>
+	   		</td>
+	   		<td>
+	   			<xsl:value-of select="created"></xsl:value-of>
+	   		</td>
    		</tr>
-   		<tr>
-   			<xsl:value-of select="manager"></xsl:value-of>
-   		</tr>
-   		<tr>
-   			<xsl:value-of select="numberOfWorkersNeeded"></xsl:value-of>
-   		</tr>
-   		
 	</xsl:template>
 	
-	<xsl:template match="Application">
+	<xsl:template match="MunicipalityApplication">
 		<tr>
-   			<xsl:value-of select="firstname"></xsl:value-of>
-   		</tr>
-   		<tr>
-   			<xsl:value-of select="lastname"></xsl:value-of>
-   		</tr>
-   		<tr>
-   			<xsl:value-of select="preferedArea1"></xsl:value-of>
-   		</tr>
-   		<tr>
-   			<xsl:value-of select="preferedArea2"></xsl:value-of>
-   		</tr>
-   		<tr>
-   			<xsl:value-of select="preferedArea3"></xsl:value-of>
-   		</tr>
-   		<tr>
-   			<xsl:value-of select="created"></xsl:value-of>
+			<td>
+	   			<xsl:value-of select="firstname"></xsl:value-of>
+	   		</td>
+	   		<td>
+	   			<xsl:value-of select="lastname"></xsl:value-of>
+	   		</td>
+	   		<td>
+	   			<xsl:value-of select="preferedArea1"></xsl:value-of>
+	   		</td>
+	   		<td>
+	   			<xsl:value-of select="preferedArea2"></xsl:value-of>
+	   		</td>
+	   		<td>
+	   			<xsl:value-of select="preferedArea3"></xsl:value-of>
+	   		</td>
+	   		<td>
+	   			<xsl:value-of select="preferedGeoArea1"></xsl:value-of>
+	   		</td>
+	   		<td>
+	   			<xsl:value-of select="preferedGeoArea2"></xsl:value-of>
+	   		</td>
+	   		<td>
+	   			<xsl:value-of select="preferedGeoArea3"></xsl:value-of>
+	   		</td>
+	   		<td>
+	   			<xsl:value-of select="driversLicenseType"></xsl:value-of>
+	   		</td>
+	   		<td>
+	   			<xsl:value-of select="created"></xsl:value-of>
+	   		</td>
    		</tr>
 	</xsl:template>
 	

@@ -2,14 +2,19 @@ package se.sogeti.jobapplications.beans.municipality;
 
 import java.util.List;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
 import se.sogeti.jobapplications.beans.Job;
-import se.sogeti.jobapplications.beans.Manager;
+import se.sogeti.jobapplications.beans.ContactDetails;
+import se.sogeti.jobapplications.beans.GeoArea;
 import se.sogeti.periodsadmin.beans.Period;
 import se.unlogic.standardutils.dao.annotations.DAOManaged;
 import se.unlogic.standardutils.dao.annotations.ManyToOne;
 import se.unlogic.standardutils.dao.annotations.OneToMany;
 import se.unlogic.standardutils.dao.annotations.Table;
 import se.unlogic.standardutils.xml.XMLElement;
+import se.unlogic.standardutils.xml.XMLGenerator;
 
 @Table(name = "summer_job_municipality_job")
 @XMLElement
@@ -40,6 +45,12 @@ public class MunicipalityJob extends Job{
 	@XMLElement
 	@ManyToOne(remoteKeyField = "id", autoAdd = true, autoGet = true, autoUpdate = true)
 	private MunicipalityJobArea area;
+	
+	// Geografiskt område 
+	@DAOManaged(columnName="geoAreaId")
+	@XMLElement
+	@ManyToOne(remoteKeyField = "id", autoAdd = true, autoGet = true, autoUpdate = true)
+	private GeoArea geoArea;
 	
 	@DAOManaged
 	@XMLElement
@@ -137,6 +148,11 @@ public class MunicipalityJob extends Job{
 		return "MunicipalityJob [manager=" + manager + ", mentors=" + mentors + ", period=" + period
 				+ ", matchedApplications=" + matchedApplications + ", area=" + area + ", organization=" + organization
 				+ ", administration=" + administration + ", location=" + location + ", department=" + department + "]";
+	}
+
+	@Override
+	public Element toXML(Document doc) {
+		return XMLGenerator.toXML(this, doc);
 	}
 
 }
