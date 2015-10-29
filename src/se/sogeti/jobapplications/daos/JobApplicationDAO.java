@@ -41,4 +41,17 @@ public class JobApplicationDAO<T extends JobApplication> extends AnnotatedDAO<T>
 		return this.getAll(query);
 	}
 	
+	public List<T> getAllUnapproved() throws SQLException {
+		HighLevelQuery<T> query = new HighLevelQuery<T>();
+		//TODO kolla vilket id 
+		query.addParameter(this.getParamFactory("approved", boolean.class).getParameter(false));
+		return this.getAll(query);
+	}
+	
+	public List<T> getAllApproved() throws SQLException {
+		HighLevelQuery<T> query = new HighLevelQuery<T>();
+		//TODO kolla vilket id 
+		query.addParameter(this.getParamFactory("approved", boolean.class).getParameter(true));
+		return this.getAll(query);
+	}
 }

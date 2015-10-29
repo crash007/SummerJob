@@ -66,35 +66,46 @@ public class SummerJobOverViewAdminModule extends AnnotatedForegroundModule{
 		overView.appendChild(newMunicipalityJobsElement);
 		
 		
-		Element newMunicipalityApplicationsElem = doc.createElement("NewMunicipalityApplications");
-		List<MunicipalityJobApplication> newMunicipalityApplications = municipalityJobApplicationDAO.getAllUncontrolled();
-	
-		for(MunicipalityJobApplication app: newMunicipalityApplications){
+		Element approvedMunicipalityApplicationsElem = doc.createElement("approvedMunicipalityApplications");
+		List<MunicipalityJobApplication> approvedMunicipalityApplications = municipalityJobApplicationDAO.getAllApproved();	
+		createApplicationElementList(doc, approvedMunicipalityApplicationsElem, approvedMunicipalityApplications);		
+		XMLUtils.append(doc,approvedMunicipalityApplicationsElem, approvedMunicipalityApplications);		
+		overView.appendChild(approvedMunicipalityApplicationsElem);
+		
+		Element unapprovedMunicipalityApplicationsElem = doc.createElement("unapprovedMunicipalityApplications");
+		List<MunicipalityJobApplication> unapprovedMunicipalityApplications = municipalityJobApplicationDAO.getAllUnapproved();	
+		createApplicationElementList(doc, unapprovedMunicipalityApplicationsElem, unapprovedMunicipalityApplications);		
+		XMLUtils.append(doc,unapprovedMunicipalityApplicationsElem, unapprovedMunicipalityApplications);		
+		overView.appendChild(unapprovedMunicipalityApplicationsElem);
+		
+		
+		return new SimpleForegroundModuleResponse(doc);
+	}
+
+	private void createApplicationElementList(Document doc, Element MunicipalityApplicationsElem,
+			List<MunicipalityJobApplication> municipalityApplications) {
+		for(MunicipalityJobApplication app: municipalityApplications){
 			Element municipalityApplication = doc.createElement("MunicipalityApplication");
 			XMLUtils.appendNewElement(doc, municipalityApplication, "firstname", app.getFirstname());
 			XMLUtils.appendNewElement(doc, municipalityApplication, "lastname", app.getLastname());
 			
-			XMLUtils.appendNewElement(doc, municipalityApplication, "preferedArea1", app.getPreferedArea1().getName());
-			XMLUtils.appendNewElement(doc, municipalityApplication, "preferedArea2", app.getPreferedArea2().getName());
-			XMLUtils.appendNewElement(doc, municipalityApplication, "preferedArea3", app.getPreferedArea3().getName());
-			
+			XMLUtils.appendNewElement(doc, municipalityApplication, "preferedArea1", app.getPreferedArea1().getName());			
 			XMLUtils.appendNewElement(doc, municipalityApplication, "preferedGeoArea1", app.getPreferedGeoArea1().getName());
-			XMLUtils.appendNewElement(doc, municipalityApplication, "preferedGeoArea2", app.getPreferedGeoArea2().getName());
-			XMLUtils.appendNewElement(doc, municipalityApplication, "preferedGeoArea3", app.getPreferedGeoArea3().getName());
+
+			XMLUtils.appendNewElement(doc, municipalityApplication, "schoolName", app.getSchoolName());
+			XMLUtils.appendNewElement(doc, municipalityApplication, "schoolType", app.getSchoolType());
+			XMLUtils.appendNewElement(doc, municipalityApplication, "skvCity", app.getSkvCity());
+			
 			XMLUtils.appendNewElement(doc, municipalityApplication, "created", app.getCreated());
 			
 			if(app.getDriversLicenseType()!=null){
 				XMLUtils.appendNewElement(doc, municipalityApplication, "driversLicenseType", app.getDriversLicenseType().getName());
 			}
-			newMunicipalityApplicationsElem.appendChild(municipalityApplication);
+			MunicipalityApplicationsElem.appendChild(municipalityApplication);
 		}
-		
-		XMLUtils.append(doc,newMunicipalityApplicationsElem, newMunicipalityApplications);
-		overView.appendChild(newMunicipalityApplicationsElem);
-		
-		
-		
-		return new SimpleForegroundModuleResponse(doc);
 	}
 	
+	
+	
 }
+

@@ -19,6 +19,10 @@ import se.sogeti.jobapplications.daos.GeoAreaDAO;
 import se.sogeti.jobapplications.daos.JobApplicationDAO;
 import se.sogeti.periodsadmin.beans.Period;
 import se.sogeti.periodsadmin.daos.PeriodDAO;
+import se.sundsvall.openetown.smex.SmexServiceHandler;
+import se.sundsvall.openetown.smex.service.SmexServiceException;
+import se.sundsvall.openetown.smex.vo.Citizen;
+import se.unlogic.hierarchy.core.annotations.InstanceManagerDependency;
 import se.unlogic.hierarchy.core.beans.SimpleForegroundModuleResponse;
 import se.unlogic.hierarchy.core.beans.User;
 import se.unlogic.hierarchy.core.interfaces.ForegroundModuleResponse;
@@ -36,6 +40,9 @@ public class AddMunicipalitySummerJobApplicationModule extends AnnotatedRESTModu
 	private AreaDAO areaDAO;
 	private PeriodDAO periodDAO;
 	private GeoAreaDAO geoAreaDAO;
+	
+	@InstanceManagerDependency(required = true)
+	private SmexServiceHandler smexServiceHandler;
 	
 	@Override
 	protected void createDAOs(DataSource dataSource) throws Exception {
@@ -102,89 +109,32 @@ public class AddMunicipalitySummerJobApplicationModule extends AnnotatedRESTModu
 			app.setPreferedGeoArea2(geoArea2);
 			app.setPreferedGeoArea3(geoArea3);
 			
-			
 			app.setRanking(3);
 			app.setCreated(new Date(new java.util.Date().getTime()));
-			log.info(app);
 			
-			
-		
-			jobApplicationDAO.add(app);
-			
-			/*MunicipalityJob job = new MunicipalityJob();
-			MunicipalityWorkplace place = new MunicipalityWorkplace();
-			place.setOrganization(req.getParameter("organisation"));
-			place.setAdministration(req.getParameter("administration"));			//Förvaltning
-			place.setLocation(req.getParameter("location"));
-			
-			
-			place.setCity(req.getParameter("city"));
-			place.setStreetAddress(req.getParameter("street"));
-			place.setZipCode(req.getParameter("postalcode"));
-			place.setCity(req.getParameter("postalarea"));
-			place.setDepartment(req.getParameter("department"));			//Avdelning
-			
-			job.setWorkplace(place);
-			
-			MunicipalityJobArea area = null;
-			Integer areaId = NumberUtils.toInt((String) req.getParameter("area"));
-			log.info("Selected area id: "+areaId);
-			
-			if(areaId!=null){
-				area = areaDAO.getAreaById(areaId);
-				log.info(area);
-			}
-			
-			job.setArea(area);
-			job.setCreated(new java.sql.Date(new Date().getTime()));
-			
-			if(req.getParameter("isOverEighteen")!=null){
-				job.setIsOverEighteen(true);
-			}else{
-				job.setIsOverEighteen(false);
-			}
-			
-			if(req.getParameter("hasDriversLicense")!=null){
-				job.setHasDriversLicense(true);
-			}else{
-				job.setHasDriversLicense(false);
-			}
-			
-			MunicipalityManager manager = new MunicipalityManager();
-			manager.setFirstname(req.getParameter("manager-firstname"));
-			manager.setLastname(req.getParameter("manager-lastname"));
-			manager.setEmail(req.getParameter("manager-email"));
-			manager.setMobilePhone(req.getParameter("manager-phone"));
-			job.setManager(manager);
-			
-			List<MunicipalityMentor> mentors = new ArrayList<MunicipalityMentor>();
-			
-			//Find mentor uuids
-			
-			
-			 
-			job.setMentors(mentors);
-			job.setNumberOfWorkersNeeded(NumberUtils.toInt(req.getParameter("numberOfWorkersNeeded")));
-			job.setApprovedWorkplace(false);
-			job.setWorkDescription(req.getParameter("work-description"));
-			job.setWorkTitle(req.getParameter("work-title"));
-			
-			List<Period> periods = periodDAO.getAll();
-			
-			for(Period p:periods){
-				if(req.getParameter("period_"+p.getId())!=null){
-					job.setPeriod(p);
-					log.info("saving form for period: "+p.getName());
-					
-					municipalityJobDAO.add(job);
-					job.setId(null);
-					job.getManager().setId(null);
-					
-					for(MunicipalityMentor m:job.getMentors()){
-						m.setId(null);
-					}
+			app.setControlled(false);
+			app.setApproved(false);
+			try{
+				
+				Citizen person = smexServiceHandler.getCitizen(app.getSocialSecurityNumber());
+				app.setSchoolName(person.getSchoolName());
+				app.setSchoolType(person.getTypeOfSchool());
+				app.setSkvCity(person.getCity());
+				
+				//If gymnasium och sundsvall set approved och controlled till true
+				if(app.getSchoolType().equals("GY")){
+					app.setApproved(true);
+					app.setControlled(true);
+					app.setControlledByUser("System");
 				}
-			}*/
+				
+			}catch(SmexServiceException e){
+				log.warn(e);					
+			}
+			
+			log.info(app);
+			jobApplicationDAO.add(app);
+		
 		}
 		
 		

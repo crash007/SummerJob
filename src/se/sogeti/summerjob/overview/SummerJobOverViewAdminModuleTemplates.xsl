@@ -84,7 +84,7 @@
 		  <div class="col-xs-18 col-md-12">
 		  	<div class="panel panel-default">
 			  <div class="panel-heading">
-			    <h3 class="panel-title">Nya ansökningar</h3>
+			    <h3 class="panel-title">Godkända ansökningar</h3>
 			  </div>
 			  <div class="panel-body">
 			    <table class="table table-bordered">
@@ -93,19 +93,17 @@
 				  		
 				  		<th>Förnamn</th>
 	     				<th>Efternamn</th>
-	     				<th>Verksamhetsområde 1</th>
-				  		<th>Verksamhetsområde 2</th>
-				  		<th>Verksamhetsområde 3</th>
+	     				<th>Verksamhetsområde 1</th>				  	
 				  		<th>Område 1</th>
-				  		<th>Område 2</th>
-				  		<th>Område 3</th>
 				  		<th>Körtkortstyp</th>
-				  		
+				  		<th>Skola</th>
+				  		<th>Skoltyp</th>
+				  		<th>Postort skv</th>
 				  		<th>Datum</th>
 				  		
 				  	</tr>
 				  </thead>
-				  	<xsl:apply-templates select="NewMunicipalityApplications/MunicipalityApplication"/>
+				  	<xsl:apply-templates select="approvedMunicipalityApplications/MunicipalityApplication"/>
 				  <tbody>
 				  
 				  </tbody>
@@ -118,7 +116,7 @@
 		  <div class="col-xs-18 col-md-12">
 		  	<div class="panel panel-default">
 			  <div class="panel-heading">
-			    <h3 class="panel-title">Godkända ansökningar</h3>
+			    <h3 class="panel-title">Okontrollerade ansökningar</h3>
 			  </div>
 			  <div class="panel-body">
 			    <table class="table table-bordered">
@@ -127,14 +125,17 @@
 				  		
 				  		<th>Förnamn</th>
 	     				<th>Efternamn</th>
-	     				<th>Område 1</th>
-				  		<th>Område 2</th>
-				  		<th>Område 3</th>
+	     				<th>Verksamhetsområde 1</th>				  	
+				  		<th>Område 1</th>
+				  		<th>Körtkortstyp</th>
+				  		<th>Skola</th>
+				  		<th>Skoltyp</th>
+				  		<th>Postort skv</th>
 				  		<th>Datum</th>
 				  		
 				  	</tr>
 				  </thead>
-				  	<xsl:apply-templates select="ApprovedApplications/Application"/>
+				  	<xsl:apply-templates select="unapprovedMunicipalityApplications/MunicipalityApplication"/>
 				  <tbody>
 				  
 				  </tbody>
@@ -323,24 +324,21 @@
 	   		</td>
 	   		<td>
 	   			<xsl:value-of select="preferedArea1"></xsl:value-of>
-	   		</td>
-	   		<td>
-	   			<xsl:value-of select="preferedArea2"></xsl:value-of>
-	   		</td>
-	   		<td>
-	   			<xsl:value-of select="preferedArea3"></xsl:value-of>
-	   		</td>
+	   		</td>	   		
 	   		<td>
 	   			<xsl:value-of select="preferedGeoArea1"></xsl:value-of>
-	   		</td>
-	   		<td>
-	   			<xsl:value-of select="preferedGeoArea2"></xsl:value-of>
-	   		</td>
-	   		<td>
-	   			<xsl:value-of select="preferedGeoArea3"></xsl:value-of>
-	   		</td>
+	   		</td>	   		
 	   		<td>
 	   			<xsl:value-of select="driversLicenseType"></xsl:value-of>
+	   		</td>
+	   		<td>
+	   			<xsl:value-of select="schoolName"></xsl:value-of>
+	   		</td>
+	   		<td>
+	   			<xsl:value-of select="schoolType"></xsl:value-of>
+	   		</td>
+	   		<td>
+	   			<xsl:value-of select="skvCity"></xsl:value-of>
 	   		</td>
 	   		<td>
 	   			<xsl:value-of select="created"></xsl:value-of>
