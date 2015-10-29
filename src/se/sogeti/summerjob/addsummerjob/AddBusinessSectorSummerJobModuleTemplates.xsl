@@ -30,8 +30,10 @@
 					buttonImageOnly: true,
 					minDate: new Date(),
 					onSelect : function(selected) {
+						$(this).focus();
 						$("input[name*='endDate']").datepicker("option", "minDate", selected);
 					},
+					
 					buttonText: 'Startdatum'
 				});
 				
@@ -41,6 +43,7 @@
 					buttonImageOnly: true,
 					minDate: new Date(),
 					onSelect : function(selected) {
+						$(this).focus();
 						$("input[name*='startDate']").datepicker("option", "maxDate", selected);
 					},
 					buttonText: 'Slutdatum'
@@ -53,25 +56,26 @@
 	</xsl:template>
 	
 	<xsl:template match="BusinessSectorJobForm">
-		<form method="POST" id="business-sector-add-job-form">
+		<form role="form" method="POST" id="business-sector-add-job-form" data-toggle="validator">
 		
 			  	<div class="panel panel-default">
 				  <div class="panel-heading">
 				    <h3 class="panel-title">Arbete</h3>
 				  </div>
 				  <div class="panel-body">
-				   <div class="form-group">
+				  	<div class="form-group">
 					  	<div class="row">
 			  				<div class="col-md-4">
 							    <label for="profession">Yrkestitel*</label>
 							    <input type="text" class="form-control" id="profession" name="profession" placeholder="" required="required"/>
+							    <div class="help-block with-errors"></div>
 				    		</div>
 		    			</div>
-					  </div>
+					</div>
 				  	<div class="form-group">
 					    <label for="work-description">Arbetsbeskrivning*</label>				    
 					    <textarea class="form-control" rows="5" id="work-description" name="work-description" required="required"></textarea>							    
-					    <p class="help-block">Beskriv vad arbetet går ut på</p>
+					    <div class="help-block with-errors">Beskriv vad arbetsuppgifterna kommer vara</div>
 				  	</div>
 				  	<div class="form-group">
 				  		<div class="row">
@@ -83,22 +87,22 @@
 						</div>
 				  	</div>
 				  	
-				  	<div class="form-group">
-					  	<div class="form-group form-inline">
-						  	<div class="row">
-				  				<div class="col-md-3">
-								    <label for="startDate">Startdatum*</label>
-								    <input type="text" class="form-control" id="startDate" name="startDate" placeholder="" required="required"/>
-					    		</div>
-					    		<div class="col-md-3">
-								    <label for="endDate">Slutdatum*</label>
-								    <input type="text" class="form-control" id="endDate" name="endDate" placeholder="" required="required"/>
-					    		</div>
-			    			</div>
-						</div>
-				  	</div>
+					<div class="form-inline">
+						<div class="row">
+				  			<div class="form-group col-md-3">
+								<label for="startDate">Startdatum*</label>
+								<input type="text" class="form-control" id="startDate" name="startDate" placeholder="" required="required"/>
+								<div class="help-block with-errors">Datum då tjänsten börjar</div>
+					    	</div>
+					    	<div class="form-group col-md-3">
+								<label for="endDate">Slutdatum*</label>
+								<input type="text" class="form-control" id="endDate" name="endDate" placeholder="" required="required"/>
+								<div class="help-block with-errors">Datum då tjänsten slutar</div>
+					    	</div>
+			    		</div>
+					</div>
 			  		
-			  		<div class="form-group" style="margin-top: 8px;">
+			  		<div style="margin-top: 8px;">
 			  			<label>Ange handledare</label>
 			  			<div id="mentors-wrapper">
 			  			
@@ -119,54 +123,59 @@
 				  		<div class="row">
 			  				<div class="col-md-4">
 							    <label for="company">Företag*</label>				    
-							     <input type="text" class="form-control" id="company" name="company" placeholder="" required="required"/>							    
+							     <input type="text" class="form-control" id="company" name="company" placeholder="" required="required"/>
+							     <div class="help-block with-errors"></div>						    
 					    	</div>
 				    	</div>
 			    	</div>
 						    	
-			  		<div class="form-group">
+			  		<div>
 				  		<div class="row">
-						    <div class="col-md-5">
+						    <div class="form-group col-md-5">
 							    <label for="street">Gatuadress*</label>				    
-							    <input type="text" class="form-control" id="street" name="street" placeholder="" required="required"/>					    
-							    <p class="help-block">Adress till platsen där arbetet ska genomföras</p>
+							    <input type="text" class="form-control" id="street" name="street" placeholder="" required="required"/>	
+							    <div class="help-block with-errors"></div>				    
 						    </div>
-						    <div class="col-md-3">
+						    <div class="form-group col-md-3">
 							    <label for="postalcode">Postnummer*</label>				    
-							    <input type="text" class="form-control" id="postalcode" name="postalcode" placeholder="" required="required"/>
+							    <input type="number" data-error="Ett postnummer måste ha fem siffror." class="form-control" id="postalcode" name="postalcode" placeholder="" required="required" data-minlength="5"/>
+							    <div class="help-block with-errors"></div>
 						    </div>
-						    <div class="col-md-4">
+						    <div class="form-group col-md-4">
 							    <label for="postalarea">Postort*</label>				    
 							    <input type="text" class="form-control" id="postalarea" name="postalarea" placeholder="" required="required"/>
+							    <div class="help-block with-errors"></div>
 						    </div>
 					    </div>
 				  	</div>
 				  	
 				  	<div class="row" style="margin-bottom: 8px;">
-						<div class="col-md-3">
+						<div class="form-group col-md-3">
 							<label for="manager-firstname">Förnamn*</label>
 							<input type="text" class="form-control" id="manager-firstname"
 								name="manager-firstname" placeholder="" required="required"/>
-							<p class="help-block">Uppgifter till ansvarig på arbetsplatsen</p>
+							<p class="help-block with-errors">Förnamn till ansvarig på platsen</p>
 						</div>
 						
-						<div class="col-md-3">
+						<div class="form-group col-md-3">
 							<label for="manager-lastname">Efternamn*</label>
 							<input type="text" class="form-control" id="manager-lastname"
 								name="manager-lastname" placeholder="" required="required"/>
+							<p class="help-block with-errors">Efternamn till ansvarig på platsen</p>
 						</div>
 					
-						<div class="col-md-3">
+						<div class="form-group col-md-3">
 							<label for="manager-phone">Telefonnummer*</label>
-							<input type="text" class="form-control" id="manager-phone" name="manager-phone"
+							<input type="number" data-error="Ange ett telefonnummer utan bindestreck" class="form-control" id="manager-phone" name="manager-phone"
 								placeholder="" required="required"/>
-					
+							<p class="help-block with-errors">Telefonnummer till ansvarig på platsen</p>
 						</div>
 					
-						<div class="col-md-3">
+						<div class="form-group col-md-3">
 							<label for="manager-email">E-post</label>
-							<input type="text" class="form-control" id="manager-email" name="manager-email"
+							<input type="email" class="form-control" id="manager-email" name="manager-email"
 								placeholder="" />
+							<p class="help-block">E-post till ansvarig på platsen</p>
 						</div>
 					</div>
 				  	
@@ -224,28 +233,28 @@
 			
 			<div id="mentor-template">
 				<div class="row collapse" style="margin-bottom: 8px;">
-					<div class="col-md-3">
+					<div class="form-group col-md-3">
 						<label for="mentor-firstname">Förnamn</label>
 						<input type="text" class="form-control" id="mentor-firstname"
 							name="mentor-firstname" placeholder="" />
 					</div>
 			
-					<div class="col-md-3">
+					<div class="form-group col-md-3">
 						<label for="mentor-lastname">Efternamn</label>
 						<input type="text" class="form-control" id="mentor-lastname"
 							name="mentor-lastname" placeholder="" />
 					</div>
 			
-					<div class="col-md-3">
+					<div class="form-group col-md-3">
 						<label for="mentor-phone">Telefonnummer</label>
-						<input type="text" class="form-control" id="mentor-phone" name="mentor-phone"
+						<input type="number" class="form-control" id="mentor-phone" name="mentor-phone"
 							placeholder="" />
 			
 					</div>
 			
-					<div class="col-md-3">
+					<div class="form-group col-md-3">
 						<label for="mentor-email">E-post</label>
-						<input type="text" class="form-control" id="mentor-email" name="mentor-email"
+						<input type="email" class="form-control" id="mentor-email" name="mentor-email"
 							placeholder="" />
 						<!-- <p class="help-block">Valfri</p> -->
 					</div>

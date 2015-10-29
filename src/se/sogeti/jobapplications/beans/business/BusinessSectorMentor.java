@@ -8,9 +8,10 @@ import se.unlogic.standardutils.dao.annotations.ManyToOne;
 import se.unlogic.standardutils.dao.annotations.Table;
 import se.unlogic.standardutils.xml.XMLElement;
 
-@Table(name="summer_job_business_sector_mentor")
+@Table(name="summer_job_business_sector_mentors")
 @XMLElement
 public class BusinessSectorMentor extends Mentor{
+	
 	@DAOManaged(columnName="jobId")
 	@ManyToOne
 	private BusinessSectorJob job;
@@ -22,5 +23,4 @@ public class BusinessSectorMentor extends Mentor{
 	public void setJob(BusinessSectorJob job) {
 		this.job = job;
 	}
-
 }
