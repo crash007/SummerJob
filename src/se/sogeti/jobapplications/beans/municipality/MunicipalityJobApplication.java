@@ -22,39 +22,32 @@ public class MunicipalityJobApplication extends JobApplication{
 	@ManyToOne(remoteKeyField="id",autoGet=false,autoAdd=false,autoUpdate=false)
 	private MunicipalityJob job;
 	
-	@XMLElement
 	@DAOManaged(columnName="prefered_area_1")
-	@ManyToOne(remoteKeyField="id",autoGet=true)
+	@ManyToOne(remoteKeyField="id")
 	private MunicipalityJobArea preferedArea1;
 	
-	@XMLElement
 	@DAOManaged(columnName="prefered_area_2")
-	@ManyToOne(remoteKeyField="id",autoGet=true)
+	@ManyToOne(remoteKeyField="id")
 	private MunicipalityJobArea preferedArea2;
 	
-	@XMLElement
 	@DAOManaged(columnName="prefered_area_3")
-	@ManyToOne(remoteKeyField="id",autoGet=true)
+	@ManyToOne(remoteKeyField="id")
 	private MunicipalityJobArea preferedArea3;
 	
-	@XMLElement
 	@DAOManaged(columnName="prefered_geo_area_1")
-	@ManyToOne(remoteKeyField="id",autoGet=true)
+	@ManyToOne(remoteKeyField="id")
 	private GeoArea preferedGeoArea1;
 	
-	@XMLElement
 	@DAOManaged(columnName="prefered_geo_area_2")
-	@ManyToOne(remoteKeyField="id",autoGet=true)
+	@ManyToOne(remoteKeyField="id")
 	private GeoArea preferedGeoArea2;
 	
-	@XMLElement
 	@DAOManaged(columnName="prefered_geo_area_3")
-	@ManyToOne(remoteKeyField="id",autoGet=true)
+	@ManyToOne(remoteKeyField="id")
 	private GeoArea preferedGeoArea3;
 	
-	@XMLElement
 	@DAOManaged(columnName="driversLicenseTypeId")
-	@ManyToOne(remoteKeyField="id",autoGet=true)
+	@ManyToOne(remoteKeyField="id")
 	private DriversLicenseType driversLicenseType;
 	
 
