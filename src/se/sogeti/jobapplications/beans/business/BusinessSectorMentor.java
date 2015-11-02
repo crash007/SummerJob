@@ -10,9 +10,10 @@ import se.unlogic.standardutils.dao.annotations.Table;
 import se.unlogic.standardutils.xml.XMLElement;
 import se.unlogic.standardutils.xml.XMLGenerator;
 
-@Table(name="summer_job_business_sector_mentor")
+@Table(name="summer_job_business_sector_mentors")
 @XMLElement
 public class BusinessSectorMentor extends ContactDetails{
+
 	@DAOManaged(columnName="jobId")
 	@ManyToOne
 	private BusinessSectorJob job;

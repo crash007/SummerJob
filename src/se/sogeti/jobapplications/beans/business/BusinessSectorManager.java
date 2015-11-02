@@ -12,7 +12,8 @@ import se.unlogic.standardutils.dao.annotations.Table;
 import se.unlogic.standardutils.xml.XMLGenerator;
 
 
-@Table(name = "summer_job_bussiness_sector_managers")
+
+@Table(name = "summer_job_business_sector_managers")
 public class BusinessSectorManager extends ContactDetails{
 
 	public List<BusinessSectorJob> getJobs() {
