@@ -9,11 +9,13 @@ import se.sogeti.jobapplications.beans.ContactDetails;
 import se.unlogic.standardutils.dao.annotations.DAOManaged;
 import se.unlogic.standardutils.dao.annotations.OneToMany;
 import se.unlogic.standardutils.dao.annotations.Table;
+import se.unlogic.standardutils.xml.XMLElement;
 import se.unlogic.standardutils.xml.XMLGenerator;
 
 
 
 @Table(name = "summer_job_business_sector_managers")
+@XMLElement
 public class BusinessSectorManager extends ContactDetails{
 
 	public List<BusinessSectorJob> getJobs() {

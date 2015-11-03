@@ -15,6 +15,7 @@ import se.unlogic.standardutils.xml.XMLElement;
 import se.unlogic.standardutils.xml.XMLGenerator;
 
 @Table(name = "summer_job_business_sector_job")
+@XMLElement
 public class BusinessSectorJob extends Job{
 	
 	@DAOManaged(columnName="manager_id")
@@ -113,5 +114,12 @@ public class BusinessSectorJob extends Job{
 	@Override
 	public Element toXML(Document doc) {
 		return XMLGenerator.toXML(this, doc);
+	}
+
+	@Override
+	public String toString() {
+		return "BusinessSectorJob [manager=" + manager + ", startDate=" + startDate + ", endDate=" + endDate
+				+ ", company=" + company + ", appliedApplications=" + appliedApplications + ", matchedApplications="
+				+ matchedApplications + ", mentors=" + mentors + "]";
 	}
 }

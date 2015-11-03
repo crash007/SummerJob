@@ -19,6 +19,7 @@ import se.sogeti.jobapplications.daos.GeoAreaDAO;
 import se.sogeti.jobapplications.daos.JobApplicationDAO;
 import se.sogeti.periodsadmin.beans.Period;
 import se.sogeti.periodsadmin.daos.PeriodDAO;
+import se.sogeti.summerjob.FormUtils;
 import se.sundsvall.openetown.smex.SmexServiceHandler;
 import se.sundsvall.openetown.smex.service.SmexServiceException;
 import se.sundsvall.openetown.smex.vo.Citizen;
@@ -66,25 +67,10 @@ public class AddMunicipalitySummerJobApplicationModule extends AnnotatedRESTModu
 		if(req.getMethod().equals("POST")){
 			log.info("POST");
 			MunicipalityJobApplication app = new MunicipalityJobApplication();
-			app.setApproved(false);
-			app.setControlled(false);
-			app.setCvLocation(req.getParameter("cvFile"));
 			
-			app.setHasDriversLicense(req.getParameter("hasDriversLicense") !=null ? true:false);
-			app.setOverEighteen(req.getParameter("isOverEighteen") !=null ? true:false);
+			Citizen person = smexServiceHandler.getCitizen(req.getParameter("socialSecurityNumber"));
 			
-			
-			app.setCity(req.getParameter("postalarea"));
-			app.setEmail(req.getParameter("email"));
-			app.setFirstname(req.getParameter("firstname"));
-			app.setLastname(req.getParameter("lastname"));
-			app.setPhoneNumber(req.getParameter("phone"));
-			app.setSocialSecurityNumber(req.getParameter("socialSecurityNumber"));
-			app.setStreetAddress(req.getParameter("street"));
-			app.setZipCode(req.getParameter("postalcode"));
-			
-			//app.setPerson(person);
-			app.setPersonalLetter(req.getParameter("personal-letter"));
+			FormUtils.createJobApplication(app, req, person);
 			
 			Integer preferedArea1 = NumberUtils.toInt(req.getParameter("preferedArea1"));
 			Integer preferedArea2 = NumberUtils.toInt(req.getParameter("preferedArea2"));
@@ -109,28 +95,6 @@ public class AddMunicipalitySummerJobApplicationModule extends AnnotatedRESTModu
 			app.setPreferedGeoArea2(geoArea2);
 			app.setPreferedGeoArea3(geoArea3);
 			
-			app.setRanking(3);
-			app.setCreated(new Date(new java.util.Date().getTime()));
-			
-			app.setControlled(false);
-			app.setApproved(false);
-			try{
-				
-				Citizen person = smexServiceHandler.getCitizen(app.getSocialSecurityNumber());
-				app.setSchoolName(person.getSchoolName());
-				app.setSchoolType(person.getTypeOfSchool());
-				app.setSkvCity(person.getCity());
-				
-				//If gymnasium och sundsvall set approved och controlled till true
-				if(app.getSchoolType().equals("GY")){
-					app.setApproved(true);
-					app.setControlled(true);
-					app.setControlledByUser("System");
-				}
-				
-			}catch(SmexServiceException e){
-				log.warn(e);					
-			}
 			
 			log.info(app);
 			jobApplicationDAO.add(app);

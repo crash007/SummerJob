@@ -51,30 +51,15 @@
 				  <thead>
 				  	<tr>
 				  		<th>Förvaltning</th>
-	     				<th>Chef</th>
+	     				<th>Verksamhetsområde</th>
+	     				<th>Geografiskt område</th>
 	     				<th>Antal platser</th>
-	     				<th>Tillsatta platser</th>
-	     				<th>Tilldela sommarjobbare</th>
+	     				<th>Skapad</th>
 				  	</tr>
 				  </thead>
 				  
 				  <tbody>
-				  <xsl:for-each select="ApprovedJobs/Job">
-				  <tr>
-			   			<xsl:value-of select="location"></xsl:value-of>
-			   		</tr>
-			   		<tr>
-			   			<xsl:value-of select="manager"></xsl:value-of>
-			   		</tr>
-			   		<tr>
-			   			<xsl:value-of select="numberOfWorkersNeeded"></xsl:value-of>
-			   		</tr>
-			   		<tr>
-			   			<xsl:value-of select="numberOfOccupiedWorkers"></xsl:value-of>
-			   		</tr>
-			   		
-				  </xsl:for-each>
-				   				   	
+				 	 <xsl:apply-templates select="approvedMunicipalityJobs/MunicipalityJob"/>
 				  </tbody>
 				</table>
 			  </div>
@@ -158,14 +143,15 @@
 			    <table class="table table-bordered">
 				  <thead>
 				  	<tr>
-				  		<th>Plats</th>
-	     				<th>Chef</th>
+				  		<th>Yrke</th>
+	     				<th>Företag</th>
 	     				<th>Antal platser</th>
+	     				<th>Inkommen</th>
 				  	</tr>
 				  </thead>
 				  
 				  <tbody>
-				   	<xsl:apply-templates select="NewBusinessSectorJobs/Job"/>				   	
+				   	<xsl:apply-templates select="NewBusinessJobs/BusinessSectorJob"/>				   	
 				  </tbody>
 				</table>
 			  </div>
@@ -180,12 +166,10 @@
 			    <table class="table table-bordered">
 				  <thead>
 				  	<tr>
-				  		
 				  		<th>Förnamn</th>
 	     				<th>Efternamn</th>
 	     				<th>Sökt arbete</th>				  		
 				  		<th>Datum</th>
-				  		
 				  	</tr>
 				  </thead>
 				  	<xsl:for-each select="NewBusinessSectorJobs/Application">
@@ -210,6 +194,9 @@
 			  </div>
 			</div>
 		  </div>
+		  </div>
+		  
+		  <div class="row">
 		  
 		  <div class="col-xs-9 col-md-6">
 		  	<div class="panel panel-default">
@@ -220,29 +207,34 @@
 			    <table class="table table-bordered">
 				  <thead>
 				  	<tr>
-				  		<th>Plats</th>
-	     				<th>Chef</th>
+				  		<th>Yrke</th>
+	     				<th>Företag</th>
 	     				<th>Antal platser</th>
-	     				<th>Tillsatta platser</th>
+	     				<th>Inkommen</th>
+	     				<th>Godkänd</th>
 				  	</tr>
 				  </thead>
 				  
 				  <tbody>
-				  <xsl:for-each select="ApprovedBusinessSectorJobs/Job">
-				  <tr>
-			   			<xsl:value-of select="location"></xsl:value-of>
-			   		</tr>
-			   		<tr>
-			   			<xsl:value-of select="manager"></xsl:value-of>
-			   		</tr>
-			   		<tr>
-			   			<xsl:value-of select="numberOfWorkersNeeded"></xsl:value-of>
-			   		</tr>
-			   		<tr>
-			   			<xsl:value-of select="numberOfOccupiedWorkers"></xsl:value-of>
-			   		</tr>
-			   		
-				  </xsl:for-each>
+					  <xsl:for-each select="ApprovedBusinessJobs/BusinessSectorJob">
+					  	<tr>
+							<td>
+					   			<xsl:value-of select="workTitle"></xsl:value-of>
+					   		</td>
+					   		<td>
+					   			<xsl:value-of select="company"/>
+					   		</td>
+					   		<td>
+					   			<xsl:value-of select="numberOfWorkersNeeded"></xsl:value-of>
+					   		</td>
+					   		<td>
+					   			<xsl:value-of select="created"></xsl:value-of>
+					   		</td>
+					   		<td>
+					   			<xsl:value-of select="controlledDate"></xsl:value-of>
+					   		</td>
+				   		</tr>
+					  </xsl:for-each>
 				   				   	
 				  </tbody>
 				</table>
@@ -346,4 +338,20 @@
    		</tr>
 	</xsl:template>
 	
+	<xsl:template match="BusinessSectorJob">
+		<tr>
+			<td>
+	   			<xsl:value-of select="workTitle"></xsl:value-of>
+	   		</td>
+	   		<td>
+	   			<xsl:value-of select="company"/>
+	   		</td>
+	   		<td>
+	   			<xsl:value-of select="numberOfWorkersNeeded"></xsl:value-of>
+	   		</td>
+	   		<td>
+	   			<xsl:value-of select="created"></xsl:value-of>
+	   		</td>
+   		</tr>
+	</xsl:template>
 </xsl:stylesheet>					

@@ -31,4 +31,9 @@ public class JobDAO<T extends Job> extends AnnotatedDAO<T>{
 		query.addParameter(this.getParamFactory("controlled", Boolean.class).getParameter(false));
 		return this.getAll(query);
 	}
-}
+
+	public java.util.List<T> getAllApproved() throws SQLException {
+		HighLevelQuery<T> query = new HighLevelQuery<T>();
+		query.addParameter(this.getParamFactory("approved", Boolean.class).getParameter(true));
+		return this.getAll(query);
+	}}

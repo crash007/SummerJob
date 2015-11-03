@@ -156,7 +156,13 @@ public abstract class Job implements Requirements,Elementable{
 	
 	@Override
 	public String toString() {
-		return workTitle + "(id: " + id + ")";
+		return "Job [id=" + id + ", created=" + created + ", updated=" + updated + ", workTitle=" + workTitle
+				+ ", workDescription=" + workDescription + ", numberOfWorkersNeeded=" + numberOfWorkersNeeded
+				+ ", approved=" + approved + ", controlledDate=" + controlledDate + ", controlled=" + controlled
+				+ ", approvedByUser=" + approvedByUser + ", isOverEighteen=" + isOverEighteen + ", hasDriversLicense="
+				+ hasDriversLicense + ", driversLicenseType=" + driversLicenseType + ", freeTextRequirements="
+				+ freeTextRequirements + ", streetAddress=" + streetAddress + ", zipCode=" + zipCode + ", city=" + city
+				+ "]";
 	}
 
 	public Boolean getIsOverEighteen() {
