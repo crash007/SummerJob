@@ -171,45 +171,45 @@
 					  	<p style="display: none; color: #a94442;" id="period-errors" class="help-block with-errors">Du måste välja minst en period</p>
 					</div>
 					
-					<div class="form-group">
-						<div class="checkbox">
-						    <label>
-						      <input type="checkbox" name="isOverEighteen">Måste vara över 18 år </input>
-						    </label>
-					  	</div>
-						<div class="checkbox">
-						    <label>
-						      <input type="checkbox" name="hasDriversLicense">Måste ha körkort </input>
-						    </label>
-					  	</div>
+<!-- 					<div class="form-group"> -->
+<!-- 						<div class="checkbox"> -->
+<!-- 						    <label> -->
+<!-- 						      <input type="checkbox" name="isOverEighteen">Måste vara över 18 år </input> -->
+<!-- 						    </label> -->
+<!-- 					  	</div> -->
+<!-- 						<div class="checkbox"> -->
+<!-- 						    <label> -->
+<!-- 						      <input type="checkbox" name="hasDriversLicense">Måste ha körkort </input> -->
+<!-- 						    </label> -->
+<!-- 					  	</div> -->
 						  	
-						<div id="driverslicense_select" class="row">
-					  		<div class="col-md-3">
-							    <label for="driversLicenseType">Välj körkortstyp</label>				    
-							    <select class="form-control" name="driversLicenseType" id="driversLicenseType">
-									<xsl:for-each select="DriversLicenseTypes/DriversLicenseType">
-										<option value="{id}"><xsl:value-of select="name" /> - <xsl:value-of select="description" /></option>
-									</xsl:for-each>
-								</select>
-							</div>
-						</div>  	
+<!-- 						<div id="driverslicense_select" class="row"> -->
+<!-- 					  		<div class="col-md-3"> -->
+<!-- 							    <label for="driversLicenseType">Välj körkortstyp</label>				     -->
+<!-- 							    <select class="form-control" name="driversLicenseType" id="driversLicenseType"> -->
+<!-- 									<xsl:for-each select="DriversLicenseTypes/DriversLicenseType"> -->
+<!-- 										<option value="{id}"><xsl:value-of select="name" /> - <xsl:value-of select="description" /></option> -->
+<!-- 									</xsl:for-each> -->
+<!-- 								</select> -->
+<!-- 							</div> -->
+<!-- 						</div>  	 -->
 							
-					</div>
+<!-- 					</div> -->
 				  	
 <!-- 			  		<div class="form-group"> -->
 					<div>
 			  			<label>Ange chef på arbetsplatsen</label>
 			  			<div class="row">
 				  				<div class="form-group col-md-3">
-								    <label for="manager">Förnamn</label>				    
+								    <label for="manager">Förnamn*</label>				    
 								     <input type="text" class="form-control" id="manager-firstname" name="manager-firstname" placeholder="" required="required"/>							    
 						    	</div>
 						    	<div class="form-group col-md-3">
-								    <label for="manager">Efternamn</label>				    
+								    <label for="manager">Efternamn*</label>				    
 								     <input type="text" class="form-control" id="manager-lastname" name="manager-lastname" placeholder="" required="required"/>							    
 						    	</div>
 						    	<div class="form-group col-md-3">
-								    <label for="manager">Telefonnummer</label>				    
+								    <label for="manager">Telefonnummer*</label>				    
 								     <input type="text" class="form-control" id="manager-phone" name="manager-phone" placeholder="" required="required"/>
 						    	</div>
 				  				<div class="col-md-3">
@@ -230,7 +230,43 @@
 				  	</div>
 				  	
 				  </div>
-		  		</div>		 
+		  		</div>		
+		  		
+		  		<div class="panel panel-default">
+				  <div class="panel-heading">
+				    <h3 class="panel-title">Krav</h3>
+				  </div>
+				  <div class="panel-body">
+					  	<div class="checkbox">
+						    <label>
+						    	<input type="checkbox" name="isOverEighteen">Måste vara över 18 år</input>
+						    </label>
+					  	</div>
+						<div class="checkbox">
+						    <label>
+						    	<input type="checkbox" name="hasDriversLicense">Måste ha körkort</input>
+						    </label>
+					  	</div>
+					  	
+					  	<div id="driverslicense_select" class="row">
+					  		<div class="col-md-3">
+							    <label for="driversLicenseType">Välj körkortstyp</label>				    
+							    <select class="form-control" name="driversLicenseType" id="driversLicenseType">
+									<xsl:for-each select="DriversLicenseTypes/DriversLicenseType">
+										<option value="{id}"><xsl:value-of select="name" /> - <xsl:value-of select="description" /></option>
+									</xsl:for-each>
+								</select>
+							</div>
+						</div>
+					  	
+						<div class="form-group">
+						    <label for="work-description">Övriga önskemål och krav</label>				    
+						    <textarea class="form-control" rows="3" id="other-requirements" name="other-requirements"></textarea>							    
+						    <p class="help-block">Övriga önskemål</p>
+					  	</div>    	
+				  	
+				  </div>
+			  	</div> 
 		  		
 		  		<div class="panel panel-default">
 			  		<div class="panel-heading">
