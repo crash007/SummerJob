@@ -8,9 +8,11 @@ import se.sogeti.jobapplications.beans.JobApplication;
 import se.unlogic.standardutils.dao.annotations.DAOManaged;
 import se.unlogic.standardutils.dao.annotations.ManyToOne;
 import se.unlogic.standardutils.dao.annotations.Table;
+import se.unlogic.standardutils.xml.XMLElement;
 import se.unlogic.standardutils.xml.XMLGenerator;
 
 @Table(name="summer_job_business_sector_job_application")
+@XMLElement
 public class BusinessSectorJobApplication extends JobApplication{
 	
 

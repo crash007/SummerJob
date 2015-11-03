@@ -15,5 +15,6 @@
 			<attribute name="owner.project.facets" value="java"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="src" path="/OpenETown-Smex"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

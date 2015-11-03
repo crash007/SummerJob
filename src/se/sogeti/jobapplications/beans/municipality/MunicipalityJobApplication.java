@@ -23,7 +23,7 @@ public class MunicipalityJobApplication extends JobApplication{
 	private MunicipalityJob job;
 	
 	@DAOManaged(columnName="prefered_area_1")
-	@ManyToOne(remoteKeyField="id")
+	@ManyToOne(remoteKeyField="id",autoGet=true)
 	private MunicipalityJobArea preferedArea1;
 	
 	@DAOManaged(columnName="prefered_area_2")
@@ -35,7 +35,7 @@ public class MunicipalityJobApplication extends JobApplication{
 	private MunicipalityJobArea preferedArea3;
 	
 	@DAOManaged(columnName="prefered_geo_area_1")
-	@ManyToOne(remoteKeyField="id")
+	@ManyToOne(remoteKeyField="id",autoGet=true)
 	private GeoArea preferedGeoArea1;
 	
 	@DAOManaged(columnName="prefered_geo_area_2")

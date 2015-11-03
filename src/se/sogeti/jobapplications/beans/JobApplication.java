@@ -72,9 +72,6 @@ public abstract class JobApplication implements Elementable{
 	@DAOManaged
 	@XMLElement
 	private Date controlledDate;
-	
-	
-	
 
 	@DAOManaged
 	@XMLElement
@@ -108,6 +105,18 @@ public abstract class JobApplication implements Elementable{
 	@XMLElement
 	private String phoneNumber;
 
+	@DAOManaged
+	@XMLElement
+	private String schoolName;
+	
+	@DAOManaged
+	@XMLElement
+	private String schoolType;
+	
+	@DAOManaged
+	@XMLElement
+	private String skvCity;
+	
 	public Integer getId() {
 		return id;
 	}
@@ -191,7 +200,8 @@ public abstract class JobApplication implements Elementable{
 				+ controlled + ", controlledByUser=" + controlledByUser + ", controlledDate=" + controlledDate
 				+ ", socialSecurityNumber=" + socialSecurityNumber + ", firstname=" + firstname + ", lastname="
 				+ lastname + ", streetAddress=" + streetAddress + ", zipCode=" + zipCode + ", city=" + city + ", email="
-				+ email + ", phoneNumber=" + phoneNumber + "]";
+				+ email + ", phoneNumber=" + phoneNumber + ", schoolName=" + schoolName + ", schoolType=" + schoolType
+				+ ", skvCity=" + skvCity + "]";
 	}
 
 	public String getSocialSecurityNumber() {
@@ -296,6 +306,30 @@ public abstract class JobApplication implements Elementable{
 
 	public void setCreated(Date created) {
 		this.created = created;
+	}
+
+	public String getSchoolType() {
+		return schoolType;
+	}
+
+	public void setSchoolType(String schoolType) {
+		this.schoolType = schoolType;
+	}
+
+	public String getSchoolName() {
+		return schoolName;
+	}
+
+	public void setSchoolName(String schoolName) {
+		this.schoolName = schoolName;
+	}
+
+	public String getSkvCity() {
+		return skvCity;
+	}
+
+	public void setSkvCity(String skvCity) {
+		this.skvCity = skvCity;
 	}
 
 	

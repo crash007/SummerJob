@@ -19,6 +19,11 @@ import se.sogeti.jobapplications.daos.GeoAreaDAO;
 import se.sogeti.jobapplications.daos.JobApplicationDAO;
 import se.sogeti.periodsadmin.beans.Period;
 import se.sogeti.periodsadmin.daos.PeriodDAO;
+import se.sogeti.summerjob.FormUtils;
+import se.sundsvall.openetown.smex.SmexServiceHandler;
+import se.sundsvall.openetown.smex.service.SmexServiceException;
+import se.sundsvall.openetown.smex.vo.Citizen;
+import se.unlogic.hierarchy.core.annotations.InstanceManagerDependency;
 import se.unlogic.hierarchy.core.beans.SimpleForegroundModuleResponse;
 import se.unlogic.hierarchy.core.beans.User;
 import se.unlogic.hierarchy.core.interfaces.ForegroundModuleResponse;
@@ -36,6 +41,9 @@ public class AddMunicipalitySummerJobApplicationModule extends AnnotatedRESTModu
 	private AreaDAO areaDAO;
 	private PeriodDAO periodDAO;
 	private GeoAreaDAO geoAreaDAO;
+	
+	@InstanceManagerDependency(required = true)
+	private SmexServiceHandler smexServiceHandler;
 	
 	@Override
 	protected void createDAOs(DataSource dataSource) throws Exception {
@@ -59,25 +67,10 @@ public class AddMunicipalitySummerJobApplicationModule extends AnnotatedRESTModu
 		if(req.getMethod().equals("POST")){
 			log.info("POST");
 			MunicipalityJobApplication app = new MunicipalityJobApplication();
-			app.setApproved(false);
-			app.setControlled(false);
-			app.setCvLocation(req.getParameter("cvFile"));
 			
-			app.setHasDriversLicense(req.getParameter("hasDriversLicense") !=null ? true:false);
-			app.setOverEighteen(req.getParameter("isOverEighteen") !=null ? true:false);
+			Citizen person = smexServiceHandler.getCitizen(req.getParameter("socialSecurityNumber"));
 			
-			
-			app.setCity(req.getParameter("postalarea"));
-			app.setEmail(req.getParameter("email"));
-			app.setFirstname(req.getParameter("firstname"));
-			app.setLastname(req.getParameter("lastname"));
-			app.setPhoneNumber(req.getParameter("phone"));
-			app.setSocialSecurityNumber(req.getParameter("socialSecurityNumber"));
-			app.setStreetAddress(req.getParameter("street"));
-			app.setZipCode(req.getParameter("postalcode"));
-			
-			//app.setPerson(person);
-			app.setPersonalLetter(req.getParameter("personal-letter"));
+			FormUtils.createJobApplication(app, req, person);
 			
 			Integer preferedArea1 = NumberUtils.toInt(req.getParameter("preferedArea1"));
 			Integer preferedArea2 = NumberUtils.toInt(req.getParameter("preferedArea2"));
@@ -103,88 +96,9 @@ public class AddMunicipalitySummerJobApplicationModule extends AnnotatedRESTModu
 			app.setPreferedGeoArea3(geoArea3);
 			
 			
-			app.setRanking(3);
-			app.setCreated(new Date(new java.util.Date().getTime()));
 			log.info(app);
-			
-			
-		
 			jobApplicationDAO.add(app);
-			
-			/*MunicipalityJob job = new MunicipalityJob();
-			MunicipalityWorkplace place = new MunicipalityWorkplace();
-			place.setOrganization(req.getParameter("organisation"));
-			place.setAdministration(req.getParameter("administration"));			//Förvaltning
-			place.setLocation(req.getParameter("location"));
-			
-			
-			place.setCity(req.getParameter("city"));
-			place.setStreetAddress(req.getParameter("street"));
-			place.setZipCode(req.getParameter("postalcode"));
-			place.setCity(req.getParameter("postalarea"));
-			place.setDepartment(req.getParameter("department"));			//Avdelning
-			
-			job.setWorkplace(place);
-			
-			MunicipalityJobArea area = null;
-			Integer areaId = NumberUtils.toInt((String) req.getParameter("area"));
-			log.info("Selected area id: "+areaId);
-			
-			if(areaId!=null){
-				area = areaDAO.getAreaById(areaId);
-				log.info(area);
-			}
-			
-			job.setArea(area);
-			job.setCreated(new java.sql.Date(new Date().getTime()));
-			
-			if(req.getParameter("isOverEighteen")!=null){
-				job.setIsOverEighteen(true);
-			}else{
-				job.setIsOverEighteen(false);
-			}
-			
-			if(req.getParameter("hasDriversLicense")!=null){
-				job.setHasDriversLicense(true);
-			}else{
-				job.setHasDriversLicense(false);
-			}
-			
-			MunicipalityManager manager = new MunicipalityManager();
-			manager.setFirstname(req.getParameter("manager-firstname"));
-			manager.setLastname(req.getParameter("manager-lastname"));
-			manager.setEmail(req.getParameter("manager-email"));
-			manager.setMobilePhone(req.getParameter("manager-phone"));
-			job.setManager(manager);
-			
-			List<MunicipalityMentor> mentors = new ArrayList<MunicipalityMentor>();
-			
-			//Find mentor uuids
-			
-			
-			 
-			job.setMentors(mentors);
-			job.setNumberOfWorkersNeeded(NumberUtils.toInt(req.getParameter("numberOfWorkersNeeded")));
-			job.setApprovedWorkplace(false);
-			job.setWorkDescription(req.getParameter("work-description"));
-			job.setWorkTitle(req.getParameter("work-title"));
-			
-			List<Period> periods = periodDAO.getAll();
-			
-			for(Period p:periods){
-				if(req.getParameter("period_"+p.getId())!=null){
-					job.setPeriod(p);
-					log.info("saving form for period: "+p.getName());
-					
-					municipalityJobDAO.add(job);
-					job.setId(null);
-					job.getManager().setId(null);
-					
-					for(MunicipalityMentor m:job.getMentors()){
-						m.setId(null);
-					}
-				}
-			}*/
+		
 		}
 		
 		
