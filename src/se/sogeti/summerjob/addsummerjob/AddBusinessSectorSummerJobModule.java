@@ -193,7 +193,7 @@ public class AddBusinessSectorSummerJobModule extends AnnotatedRESTModule{
         job.setCreated(new Date(Calendar.getInstance().getTimeInMillis()));
 		try {
 			businessSectorJobDAO.save(job);
-			JsonResponse.sendJsonResponse("{\"status\":\"success\", \"message\":\"Annonsen har nu sparats. En handläggare kommer att granska annonsen innan den är synlig för sökande.\"}", callback, writer);
+			JsonResponse.sendJsonResponse("{\"status\":\"success\", \"message\":\"Annonsen har nu sparats. En handläggare kommer att granska annonsen innan den blir synlig för sökande.\"}", callback, writer);
 			return;
 		} catch (SQLException e) {
 			log.error("SQL exception", e);

@@ -222,12 +222,22 @@
 			  		<div class="panel-heading">
 			  			<h3 class="panel-title">Skicka in annons</h3>
 			  		</div>  
-			  		<div class="panel-body">	
-			  			<div>Efter att annonsen skickats in kommer en handläggare behöva godkänna den. När en handläggare godkänt annonsen kommer den vara synlig för sökande.</div>
+			  		<div class="panel-body">
+						<div id="save-failed" class="alert alert-danger" role="alert">
+							<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+							<span class="sr-only">Error:</span>
+							<span class="message"></span>
+						</div>
+						<div id="save-succeeded" class="alert alert-success" role="alert">
+							<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+							<span class="sr-only">Success:</span>
+							<span class="message"></span>
+						</div>
+						
 			  			<button style="margin-top: 4px;" id="submit-business-sector-job" type="submit" class="btn btn-default questions-submit">Skicka</button>
-						 <span class="glyphicon glyphicon-ok collapse" aria-hidden="true"></span><span class="glyphicon glyphicon-remove collapse" aria-hidden="true"></span>
+						<span class="glyphicon glyphicon-ok collapse" aria-hidden="true"></span><span class="glyphicon glyphicon-remove collapse" aria-hidden="true"></span>
 					</div>
-			  </div>
+			  	</div>
 			</form>
 			
 			
