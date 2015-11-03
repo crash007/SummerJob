@@ -113,6 +113,25 @@
 			  	
 			  	<div class="panel panel-default">
 				  <div class="panel-heading">
+				    <h3 class="panel-title">Geografiskt område</h3>
+				  </div>
+				  <div class="panel-body">
+					  	<div id="geoAreaSelect" class="row">
+					  		<div class="col-md-4">
+							    <label for="geoArea">Välj geografiskt område*</label>				    
+							    <select class="form-control" name="geoArea" id="geoArea" required="required">
+									<xsl:for-each select="GeoAreas/GeoArea">
+										<option value="{id}"><xsl:value-of select="name" /></option>
+									</xsl:for-each>
+								</select>
+								<p class="help-block with-errors">Det geografiska område arbetsplatsen tillhör</p>
+							</div>
+						</div>
+				  </div>
+			  	</div> 
+			  	
+			  	<div class="panel panel-default">
+				  <div class="panel-heading">
 				    <h3 class="panel-title">Arbete</h3>
 				  </div>
 				  <div class="panel-body">
