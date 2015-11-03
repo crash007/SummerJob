@@ -16,12 +16,14 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import se.sogeti.jobapplications.beans.DriversLicenseType;
+import se.sogeti.jobapplications.beans.GeoArea;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityJob;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityJobArea;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityManager;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityMentor;
 import se.sogeti.jobapplications.daos.AreaDAO;
 import se.sogeti.jobapplications.daos.DriversLicenseTypeDAO;
+import se.sogeti.jobapplications.daos.GeoAreaDAO;
 import se.sogeti.jobapplications.daos.JobDAO;
 import se.sogeti.periodsadmin.JsonResponse;
 import se.sogeti.periodsadmin.beans.Period;
@@ -45,6 +47,7 @@ public class AddMunicipalitySummerJobModule extends AnnotatedRESTModule{
 	private AreaDAO areaDAO;
 	private PeriodDAO periodDAO;
 	private DriversLicenseTypeDAO driversLicenseTypeDAO;
+	private GeoAreaDAO geoAreaDAO;
 	
 	@Override
 	protected void createDAOs(DataSource dataSource) throws Exception {
@@ -57,7 +60,7 @@ public class AddMunicipalitySummerJobModule extends AnnotatedRESTModule{
 		areaDAO = new AreaDAO(dataSource, MunicipalityJobArea.class, hierarchyDaoFactory);
 		periodDAO = new PeriodDAO(dataSource, Period.class,hierarchyDaoFactory);
 		driversLicenseTypeDAO = new DriversLicenseTypeDAO(dataSource, DriversLicenseType.class, hierarchyDaoFactory);
-	
+		geoAreaDAO = new GeoAreaDAO(dataSource, GeoArea.class, hierarchyDaoFactory);
 	}
 
 	@Override
@@ -88,6 +91,11 @@ public class AddMunicipalitySummerJobModule extends AnnotatedRESTModule{
 		List<DriversLicenseType> driverslicenseTypes = driversLicenseTypeDAO.getAll();
 		jobForm.appendChild(driversLicenseElement);
 		XMLUtils.append(doc, driversLicenseElement, driverslicenseTypes);
+		
+		Element geoAreaElement = doc.createElement("GeoAreas");
+		List<GeoArea> geoAreas = geoAreaDAO.getAll();
+		jobForm.appendChild(geoAreaElement);
+		XMLUtils.append(doc, geoAreaElement, geoAreas);
 		
 		return new SimpleForegroundModuleResponse(doc);
 		
@@ -226,6 +234,14 @@ public class AddMunicipalitySummerJobModule extends AnnotatedRESTModule{
 			return;
 		}
 		job.setWorkTitle(workTitle);
+		
+//		Integer geoAreaId = NumberUtils.toInt(req.getParameter("geoArea"));
+		GeoArea geoArea = geoAreaDAO.getAreaById(NumberUtils.toInt(req.getParameter("geoArea")));
+		if (geoArea == null) {
+			JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Det angivna geografiska området hittades inte.\"}", callback, writer);
+			return;
+		}
+		job.setGeoArea(geoArea);
 		
 		List<Period> periods = periodDAO.getAll();
 		try {

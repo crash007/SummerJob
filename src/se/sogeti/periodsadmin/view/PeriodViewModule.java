@@ -48,7 +48,7 @@ public class PeriodViewModule extends AnnotatedRESTModule {
 		element.appendChild(this.sectionInterface.getSectionDescriptor().toXML(doc));
 		
 		element.appendChild(this.moduleDescriptor.toXML(doc));
-		doc.appendChild(element);	
+		doc.appendChild(element);
 		
 		Element periodsElement = doc.createElement("Periods");
 		

@@ -155,4 +155,12 @@ public class MunicipalityJob extends Job{
 		return XMLGenerator.toXML(this, doc);
 	}
 
+	public GeoArea getGeoArea() {
+		return geoArea;
+	}
+
+	public void setGeoArea(GeoArea geoArea) {
+		this.geoArea = geoArea;
+	}
+
 }
