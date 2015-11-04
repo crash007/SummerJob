@@ -13,7 +13,8 @@
 	
 	
 	<xsl:template match="JobInfo/BusinessSectorJob">
-		<row>
+		<div class="well">
+			<div class="row">
 			<form class="form-horizontal">
 			  <div class="form-group">
 			    <label class="col-sm-2 control-label">Företag</label>
@@ -40,13 +41,14 @@
 				    </div>
 			  </div>
 			</form>
-	  	</row>
+			</div>
+	  	</div>
 	
 	</xsl:template>
 	
 	<xsl:template match="JobList">
 	<h1>Lediga sommarjobb inom privata sektorn</h1>
-		<div class="row">
+		<div class="row well">
 		  
 		  <div class="col-xs-9 col-md-6">
 		  	<div class="panel panel-default">
@@ -97,7 +99,9 @@
 	</xsl:template>
 	
 	<xsl:template match="JobApplicationForm">
-		<h2>Ansök</h2>
+		<div class="well">
+		<fieldset>
+		<label>Ansök</label>
 		<form method="POST" id="business-job-form">
 			<input type="hidden" name="jobId" value="{jobId}"/>
 
@@ -210,7 +214,8 @@
 		  		<button type="submit" class="btn btn-default questions-submit">Submit</button>
 				 <span class="glyphicon glyphicon-ok collapse" aria-hidden="true"></span><span class="glyphicon glyphicon-remove collapse" aria-hidden="true"></span>
 			</form>
-			
+			</fieldset>
+			</div>
 	    	
 	    	
 	</xsl:template>

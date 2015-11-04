@@ -15,6 +15,7 @@ import org.w3c.dom.Element;
 import se.sogeti.jobapplications.beans.DriversLicenseType;
 import se.sogeti.jobapplications.beans.business.BusinessSectorJob;
 import se.sogeti.jobapplications.beans.business.BusinessSectorJobApplication;
+import se.sogeti.jobapplications.daos.BusinessSectorJobDAO;
 import se.sogeti.jobapplications.daos.DriversLicenseTypeDAO;
 import se.sogeti.jobapplications.daos.JobApplicationDAO;
 import se.sogeti.jobapplications.daos.JobDAO;
@@ -37,7 +38,7 @@ public class BusinessSectorSummerJobApplicationModule extends AnnotatedRESTModul
 	
 	
 	private JobApplicationDAO<BusinessSectorJobApplication> jobApplicationDAO;
-	private JobDAO<BusinessSectorJob> jobDAO;
+	private BusinessSectorJobDAO jobDAO;
 	private DriversLicenseTypeDAO driversLicenseTypeDAO;
 	
 	@InstanceManagerDependency(required = true)
@@ -51,7 +52,7 @@ public class BusinessSectorSummerJobApplicationModule extends AnnotatedRESTModul
 		HierarchyAnnotatedDAOFactory hierarchyDaoFactory = new HierarchyAnnotatedDAOFactory(dataSource, systemInterface);
 		
 		jobApplicationDAO = new JobApplicationDAO<BusinessSectorJobApplication>(dataSource, BusinessSectorJobApplication.class, hierarchyDaoFactory);
-		jobDAO = new JobDAO<BusinessSectorJob>(dataSource, BusinessSectorJob.class, hierarchyDaoFactory);
+		jobDAO = new BusinessSectorJobDAO(dataSource, BusinessSectorJob.class, hierarchyDaoFactory);
 		driversLicenseTypeDAO = new DriversLicenseTypeDAO(dataSource, DriversLicenseType.class, hierarchyDaoFactory);
 	
 	}
@@ -70,12 +71,16 @@ public class BusinessSectorSummerJobApplicationModule extends AnnotatedRESTModul
 		if(req.getMethod().equals("POST") && jobId!=null){
 			log.info("POST");
 			
-			BusinessSectorJob job = jobDAO.getById(jobId);
+			BusinessSectorJob job = jobDAO.getByIdWithApplications(jobId);
 			if(job!=null){
 							
 				BusinessSectorJobApplication app = new BusinessSectorJobApplication();
-				
-				Citizen person = smexServiceHandler.getCitizen(req.getParameter("socialSecurityNumber"));
+				Citizen person=null;
+				try{
+					person = smexServiceHandler.getCitizen(req.getParameter("socialSecurityNumber"));
+				}catch (SmexServiceException e){
+					log.error(e);
+				}
 				
 				FormUtils.createJobApplication(app, req, person);
 				

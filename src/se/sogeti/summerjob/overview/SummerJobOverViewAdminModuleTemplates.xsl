@@ -4,16 +4,17 @@
 	<xsl:output method="html" version="4.0" encoding="ISO-8859-1"/>
 
 	<xsl:template match="Document">
-		 
-		<script>
-			var url = '<xsl:value-of select="requestinfo/uri"/>';
-		</script>
-		<xsl:variable name="isAdmin" select="IsAdmin"/>
-	<xsl:apply-templates select="OverView"/>
+
+
+	
+	<xsl:apply-templates select="Municipality"/>
+	<xsl:apply-templates select="Business"/>
+	
 	</xsl:template>
 	
-	<xsl:template match="OverView">
+	<xsl:template match="Municipality">
 		<h3>Kommunala sommarjobb</h3> 
+		
 		<div class="row">			
 		  <div class="col-xs-9 col-md-6">
 		  	<div class="panel panel-default">
@@ -130,7 +131,9 @@
 		  </div>
 		  
 		</div>
+		</xsl:template>
 		
+		<xsl:template match="Business">
 		
 		<h3>Näringslivssommarjobb</h3> 
 		<div class="row">			

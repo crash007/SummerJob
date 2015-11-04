@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import javax.sql.DataSource;
 
 import se.sogeti.jobapplications.beans.Job;
+import se.sogeti.jobapplications.beans.business.BusinessSectorJob;
 import se.unlogic.standardutils.dao.AnnotatedDAO;
 import se.unlogic.standardutils.dao.AnnotatedDAOFactory;
 import se.unlogic.standardutils.dao.HighLevelQuery;
@@ -57,4 +58,6 @@ public class JobDAO<T extends Job> extends AnnotatedDAO<T>{
 		query.addParameter(this.getParamFactory("approved", Boolean.class).getParameter(true));
 		return this.getAll(query);
 	}
+
+	
 }
