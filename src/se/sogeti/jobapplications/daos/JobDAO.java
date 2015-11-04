@@ -2,7 +2,7 @@ package se.sogeti.jobapplications.daos;
 
 import java.sql.SQLException;
 
-import org.apache.tomcat.jdbc.pool.DataSource;
+import javax.sql.DataSource;
 
 import se.sogeti.jobapplications.beans.Job;
 import se.unlogic.standardutils.dao.AnnotatedDAO;
