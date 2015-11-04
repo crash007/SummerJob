@@ -13,11 +13,34 @@
 	
 	
 	<xsl:template match="JobInfo/BusinessSectorJob">
-		<h3><xsl:value-of select="company"/></h3>
-		<h3><xsl:value-of select="workTitle"/></h3>
-		<h3><xsl:value-of select="workDescription"/></h3>
-		<h3>Antalet platser: <h3><xsl:value-of select="numberOfWorkersNeeded"/></h3></h3>
-		
+		<row>
+			<form class="form-horizontal">
+			  <div class="form-group">
+			    <label class="col-sm-2 control-label">Företag</label>
+			    <div class="col-sm-10">
+			      <p class="form-control-static"><xsl:value-of select="company"/></p>
+			    </div>
+			  </div>
+			  <div class="form-group">
+				    <label class="col-sm-2 control-label">Beskrivning</label>
+				    <div class="col-sm-10">
+				      <p class="form-control-static"><xsl:value-of select="workDescription"/></p>
+				    </div>
+			  </div>
+			  <div class="form-group">
+				    <label class="col-sm-2 control-label">Antal platser</label>
+				    <div class="col-sm-10">
+				      <p class="form-control-static"><xsl:value-of select="numberOfWorkersNeeded"/></p>
+				    </div>
+			  </div>
+			  <div class="form-group">
+				    <label class="col-sm-2 control-label">Address</label>
+				    <div class="col-sm-10">
+				      <p class="form-control-static"><xsl:value-of select="streetAddress"/></p>
+				    </div>
+			  </div>
+			</form>
+	  	</row>
 	
 	</xsl:template>
 	
@@ -145,6 +168,16 @@
 						      <input type="checkbox" name="hasDriversLicense">Har du körkort? </input>
 						    </label>
 					  	</div>
+					  	<div id="driverslicense_select" class="row">
+					  		<div class="col-md-3">
+							    <label for="driversLicenseType">Välj körkortstyp</label>				    
+							    <select class="form-control" name="driversLicenseType" id="driversLicenseType">
+									<xsl:for-each select="DriversLicenseTypes/DriversLicenseType">
+										<option value="{id}"><xsl:value-of select="name" /> - <xsl:value-of select="description" /></option>
+									</xsl:for-each>
+								</select>
+							</div>
+						</div>
 					</div> 
 					  		
 				

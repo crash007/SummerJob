@@ -20,9 +20,20 @@ public class BusinessSectorJobApplication extends JobApplication{
 	@ManyToOne(remoteKeyField="id",autoGet=false,autoAdd=false,autoUpdate=false)
 	private BusinessSectorJob job;
 	
-	@DAOManaged(columnName="driversLicenseTypeId")
-	@ManyToOne(remoteKeyField="id")
-	private DriversLicenseType driversLicenseType;
+	//assigned is true if application is matched with the job.
+	@DAOManaged
+	private Boolean assigned;
+
+
+	public Boolean getAssigned() {
+		return assigned;
+	}
+
+
+	public void setAssigned(Boolean assigned) {
+		this.assigned = assigned;
+	}
+
 
 	@Override
 	public Element toXML(Document doc) {

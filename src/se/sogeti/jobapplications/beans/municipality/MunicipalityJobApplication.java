@@ -45,11 +45,11 @@ public class MunicipalityJobApplication extends JobApplication{
 	@DAOManaged(columnName="prefered_geo_area_3")
 	@ManyToOne(remoteKeyField="id")
 	private GeoArea preferedGeoArea3;
-	
-	@DAOManaged(columnName="driversLicenseTypeId")
-	@ManyToOne(remoteKeyField="id")
-	private DriversLicenseType driversLicenseType;
-	
+//	
+//	@DAOManaged(columnName="driversLicenseTypeId")
+//	@ManyToOne(remoteKeyField="id")
+//	private DriversLicenseType driversLicenseType;
+//	
 
 	public MunicipalityJob getJob() {
 		return job;
