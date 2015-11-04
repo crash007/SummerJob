@@ -3,7 +3,6 @@ package se.sogeti.jobapplications.beans.municipality;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import se.sogeti.jobapplications.beans.DriversLicenseType;
 import se.sogeti.jobapplications.beans.GeoArea;
 import se.sogeti.jobapplications.beans.JobApplication;
 import se.unlogic.standardutils.dao.annotations.DAOManaged;
@@ -15,8 +14,6 @@ import se.unlogic.standardutils.xml.XMLGenerator;
 @Table(name="summer_job_municipality_job_application")
 @XMLElement
 public class MunicipalityJobApplication extends JobApplication{
-
-
 
 	@DAOManaged(columnName="jobId")
 	@ManyToOne(remoteKeyField="id",autoGet=false,autoAdd=false,autoUpdate=false)
@@ -51,13 +48,6 @@ public class MunicipalityJobApplication extends JobApplication{
 //	private DriversLicenseType driversLicenseType;
 //	
 
-	public MunicipalityJob getJob() {
-		return job;
-	}
-
-	public void setJob(MunicipalityJob job) {
-		this.job = job;
-	}
 
 	
 	public MunicipalityJobArea getPreferedArea1() {
@@ -110,9 +100,9 @@ public class MunicipalityJobApplication extends JobApplication{
 
 	@Override
 	public String toString() {
-		return "MunicipalityJobApplication [job=" + job + ", preferedArea1=" + preferedArea1 + ", preferedArea2="
-				+ preferedArea2 + ", preferedArea3=" + preferedArea3 + ", preferedGeoArea1=" + preferedGeoArea1
-				+ ", preferedGeoArea2=" + preferedGeoArea2 + ", preferedGeoArea3=" + preferedGeoArea3 + "]";
+		return "MunicipalityJobApplication [preferedArea1=" + preferedArea1 + ", preferedArea2=" + preferedArea2
+				+ ", preferedArea3=" + preferedArea3 + ", preferedGeoArea1=" + preferedGeoArea1 + ", preferedGeoArea2="
+				+ preferedGeoArea2 + ", preferedGeoArea3=" + preferedGeoArea3 + "]";
 	}
 
 	@Override

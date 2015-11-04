@@ -39,7 +39,7 @@ public class BusinessSectorJob extends Job{
 	
 	@DAOManaged
 	@XMLElement
-	@OneToMany(autoGet=true,autoAdd=true, autoUpdate=true)
+	@OneToMany(autoGet=false,autoAdd=true, autoUpdate=true)
 	private List<BusinessSectorJobApplication> applications;
 	
 	

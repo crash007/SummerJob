@@ -14,6 +14,7 @@ import se.sogeti.jobapplications.beans.business.BusinessSectorJob;
 import se.sogeti.jobapplications.beans.business.BusinessSectorJobApplication;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityJob;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityJobApplication;
+import se.sogeti.jobapplications.daos.BusinessSectorJobApplicationDAO;
 import se.sogeti.jobapplications.daos.JobApplicationDAO;
 import se.sogeti.jobapplications.daos.JobDAO;
 import se.unlogic.hierarchy.core.beans.SimpleForegroundModuleResponse;
@@ -31,7 +32,7 @@ public class SummerJobOverViewAdminModule extends AnnotatedForegroundModule{
 	private JobDAO<MunicipalityJob> municipalityJobDAO;
 	private JobApplicationDAO<MunicipalityJobApplication> municipalityJobApplicationDAO;
 	private JobDAO<BusinessSectorJob> businessJobDAO;
-	private JobApplicationDAO<BusinessSectorJobApplication> businessJobApplicationDAO;
+	private BusinessSectorJobApplicationDAO businessJobApplicationDAO;
 	
 	@Override
 	protected void createDAOs(DataSource dataSource) throws Exception {
@@ -41,7 +42,7 @@ public class SummerJobOverViewAdminModule extends AnnotatedForegroundModule{
 		municipalityJobDAO = new JobDAO<MunicipalityJob>(dataSource, MunicipalityJob.class, daoFactory);
 		municipalityJobApplicationDAO = new JobApplicationDAO<MunicipalityJobApplication>(dataSource, MunicipalityJobApplication.class, daoFactory);
 		businessJobDAO = new JobDAO<BusinessSectorJob>(dataSource, BusinessSectorJob.class, daoFactory);
-		businessJobApplicationDAO = new JobApplicationDAO<BusinessSectorJobApplication>(dataSource, BusinessSectorJobApplication.class, daoFactory);
+		businessJobApplicationDAO = new BusinessSectorJobApplicationDAO(dataSource, BusinessSectorJobApplication.class, daoFactory);
 	}
 
 	@Override
@@ -91,6 +92,17 @@ public class SummerJobOverViewAdminModule extends AnnotatedForegroundModule{
 		XMLUtils.append(doc,approvedBusinessJobsElement, approvedBusinessJobs);		
 		overView.appendChild(approvedBusinessJobsElement);
 		
+		//Business applications
+		Element approvedBusinessApplicationsElem = doc.createElement("ApprovedBusinessApplications");
+		List<BusinessSectorJobApplication> approvedBusinessApplications = businessJobApplicationDAO.getAllApprovedWithJob();
+		XMLUtils.append(doc,approvedBusinessApplicationsElem, approvedBusinessApplications);		
+		overView.appendChild(approvedBusinessApplicationsElem);
+		
+		Element unapprovedBusinessApplicationsElem = doc.createElement("UnapprovedBusinessApplications");
+		List<BusinessSectorJobApplication> unapprovedBusinessApplications = businessJobApplicationDAO.getAllUnapprovedWithJob();
+		XMLUtils.append(doc,unapprovedBusinessApplicationsElem, unapprovedBusinessApplications);		
+		overView.appendChild(unapprovedBusinessApplicationsElem);
+		
 		return new SimpleForegroundModuleResponse(doc);
 	}
 
@@ -116,7 +128,5 @@ public class SummerJobOverViewAdminModule extends AnnotatedForegroundModule{
 			MunicipalityApplicationsElem.appendChild(municipalityApplication);
 		}
 	}
-	
-	
 }
 
