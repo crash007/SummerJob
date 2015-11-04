@@ -7,10 +7,12 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import se.sogeti.jobapplications.beans.DriversLicenseType;
 import se.sogeti.jobapplications.beans.JobApplication;
 import se.sogeti.jobapplications.daos.JobApplicationDAO;
 import se.sundsvall.openetown.smex.service.SmexServiceException;
 import se.sundsvall.openetown.smex.vo.Citizen;
+import se.unlogic.standardutils.numbers.NumberUtils;
 
 public class FormUtils {
 	public static List<String> getMentorUuids(Enumeration<String> paramNames) {
@@ -43,6 +45,7 @@ public class FormUtils {
 		app.setSocialSecurityNumber(req.getParameter("socialSecurityNumber"));
 		app.setStreetAddress(req.getParameter("street"));
 		app.setZipCode(req.getParameter("postalcode"));
+		
 		
 		
 		app.setPersonalLetter(req.getParameter("personal-letter"));

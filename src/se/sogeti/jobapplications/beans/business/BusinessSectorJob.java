@@ -39,35 +39,21 @@ public class BusinessSectorJob extends Job{
 	
 	@DAOManaged
 	@XMLElement
-	@OneToMany(autoGet=true,autoAdd=true, autoUpdate=true)
-	private List<BusinessSectorJobApplication> appliedApplications;
+	@OneToMany(autoGet=false,autoAdd=true, autoUpdate=true)
+	private List<BusinessSectorJobApplication> applications;
 	
-	
-	@DAOManaged
-	@XMLElement
-	@OneToMany(autoGet=true,autoAdd=true, autoUpdate=true)
-	private List<BusinessSectorJobApplication> matchedApplications;
 	
 	@DAOManaged
 	@XMLElement
 	@OneToMany(autoGet=true,autoAdd=true, autoUpdate=true)
 	private List<BusinessSectorMentor> mentors;
 	
-	
-	public List<BusinessSectorJobApplication> getAppliedApplications() {
-		return appliedApplications;
+	public List<BusinessSectorJobApplication> getApplications() {
+		return applications;
 	}
 
-	public void setAppliedApplications(List<BusinessSectorJobApplication> appliedApplications) {
-		this.appliedApplications = appliedApplications;
-	}
-
-	public List<BusinessSectorJobApplication> getMatchedApplications() {
-		return matchedApplications;
-	}
-
-	public void setMatchedApplications(List<BusinessSectorJobApplication> matchedApplications) {
-		this.matchedApplications = matchedApplications;
+	public void setApplications(List<BusinessSectorJobApplication> applications) {
+		this.applications = applications;
 	}
 
 	public Date getStartDate() {
@@ -119,7 +105,6 @@ public class BusinessSectorJob extends Job{
 	@Override
 	public String toString() {
 		return "BusinessSectorJob [manager=" + manager + ", startDate=" + startDate + ", endDate=" + endDate
-				+ ", company=" + company + ", appliedApplications=" + appliedApplications + ", matchedApplications="
-				+ matchedApplications + ", mentors=" + mentors + "]";
+				+ ", company=" + company + ", applications=" + applications + ", mentors=" + mentors + "]";
 	}
 }

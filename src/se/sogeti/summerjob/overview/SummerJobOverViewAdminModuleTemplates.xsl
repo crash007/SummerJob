@@ -160,7 +160,7 @@
 		  <div class="col-xs-9 col-md-6">
 		  	<div class="panel panel-default">
 			  <div class="panel-heading">
-			    <h3 class="panel-title">Nya ansökningar</h3>
+			    <h3 class="panel-title">Godkända ansökningar</h3>
 			  </div>
 			  <div class="panel-body">
 			    <table class="table table-bordered">
@@ -168,27 +168,36 @@
 				  	<tr>
 				  		<th>Förnamn</th>
 	     				<th>Efternamn</th>
-	     				<th>Sökt arbete</th>				  		
+	     				<th>Sökt arbete</th>
+	     				<th>Skola</th>
+	     				<th>Skoltyp</th>				  		
 				  		<th>Datum</th>
 				  	</tr>
 				  </thead>
-				  	<xsl:for-each select="NewBusinessSectorJobs/Application">
-				  		<tr>
-				   			<xsl:value-of select="firstname"></xsl:value-of>
-				   		</tr>
-				   		<tr>
-				   			<xsl:value-of select="lastname"></xsl:value-of>
-				   		</tr>				   		
-				   		<tr>
-				   			<xsl:value-of select="appliedJobName"></xsl:value-of>
-				   		</tr>
-				   		<tr>
-				   			<xsl:value-of select="created"></xsl:value-of>
-				   		</tr>
-				  	</xsl:for-each>
 				  	
 				  <tbody>
-				  
+				  	<xsl:for-each select="ApprovedBusinessApplications/BusinessSectorJobApplication">
+				  		<tr>
+					  		<td>
+					   			<xsl:value-of select="firstname"></xsl:value-of>
+					   		</td>
+					   		<td>
+					   			<xsl:value-of select="lastname"></xsl:value-of>
+					   		</td>				   		
+					   		<td>
+					   			<xsl:value-of select="BusinessSectorJob/workTitle"></xsl:value-of>
+					   		</td>
+					   		<td>
+					   			<xsl:value-of select="schoolName"></xsl:value-of>
+					   		</td>
+					   		<td>
+					   			<xsl:value-of select="schoolType"></xsl:value-of>
+					   		</td>
+					   		<td>
+					   			<xsl:value-of select="created"></xsl:value-of>
+					   		</td>
+			   			</tr>
+				  	</xsl:for-each>
 				  </tbody>
 				</table>
 			  </div>
@@ -244,7 +253,7 @@
 		  <div class="col-xs-9 col-md-6">
 		  	<div class="panel panel-default">
 			  <div class="panel-heading">
-			    <h3 class="panel-title">Godkända ansökningar</h3>
+			    <h3 class="panel-title">icke godkända ansökningar</h3>
 			  </div>
 			  <div class="panel-body">
 			    <table class="table table-bordered">
@@ -253,23 +262,34 @@
 				  		
 				  		<th>Förnamn</th>
 	     				<th>Efternamn</th>
-	     				<th>Sökt arbete</th>				  		
+	     				<th>Sökt arbete</th>
+	     				<th>Skolnamn</th>
+	     				<th>Skoltyp</th>				  		
 				  		<th>Datum</th>
 				  		
 				  	</tr>
 				  </thead>
-				  	<xsl:for-each select="ApprovedBusinessSectorJobs/Application">
+				  	<xsl:for-each select="UnapprovedBusinessApplications/BusinessSectorJobApplication">
 				  		<tr>
-				   			<xsl:value-of select="firstname"></xsl:value-of>
-				   		</tr>
-				   		<tr>
-				   			<xsl:value-of select="lastname"></xsl:value-of>
-				   		</tr>				   		
-				   		<tr>
-				   			<xsl:value-of select="appliedJobName"></xsl:value-of>
-				   		</tr>
-				   		<tr>
-				   			<xsl:value-of select="created"></xsl:value-of>
+					  		<td>
+					   			<xsl:value-of select="firstname"></xsl:value-of>
+					   		</td>
+					   		<td>
+					   			<xsl:value-of select="lastname"></xsl:value-of>
+					   		</td>				   		
+					   		<td>
+					   			<xsl:value-of select="BusinessSectorJob/workTitle"></xsl:value-of>
+					   		</td>
+					   		<td>
+					   			<xsl:value-of select="schoolName"></xsl:value-of>
+					   		</td>
+					   		<td>
+					   			<xsl:value-of select="schoolType"></xsl:value-of>
+					   		</td>
+					   		
+					   		<td>
+					   			<xsl:value-of select="created"></xsl:value-of>
+					   		</td>
 				   		</tr>
 				  	</xsl:for-each>
 				  	

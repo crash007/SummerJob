@@ -1,14 +1,10 @@
 package se.sogeti.jobapplications.beans;
 
 import java.sql.Date;
-import java.util.List;
 
-import se.sogeti.jobapplications.beans.municipality.MunicipalityJob;
 import se.unlogic.standardutils.dao.annotations.DAOManaged;
 import se.unlogic.standardutils.dao.annotations.Key;
 import se.unlogic.standardutils.dao.annotations.ManyToOne;
-import se.unlogic.standardutils.dao.annotations.OneToMany;
-import se.unlogic.standardutils.dao.annotations.Table;
 import se.unlogic.standardutils.xml.Elementable;
 import se.unlogic.standardutils.xml.XMLElement;
 
@@ -20,6 +16,7 @@ public abstract class JobApplication implements Elementable{
 	@Key
 	@XMLElement
 	private Integer id;
+
 
 	@DAOManaged
 	@XMLElement
@@ -41,9 +38,6 @@ public abstract class JobApplication implements Elementable{
 	@ManyToOne(remoteKeyField="id", autoGet = true, autoAdd = true, autoUpdate = true)
 	private DriversLicenseType driversLicenseType;
 	
-//	@DAOManaged
-//	@XMLElement
-//	private Integer driversLicenseType;
 	
 	@DAOManaged
 	@XMLElement

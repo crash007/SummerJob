@@ -2,6 +2,7 @@ package se.sogeti.summerjob.addsummerjobapplication;
 
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -11,8 +12,10 @@ import javax.sql.DataSource;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import se.sogeti.jobapplications.beans.DriversLicenseType;
 import se.sogeti.jobapplications.beans.business.BusinessSectorJob;
 import se.sogeti.jobapplications.beans.business.BusinessSectorJobApplication;
+import se.sogeti.jobapplications.daos.DriversLicenseTypeDAO;
 import se.sogeti.jobapplications.daos.JobApplicationDAO;
 import se.sogeti.jobapplications.daos.JobDAO;
 import se.sogeti.summerjob.FormUtils;
@@ -35,6 +38,7 @@ public class BusinessSectorSummerJobApplicationModule extends AnnotatedRESTModul
 	
 	private JobApplicationDAO<BusinessSectorJobApplication> jobApplicationDAO;
 	private JobDAO<BusinessSectorJob> jobDAO;
+	private DriversLicenseTypeDAO driversLicenseTypeDAO;
 	
 	@InstanceManagerDependency(required = true)
 	private SmexServiceHandler smexServiceHandler;
@@ -48,6 +52,7 @@ public class BusinessSectorSummerJobApplicationModule extends AnnotatedRESTModul
 		
 		jobApplicationDAO = new JobApplicationDAO<BusinessSectorJobApplication>(dataSource, BusinessSectorJobApplication.class, hierarchyDaoFactory);
 		jobDAO = new JobDAO<BusinessSectorJob>(dataSource, BusinessSectorJob.class, hierarchyDaoFactory);
+		driversLicenseTypeDAO = new DriversLicenseTypeDAO(dataSource, DriversLicenseType.class, hierarchyDaoFactory);
 	
 	}
 
@@ -73,7 +78,28 @@ public class BusinessSectorSummerJobApplicationModule extends AnnotatedRESTModul
 				Citizen person = smexServiceHandler.getCitizen(req.getParameter("socialSecurityNumber"));
 				
 				FormUtils.createJobApplication(app, req, person);
-				job.getAppliedApplications().add(app);
+				
+				boolean hasDriversLicense = req.getParameter("hasDriversLicense") != null ? true : false;				
+				app.setHasDriversLicense(hasDriversLicense);
+				
+				//Worker applies for a job but has  not yet got the job.
+				app.setAssigned(false);
+				
+				if (hasDriversLicense) {
+					Integer typeId = NumberUtils.toInt(req.getParameter("driversLicenseType"));
+		        	
+		        	if (typeId != null) {
+		        		DriversLicenseType licenseType = driversLicenseTypeDAO.getTypeById(typeId);
+		        		app.setDriversLicenseType(licenseType);
+		        	}
+				}
+				if(job.getApplications()!=null){
+					job.getApplications().add(app);
+				}else{
+					List<BusinessSectorJobApplication> appliedApplications = new ArrayList<BusinessSectorJobApplication>();
+					appliedApplications.add(app);
+					job.setApplications(appliedApplications);
+				}
 				
 				log.info(app);
 				jobDAO.update(job);
@@ -100,7 +126,13 @@ public class BusinessSectorSummerJobApplicationModule extends AnnotatedRESTModul
 				Element jobInfo = doc.createElement("JobInfo");
 				XMLUtils.append(doc, jobInfo,job);
 				doc.getFirstChild().appendChild(jobInfo);
+				
 				Element jobApplication = doc.createElement("JobApplicationForm");
+				Element driversLicenseElement = doc.createElement("DriversLicenseTypes");
+				List<DriversLicenseType> driverslicenseTypes = driversLicenseTypeDAO.getAll();
+				jobApplication.appendChild(driversLicenseElement);
+				XMLUtils.append(doc, driversLicenseElement, driverslicenseTypes);
+				
 				doc.getFirstChild().appendChild(jobApplication);	
 			}
 			
