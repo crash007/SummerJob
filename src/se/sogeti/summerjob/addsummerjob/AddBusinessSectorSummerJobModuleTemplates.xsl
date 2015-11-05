@@ -56,7 +56,9 @@
 	</xsl:template>
 	
 	<xsl:template match="BusinessSectorJobForm">
-		<form role="form" method="POST" id="business-sector-add-job-form" data-toggle="validator">
+		<form class="well" role="form" method="POST" id="business-sector-add-job-form" data-toggle="validator">
+		
+				<input name="jobId" style="display: none" class="form-control" type="text" value="{id}"/>
 		
 			  	<div class="panel panel-default">
 				  <div class="panel-heading">

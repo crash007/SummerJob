@@ -63,6 +63,12 @@ public class AddBusinessSectorSummerJobModule extends AnnotatedRESTModule{
 		Element jobForm = doc.createElement("BusinessSectorJobForm");
 		doc.getFirstChild().appendChild(jobForm);
 		
+		Integer jobId = NumberUtils.toInt(req.getParameter("jobId"));
+		if (jobId != null && user.isAdmin()) {
+			BusinessSectorJob job = businessSectorJobDAO.getById(jobId);
+			XMLUtils.append(doc, jobForm, job);
+		}
+		
 		Element driversLicenseElement = doc.createElement("DriversLicenseTypes");
 		List<DriversLicenseType> driverslicenseTypes = driversLicenseTypeDAO.getAll();
 		jobForm.appendChild(driversLicenseElement);
@@ -80,7 +86,10 @@ public class AddBusinessSectorSummerJobModule extends AnnotatedRESTModule{
 		
         JsonResponse.initJsonResponse(res, writer, callback);
         
-        BusinessSectorJob job = new BusinessSectorJob();
+        Integer jobId = NumberUtils.toInt(req.getParameter("jobId"));
+        BusinessSectorJob job = jobId != null ? businessSectorJobDAO.getById(jobId) : new BusinessSectorJob();
+        
+//        BusinessSectorJob job = new BusinessSectorJob();
         
         String profession = req.getParameter("profession");
         if (profession == null || profession.isEmpty()) {
@@ -190,7 +199,12 @@ public class AddBusinessSectorSummerJobModule extends AnnotatedRESTModule{
         
         job.setFreeTextRequirements(req.getParameter("other-requirements"));
         
-        job.setCreated(new Date(Calendar.getInstance().getTimeInMillis()));
+        if (jobId != null) {
+        	job.setUpdated(new Date(Calendar.getInstance().getTimeInMillis()));
+        } else {
+        	job.setCreated(new Date(Calendar.getInstance().getTimeInMillis()));
+        }
+        
 		try {
 			businessSectorJobDAO.save(job);
 			JsonResponse.sendJsonResponse("{\"status\":\"success\", \"message\":\"Annonsen har nu sparats. En handläggare kommer att granska annonsen innan den blir synlig för sökande.\"}", callback, writer);

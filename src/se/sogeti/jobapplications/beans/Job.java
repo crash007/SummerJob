@@ -82,9 +82,19 @@ public abstract class Job implements Requirements,Elementable{
 	@XMLElement
 	private String city;
 	
+	@DAOManaged
+	@XMLElement
+	private String initiatedByUser;
+	
+	@DAOManaged
+	@XMLElement
+	private String adminNotes;
 	
 	@XMLElement
 	private Integer openApplications;
+	
+	@XMLElement
+	private Integer appointedApplications;
 	
 	public Integer getOpenApplications() {
 		return openApplications;
@@ -94,9 +104,6 @@ public abstract class Job implements Requirements,Elementable{
 		this.openApplications = openApplications;
 	}
 
-	@XMLElement
-	private Integer appointedApplications;
-	
 	public Integer getAppointedApplications() {
 		return appointedApplications;
 	}
@@ -260,6 +267,19 @@ public abstract class Job implements Requirements,Elementable{
 		this.controlled = controlled;
 	}
 
+	public String getAdminNotes() {
+		return adminNotes;
+	}
 
-	
+	public void setAdminNotes(String adminNotes) {
+		this.adminNotes = adminNotes;
+	}
+
+	public String getInitiatedByUser() {
+		return initiatedByUser;
+	}
+
+	public void setInitiatedByUser(String initiatedByUser) {
+		this.initiatedByUser = initiatedByUser;
+	}
 }
