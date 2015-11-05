@@ -18,20 +18,20 @@ public class BusinessSectorJobApplicationDAO extends JobApplicationDAO<BusinessS
 		// TODO Auto-generated constructor stub
 	}
 
-	private static final Field APPLICATION_JOB_RELATION = ReflectionUtils.getField(BusinessSectorJobApplication.class, "job");
-	
-	public List<BusinessSectorJobApplication> getAllUnapprovedWithJob() throws SQLException {
-		HighLevelQuery<BusinessSectorJobApplication> query = new HighLevelQuery<BusinessSectorJobApplication>();
-		query.addParameter(this.getParamFactory("approved", boolean.class).getParameter(false));
-		query.addRelation(APPLICATION_JOB_RELATION);
-		return this.getAll(query);
-	}
-	
-	public List<BusinessSectorJobApplication> getAllApprovedWithJob() throws SQLException {
-		HighLevelQuery<BusinessSectorJobApplication> query = new HighLevelQuery<BusinessSectorJobApplication>();
-		query.addParameter(this.getParamFactory("approved", boolean.class).getParameter(true));
-		query.addRelation(APPLICATION_JOB_RELATION);
-		return this.getAll(query);
-	}
+//	private static final Field APPLICATION_JOB_RELATION = ReflectionUtils.getField(BusinessSectorJobApplication.class, "job");
+//	
+//	public List<BusinessSectorJobApplication> getAllUnapprovedWithJob() throws SQLException {
+//		HighLevelQuery<BusinessSectorJobApplication> query = new HighLevelQuery<BusinessSectorJobApplication>();
+//		query.addParameter(this.getParamFactory("approved", boolean.class).getParameter(false));
+//		query.addRelation(APPLICATION_JOB_RELATION);
+//		return this.getAll(query);
+//	}
+//	
+//	public List<BusinessSectorJobApplication> getAllApprovedWithJob() throws SQLException {
+//		HighLevelQuery<BusinessSectorJobApplication> query = new HighLevelQuery<BusinessSectorJobApplication>();
+//		query.addParameter(this.getParamFactory("approved", boolean.class).getParameter(true));
+//		query.addRelation(APPLICATION_JOB_RELATION);
+//		return this.getAll(query);
+//	}
 
 }

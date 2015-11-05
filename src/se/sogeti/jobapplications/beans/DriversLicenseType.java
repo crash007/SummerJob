@@ -94,4 +94,12 @@ public class DriversLicenseType implements Elementable {
 	public void setMunicipalityJobs(List<MunicipalityJob> municipalityJobs) {
 		this.municipalityJobs = municipalityJobs;
 	}
+
+	@Override
+	public String toString() {
+		return "DriversLicenseType [municipalityJobs=" + municipalityJobs + ", businessSectorJobs=" + businessSectorJobs
+				+ ", municipalityJobApplications=" + municipalityJobApplications + ", businessSectorJobApplications="
+				+ businessSectorJobApplications + ", id=" + id + ", name=" + name + ", description=" + description
+				+ "]";
+	}
 }

@@ -20,15 +20,15 @@ public class BusinessSectorJobDAO extends JobDAO<BusinessSectorJob>{
 		// TODO Auto-generated constructor stub
 	}
 
-	private static final Field JOB_APPLICATIONS_RELATION = ReflectionUtils.getField(BusinessSectorJob.class, "applications");
-	
-		
-	public BusinessSectorJob getByIdWithApplications(Integer jobId) throws SQLException {
-		HighLevelQuery<BusinessSectorJob> query = new HighLevelQuery<BusinessSectorJob>();
-		query.addParameter(this.getParamFactory("id", Integer.class).getParameter(jobId));
-		query.addRelation(JOB_APPLICATIONS_RELATION);
-		return this.get(query);
-	}
+//	private static final Field JOB_APPLICATIONS_RELATION = ReflectionUtils.getField(BusinessSectorJob.class, "applications");
+//	
+//		
+//	public BusinessSectorJob getByIdWithApplications(Integer jobId) throws SQLException {
+//		HighLevelQuery<BusinessSectorJob> query = new HighLevelQuery<BusinessSectorJob>();
+//		query.addParameter(this.getParamFactory("id", Integer.class).getParameter(jobId));
+//		query.addRelation(JOB_APPLICATIONS_RELATION);
+//		return this.get(query);
+//	}
 
 	
 

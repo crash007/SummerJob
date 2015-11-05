@@ -127,25 +127,28 @@ public class SummerJobOverViewAdminModule extends AnnotatedForegroundModule{
 
 	private void createApplicationElementList(Document doc, Element MunicipalityApplicationsElem,
 			List<MunicipalityJobApplication> municipalityApplications) {
-		for(MunicipalityJobApplication app: municipalityApplications){
-			Element municipalityApplication = doc.createElement("MunicipalityApplication");
-			XMLUtils.appendNewElement(doc, municipalityApplication, "firstname", app.getFirstname());
-			XMLUtils.appendNewElement(doc, municipalityApplication, "lastname", app.getLastname());
-			
-			XMLUtils.appendNewElement(doc, municipalityApplication, "preferedArea1", app.getPreferedArea1().getName());			
-			XMLUtils.appendNewElement(doc, municipalityApplication, "preferedGeoArea1", app.getPreferedGeoArea1().getName());
-
-			XMLUtils.appendNewElement(doc, municipalityApplication, "schoolName", app.getSchoolName());
-			XMLUtils.appendNewElement(doc, municipalityApplication, "schoolType", app.getSchoolType());
-			XMLUtils.appendNewElement(doc, municipalityApplication, "skvCity", app.getSkvCity());
-			
-			XMLUtils.appendNewElement(doc, municipalityApplication, "created", app.getCreated());
-			
-			if(app.getDriversLicenseType()!=null){
-				XMLUtils.appendNewElement(doc, municipalityApplication, "driversLicenseType", app.getDriversLicenseType().getName());
+				
+			if(municipalityApplications!=null){
+				for(MunicipalityJobApplication app: municipalityApplications){
+					Element municipalityApplication = doc.createElement("MunicipalityApplication");
+					XMLUtils.appendNewElement(doc, municipalityApplication, "firstname", app.getFirstname());
+					XMLUtils.appendNewElement(doc, municipalityApplication, "lastname", app.getLastname());
+					
+					XMLUtils.appendNewElement(doc, municipalityApplication, "preferedArea1", app.getPreferedArea1().getName());			
+					XMLUtils.appendNewElement(doc, municipalityApplication, "preferedGeoArea1", app.getPreferedGeoArea1().getName());
+		
+					XMLUtils.appendNewElement(doc, municipalityApplication, "schoolName", app.getSchoolName());
+					XMLUtils.appendNewElement(doc, municipalityApplication, "schoolType", app.getSchoolType());
+					XMLUtils.appendNewElement(doc, municipalityApplication, "skvCity", app.getSkvCity());
+					
+					XMLUtils.appendNewElement(doc, municipalityApplication, "created", app.getCreated());
+					
+					if(app.getDriversLicenseType()!=null){
+						XMLUtils.appendNewElement(doc, municipalityApplication, "driversLicenseType", app.getDriversLicenseType().getName());
+					}
+					MunicipalityApplicationsElem.appendChild(municipalityApplication);
+				}
 			}
-			MunicipalityApplicationsElem.appendChild(municipalityApplication);
-		}
 	}
 }
 

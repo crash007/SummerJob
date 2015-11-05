@@ -1,7 +1,6 @@
 package se.sogeti.summerjob.addsummerjobapplication;
 
 
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +17,6 @@ import se.sogeti.jobapplications.beans.business.BusinessSectorJobApplication;
 import se.sogeti.jobapplications.daos.BusinessSectorJobDAO;
 import se.sogeti.jobapplications.daos.DriversLicenseTypeDAO;
 import se.sogeti.jobapplications.daos.JobApplicationDAO;
-import se.sogeti.jobapplications.daos.JobDAO;
 import se.sogeti.summerjob.FormUtils;
 import se.sundsvall.openetown.smex.SmexServiceHandler;
 import se.sundsvall.openetown.smex.service.SmexServiceException;

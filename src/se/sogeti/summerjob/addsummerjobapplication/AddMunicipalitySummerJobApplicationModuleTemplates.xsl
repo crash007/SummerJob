@@ -15,7 +15,7 @@
 	
 	<xsl:template match="MunicipalityJobApplicationForm">
 <!-- 		<form method="POST" id="municipality-job-form" enctype="multipart/form-data"> -->
-		<form method="POST" id="municipality-job-form">
+		<form method="POST" id="municipality-job-application-form">
 			<div class="panel panel-default">
 				  <div class="panel-heading">
 				    <h3 class="panel-title">Ansökan</h3>

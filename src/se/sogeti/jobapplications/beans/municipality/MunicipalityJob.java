@@ -6,7 +6,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import se.sogeti.jobapplications.beans.Job;
-import se.sogeti.jobapplications.beans.ContactDetails;
 import se.sogeti.jobapplications.beans.GeoArea;
 import se.sogeti.periodsadmin.beans.Period;
 import se.unlogic.standardutils.dao.annotations.DAOManaged;
@@ -38,7 +37,7 @@ public class MunicipalityJob extends Job{
 	@DAOManaged
 	@XMLElement
 	@OneToMany(autoGet=true,autoAdd=true, autoUpdate=true)
-	private List<MunicipalityJobApplication> matchedApplications;
+	private List<MunicipalityJobApplication> applications;
 	
 	// Område, t.ex Barnomsorg
 	@DAOManaged(columnName="areaId")
@@ -79,12 +78,13 @@ public class MunicipalityJob extends Job{
 		this.period = period;
 	}
 
-	public List<MunicipalityJobApplication> getMatchedApplications() {
-		return matchedApplications;
+
+	public List<MunicipalityJobApplication> getApplications() {
+		return applications;
 	}
 
-	public void setMatchedApplications(List<MunicipalityJobApplication> matchedApplications) {
-		this.matchedApplications = matchedApplications;
+	public void setApplications(List<MunicipalityJobApplication> applications) {
+		this.applications = applications;
 	}
 
 	public MunicipalityManager getManager() {
@@ -146,7 +146,7 @@ public class MunicipalityJob extends Job{
 	@Override
 	public String toString() {
 		return "MunicipalityJob [manager=" + manager + ", mentors=" + mentors + ", period=" + period
-				+ ", matchedApplications=" + matchedApplications + ", area=" + area + ", organization=" + organization
+				+ ", matchedApplications=" + applications + ", area=" + area + ", organization=" + organization
 				+ ", administration=" + administration + ", location=" + location + ", department=" + department + "]";
 	}
 
