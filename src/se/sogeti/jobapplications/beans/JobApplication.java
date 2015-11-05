@@ -28,21 +28,16 @@ public abstract class JobApplication implements Elementable{
 	
 	@DAOManaged
 	@XMLElement
-	private boolean hasDriversLicense;
+	private Boolean hasDriversLicense;
 	
 	@DAOManaged
 	@XMLElement
-	private boolean isOverEighteen;
+	private Boolean isOverEighteen;
 	
 	@DAOManaged(columnName="driversLicenseTypeId")
 	@ManyToOne(remoteKeyField="id", autoGet = true, autoAdd = true, autoUpdate = true)
 	@XMLElement
 	private DriversLicenseType driversLicenseType;
-	
-	
-	@DAOManaged
-	@XMLElement
-	private Boolean hasAccessToVehicle;
 
 	@DAOManaged
 	@XMLElement
@@ -129,11 +124,11 @@ public abstract class JobApplication implements Elementable{
 		this.ranking = ranking;
 	}
 
-	public boolean isHasDriversLicense() {
+	public Boolean isHasDriversLicense() {
 		return hasDriversLicense;
 	}
 
-	public void setHasDriversLicense(boolean hasDriversLicense) {
+	public void setHasDriversLicense(Boolean hasDriversLicense) {
 		this.hasDriversLicense = hasDriversLicense;
 	}
 
@@ -143,14 +138,6 @@ public abstract class JobApplication implements Elementable{
 
 	public void setDriversLicenseType(DriversLicenseType driversLicenseType) {
 		this.driversLicenseType = driversLicenseType;
-	}
-
-	public Boolean isHasAccessToVehicle() {
-		return hasAccessToVehicle;
-	}
-
-	public void setHasAccessToVehicle(boolean hasAccessToVehicle) {
-		this.hasAccessToVehicle = hasAccessToVehicle;
 	}
 
 	public String getPersonalLetter() {
@@ -178,11 +165,11 @@ public abstract class JobApplication implements Elementable{
 		this.controlledDate = approvedDate;
 	}
 
-	public boolean isOverEighteen() {
+	public Boolean isOverEighteen() {
 		return isOverEighteen;
 	}
 
-	public void setOverEighteen(boolean isOverEighteen) {
+	public void setOverEighteen(Boolean isOverEighteen) {
 		this.isOverEighteen = isOverEighteen;
 	}
 
@@ -254,7 +241,7 @@ public abstract class JobApplication implements Elementable{
 		return approved;
 	}
 
-	public void setApproved(boolean approved) {
+	public void setApproved(Boolean approved) {
 		this.approved = approved;
 	}
 
@@ -262,7 +249,7 @@ public abstract class JobApplication implements Elementable{
 		return controlled;
 	}
 
-	public void setControlled(boolean controlled) {
+	public void setControlled(Boolean controlled) {
 		this.controlled = controlled;
 	}
 
@@ -318,13 +305,12 @@ public abstract class JobApplication implements Elementable{
 	public String toString() {
 		return "JobApplication [id=" + id + ", ranking=" + ranking + ", created=" + created + ", hasDriversLicense="
 				+ hasDriversLicense + ", isOverEighteen=" + isOverEighteen + ", driversLicenseType="
-				+ driversLicenseType + ", hasAccessToVehicle=" + hasAccessToVehicle + ", personalLetter="
-				+ personalLetter + ", cvLocation=" + cvLocation + ", approved=" + approved + ", controlled="
-				+ controlled + ", controlledByUser=" + controlledByUser + ", controlledDate=" + controlledDate
-				+ ", socialSecurityNumber=" + socialSecurityNumber + ", firstname=" + firstname + ", lastname="
-				+ lastname + ", streetAddress=" + streetAddress + ", zipCode=" + zipCode + ", city=" + city + ", email="
-				+ email + ", phoneNumber=" + phoneNumber + ", schoolName=" + schoolName + ", schoolType=" + schoolType
-				+ ", skvCity=" + skvCity + "]";
+				+ driversLicenseType + ", personalLetter=" + personalLetter + ", cvLocation=" + cvLocation
+				+ ", approved=" + approved + ", controlled=" + controlled + ", controlledByUser=" + controlledByUser
+				+ ", controlledDate=" + controlledDate + ", socialSecurityNumber=" + socialSecurityNumber
+				+ ", firstname=" + firstname + ", lastname=" + lastname + ", streetAddress=" + streetAddress
+				+ ", zipCode=" + zipCode + ", city=" + city + ", email=" + email + ", phoneNumber=" + phoneNumber
+				+ ", schoolName=" + schoolName + ", schoolType=" + schoolType + ", skvCity=" + skvCity + "]";
 	}
 
 	

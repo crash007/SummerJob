@@ -39,32 +39,32 @@ public class JobApplicationDAO<T extends JobApplication> extends AnnotatedDAO<T>
 	
 	public List<T> getAllUncontrolled() throws SQLException {
 		HighLevelQuery<T> query = new HighLevelQuery<T>(); 
-		query.addParameter(this.getParamFactory("controlled", boolean.class).getParameter(false));
+		query.addParameter(this.getParamFactory("controlled", Boolean.class).getParameter(false));
 		return this.getAll(query);
 	}
 	
 	public List<T> getAllUnapproved() throws SQLException {
 		HighLevelQuery<T> query = new HighLevelQuery<T>();
-		query.addParameter(this.getParamFactory("approved", boolean.class).getParameter(false));
+		query.addParameter(this.getParamFactory("approved", Boolean.class).getParameter(false));
 		return this.getAll(query);
 	}
 	
 	public List<T> getAllApproved() throws SQLException {
 		HighLevelQuery<T> query = new HighLevelQuery<T>();
-		query.addParameter(this.getParamFactory("approved", boolean.class).getParameter(true));
+		query.addParameter(this.getParamFactory("approved", Boolean.class).getParameter(true));
 		return this.getAll(query);
 	}
 	
 	public List<T> getAllUnapprovedWithJob() throws SQLException {
 		HighLevelQuery<T> query = new HighLevelQuery<T>();
-		query.addParameter(this.getParamFactory("approved", boolean.class).getParameter(false));
+		query.addParameter(this.getParamFactory("approved", Boolean.class).getParameter(false));
 		query.addRelation(APPLICATION_JOB_RELATION);
 		return this.getAll(query);
 	}
 	
 	public List<T> getAllApprovedWithJob() throws SQLException {
 		HighLevelQuery<T> query = new HighLevelQuery<T>();
-		query.addParameter(this.getParamFactory("approved", boolean.class).getParameter(true));
+		query.addParameter(this.getParamFactory("approved", Boolean.class).getParameter(true));
 		query.addRelation(APPLICATION_JOB_RELATION);
 		return this.getAll(query);
 	}

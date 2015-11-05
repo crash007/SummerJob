@@ -84,22 +84,21 @@ public class MatchSummerJobsModule extends AnnotatedForegroundModule{
 				
 				XMLUtils.append(doc, matchMunicipalityJobElement, job);
 				
-				Element candidatesElem = doc.createElement("MunicipalityApplicationCandidates");
-				List<MunicipalityJobApplication> candidates = municipalityJobApplicationDAO.getCandidatesByPreferedArea1AndPreferedGeoArea1(job.getArea(), job.getGeoArea());
-				if(candidates!=null){
-					log.info("Candidates found");
-					for(MunicipalityJobApplication app:candidates){
-						
-						log.info(app);
-						log.info(app.getDriversLicenseType());
-					}
-					XMLUtils.append(doc, candidatesElem, candidates);
-					matchMunicipalityJobElement.appendChild(candidatesElem);
-					
-				}else{
-					log.info("No candidates found for job "+job);
-					
-				}
+				//First hand pick
+				
+				List<MunicipalityJobApplication> firstCandidates = municipalityJobApplicationDAO.getCandidatesByPreferedArea1AndPreferedGeoArea1(job.getArea(), job.getGeoArea(), job.getIsOverEighteen(), job.getDriversLicenseType());
+				XMLUtils.append(doc, matchMunicipalityJobElement, "MunicipalityApplicationFirstPickCandidates", firstCandidates);
+				printCandidates(job.getId(), firstCandidates,"first");	
+				
+				//Second hand pick				
+				List<MunicipalityJobApplication> secondCandidates = municipalityJobApplicationDAO.getCandidatesByPreferedArea1AndPreferedGeoArea2(job.getArea(), job.getGeoArea(), job.getIsOverEighteen(), job.getDriversLicenseType());				
+				XMLUtils.append(doc, matchMunicipalityJobElement, "MunicipalityApplicationSecondPickCandidates", secondCandidates);
+				printCandidates(job.getId(), secondCandidates,"second");	
+				
+				//Third hand pick				
+				List<MunicipalityJobApplication> thirdCandidates = municipalityJobApplicationDAO.getCandidatesByPreferedArea2AndPreferedGeoArea1(job.getArea(), job.getGeoArea(), job.getIsOverEighteen(), job.getDriversLicenseType());				
+				XMLUtils.append(doc, matchMunicipalityJobElement, "MunicipalityApplicationThirdPickCandidates", thirdCandidates);
+				printCandidates(job.getId(), thirdCandidates,"third");
 				
 			}else{
 				log.warn("No job with id "+jobId+" found.");
@@ -110,6 +109,18 @@ public class MatchSummerJobsModule extends AnnotatedForegroundModule{
 		}
 		
 		return new SimpleForegroundModuleResponse(doc);
+	}
+
+	private void printCandidates(Integer jobId, List<MunicipalityJobApplication> candidates, String prio) {
+		if(candidates!=null){	
+			log.info(prio+" pcik candidates for job "+jobId);
+			for(MunicipalityJobApplication app:candidates){						
+				log.info(app);					
+			}
+		}else{
+			log.info("No "+prio+" pick candidates found for job:"+jobId);
+			
+		}
 	}
 
 	
