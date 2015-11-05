@@ -58,12 +58,14 @@ public class FormUtils {
 		
 		
 		//Citizen person = smexServiceHandler.getCitizen(app.getSocialSecurityNumber());
-		app.setSchoolName(person.getSchoolName());
-		app.setSchoolType(person.getTypeOfSchool());
-		app.setSkvCity(person.getCity());
+		if(person!=null){
+			app.setSchoolName(person.getSchoolName());
+			app.setSchoolType(person.getTypeOfSchool());
+			app.setSkvCity(person.getCity());
+		}
 		
 		//If gymnasium och sundsvall set approved och controlled till true
-		if(app.getSchoolType().equals("GY")){
+		if(app.getSchoolType()!=null && app.getSchoolType().equals("GY")){
 			app.setApproved(true);
 			app.setControlled(true);
 			app.setControlledByUser("System");

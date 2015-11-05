@@ -36,12 +36,13 @@ public abstract class JobApplication implements Elementable{
 	
 	@DAOManaged(columnName="driversLicenseTypeId")
 	@ManyToOne(remoteKeyField="id", autoGet = true, autoAdd = true, autoUpdate = true)
+	@XMLElement
 	private DriversLicenseType driversLicenseType;
 	
 	
 	@DAOManaged
 	@XMLElement
-	private boolean hasAccessToVehicle;
+	private Boolean hasAccessToVehicle;
 
 	@DAOManaged
 	@XMLElement
@@ -53,11 +54,11 @@ public abstract class JobApplication implements Elementable{
 	
 	@DAOManaged
 	@XMLElement
-	private boolean approved;
+	private Boolean approved;
 	
 	@DAOManaged
 	@XMLElement
-	private boolean controlled;
+	private Boolean controlled;
 	
 	@DAOManaged
 	@XMLElement
@@ -148,7 +149,7 @@ public abstract class JobApplication implements Elementable{
 		this.driversLicenseType = driversLicenseType;
 	}
 
-	public boolean isHasAccessToVehicle() {
+	public Boolean isHasAccessToVehicle() {
 		return hasAccessToVehicle;
 	}
 
@@ -187,19 +188,6 @@ public abstract class JobApplication implements Elementable{
 
 	public void setOverEighteen(boolean isOverEighteen) {
 		this.isOverEighteen = isOverEighteen;
-	}
-
-	@Override
-	public String toString() {
-		return "JobApplication [id=" + id + ", ranking=" + ranking + ", created=" + created + ", hasDriversLicense="
-				+ hasDriversLicense + ", isOverEighteen=" + isOverEighteen + ", driversLicenseType="
-				+ driversLicenseType + ", hasAccessToVehicle=" + hasAccessToVehicle + ", personalLetter="
-				+ personalLetter + ", cvLocation=" + cvLocation + ", approved=" + approved + ", controlled="
-				+ controlled + ", controlledByUser=" + controlledByUser + ", controlledDate=" + controlledDate
-				+ ", socialSecurityNumber=" + socialSecurityNumber + ", firstname=" + firstname + ", lastname="
-				+ lastname + ", streetAddress=" + streetAddress + ", zipCode=" + zipCode + ", city=" + city + ", email="
-				+ email + ", phoneNumber=" + phoneNumber + ", schoolName=" + schoolName + ", schoolType=" + schoolType
-				+ ", skvCity=" + skvCity + "]";
 	}
 
 	public String getSocialSecurityNumber() {
@@ -266,7 +254,7 @@ public abstract class JobApplication implements Elementable{
 		this.phoneNumber = phoneNumber;
 	}
 
-	public boolean isApproved() {
+	public Boolean isApproved() {
 		return approved;
 	}
 
@@ -274,7 +262,7 @@ public abstract class JobApplication implements Elementable{
 		this.approved = approved;
 	}
 
-	public boolean isControlled() {
+	public Boolean isControlled() {
 		return controlled;
 	}
 
@@ -337,6 +325,17 @@ public abstract class JobApplication implements Elementable{
 	public void setAdminNotes(String adminNotes) {
 		this.adminNotes = adminNotes;
 	}
-
 	
+	@Override
+	public String toString() {
+		return "JobApplication [id=" + id + ", ranking=" + ranking + ", created=" + created + ", hasDriversLicense="
+				+ hasDriversLicense + ", isOverEighteen=" + isOverEighteen + ", driversLicenseType="
+				+ driversLicenseType + ", hasAccessToVehicle=" + hasAccessToVehicle + ", personalLetter="
+				+ personalLetter + ", cvLocation=" + cvLocation + ", approved=" + approved + ", controlled="
+				+ controlled + ", controlledByUser=" + controlledByUser + ", controlledDate=" + controlledDate
+				+ ", socialSecurityNumber=" + socialSecurityNumber + ", firstname=" + firstname + ", lastname="
+				+ lastname + ", streetAddress=" + streetAddress + ", zipCode=" + zipCode + ", city=" + city + ", email="
+				+ email + ", phoneNumber=" + phoneNumber + ", schoolName=" + schoolName + ", schoolType=" + schoolType
+				+ ", skvCity=" + skvCity + "]";
+	}
 }

@@ -97,6 +97,9 @@ public class DriversLicenseType implements Elementable {
 
 	@Override
 	public String toString() {
-		return name;
+		return "DriversLicenseType [municipalityJobs=" + municipalityJobs + ", businessSectorJobs=" + businessSectorJobs
+				+ ", municipalityJobApplications=" + municipalityJobApplications + ", businessSectorJobApplications="
+				+ businessSectorJobApplications + ", id=" + id + ", name=" + name + ", description=" + description
+				+ "]";
 	}
 }

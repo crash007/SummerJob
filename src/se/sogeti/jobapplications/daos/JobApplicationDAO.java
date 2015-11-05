@@ -1,22 +1,26 @@
 package se.sogeti.jobapplications.daos;
 
+import java.lang.reflect.Field;
 import java.sql.SQLException;
 import java.util.List;
 
 import javax.sql.DataSource;
 
 import se.sogeti.jobapplications.beans.JobApplication;
+import se.sogeti.jobapplications.beans.business.BusinessSectorJobApplication;
 import se.unlogic.standardutils.dao.AnnotatedDAO;
 import se.unlogic.standardutils.dao.AnnotatedDAOFactory;
 import se.unlogic.standardutils.dao.HighLevelQuery;
+import se.unlogic.standardutils.reflection.ReflectionUtils;
 
 public class JobApplicationDAO<T extends JobApplication> extends AnnotatedDAO<T> {
 
-	
+	private static Field APPLICATION_JOB_RELATION;
 	public JobApplicationDAO(DataSource dataSource,
 			Class<T> beanClass,
 			AnnotatedDAOFactory daoFactory) {
 		super(dataSource, beanClass, daoFactory);
+		 APPLICATION_JOB_RELATION=ReflectionUtils.getField(beanClass, "job");
 	}
 	
 	public void save(T bean) throws SQLException {
@@ -51,5 +55,18 @@ public class JobApplicationDAO<T extends JobApplication> extends AnnotatedDAO<T>
 		return this.getAll(query);
 	}
 	
+	public List<T> getAllUnapprovedWithJob() throws SQLException {
+		HighLevelQuery<T> query = new HighLevelQuery<T>();
+		query.addParameter(this.getParamFactory("approved", boolean.class).getParameter(false));
+		query.addRelation(APPLICATION_JOB_RELATION);
+		return this.getAll(query);
+	}
+	
+	public List<T> getAllApprovedWithJob() throws SQLException {
+		HighLevelQuery<T> query = new HighLevelQuery<T>();
+		query.addParameter(this.getParamFactory("approved", boolean.class).getParameter(true));
+		query.addRelation(APPLICATION_JOB_RELATION);
+		return this.getAll(query);
+	}
 	
 }

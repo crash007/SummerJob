@@ -21,33 +21,33 @@ public class MunicipalityJobApplication extends JobApplication{
 	
 	@DAOManaged(columnName="prefered_area_1")
 	@ManyToOne(remoteKeyField="id",autoGet=true)
+	@XMLElement(name="preferedArea1")
 	private MunicipalityJobArea preferedArea1;
 	
 	@DAOManaged(columnName="prefered_area_2")
-	@ManyToOne(remoteKeyField="id")
+	@ManyToOne(remoteKeyField="id",autoGet=true)
+	@XMLElement(name="preferedArea2")
 	private MunicipalityJobArea preferedArea2;
 	
 	@DAOManaged(columnName="prefered_area_3")
-	@ManyToOne(remoteKeyField="id")
+	@ManyToOne(remoteKeyField="id",autoGet=true)
+	@XMLElement(name="preferedArea3")
 	private MunicipalityJobArea preferedArea3;
 	
 	@DAOManaged(columnName="prefered_geo_area_1")
 	@ManyToOne(remoteKeyField="id",autoGet=true)
+	@XMLElement(name="preferedGeoArea1")
 	private GeoArea preferedGeoArea1;
 	
 	@DAOManaged(columnName="prefered_geo_area_2")
-	@ManyToOne(remoteKeyField="id")
+	@ManyToOne(remoteKeyField="id",autoGet=true)
+	@XMLElement(name="preferedGeoArea2")
 	private GeoArea preferedGeoArea2;
 	
 	@DAOManaged(columnName="prefered_geo_area_3")
-	@ManyToOne(remoteKeyField="id")
+	@ManyToOne(remoteKeyField="id",autoGet=true)
+	@XMLElement(name="preferedGeoArea3")
 	private GeoArea preferedGeoArea3;
-//	
-//	@DAOManaged(columnName="driversLicenseTypeId")
-//	@ManyToOne(remoteKeyField="id")
-//	private DriversLicenseType driversLicenseType;
-//	
-
 
 	
 	public MunicipalityJobArea getPreferedArea1() {
@@ -100,9 +100,10 @@ public class MunicipalityJobApplication extends JobApplication{
 
 	@Override
 	public String toString() {
-		return "MunicipalityJobApplication [preferedArea1=" + preferedArea1 + ", preferedArea2=" + preferedArea2
-				+ ", preferedArea3=" + preferedArea3 + ", preferedGeoArea1=" + preferedGeoArea1 + ", preferedGeoArea2="
-				+ preferedGeoArea2 + ", preferedGeoArea3=" + preferedGeoArea3 + "]";
+		return "MunicipalityJobApplication [job=" + job + ", preferedArea1=" + preferedArea1 + ", preferedArea2="
+				+ preferedArea2 + ", preferedArea3=" + preferedArea3 + ", preferedGeoArea1=" + preferedGeoArea1
+				+ ", preferedGeoArea2=" + preferedGeoArea2 + ", preferedGeoArea3=" + preferedGeoArea3 + super.toString()+"]";
+		
 	}
 
 	@Override
