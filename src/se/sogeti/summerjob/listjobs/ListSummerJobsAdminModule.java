@@ -66,12 +66,14 @@ public class ListSummerJobsAdminModule extends AnnotatedForegroundModule {
 			List<MunicipalityJob> controlledJobs = municipalityJobDAO.getAllControlledAndApproved();
 			if (controlledJobs != null) {
 				for (MunicipalityJob job : controlledJobs) {
-					Element businessSectorJob = doc.createElement("Job");
+					Element businessSectorJob = doc.createElement("ApprovedJob");
 					XMLUtils.appendNewElement(doc, businessSectorJob, "workTitle", job.getWorkTitle());
 					Period period = job.getPeriod();
 					XMLUtils.appendNewElement(doc, businessSectorJob, "dates", period.getName() + " (" + period.getStartDate() + " - " + period.getEndDate() + ")");
 					XMLUtils.appendNewElement(doc, businessSectorJob, "numberOfWorkersNeeded", job.getNumberOfWorkersNeeded());
 					XMLUtils.appendNewElement(doc, businessSectorJob, "created", job.getCreated());
+					XMLUtils.appendNewElement(doc, businessSectorJob, "approvedByUser", job.getApprovedByUser());
+					XMLUtils.appendNewElement(doc, businessSectorJob, "controlledDate", job.getControlledDate());
 					XMLUtils.appendNewElement(doc, businessSectorJob, "url", "view_municipalityjob_" + job.getId());
 					controlledJobsElement.appendChild(businessSectorJob);
 				}
@@ -80,12 +82,13 @@ public class ListSummerJobsAdminModule extends AnnotatedForegroundModule {
 			List<MunicipalityJob> uncontrolledJobs = municipalityJobDAO.getAllUncontrolled();
 			if (uncontrolledJobs != null) {
 				for (MunicipalityJob job : uncontrolledJobs) {
-					Element businessSectorJob = doc.createElement("Job");
+					Element businessSectorJob = doc.createElement("UncontrolledJob");
 					XMLUtils.appendNewElement(doc, businessSectorJob, "workTitle", job.getWorkTitle());
 					Period period = job.getPeriod();
 					XMLUtils.appendNewElement(doc, businessSectorJob, "dates", period.getName() + " (" + period.getStartDate() + " - " + period.getEndDate() + ")");
 					XMLUtils.appendNewElement(doc, businessSectorJob, "numberOfWorkersNeeded", job.getNumberOfWorkersNeeded());
 					XMLUtils.appendNewElement(doc, businessSectorJob, "created", job.getCreated());
+					XMLUtils.appendNewElement(doc, businessSectorJob, "initiatedByUser", job.getInitiatedByUser());
 					XMLUtils.appendNewElement(doc, businessSectorJob, "url", "view_municipalityjob_" + job.getId());
 					uncontrolledJobsElement.appendChild(businessSectorJob);
 				}
@@ -94,12 +97,14 @@ public class ListSummerJobsAdminModule extends AnnotatedForegroundModule {
 			List<MunicipalityJob> controlledDisapprovedJobs = municipalityJobDAO.getAllControlledAndDisapproved();
 			if (controlledDisapprovedJobs != null) {
 				for (MunicipalityJob job : controlledDisapprovedJobs) {
-					Element businessSectorJob = doc.createElement("Job");
+					Element businessSectorJob = doc.createElement("DisapprovedJob");
 					XMLUtils.appendNewElement(doc, businessSectorJob, "workTitle", job.getWorkTitle());
 					Period period = job.getPeriod();
 					XMLUtils.appendNewElement(doc, businessSectorJob, "dates", period.getName() + " (" + period.getStartDate() + " - " + period.getEndDate() + ")");
 					XMLUtils.appendNewElement(doc, businessSectorJob, "numberOfWorkersNeeded", job.getNumberOfWorkersNeeded());
 					XMLUtils.appendNewElement(doc, businessSectorJob, "created", job.getCreated());
+					XMLUtils.appendNewElement(doc, businessSectorJob, "approvedByUser", job.getApprovedByUser());
+					XMLUtils.appendNewElement(doc, businessSectorJob, "controlledDate", job.getControlledDate());
 					XMLUtils.appendNewElement(doc, businessSectorJob, "url", "view_municipalityjob_" + job.getId());
 					controlledDisapprovedJobsElement.appendChild(businessSectorJob);
 				}
@@ -110,12 +115,14 @@ public class ListSummerJobsAdminModule extends AnnotatedForegroundModule {
 			List<BusinessSectorJob> controlledJobs = businessSectorJobDAO.getAllControlledAndApproved();
 			if (controlledJobs != null) {
 				for (BusinessSectorJob job : controlledJobs) {
-					Element businessSectorJob = doc.createElement("Job");
+					Element businessSectorJob = doc.createElement("ControlledJob");
 					XMLUtils.appendNewElement(doc, businessSectorJob, "workTitle", job.getWorkTitle());
 					XMLUtils.appendNewElement(doc, businessSectorJob, "dates", job.getStartDate() + " - " + job.getEndDate());
 					XMLUtils.appendNewElement(doc, businessSectorJob, "numberOfWorkersNeeded", job.getNumberOfWorkersNeeded());
 					XMLUtils.appendNewElement(doc, businessSectorJob, "created", job.getCreated());
-					XMLUtils.appendNewElement(doc, businessSectorJob, "url", "view_businessjob_" + job.getId());
+					XMLUtils.appendNewElement(doc, businessSectorJob, "approvedByUser", job.getApprovedByUser());
+					XMLUtils.appendNewElement(doc, businessSectorJob, "controlledDate", job.getControlledDate());
+					XMLUtils.appendNewElement(doc, businessSectorJob, "url", "manage-businesssector-job?jobId=" + job.getId());
 					controlledJobsElement.appendChild(businessSectorJob);
 				}
 			}
@@ -123,12 +130,13 @@ public class ListSummerJobsAdminModule extends AnnotatedForegroundModule {
 			List<BusinessSectorJob> uncontrolledJobs = businessSectorJobDAO.getAllUncontrolled();
 			if (uncontrolledJobs != null) {
 				for (BusinessSectorJob job : uncontrolledJobs) {
-					Element businessSectorJob = doc.createElement("Job");
+					Element businessSectorJob = doc.createElement("UncontrolledJob");
 					XMLUtils.appendNewElement(doc, businessSectorJob, "workTitle", job.getWorkTitle());
 					XMLUtils.appendNewElement(doc, businessSectorJob, "dates", job.getStartDate() + " - " + job.getEndDate());
 					XMLUtils.appendNewElement(doc, businessSectorJob, "numberOfWorkersNeeded", job.getNumberOfWorkersNeeded());
 					XMLUtils.appendNewElement(doc, businessSectorJob, "created", job.getCreated());
-					XMLUtils.appendNewElement(doc, businessSectorJob, "url", "view_businessjob_" + job.getId());
+					XMLUtils.appendNewElement(doc, businessSectorJob, "initiatedByUser", job.getInitiatedByUser());
+					XMLUtils.appendNewElement(doc, businessSectorJob, "url", "manage-businesssector-job?jobId=" + job.getId());
 					uncontrolledJobsElement.appendChild(businessSectorJob);
 				}
 			}
@@ -136,12 +144,14 @@ public class ListSummerJobsAdminModule extends AnnotatedForegroundModule {
 			List<BusinessSectorJob> controlledDisapprovedJobs = businessSectorJobDAO.getAllControlledAndDisapproved();
 			if (controlledDisapprovedJobs != null) {
 				for (BusinessSectorJob job : controlledDisapprovedJobs) {
-					Element businessSectorJob = doc.createElement("Job");
+					Element businessSectorJob = doc.createElement("ControlledJob");
 					XMLUtils.appendNewElement(doc, businessSectorJob, "workTitle", job.getWorkTitle());
 					XMLUtils.appendNewElement(doc, businessSectorJob, "dates", job.getStartDate() + " - " + job.getEndDate());
 					XMLUtils.appendNewElement(doc, businessSectorJob, "numberOfWorkersNeeded", job.getNumberOfWorkersNeeded());
 					XMLUtils.appendNewElement(doc, businessSectorJob, "created", job.getCreated());
-					XMLUtils.appendNewElement(doc, businessSectorJob, "url", "view_businessjob_" + job.getId());
+					XMLUtils.appendNewElement(doc, businessSectorJob, "approvedByUser", job.getApprovedByUser());
+					XMLUtils.appendNewElement(doc, businessSectorJob, "controlledDate", job.getControlledDate());
+					XMLUtils.appendNewElement(doc, businessSectorJob, "url", "manage-businesssector-job?jobId=" + job.getId());
 					controlledDisapprovedJobsElement.appendChild(businessSectorJob);
 				}
 			}

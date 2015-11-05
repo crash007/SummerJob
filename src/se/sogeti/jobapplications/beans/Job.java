@@ -63,6 +63,7 @@ public abstract class Job implements Requirements,Elementable{
 	
 	@DAOManaged(columnName="driversLicenseTypeId")
 	@ManyToOne(remoteKeyField="id", autoGet = true, autoAdd = true, autoUpdate = true)
+	@XMLElement
 	private DriversLicenseType driversLicenseType;
 	
 	@DAOManaged
@@ -81,6 +82,13 @@ public abstract class Job implements Requirements,Elementable{
 	@XMLElement
 	private String city;
 	
+	@DAOManaged
+	@XMLElement
+	private String initiatedByUser;
+	
+	@DAOManaged
+	@XMLElement
+	private String adminNotes;
 	
 	public Integer getId() {
 		return id;
@@ -237,6 +245,20 @@ public abstract class Job implements Requirements,Elementable{
 		this.controlled = controlled;
 	}
 
+	public String getInitiatedByUser() {
+		return initiatedByUser;
+	}
 
-	
+	public void setInitiatedByUser(String initiatedByUser) {
+		this.initiatedByUser = initiatedByUser;
+	}
+
+	public String getAdminNotes() {
+		return adminNotes;
+	}
+
+	public void setAdminNotes(String adminNotes) {
+		this.adminNotes = adminNotes;
+	}
+
 }

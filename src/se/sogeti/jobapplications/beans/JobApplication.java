@@ -111,6 +111,10 @@ public abstract class JobApplication implements Elementable{
 	@XMLElement
 	private String skvCity;
 	
+	@DAOManaged
+	@XMLElement
+	private String adminNotes;
+	
 	public Integer getId() {
 		return id;
 	}
@@ -324,6 +328,14 @@ public abstract class JobApplication implements Elementable{
 
 	public void setSkvCity(String skvCity) {
 		this.skvCity = skvCity;
+	}
+
+	public String getAdminNotes() {
+		return adminNotes;
+	}
+
+	public void setAdminNotes(String adminNotes) {
+		this.adminNotes = adminNotes;
 	}
 
 	
