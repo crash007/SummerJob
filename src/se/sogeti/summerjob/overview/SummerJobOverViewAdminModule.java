@@ -134,9 +134,14 @@ public class SummerJobOverViewAdminModule extends AnnotatedForegroundModule{
 					XMLUtils.appendNewElement(doc, municipalityApplication, "firstname", app.getFirstname());
 					XMLUtils.appendNewElement(doc, municipalityApplication, "lastname", app.getLastname());
 					
-					XMLUtils.appendNewElement(doc, municipalityApplication, "preferedArea1", app.getPreferedArea1().getName());			
-					XMLUtils.appendNewElement(doc, municipalityApplication, "preferedGeoArea1", app.getPreferedGeoArea1().getName());
-		
+					if(app.getPreferedArea1()!=null){
+						XMLUtils.appendNewElement(doc, municipalityApplication, "preferedArea1", app.getPreferedArea1().getName());			
+					}
+					
+					if(app.getPreferedGeoArea1()!=null){
+						XMLUtils.appendNewElement(doc, municipalityApplication, "preferedGeoArea1", app.getPreferedGeoArea1().getName());
+					}
+					
 					XMLUtils.appendNewElement(doc, municipalityApplication, "schoolName", app.getSchoolName());
 					XMLUtils.appendNewElement(doc, municipalityApplication, "schoolType", app.getSchoolType());
 					XMLUtils.appendNewElement(doc, municipalityApplication, "skvCity", app.getSkvCity());
