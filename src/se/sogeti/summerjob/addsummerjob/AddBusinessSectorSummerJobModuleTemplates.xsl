@@ -110,7 +110,7 @@
 			  			
 				    	</div>
 				    	
-				    	<a href="#" class="add-mentor-btn">Lägg till ny handledare</a>
+				    	<a href="#" class="add-mentor-btn"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Lägg till ny handledare</a>
 				  	</div>
 				  	
 				  </div>
