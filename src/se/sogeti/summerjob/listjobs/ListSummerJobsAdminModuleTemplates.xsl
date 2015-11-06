@@ -16,7 +16,7 @@
 				<h3 class="panel-title">Godkända annonser</h3>
 			</div>
 			<div class="panel-body">
-				<table class="table table-bordered">
+				<table class="table">
 					<thead>
 						<tr>
 							<th>Rubrik</th>
@@ -40,7 +40,7 @@
 				<h3 class="panel-title">Ej kontrollerade annonser</h3>
 			</div>
 			<div class="panel-body">
-				<table class="table table-bordered">
+				<table class="table">
 					<thead>
 						<tr>
 							<th>Rubrik</th>
@@ -63,7 +63,7 @@
 				<h3 class="panel-title">Nekade annonser</h3>
 			</div>
 			<div class="panel-body">
-				<table class="table table-bordered">
+				<table class="table">
 					<thead>
 						<tr>
 							<th>Rubrik</th>
