@@ -15,6 +15,8 @@ import se.sogeti.jobapplications.beans.municipality.MunicipalityJob;
 import se.sogeti.jobapplications.daos.GeoAreaDAO;
 import se.sogeti.jobapplications.daos.JobDAO;
 import se.sogeti.periodsadmin.beans.Period;
+import se.unlogic.hierarchy.core.annotations.ModuleSetting;
+import se.unlogic.hierarchy.core.annotations.TextFieldSettingDescriptor;
 import se.unlogic.hierarchy.core.beans.SimpleForegroundModuleResponse;
 import se.unlogic.hierarchy.core.beans.User;
 import se.unlogic.hierarchy.core.interfaces.ForegroundModuleResponse;
@@ -30,6 +32,14 @@ public class ListSummerJobsAdminModule extends AnnotatedForegroundModule {
 	JobDAO<MunicipalityJob> municipalityJobDAO;
 	JobDAO<BusinessSectorJob> businessSectorJobDAO;
 	GeoAreaDAO geoAreaDAO;
+	
+	@ModuleSetting
+	@TextFieldSettingDescriptor(description="Relativ url till att hantera kommunala sommarjobb",name="ManageMunicipalityJob")
+	private String manageMunicipalityJobUrl="manage-municipality-job";
+	
+	@ModuleSetting
+	@TextFieldSettingDescriptor(description="Relativ url till att hantera näringslivssommarjobb",name="ManageBusinessJob")
+	private String manageBusinessJobUrl="manage-businesssector-job";
 	
 	@Override
 	protected void createDAOs(DataSource dataSource) throws Exception {
@@ -63,7 +73,20 @@ public class ListSummerJobsAdminModule extends AnnotatedForegroundModule {
 		if (showMunicipalityJobs != null && showMunicipalityJobs) {
 			XMLUtils.appendNewElement(doc, headingElement, "title", "Interna sommarjobb (Kommunala)");
 
-			List<MunicipalityJob> controlledJobs = municipalityJobDAO.getAllControlledAndApproved();
+			List<MunicipalityJob> controlledJobs = null;
+			List<MunicipalityJob> uncontrolledJobs = null;
+			List<MunicipalityJob> controlledDisapprovedJobs = null;
+			
+			if(user.isAdmin()){
+				controlledJobs = municipalityJobDAO.getAllControlledAndApproved();
+				uncontrolledJobs = municipalityJobDAO.getAllUncontrolled();
+				controlledDisapprovedJobs = municipalityJobDAO.getAllControlledAndDisapproved();
+			}else{
+				controlledJobs = municipalityJobDAO.getAllControlledAndApprovedAddedByUsername(user.getUsername());
+				uncontrolledJobs = municipalityJobDAO.getAllUncontrolledAddedByUsername(user.getUsername());
+				controlledDisapprovedJobs = municipalityJobDAO.getAllControlledAndDisapprovedAddedByUsername(user.getUsername());
+			}
+			
 			if (controlledJobs != null) {
 				for (MunicipalityJob job : controlledJobs) {
 					Element municipalityJob = doc.createElement("ControlledJob");
@@ -74,12 +97,12 @@ public class ListSummerJobsAdminModule extends AnnotatedForegroundModule {
 					XMLUtils.appendNewElement(doc, municipalityJob, "created", job.getCreated());
 					XMLUtils.appendNewElement(doc, municipalityJob, "approvedByUser", job.getApprovedByUser());
 					XMLUtils.appendNewElement(doc, municipalityJob, "controlledDate", job.getControlledDate());
-					XMLUtils.appendNewElement(doc, municipalityJob, "url", "manage-municipality-job?jobId=" + job.getId());
+					XMLUtils.appendNewElement(doc, municipalityJob, "url", manageMunicipalityJobUrl+"?jobId=" + job.getId());
 					controlledJobsElement.appendChild(municipalityJob);
 				}
 			}
 			
-			List<MunicipalityJob> uncontrolledJobs = municipalityJobDAO.getAllUncontrolled();
+			
 			if (uncontrolledJobs != null) {
 				for (MunicipalityJob job : uncontrolledJobs) {
 					Element municipalityJob = doc.createElement("UncontrolledJob");
@@ -89,12 +112,12 @@ public class ListSummerJobsAdminModule extends AnnotatedForegroundModule {
 					XMLUtils.appendNewElement(doc, municipalityJob, "numberOfWorkersNeeded", job.getNumberOfWorkersNeeded());
 					XMLUtils.appendNewElement(doc, municipalityJob, "created", job.getCreated());
 					XMLUtils.appendNewElement(doc, municipalityJob, "initiatedByUser", job.getInitiatedByUser());
-					XMLUtils.appendNewElement(doc, municipalityJob, "url", "manage-municipality-job?jobId=" + job.getId());
+					XMLUtils.appendNewElement(doc, municipalityJob, "url", manageMunicipalityJobUrl+"?jobId=" + job.getId());
 					uncontrolledJobsElement.appendChild(municipalityJob);
 				}
 			}
 			
-			List<MunicipalityJob> controlledDisapprovedJobs = municipalityJobDAO.getAllControlledAndDisapproved();
+			
 			if (controlledDisapprovedJobs != null) {
 				for (MunicipalityJob job : controlledDisapprovedJobs) {
 					Element municipalityJob = doc.createElement("ControlledJob");
@@ -105,7 +128,7 @@ public class ListSummerJobsAdminModule extends AnnotatedForegroundModule {
 					XMLUtils.appendNewElement(doc, municipalityJob, "created", job.getCreated());
 					XMLUtils.appendNewElement(doc, municipalityJob, "approvedByUser", job.getApprovedByUser());
 					XMLUtils.appendNewElement(doc, municipalityJob, "controlledDate", job.getControlledDate());
-					XMLUtils.appendNewElement(doc, municipalityJob, "url", "manage-municipality-job?jobId=" + job.getId());
+					XMLUtils.appendNewElement(doc, municipalityJob, "url", manageMunicipalityJobUrl+"?jobId=" + job.getId());
 					controlledDisapprovedJobsElement.appendChild(municipalityJob);
 				}
 			}
@@ -122,7 +145,7 @@ public class ListSummerJobsAdminModule extends AnnotatedForegroundModule {
 					XMLUtils.appendNewElement(doc, businessSectorJob, "created", job.getCreated());
 					XMLUtils.appendNewElement(doc, businessSectorJob, "approvedByUser", job.getApprovedByUser());
 					XMLUtils.appendNewElement(doc, businessSectorJob, "controlledDate", job.getControlledDate());
-					XMLUtils.appendNewElement(doc, businessSectorJob, "url", "manage-businesssector-job?jobId=" + job.getId());
+					XMLUtils.appendNewElement(doc, businessSectorJob, "url", manageBusinessJobUrl+"?jobId=" + job.getId());
 					controlledJobsElement.appendChild(businessSectorJob);
 				}
 			}
@@ -136,7 +159,7 @@ public class ListSummerJobsAdminModule extends AnnotatedForegroundModule {
 					XMLUtils.appendNewElement(doc, businessSectorJob, "numberOfWorkersNeeded", job.getNumberOfWorkersNeeded());
 					XMLUtils.appendNewElement(doc, businessSectorJob, "created", job.getCreated());
 					XMLUtils.appendNewElement(doc, businessSectorJob, "initiatedByUser", job.getInitiatedByUser());
-					XMLUtils.appendNewElement(doc, businessSectorJob, "url", "manage-businesssector-job?jobId=" + job.getId());
+					XMLUtils.appendNewElement(doc, businessSectorJob, "url", manageBusinessJobUrl+"?jobId=" + job.getId());
 					uncontrolledJobsElement.appendChild(businessSectorJob);
 				}
 			}
@@ -151,7 +174,7 @@ public class ListSummerJobsAdminModule extends AnnotatedForegroundModule {
 					XMLUtils.appendNewElement(doc, businessSectorJob, "created", job.getCreated());
 					XMLUtils.appendNewElement(doc, businessSectorJob, "approvedByUser", job.getApprovedByUser());
 					XMLUtils.appendNewElement(doc, businessSectorJob, "controlledDate", job.getControlledDate());
-					XMLUtils.appendNewElement(doc, businessSectorJob, "url", "manage-businesssector-job?jobId=" + job.getId());
+					XMLUtils.appendNewElement(doc, businessSectorJob, "url", manageBusinessJobUrl+"?jobId=" + job.getId());
 					controlledDisapprovedJobsElement.appendChild(businessSectorJob);
 				}
 			}

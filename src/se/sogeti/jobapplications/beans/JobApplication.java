@@ -111,6 +111,10 @@ public abstract class JobApplication implements Elementable{
 	@XMLElement
 	private String adminNotes;
 	
+	@DAOManaged
+	@XMLElement
+	private String addedByUser;
+	
 	public Integer getId() {
 		return id;
 	}
@@ -322,6 +326,23 @@ public abstract class JobApplication implements Elementable{
 				+ ", controlledDate=" + controlledDate + ", socialSecurityNumber=" + socialSecurityNumber
 				+ ", firstname=" + firstname + ", lastname=" + lastname + ", streetAddress=" + streetAddress
 				+ ", zipCode=" + zipCode + ", city=" + city + ", email=" + email + ", phoneNumber=" + phoneNumber
-				+ ", schoolName=" + schoolName + ", schoolType=" + schoolType + ", skvCity=" + skvCity + "]";
+				+ ", schoolName=" + schoolName + ", schoolType=" + schoolType + ", skvCity=" + skvCity + ", adminNotes="
+				+ adminNotes + ", addedByUser=" + addedByUser + "]";
+	}
+
+	public String getAddedByUser() {
+		return addedByUser;
+	}
+
+	public void setAddedByUser(String addedByUser) {
+		this.addedByUser = addedByUser;
+	}
+
+	public Boolean getApproved() {
+		return approved;
+	}
+
+	public Boolean getControlled() {
+		return controlled;
 	}
 }

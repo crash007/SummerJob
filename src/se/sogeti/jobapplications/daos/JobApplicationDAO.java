@@ -41,8 +41,28 @@ public class JobApplicationDAO<T extends JobApplication> extends SummerJobCommon
 	}
 	
 	public List<T> getUnapprovedWithJob(Integer rows) throws SQLException {
+		return getWithJob(false, rows,null);
+	}
+	
+	public List<T> getUnapprovedWithJobAddedByUsername(Integer rows,String username) throws SQLException {
+		return getWithJob(false, rows, username);
+	}
+	
+	public List<T> getAllApprovedWithJob() throws SQLException {
+		return getWithJob(true, null,null);
+	}
+	
+	public List<T> getApprovedWithJob(Integer rows) throws SQLException {
+		return getWithJob(true, rows,null);
+	}
+
+	public List<T> getApprovedWithJobAddedByUsername(Integer rows,String username) throws SQLException {
+		return getWithJob(true, rows, username);
+	}
+	
+	public List<T> getWithJob(boolean approved,Integer rows, String username) throws SQLException {
 		HighLevelQuery<T> query = new HighLevelQuery<T>();
-		query.addParameter(this.getParamFactory("approved", Boolean.class).getParameter(false));
+		query.addParameter(this.getParamFactory("approved", Boolean.class).getParameter(approved));
 		query.addRelation(APPLICATION_JOB_RELATION);
 		
 		if(rows!=null){
@@ -50,24 +70,8 @@ public class JobApplicationDAO<T extends JobApplication> extends SummerJobCommon
 			query.setRowLimiter(limit);
 		}
 		
-		return this.getAll(query);
-	}
-	
-	public List<T> getAllApprovedWithJob() throws SQLException {
-		HighLevelQuery<T> query = new HighLevelQuery<T>();
-		query.addParameter(this.getParamFactory("approved", Boolean.class).getParameter(true));
-		query.addRelation(APPLICATION_JOB_RELATION);
-		return this.getAll(query);
-	}
-
-	public List<T> getApprovedWithJob(Integer rows) throws SQLException {
-		HighLevelQuery<T> query = new HighLevelQuery<T>();
-		query.addParameter(this.getParamFactory("approved", Boolean.class).getParameter(true));
-		query.addRelation(APPLICATION_JOB_RELATION);
-		
-		if(rows!=null){
-			MySQLRowLimiter limit = new MySQLRowLimiter(rows);
-			query.setRowLimiter(limit);
+		if(username!=null){
+			query.addParameter(this.getParamFactory("addedByUser", String.class).getParameter(username));
 		}
 		
 		return this.getAll(query);

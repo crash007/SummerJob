@@ -73,59 +73,93 @@ public class SummerJobOverViewAdminModule extends AnnotatedForegroundModule{
 		element.appendChild(this.sectionInterface.getSectionDescriptor().toXML(doc));
 		element.appendChild(this.moduleDescriptor.toXML(doc));
 		doc.appendChild(element);
-		//Element overView = doc.createElement("OverView");
-		//doc.getFirstChild().appendChild(overView);
+		
+		List<MunicipalityJob> newJobs = null;
+		List<MunicipalityJob> approvedJobs =null;
+		List<MunicipalityJobApplication> approvedMunicipalityApplications = null;	
+		List<MunicipalityJobApplication> unapprovedMunicipalityApplications = null;
 		
 		if(showMunicipality){
+			if(user.isAdmin()){
+				newJobs = municipalityJobDAO.getLatestUncontrolled(rows);	
+				approvedJobs = municipalityJobDAO.getLatestApproved(rows);
+				approvedMunicipalityApplications = municipalityJobApplicationDAO.getLatestApproved(rows);
+				unapprovedMunicipalityApplications = municipalityJobApplicationDAO.getLatestUnapproved(rows);
+			}else{
+				newJobs = municipalityJobDAO.getLatestUncontrolledAddedByUsername(rows, user.getUsername());	
+				approvedJobs = municipalityJobDAO.getLatestApprovedAddedByUsername(rows, user.getUsername());
+				approvedMunicipalityApplications = municipalityJobApplicationDAO.getLatestApprovedAddedByUsername(rows, user.getUsername());
+				unapprovedMunicipalityApplications = municipalityJobApplicationDAO.getLatestUnapprovedAddedByUsername(rows, user.getUsername());
+			}
+			
 			Element municipality = doc.createElement("Municipality");
 			doc.getFirstChild().appendChild(municipality);
 			Element newMunicipalityJobsElement = doc.createElement("NewMunicipalityJobs");
-			List<MunicipalityJob> newJobs = municipalityJobDAO.getLatestUncontrolled(rows);
+			
 			XMLUtils.append(doc,newMunicipalityJobsElement, newJobs);		
 			municipality.appendChild(newMunicipalityJobsElement);
 			
 			Element approvedMunicipalityJobsElement = doc.createElement("approvedMunicipalityJobs");
-			List<MunicipalityJob> approvedJobs = municipalityJobDAO.getLatestApproved(rows);
+			
 			XMLUtils.append(doc,approvedMunicipalityJobsElement, approvedJobs);		
 			municipality.appendChild(approvedMunicipalityJobsElement);
 			
 			
 			Element approvedMunicipalityApplicationsElem = doc.createElement("approvedMunicipalityApplications");
-			List<MunicipalityJobApplication> approvedMunicipalityApplications = municipalityJobApplicationDAO.getLatestApproved(rows);	
+			
 			createApplicationElementList(doc, approvedMunicipalityApplicationsElem, approvedMunicipalityApplications);		
 			XMLUtils.append(doc,approvedMunicipalityApplicationsElem, approvedMunicipalityApplications);		
 			municipality.appendChild(approvedMunicipalityApplicationsElem);
 			
 			Element unapprovedMunicipalityApplicationsElem = doc.createElement("unapprovedMunicipalityApplications");
-			List<MunicipalityJobApplication> unapprovedMunicipalityApplications = municipalityJobApplicationDAO.getLatestUnapproved(rows);	
+				
 			createApplicationElementList(doc, unapprovedMunicipalityApplicationsElem, unapprovedMunicipalityApplications);		
 			XMLUtils.append(doc,unapprovedMunicipalityApplicationsElem, unapprovedMunicipalityApplications);		
 			municipality.appendChild(unapprovedMunicipalityApplicationsElem);
 		}
 		
 		if(showBusiness){
+			
+			List<BusinessSectorJob> newBusinessJobs = null;
+			List<BusinessSectorJob> approvedBusinessJobs = null;
+			List<BusinessSectorJobApplication> approvedBusinessApplications = null;
+			List<BusinessSectorJobApplication> unapprovedBusinessApplications = null;
+			
+			if(user.isAdmin()){
+				newBusinessJobs = businessJobDAO.getLatestUncontrolled(rows);
+				approvedBusinessJobs = businessJobDAO.getLatestApproved(rows);
+				approvedBusinessApplications = businessJobApplicationDAO.getApprovedWithJob(rows);
+				unapprovedBusinessApplications = businessJobApplicationDAO.getUnapprovedWithJob(rows);
+			
+			}else{
+				newBusinessJobs = businessJobDAO.getLatestUncontrolledAddedByUsername(rows,user.getUsername());
+				approvedBusinessJobs = businessJobDAO.getLatestApprovedAddedByUsername(rows,user.getUsername());
+				approvedBusinessApplications = businessJobApplicationDAO.getApprovedWithJobAddedByUsername(rows,user.getUsername());
+				unapprovedBusinessApplications = businessJobApplicationDAO.getUnapprovedWithJobAddedByUsername(rows,user.getUsername());
+			}
+			
 			Element business = doc.createElement("Business");
 			doc.getFirstChild().appendChild(business);
 			
 			//New Business jobs
 			Element newBusinessyJobsElement = doc.createElement("NewBusinessJobs");
-			List<BusinessSectorJob> newBusinessJobs = businessJobDAO.getLatestUncontrolled(rows);
+			
 			XMLUtils.append(doc,newBusinessyJobsElement, newBusinessJobs);		
 			business.appendChild(newBusinessyJobsElement);
 			
 			Element approvedBusinessJobsElement = doc.createElement("ApprovedBusinessJobs");
-			List<BusinessSectorJob> approvedBusinessJobs = businessJobDAO.getLatestApproved(rows);		
+					
 			XMLUtils.append(doc,approvedBusinessJobsElement, approvedBusinessJobs);		
 			business.appendChild(approvedBusinessJobsElement);
 			
 			//Business applications
 			Element approvedBusinessApplicationsElem = doc.createElement("ApprovedBusinessApplications");
-			List<BusinessSectorJobApplication> approvedBusinessApplications = businessJobApplicationDAO.getApprovedWithJob(rows);
+			
 			XMLUtils.append(doc,approvedBusinessApplicationsElem, approvedBusinessApplications);		
 			business.appendChild(approvedBusinessApplicationsElem);
 			
 			Element unapprovedBusinessApplicationsElem = doc.createElement("UnapprovedBusinessApplications");
-			List<BusinessSectorJobApplication> unapprovedBusinessApplications = businessJobApplicationDAO.getUnapprovedWithJob(rows);
+			
 			XMLUtils.append(doc,unapprovedBusinessApplicationsElem, unapprovedBusinessApplications);		
 			business.appendChild(unapprovedBusinessApplicationsElem);
 		}
