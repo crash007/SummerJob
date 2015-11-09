@@ -42,6 +42,7 @@ public class AddMunicipalitySummerJobApplicationModule extends AnnotatedRESTModu
 	private PeriodDAO periodDAO;
 	private GeoAreaDAO geoAreaDAO;
 	
+	
 	@InstanceManagerDependency(required = true)
 	private SmexServiceHandler smexServiceHandler;
 	
@@ -66,6 +67,15 @@ public class AddMunicipalitySummerJobApplicationModule extends AnnotatedRESTModu
 		
 		if(req.getMethod().equals("POST")){
 			log.info("POST");
+			MunicipalityJobApplication exisitingApplication = jobApplicationDAO.getbySocialSecurityNumber(req.getParameter("socialSecurityNumber"));
+			
+			if(exisitingApplication!=null){
+				//TODO
+				//Post with json and instead
+				log.warn("Municipality application already exists for this user "+exisitingApplication.applicationBasicsToString());
+				throw new Error("Something went wrong");
+			}
+			
 			MunicipalityJobApplication app = new MunicipalityJobApplication();
 			
 			Citizen person=null;

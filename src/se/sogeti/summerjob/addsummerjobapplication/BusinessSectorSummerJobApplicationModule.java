@@ -147,20 +147,6 @@ public class BusinessSectorSummerJobApplicationModule extends AnnotatedRESTModul
 			
 		}
 		
-		
-		
-		/*
-		Element areasElement = doc.createElement("Areas");
-		List<MunicipalityJobArea> areas = areaDAO.getAll();		
-		XMLUtils.append(doc, areasElement,areas);
-		form.appendChild(areasElement);	
-		
-		Element geoAreasElement = doc.createElement("GeoAreas");
-		List<GeoArea> geoAreas = geoAreaDAO.getAll();
-		XMLUtils.append(doc, geoAreasElement, geoAreas);
-		form.appendChild(geoAreasElement);
-		*/
-		
 		return new SimpleForegroundModuleResponse(doc);
 		
 	}

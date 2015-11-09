@@ -105,6 +105,11 @@ public class MunicipalityJobApplication extends JobApplication{
 				+ ", preferedGeoArea2=" + preferedGeoArea2 + ", preferedGeoArea3=" + preferedGeoArea3 + super.toString()+"]";
 		
 	}
+	
+	public String applicationBasicsToString(){
+		return super.toString();
+	}
+	
 
 	@Override
 	public Element toXML(Document doc) {

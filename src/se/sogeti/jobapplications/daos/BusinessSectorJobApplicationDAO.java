@@ -18,6 +18,8 @@ public class BusinessSectorJobApplicationDAO extends JobApplicationDAO<BusinessS
 		// TODO Auto-generated constructor stub
 	}
 
+
+
 //	private static final Field APPLICATION_JOB_RELATION = ReflectionUtils.getField(BusinessSectorJobApplication.class, "job");
 //	
 //	public List<BusinessSectorJobApplication> getAllUnapprovedWithJob() throws SQLException {

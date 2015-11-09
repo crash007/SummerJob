@@ -13,7 +13,170 @@
 	
 	
 	<xsl:template match="JobInfo/BusinessSectorJob">
-		<div class="well">
+	<div class="well">
+		  	<div class="panel panel-default">
+					  	<div class="panel-heading">
+					  		<h3 class="panel-title">Arbete</h3>
+					  	</div>
+					  	<div class="panel-body">
+						  	<div class="row">
+						  		<div class="col-md-5">
+									<label for="work">Yrkestitel</label>
+									<div id="work"><xsl:value-of select="workTitle"></xsl:value-of></div>
+								</div>
+						  	</div>
+						  	<div class="mgn-top8px row">
+						  		<div class="col-md-12">
+									<label for="description">Yrkesbeskrivning</label>
+									<div id="description"><xsl:value-of select="workDescription"></xsl:value-of></div>
+								</div>
+						  	</div>
+						  	
+						  	<div class="mgn-top8px row">
+						  		<div class="col-md-3">
+									<label for="numberNeeded">Antal platser</label>
+									<span class="mgn-lft8px" id="numberNeeded"><xsl:value-of select="numberOfWorkersNeeded"></xsl:value-of></span>
+								</div>
+							</div>
+						  	
+						  	<div class="mgn-top8px row">
+								<div class="col-md-3">
+									<label for="startDate">Startdatum</label>
+									<span class="mgn-lft8px" id="startDate"><xsl:value-of select="startDate"></xsl:value-of></span>
+								</div>
+								<div class="col-md-3">
+									<label for="endDate">Slutdatum</label>
+									<span class="mgn-lft8px" id="endDate"><xsl:value-of select="endDate"></xsl:value-of></span>
+								</div>
+						  	</div>
+						  	<div class="mgn-top8px row">
+						  		<div class="col-md-12">
+							  		<label>Handledare</label>
+							  		<table class="table">
+										<thead>
+											<tr>
+												<th class="overview">Förnamn</th>
+												<th class="overview">Efternamn</th>							
+												<th class="overview">Telefonnummer</th>
+												<th class="overview">E-postadress</th>
+											</tr>
+										</thead>
+						
+										<tbody>
+											<xsl:for-each select="mentors/BusinessSectorMentor">
+											<tr>
+									  			<td><xsl:value-of select="firstname"></xsl:value-of></td>
+									  			<td><xsl:value-of select="lastname"></xsl:value-of></td>
+									  			<td><xsl:value-of select="mobilePhone"></xsl:value-of></td>
+									  			<td><xsl:value-of select="email"></xsl:value-of></td>
+									  		</tr>
+								  			</xsl:for-each>
+										</tbody>
+									</table>
+								</div>
+						  	</div>
+					  	</div>
+					</div>
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h3 class="panel-title">Uppgifter om arbetsplatsen</h3>
+						</div>
+						<div class="panel-body">
+							<div class="row">
+								<div class="col-md-5">
+									<label for="company">Företag</label>
+									<div id="company">
+										<xsl:value-of select="company"></xsl:value-of>
+									</div>
+								</div>
+							</div>
+							<div class="mgn-top8px row">
+								<div class="col-md-3">
+									<label for="company">Gatuadress</label>
+									<div id="company">
+										<xsl:value-of select="streetAddress"></xsl:value-of>
+									</div>
+								</div>
+								<div class="col-md-2">
+									<label for="zipcode">Postnummer</label>
+									<div id="zipcode">
+										<xsl:value-of select="zipCode"></xsl:value-of>
+									</div>
+								</div>
+								<div class="col-md-2">
+									<label for="city">Postort</label>
+									<div id="city">
+										<xsl:value-of select="city"></xsl:value-of>
+									</div>
+								</div>
+							</div>
+							<div class="mgn-top8px row">
+								<div class="col-md-2">
+									<label>Förnamn</label>
+									<div>
+										<xsl:value-of select="BusinessSectorManager/firstname"></xsl:value-of>
+									</div>
+								</div>
+								<div class="col-md-2">
+									<label>Efternamn</label>
+									<div>
+										<xsl:value-of select="BusinessSectorManager/lastname"></xsl:value-of>
+									</div>
+								</div>
+								<div class="col-md-2">
+									<label>Telefonnummer</label>
+									<div>
+										<xsl:value-of select="BusinessSectorManager/mobilePhone"></xsl:value-of>
+									</div>
+								</div>
+								<div class="col-md-3">
+									<label>E-postadress</label>
+									<div>
+										<xsl:value-of select="BusinessSectorManager/email"></xsl:value-of>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">Krav</h3>
+				</div>
+				<div class="panel-body">
+					<div class="row">
+						<div class="col-md-4">
+							<label>Körkort</label>
+							<div>
+								<xsl:choose>
+									<xsl:when test="hasDriversLicense = 'true'">Tjänsten kräver att sökande har körkort av typ <xsl:value-of select="DriversLicenseType/name"></xsl:value-of>.</xsl:when>
+									<xsl:otherwise>Tjänsten kräver <i>ej</i> körkort</xsl:otherwise>
+								</xsl:choose>
+							</div>
+						</div>
+					</div>
+					<div class="mgn-top8px row">
+						<div class="col-md-4">
+							<label>Ålder</label>
+							<div>
+								<xsl:choose>
+									<xsl:when test="isOverEighteen = 'true'">Tjänsten kräver att sökande är över 18 år.</xsl:when>
+									<xsl:otherwise>Tjänsten kräver <i>ej</i> att sökande är över 18 år.</xsl:otherwise>
+								</xsl:choose>
+							</div>
+						</div>
+					</div>
+					<div class="mgn-top8px row">
+						<div class="col-md-12">
+							<label>Övriga krav och önskemål</label>
+							<div>
+								<xsl:value-of select="freeTextRequirements"></xsl:value-of>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- <div class="well">
 			<div class="row">
 			<form class="form-horizontal">
 			  <div class="form-group">
@@ -42,7 +205,7 @@
 			  </div>
 			</form>
 			</div>
-	  	</div>
+	  	</div> -->
 	
 	</xsl:template>
 	
@@ -161,12 +324,7 @@
 					</div> 	
 
 					
-				  	<div class="form-group">
-						<div class="checkbox">
-						    <label>
-						      <input type="checkbox" name="isOverEighteen">Är du över 18 år gammal? </input>
-						    </label>
-					  	</div>
+				  	<div class="form-group">						
 						<div class="checkbox">
 						    <label>
 						      <input type="checkbox" name="hasDriversLicense">Har du körkort? </input>

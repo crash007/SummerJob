@@ -29,7 +29,7 @@
 	     				<th>Verksamhetsområde</th>
 	     				<th>Geografiskt område</th>
 	     				<th>Antal platser</th>
-	     				<th>Skapad</th>
+	     				<th>Period</th>
 				  	</tr>
 				  </thead>
 				  
@@ -55,7 +55,7 @@
 	     				<th>Verksamhetsområde</th>
 	     				<th>Geografiskt område</th>
 	     				<th>Antal platser</th>
-	     				<th>Skapad</th>
+	     				<th>Period</th>
 				  	</tr>
 				  </thead>
 				  
@@ -149,7 +149,8 @@
 				  		<th>Yrke</th>
 	     				<th>Företag</th>
 	     				<th>Antal platser</th>
-	     				<th>Inkommen</th>
+	     				<th>Startdatum</th>
+	     				<th>Slutdatum</th>
 				  	</tr>
 				  </thead>
 				  
@@ -222,7 +223,8 @@
 				  		<th>Yrke</th>
 	     				<th>Företag</th>
 	     				<th>Antal platser</th>
-	     				<th>Inkommen</th>
+	     				<th>Startdatum</th>
+	     				<th>Slutdatum</th>
 	     				<th>Godkänd</th>
 				  	</tr>
 				  </thead>
@@ -240,7 +242,10 @@
 					   			<xsl:value-of select="numberOfWorkersNeeded"></xsl:value-of>
 					   		</td>
 					   		<td>
-					   			<xsl:value-of select="created"></xsl:value-of>
+					   			<xsl:value-of select="startDate"></xsl:value-of>
+					   		</td>
+					   		<td>
+					   			<xsl:value-of select="endDate"></xsl:value-of>
 					   		</td>
 					   		<td>
 					   			<xsl:value-of select="controlledDate"></xsl:value-of>
@@ -324,7 +329,10 @@
 	   			<xsl:value-of select="numberOfWorkersNeeded"></xsl:value-of>
 	   		</td>
 	   		<td>
-	   			<xsl:value-of select="created"></xsl:value-of>
+	   			<xsl:value-of select="Period/name"></xsl:value-of>
+	   		</td>
+	   		<td>
+	   			<a href="{/Document/requestinfo/contextpath}/matchjobs?jobId={id}">Matcha</a>
 	   		</td>
    		</tr>
 	</xsl:template>
@@ -373,7 +381,10 @@
 	   			<xsl:value-of select="numberOfWorkersNeeded"></xsl:value-of>
 	   		</td>
 	   		<td>
-	   			<xsl:value-of select="created"></xsl:value-of>
+	   			<xsl:value-of select="startDate"></xsl:value-of>
+	   		</td>
+	   		<td>
+	   			<xsl:value-of select="endDate"></xsl:value-of>
 	   		</td>
    		</tr>
 	</xsl:template>

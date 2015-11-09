@@ -122,24 +122,6 @@
 				  </div>
 			  	</div>
 			  	
-<!-- 			  	<div class="panel panel-default"> -->
-<!-- 				  <div class="panel-heading"> -->
-<!-- 				    <h3 class="panel-title">Geografiskt område</h3> -->
-<!-- 				  </div> -->
-<!-- 				  <div class="panel-body"> -->
-<!-- 					  	<div id="geoAreaSelect" class="row"> -->
-<!-- 					  		<div class="col-md-4"> -->
-<!-- 							    <label for="geoArea">Välj geografiskt område*</label>				     -->
-<!-- 							    <select class="form-control" name="geoArea" id="geoArea" required="required"> -->
-<!-- 									<xsl:for-each select="GeoAreas/GeoArea"> -->
-<!-- 										<option value="{id}"><xsl:value-of select="name" /></option> -->
-<!-- 									</xsl:for-each> -->
-<!-- 								</select> -->
-<!-- 								<p class="help-block with-errors">Det geografiska område arbetsplatsen tillhör</p> -->
-<!-- 							</div> -->
-<!-- 						</div> -->
-<!-- 				  </div> -->
-<!-- 			  	</div>  -->
 			  	
 			  	<div class="panel panel-default">
 				  <div class="panel-heading">
@@ -160,16 +142,7 @@
 					    <label for="work-description">Arbetsbeskrivning*</label>				    
 					    <textarea class="form-control" rows="5" id="work-description" name="work-description" required="required"></textarea>							    
 					    <p class="help-block with-errors">Beskriv vad arbetsuppgifterna kommer vara</p>
-				  	</div>
-				  	<div class="form-group">
-				  		<div class="row">
-				  			<div class="col-md-3">
-				  				<label for="numberOfWorkersNeeded">Antal lediga platser*</label>
-							    <input class="form-control" type="number" min="1" max="99" name="numberOfWorkersNeeded" id="numberOfWorkersNeeded" required="required"/>	
-							    <p class="help-block">Skriv i heltal mellan 1 och 99</p>	    
-							</div>
-						</div>
-				  	</div>
+				  	</div>				  	
 				  	
 				  	<div class="form-group">
 					  	<label for="period">Välj perioder*</label>
@@ -177,9 +150,10 @@
 						  	<thead>
 						  		<tr>
 						  			<th>Välj</th>
-						  			<th>Namn</th>
+						  			<th>Periodnamn</th>
 						  			<th>Startdatum</th>
 						  			<th>Slutdatum</th>
+						  			<th>Antal platser*</th>
 						  		</tr>
 						  	</thead>
 						  	<tbody>
@@ -192,6 +166,10 @@
 								  			<td><xsl:value-of select="name"/></td>
 								  			<td><xsl:value-of select="startDate"/></td>
 								  			<td><xsl:value-of select="endDate"/></td>
+								  			<td>								  				
+							    				<input class="form-control" type="number" min="1" max="99" name="{name}_numberOfWorkersNeeded" id="{name}_numberOfWorkersNeeded" required="required"/>	
+							    				<p class="help-block">Skriv ett heltal mellan 1 och 99</p>	 
+						    				</td>
 								  		</tr>
 							  		
 							  		</xsl:for-each>	
@@ -201,32 +179,6 @@
 					  	<p style="display: none; color: #a94442;" id="period-errors" class="help-block with-errors">Du måste välja minst en period</p>
 					</div>
 					
-<!-- 					<div class="form-group"> -->
-<!-- 						<div class="checkbox"> -->
-<!-- 						    <label> -->
-<!-- 						      <input type="checkbox" name="isOverEighteen">Måste vara över 18 år </input> -->
-<!-- 						    </label> -->
-<!-- 					  	</div> -->
-<!-- 						<div class="checkbox"> -->
-<!-- 						    <label> -->
-<!-- 						      <input type="checkbox" name="hasDriversLicense">Måste ha körkort </input> -->
-<!-- 						    </label> -->
-<!-- 					  	</div> -->
-						  	
-<!-- 						<div id="driverslicense_select" class="row"> -->
-<!-- 					  		<div class="col-md-3"> -->
-<!-- 							    <label for="driversLicenseType">Välj körkortstyp</label>				     -->
-<!-- 							    <select class="form-control" name="driversLicenseType" id="driversLicenseType"> -->
-<!-- 									<xsl:for-each select="DriversLicenseTypes/DriversLicenseType"> -->
-<!-- 										<option value="{id}"><xsl:value-of select="name" /> - <xsl:value-of select="description" /></option> -->
-<!-- 									</xsl:for-each> -->
-<!-- 								</select> -->
-<!-- 							</div> -->
-<!-- 						</div>  	 -->
-							
-<!-- 					</div> -->
-				  	
-<!-- 			  		<div class="form-group"> -->
 					<div>
 			  			<label>Ange chef på arbetsplatsen</label>
 			  			<div class="row">

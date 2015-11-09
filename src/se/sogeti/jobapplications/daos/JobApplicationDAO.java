@@ -8,12 +8,14 @@ import javax.sql.DataSource;
 
 import se.sogeti.jobapplications.beans.JobApplication;
 import se.sogeti.jobapplications.beans.business.BusinessSectorJobApplication;
+import se.sogeti.jobapplications.beans.municipality.MunicipalityJobApplication;
 import se.unlogic.standardutils.dao.AnnotatedDAO;
 import se.unlogic.standardutils.dao.AnnotatedDAOFactory;
 import se.unlogic.standardutils.dao.HighLevelQuery;
+import se.unlogic.standardutils.dao.MySQLRowLimiter;
 import se.unlogic.standardutils.reflection.ReflectionUtils;
 
-public class JobApplicationDAO<T extends JobApplication> extends AnnotatedDAO<T> {
+public class JobApplicationDAO<T extends JobApplication> extends SummerJobCommonDAO<T> {
 
 	private static Field APPLICATION_JOB_RELATION;
 	public JobApplicationDAO(DataSource dataSource,
@@ -23,10 +25,7 @@ public class JobApplicationDAO<T extends JobApplication> extends AnnotatedDAO<T>
 		 APPLICATION_JOB_RELATION=ReflectionUtils.getField(beanClass, "job");
 	}
 	
-	public void save(T bean) throws SQLException {
-		this.addOrUpdate(bean, null);
-	}
-
+	
 	/**
 	 * To get all applications that has been matched to a certain job.
 	 */
@@ -37,28 +36,20 @@ public class JobApplicationDAO<T extends JobApplication> extends AnnotatedDAO<T>
 		return this.getAll(query);
 	}
 	
-	public List<T> getAllUncontrolled() throws SQLException {
-		HighLevelQuery<T> query = new HighLevelQuery<T>(); 
-		query.addParameter(this.getParamFactory("controlled", Boolean.class).getParameter(false));
-		return this.getAll(query);
-	}
-	
-	public List<T> getAllUnapproved() throws SQLException {
-		HighLevelQuery<T> query = new HighLevelQuery<T>();
-		query.addParameter(this.getParamFactory("approved", Boolean.class).getParameter(false));
-		return this.getAll(query);
-	}
-	
-	public List<T> getAllApproved() throws SQLException {
-		HighLevelQuery<T> query = new HighLevelQuery<T>();
-		query.addParameter(this.getParamFactory("approved", Boolean.class).getParameter(true));
-		return this.getAll(query);
-	}
-	
 	public List<T> getAllUnapprovedWithJob() throws SQLException {
+		return getUnapprovedWithJob(null);
+	}
+	
+	public List<T> getUnapprovedWithJob(Integer rows) throws SQLException {
 		HighLevelQuery<T> query = new HighLevelQuery<T>();
 		query.addParameter(this.getParamFactory("approved", Boolean.class).getParameter(false));
 		query.addRelation(APPLICATION_JOB_RELATION);
+		
+		if(rows!=null){
+			MySQLRowLimiter limit = new MySQLRowLimiter(rows);
+			query.setRowLimiter(limit);
+		}
+		
 		return this.getAll(query);
 	}
 	
@@ -67,6 +58,25 @@ public class JobApplicationDAO<T extends JobApplication> extends AnnotatedDAO<T>
 		query.addParameter(this.getParamFactory("approved", Boolean.class).getParameter(true));
 		query.addRelation(APPLICATION_JOB_RELATION);
 		return this.getAll(query);
+	}
+
+	public List<T> getApprovedWithJob(Integer rows) throws SQLException {
+		HighLevelQuery<T> query = new HighLevelQuery<T>();
+		query.addParameter(this.getParamFactory("approved", Boolean.class).getParameter(true));
+		query.addRelation(APPLICATION_JOB_RELATION);
+		
+		if(rows!=null){
+			MySQLRowLimiter limit = new MySQLRowLimiter(rows);
+			query.setRowLimiter(limit);
+		}
+		
+		return this.getAll(query);
+	}
+	
+	public T getbySocialSecurityNumber(String social) throws SQLException {
+		HighLevelQuery<T> query = new HighLevelQuery<T>();
+		query.addParameter(this.getParamFactory("socialSecurityNumber", String.class).getParameter(social));		
+		return this.get(query);
 	}
 	
 }
