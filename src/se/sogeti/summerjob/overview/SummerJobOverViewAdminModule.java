@@ -17,11 +17,14 @@ import se.sogeti.jobapplications.beans.municipality.MunicipalityJobApplication;
 import se.sogeti.jobapplications.daos.BusinessSectorJobApplicationDAO;
 import se.sogeti.jobapplications.daos.JobApplicationDAO;
 import se.sogeti.jobapplications.daos.JobDAO;
+import se.unlogic.hierarchy.core.annotations.ModuleSetting;
+import se.unlogic.hierarchy.core.annotations.TextFieldSettingDescriptor;
 import se.unlogic.hierarchy.core.beans.SimpleForegroundModuleResponse;
 import se.unlogic.hierarchy.core.beans.User;
 import se.unlogic.hierarchy.core.interfaces.ForegroundModuleResponse;
 import se.unlogic.hierarchy.core.utils.HierarchyAnnotatedDAOFactory;
 import se.unlogic.hierarchy.foregroundmodules.AnnotatedForegroundModule;
+import se.unlogic.standardutils.validation.PositiveStringIntegerValidator;
 import se.unlogic.standardutils.xml.XMLUtils;
 import se.unlogic.webutils.http.RequestUtils;
 import se.unlogic.webutils.http.URIParser;
@@ -33,6 +36,10 @@ public class SummerJobOverViewAdminModule extends AnnotatedForegroundModule{
 	private JobApplicationDAO<MunicipalityJobApplication> municipalityJobApplicationDAO;
 	private JobDAO<BusinessSectorJob> businessJobDAO;
 	private BusinessSectorJobApplicationDAO businessJobApplicationDAO;
+	
+	@ModuleSetting(allowsNull=false)
+	@TextFieldSettingDescriptor(name="Rows", description="Number of rows to display in each panel",required=true,formatValidator=PositiveStringIntegerValidator.class)
+	private Integer rows=20;
 	
 	@Override
 	protected void createDAOs(DataSource dataSource) throws Exception {
@@ -73,24 +80,24 @@ public class SummerJobOverViewAdminModule extends AnnotatedForegroundModule{
 			Element municipality = doc.createElement("Municipality");
 			doc.getFirstChild().appendChild(municipality);
 			Element newMunicipalityJobsElement = doc.createElement("NewMunicipalityJobs");
-			List<MunicipalityJob> newJobs = municipalityJobDAO.getAllUncontrolled();
+			List<MunicipalityJob> newJobs = municipalityJobDAO.getLatestUncontrolled(rows);
 			XMLUtils.append(doc,newMunicipalityJobsElement, newJobs);		
 			municipality.appendChild(newMunicipalityJobsElement);
 			
 			Element approvedMunicipalityJobsElement = doc.createElement("approvedMunicipalityJobs");
-			List<MunicipalityJob> approvedJobs = municipalityJobDAO.getAllApproved();
+			List<MunicipalityJob> approvedJobs = municipalityJobDAO.getLatestApproved(rows);
 			XMLUtils.append(doc,approvedMunicipalityJobsElement, approvedJobs);		
 			municipality.appendChild(approvedMunicipalityJobsElement);
 			
 			
 			Element approvedMunicipalityApplicationsElem = doc.createElement("approvedMunicipalityApplications");
-			List<MunicipalityJobApplication> approvedMunicipalityApplications = municipalityJobApplicationDAO.getAllApproved();	
+			List<MunicipalityJobApplication> approvedMunicipalityApplications = municipalityJobApplicationDAO.getLatestApproved(rows);	
 			createApplicationElementList(doc, approvedMunicipalityApplicationsElem, approvedMunicipalityApplications);		
 			XMLUtils.append(doc,approvedMunicipalityApplicationsElem, approvedMunicipalityApplications);		
 			municipality.appendChild(approvedMunicipalityApplicationsElem);
 			
 			Element unapprovedMunicipalityApplicationsElem = doc.createElement("unapprovedMunicipalityApplications");
-			List<MunicipalityJobApplication> unapprovedMunicipalityApplications = municipalityJobApplicationDAO.getAllUnapproved();	
+			List<MunicipalityJobApplication> unapprovedMunicipalityApplications = municipalityJobApplicationDAO.getLatestUnapproved(rows);	
 			createApplicationElementList(doc, unapprovedMunicipalityApplicationsElem, unapprovedMunicipalityApplications);		
 			XMLUtils.append(doc,unapprovedMunicipalityApplicationsElem, unapprovedMunicipalityApplications);		
 			municipality.appendChild(unapprovedMunicipalityApplicationsElem);
@@ -102,23 +109,23 @@ public class SummerJobOverViewAdminModule extends AnnotatedForegroundModule{
 			
 			//New Business jobs
 			Element newBusinessyJobsElement = doc.createElement("NewBusinessJobs");
-			List<BusinessSectorJob> newBusinessJobs = businessJobDAO.getAllUncontrolled();
+			List<BusinessSectorJob> newBusinessJobs = businessJobDAO.getLatestUncontrolled(rows);
 			XMLUtils.append(doc,newBusinessyJobsElement, newBusinessJobs);		
 			business.appendChild(newBusinessyJobsElement);
 			
 			Element approvedBusinessJobsElement = doc.createElement("ApprovedBusinessJobs");
-			List<BusinessSectorJob> approvedBusinessJobs = businessJobDAO.getAllApproved();		
+			List<BusinessSectorJob> approvedBusinessJobs = businessJobDAO.getLatestApproved(rows);		
 			XMLUtils.append(doc,approvedBusinessJobsElement, approvedBusinessJobs);		
 			business.appendChild(approvedBusinessJobsElement);
 			
 			//Business applications
 			Element approvedBusinessApplicationsElem = doc.createElement("ApprovedBusinessApplications");
-			List<BusinessSectorJobApplication> approvedBusinessApplications = businessJobApplicationDAO.getAllApprovedWithJob();
+			List<BusinessSectorJobApplication> approvedBusinessApplications = businessJobApplicationDAO.getApprovedWithJob(rows);
 			XMLUtils.append(doc,approvedBusinessApplicationsElem, approvedBusinessApplications);		
 			business.appendChild(approvedBusinessApplicationsElem);
 			
 			Element unapprovedBusinessApplicationsElem = doc.createElement("UnapprovedBusinessApplications");
-			List<BusinessSectorJobApplication> unapprovedBusinessApplications = businessJobApplicationDAO.getAllUnapprovedWithJob();
+			List<BusinessSectorJobApplication> unapprovedBusinessApplications = businessJobApplicationDAO.getUnapprovedWithJob(rows);
 			XMLUtils.append(doc,unapprovedBusinessApplicationsElem, unapprovedBusinessApplications);		
 			business.appendChild(unapprovedBusinessApplicationsElem);
 		}
