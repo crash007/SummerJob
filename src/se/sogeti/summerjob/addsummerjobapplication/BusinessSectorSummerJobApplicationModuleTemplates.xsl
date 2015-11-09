@@ -324,12 +324,7 @@
 					</div> 	
 
 					
-				  	<div class="form-group">
-						<div class="checkbox">
-						    <label>
-						      <input type="checkbox" name="isOverEighteen">Är du över 18 år gammal? </input>
-						    </label>
-					  	</div>
+				  	<div class="form-group">						
 						<div class="checkbox">
 						    <label>
 						      <input type="checkbox" name="hasDriversLicense">Har du körkort? </input>

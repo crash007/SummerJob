@@ -209,14 +209,8 @@ public class AddMunicipalitySummerJobModule extends AnnotatedRESTModule{
 			 mentor.setMobilePhone(mentorPhone);
 			 mentors.add(mentor);
 		 }
-		job.setMentors(mentors);
 		
-		Integer numberOfWorkers = NumberUtils.toInt(req.getParameter("numberOfWorkersNeeded"));
-		if (numberOfWorkers == null) {
-			JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Antal lediga platser saknas i annonsen.\"}", callback, writer);
-			return;
-		}
-		job.setNumberOfWorkersNeeded(numberOfWorkers);
+		job.setMentors(mentors);
 		
 		job.setApproved(false);
 		job.setControlled(false);
@@ -248,6 +242,14 @@ public class AddMunicipalitySummerJobModule extends AnnotatedRESTModule{
 			for(Period p:periods){
 				if(req.getParameter("period_"+p.getId())!=null){
 					job.setPeriod(p);
+					
+					Integer numberOfWorkers = NumberUtils.toInt(req.getParameter(p.getName()+"_numberOfWorkersNeeded"));
+					if (numberOfWorkers == null) {
+						JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Antal lediga platser saknas för period "+p.getName()+".\"}", callback, writer);
+						return;
+					}
+					job.setNumberOfWorkersNeeded(numberOfWorkers);
+					
 					log.info("saving form for period: "+p.getName());
 					
 					municipalityJobDAO.add(job);

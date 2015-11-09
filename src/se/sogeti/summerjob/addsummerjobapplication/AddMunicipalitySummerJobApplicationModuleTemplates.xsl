@@ -73,31 +73,6 @@
 						  	</div>
 						</div>
 					</div> 	
-
-					 
-					 <!--  <div class="form-group">
-					   <label for="area">Ange versamhetsområde</label>
-						  <table class="table">
-						  	<thead>
-						  		<tr>
-						  			<th>Välj</th>
-						  			<th>Verksamhetsområde</th>
-						  			<th>Beskrivning</th>
-						  		</tr>
-						  	</thead>
-						  	<tbody>
-						  		<xsl:for-each select="Areas/MunicipalityJobArea">
-						  			<xsl:if test="canBeChosenInApplication = 'true'">
-								  		<tr>
-								  			<td><input type="radio" name="area" id="area_{id}" value="{id}" /></td>
-								  			<td><xsl:value-of select="name"/></td>
-								  			<td><xsl:value-of select="description"/></td>
-								  		</tr>
-							  		</xsl:if>
-						  		</xsl:for-each>						  		
-						  	</tbody>
-						  </table>
-						</div> -->
 					
 						<div class="form-group">
 					  		<div class="row">
@@ -182,12 +157,7 @@
 						  		
 							</div>
 					  	</div>
-					  	<div class="form-group">
-							<div class="checkbox">
-							    <label>
-							      <input type="checkbox" name="isOverEighteen">Är du över 18 år gammal? </input>
-							    </label>
-						  	</div>
+					  	<div class="form-group">							
 							<div class="checkbox">
 							    <label>
 							      <input type="checkbox" name="hasDriversLicense">Har du körkort? </input>
