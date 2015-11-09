@@ -108,8 +108,6 @@ public class AddBusinessSectorSummerJobModule extends AnnotatedRESTModule{
         Integer jobId = NumberUtils.toInt(req.getParameter("jobId"));
         BusinessSectorJob job = jobId != null ? businessSectorJobDAO.getById(jobId) : new BusinessSectorJob();
         
-//        BusinessSectorJob job = new BusinessSectorJob();
-        
         String profession = req.getParameter("profession");
         if (profession == null || profession.isEmpty()) {
         	JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Yrkestitel saknas i annonsen.\"}", callback, writer);

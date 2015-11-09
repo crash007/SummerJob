@@ -159,15 +159,15 @@
 						  	<tbody>
 								<div class="checkbox-group">
 							  		<xsl:for-each select="Periods/Period">						  			
-								  		<tr>
+								  		<tr class="form-group">
 								  			<td>
-								  			    <input type="checkbox" name="period_{id}"/>
+								  			    <input class="period-checkbox" type="checkbox" name="period_{id}"/>
 											</td>							  			
 								  			<td><xsl:value-of select="name"/></td>
 								  			<td><xsl:value-of select="startDate"/></td>
 								  			<td><xsl:value-of select="endDate"/></td>
 								  			<td>								  				
-							    				<input class="form-control" type="number" min="1" max="99" name="{name}_numberOfWorkersNeeded" id="{name}_numberOfWorkersNeeded" required="required"/>	
+							    				<input class="form-control numberOfWorkersField" type="number" min="1" max="99" name="{name}_numberOfWorkersNeeded" id="{name}_numberOfWorkersNeeded"/>	
 							    				<p class="help-block">Skriv ett heltal mellan 1 och 99</p>	 
 						    				</td>
 								  		</tr>
