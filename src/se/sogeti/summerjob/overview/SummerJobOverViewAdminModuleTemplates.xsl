@@ -326,6 +326,9 @@
 	   		<td>
 	   			<xsl:value-of select="created"></xsl:value-of>
 	   		</td>
+	   		<td>
+	   			<a href="{/Document/requestinfo/contextpath}/matchjobs?jobId={id}">Matcha</a>
+	   		</td>
    		</tr>
 	</xsl:template>
 	
