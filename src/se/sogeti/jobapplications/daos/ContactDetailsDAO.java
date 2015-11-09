@@ -31,4 +31,10 @@ public class ContactDetailsDAO<T extends ContactDetails> extends AnnotatedDAO<T>
 		query.addParameter(this.getParamFactory("id", Integer.class).getParameter(managerId));
 		return this.get(query);
 	}
+	
+	public void removeById(Integer id) throws SQLException {
+		HighLevelQuery<T> query = new HighLevelQuery<T>();
+		query.addParameter(this.getParamFactory("id", Integer.class).getParameter(id));
+		this.delete(query);
+	}
 }

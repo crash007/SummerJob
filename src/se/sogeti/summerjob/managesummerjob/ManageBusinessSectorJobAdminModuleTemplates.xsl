@@ -24,20 +24,20 @@
 					  	<div class="panel-body">
 						  	<div class="row">
 						  		<div class="col-md-5">
-									<label for="work">Yrkestitel</label>
+									<label>Yrkestitel</label>
 									<div id="work"><xsl:value-of select="workTitle"></xsl:value-of></div>
 								</div>
 						  	</div>
 						  	<div class="mgn-top8px row">
 						  		<div class="col-md-12">
-									<label for="description">Yrkesbeskrivning</label>
+									<label>Yrkesbeskrivning</label>
 									<div id="description"><xsl:value-of select="workDescription"></xsl:value-of></div>
 								</div>
 						  	</div>
 						  	
 						  	<div class="mgn-top8px row">
 						  		<div class="col-md-3">
-									<label for="numberNeeded">Antal platser</label>
+									<label>Antal platser</label>
 									<span class="mgn-lft8px" id="numberNeeded"><xsl:value-of select="numberOfWorkersNeeded"></xsl:value-of></span>
 								</div>
 							</div>
@@ -95,8 +95,8 @@
 							</div>
 							<div class="mgn-top8px row">
 								<div class="col-md-3">
-									<label for="company">Gatuadress</label>
-									<div id="company">
+									<label for="streetAddress">Gatuadress</label>
+									<div id="streetAddress">
 										<xsl:value-of select="streetAddress"></xsl:value-of>
 									</div>
 								</div>

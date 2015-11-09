@@ -21,9 +21,12 @@ import se.sogeti.jobapplications.beans.DriversLicenseType;
 import se.sogeti.jobapplications.beans.business.BusinessSectorJob;
 import se.sogeti.jobapplications.beans.business.BusinessSectorManager;
 import se.sogeti.jobapplications.beans.business.BusinessSectorMentor;
+import se.sogeti.jobapplications.beans.municipality.MunicipalityJob;
+import se.sogeti.jobapplications.daos.ContactDetailsDAO;
 import se.sogeti.jobapplications.daos.DriversLicenseTypeDAO;
 import se.sogeti.jobapplications.daos.JobDAO;
 import se.sogeti.periodsadmin.JsonResponse;
+import se.sogeti.periodsadmin.beans.Period;
 import se.sogeti.summerjob.FormUtils;
 import se.unlogic.hierarchy.core.beans.SimpleForegroundModuleResponse;
 import se.unlogic.hierarchy.core.beans.User;
@@ -41,6 +44,7 @@ public class AddBusinessSectorSummerJobModule extends AnnotatedRESTModule{
 	
 	private JobDAO<BusinessSectorJob> businessSectorJobDAO;
 	private DriversLicenseTypeDAO driversLicenseTypeDAO;
+	private ContactDetailsDAO<BusinessSectorMentor> businessSectorMentorDAO;
 	
 	@Override
 	protected void createDAOs(DataSource dataSource) throws Exception {
@@ -48,6 +52,7 @@ public class AddBusinessSectorSummerJobModule extends AnnotatedRESTModule{
 		HierarchyAnnotatedDAOFactory hierarchyDaoFactory = new HierarchyAnnotatedDAOFactory(dataSource, systemInterface);
 		businessSectorJobDAO = new JobDAO<BusinessSectorJob>(dataSource, BusinessSectorJob.class, hierarchyDaoFactory);
 		driversLicenseTypeDAO = new DriversLicenseTypeDAO(dataSource, DriversLicenseType.class, hierarchyDaoFactory);
+		businessSectorMentorDAO = new ContactDetailsDAO<BusinessSectorMentor>(dataSource, BusinessSectorMentor.class, hierarchyDaoFactory);
 	}
 
 	@Override
@@ -64,16 +69,30 @@ public class AddBusinessSectorSummerJobModule extends AnnotatedRESTModule{
 		doc.getFirstChild().appendChild(jobForm);
 		
 		Integer jobId = NumberUtils.toInt(req.getParameter("jobId"));
+		BusinessSectorJob job = null;
 		if (jobId != null && user.isAdmin()) {
-			BusinessSectorJob job = businessSectorJobDAO.getById(jobId);
+			job = businessSectorJobDAO.getById(jobId);
 			XMLUtils.append(doc, jobForm, job);
-		}
+		} 
 		
 		Element driversLicenseElement = doc.createElement("DriversLicenseTypes");
 		List<DriversLicenseType> driverslicenseTypes = driversLicenseTypeDAO.getAll();
-		jobForm.appendChild(driversLicenseElement);
 		
-		XMLUtils.append(doc, driversLicenseElement, driverslicenseTypes);
+		for (DriversLicenseType type : driverslicenseTypes) {
+			Element licenseType = doc.createElement("DriversLicenseType");
+			XMLUtils.appendNewElement(doc, licenseType, "id", type.getId());
+			XMLUtils.appendNewElement(doc, licenseType, "name", type.getName());
+			XMLUtils.appendNewElement(doc, licenseType, "description", type.getDescription());
+			
+			if (job != null && job.getDriversLicenseType() != null) {
+				XMLUtils.appendNewElement(doc, licenseType, "selected", 
+						job.getDriversLicenseType().getId().intValue() == type.getId().intValue());
+			}
+			
+			driversLicenseElement.appendChild(licenseType);
+		}
+			
+		jobForm.appendChild(driversLicenseElement);
 		
 		return new SimpleForegroundModuleResponse(doc);
 	}
@@ -103,7 +122,7 @@ public class AddBusinessSectorSummerJobModule extends AnnotatedRESTModule{
         if (numberOfWorkers == null) {
         	JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Antalet lediga platser saknas i annonsen.\"}", callback, writer);
 			return;
-        } else if (numberOfWorkers.intValue() == 0) {
+        } else if (numberOfWorkers.intValue() <= 0) {
         	JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Antalet lediga platser måste vara mer än 0.\"}", callback, writer);
 			return;
         }
@@ -116,19 +135,77 @@ public class AddBusinessSectorSummerJobModule extends AnnotatedRESTModule{
         	JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Datumfälten kan inte lämnas tomma.\"}", callback, writer);
 			return;
         }
+        
+        if (startDate.length() > 10) {
+        	System.out.println("StartDate, före: " + startDate);
+        	startDate = startDate.substring(0, 10);
+        	System.out.println("StartDate, efter: " + startDate);
+        }
+        
+        if (endDate.length() > 10) {
+        	endDate = endDate.substring(0, 10);
+        }
+        
         job.setStartDate(Date.valueOf(startDate));
         job.setEndDate(Date.valueOf(endDate));
+        
+//        if (jobId != null) {
+//        	if (job.getMentors() != null) {
+//        		for (BusinessSectorMentor mentor : job.getMentors()) {
+//        			businessSectorMentorDAO.removeById(mentor.getId());
+//        		}
+//        	}
+//        }
+        
+//        if (jobId != null) {
+//        	if (job.getMentors() != null) {
+//        		for (BusinessSectorMentor mentor : job.getMentors()) {
+//        			 String mentorFirstname = req.getParameter("existing-mentor-firstname-" + mentor.getId());
+//        			 String mentorLastname = req.getParameter("existing-mentor-lastname-" + mentor.getId());
+//        			 String mentorPhone = req.getParameter("existing-mentor-phone-" + mentor.getId());
+//        			 String mentorEmail = req.getParameter("existing-mentor-email-" + mentor.getId());
+//        			 
+//        			 // Om förnamn, efternamn och telefonnummer är tom, ta då bort den här handledaren.
+//        			 if ((mentorFirstname == null || mentorFirstname.isEmpty()) && (mentorLastname == null || mentorLastname.isEmpty())
+//        					 && (mentorPhone == null || mentorPhone.isEmpty())) {
+//        				 job.getMentors().remove(mentor);
+//        			 } else {
+//        				 if (mentorFirstname != null && !mentorFirstname.isEmpty()) {
+//        					 mentor.setFirstname(mentorFirstname);
+//        				 }
+//        				 
+//        				 if (mentorLastname != null && !mentorLastname.isEmpty()) {
+//        					 mentor.setLastname(mentorLastname);
+//        				 }
+//        				 
+//        				 if (mentorPhone != null && !mentorPhone.isEmpty()) {
+//        					 mentor.setMobilePhone(mentorPhone);
+//        				 }
+//        				 mentor.setEmail(mentorEmail);
+//        			 }
+//        		}
+//        	}
+//        }
         
         List<BusinessSectorMentor> mentors = new ArrayList<BusinessSectorMentor>();
         List<String> mentorUuids = FormUtils.getMentorUuids(req.getParameterNames());
 		for(String s : mentorUuids){
 			 BusinessSectorMentor mentor = new BusinessSectorMentor();
+			 Integer mentorId = NumberUtils.toInt(req.getParameter("mentor-id-" + s));
 			 
 			 String mentorFirstname = req.getParameter("mentor-firstname_" + s);
 			 String mentorLastname = req.getParameter("mentor-lastname_" + s);
 			 String mentorPhone = req.getParameter("mentor-phone_" + s);
 			 
-			 if (mentorFirstname == null || mentorLastname == null || mentorPhone == null
+			 if (mentorId != null) {
+				 mentor.setId(mentorId);
+				 
+				 if ((mentorFirstname == null && mentorLastname == null && mentorPhone == null)
+						 || (mentorFirstname.isEmpty() && mentorLastname.isEmpty() && mentorPhone.isEmpty())) {
+					 businessSectorMentorDAO.removeById(mentorId);
+					 continue;
+				 }
+			 } else if (mentorFirstname == null || mentorLastname == null || mentorPhone == null
 					 || mentorFirstname.isEmpty() || mentorLastname.isEmpty() || mentorPhone.isEmpty()) {
 				 continue;
 			 }
@@ -139,6 +216,7 @@ public class AddBusinessSectorSummerJobModule extends AnnotatedRESTModule{
 			 mentor.setMobilePhone(mentorPhone);
 			 mentors.add(mentor);
 		}
+		
 		job.setMentors(mentors);
         
 		String company = req.getParameter("company");
@@ -173,14 +251,21 @@ public class AddBusinessSectorSummerJobModule extends AnnotatedRESTModule{
         	return;
         }
         
-        BusinessSectorManager manager = new BusinessSectorManager();
+        BusinessSectorManager manager = job.getManager() != null ? job.getManager() : new BusinessSectorManager(); 
         manager.setFirstname(managerFirstname);
         manager.setLastname(managerLastname);
         manager.setMobilePhone(managerPhone);
         manager.setEmail(managerEmail);
         job.setManager(manager);
-        job.setApproved(false);
-        job.setControlled(false);
+        
+        if (jobId == null) { // Is a new job
+            job.setApproved(false);
+            job.setControlled(false);
+        } else {
+        	job.setInitiatedByUser(user.getUsername());
+        }
+//        job.setApproved(false);
+//        job.setControlled(false);
         
         job.setIsOverEighteen(req.getParameter("isOverEighteen") != null ? true : false);
         log.info("isOverEighteen: " + req.getParameter("isOverEighteen"));
@@ -207,7 +292,11 @@ public class AddBusinessSectorSummerJobModule extends AnnotatedRESTModule{
         
 		try {
 			businessSectorJobDAO.save(job);
-			JsonResponse.sendJsonResponse("{\"status\":\"success\", \"message\":\"Annonsen har nu sparats. En handläggare kommer att granska annonsen innan den blir synlig för sökande.\"}", callback, writer);
+			if (jobId != null) {
+				JsonResponse.sendJsonResponse("{\"status\":\"success\", \"message\":\"Ändringarna i annonsen har nu sparats.\"}", callback, writer);
+			} else {
+				JsonResponse.sendJsonResponse("{\"status\":\"success\", \"message\":\"Annonsen har nu sparats. En handläggare kommer att granska annonsen innan den blir synlig för sökande.\"}", callback, writer);
+			}
 			return;
 		} catch (SQLException e) {
 			log.error("SQL exception", e);

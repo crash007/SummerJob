@@ -58,7 +58,7 @@
 	<xsl:template match="BusinessSectorJobForm">
 		<form class="well" role="form" method="POST" id="business-sector-add-job-form" data-toggle="validator">
 		
-				<input name="jobId" style="display: none" class="form-control" type="text" value="{id}"/>
+				<input name="jobId" style="display: none" class="form-control" type="text" value="{BusinessSectorJob/id}"/>
 		
 			  	<div class="panel panel-default">
 				  <div class="panel-heading">
@@ -69,21 +69,21 @@
 					  	<div class="row">
 			  				<div class="col-md-4">
 							    <label for="profession">Yrkestitel*</label>
-							    <input type="text" class="form-control" id="profession" name="profession" placeholder="" required="required"/>
+							    <input type="text" class="form-control" id="profession" name="profession" placeholder="" required="required" value="{BusinessSectorJob/workTitle}"/>
 							    <div class="help-block with-errors"></div>
 				    		</div>
 		    			</div>
 					</div>
 				  	<div class="form-group">
 					    <label for="work-description">Arbetsbeskrivning*</label>				    
-					    <textarea class="form-control" rows="5" id="work-description" name="work-description" required="required"></textarea>							    
+					    <textarea class="form-control" rows="5" id="work-description" name="work-description" required="required"><xsl:value-of select="BusinessSectorJob/workDescription"></xsl:value-of></textarea>							    
 					    <div class="help-block with-errors">Beskriv vad arbetsuppgifterna kommer vara</div>
 				  	</div>
 				  	<div class="form-group">
 				  		<div class="row">
 				  			<div class="col-md-3">
 				  				<label for="numberOfWorkersNeeded">Antal lediga platser*</label>
-							    <input class="form-control" type="number" min="1" max="99" name="numberOfWorkersNeeded" id="numberOfWorkersNeeded" required="required"/>	
+							    <input class="form-control" type="number" min="1" max="99" name="numberOfWorkersNeeded" id="numberOfWorkersNeeded" required="required" value="{BusinessSectorJob/numberOfWorkersNeeded}"/>	
 							    <p class="help-block">Skriv i heltal mellan 1 och 99</p>	    
 							</div>
 						</div>
@@ -93,23 +93,44 @@
 						<div class="row">
 				  			<div class="form-group col-md-3">
 								<label for="startDate">Startdatum*</label>
-								<input type="text" class="form-control" id="startDate" name="startDate" placeholder="" required="required"/>
+								<input type="text" class="form-control" id="startDate" name="startDate" placeholder="" required="required" value="{BusinessSectorJob/startDate}"/>
 								<div class="help-block with-errors">Datum då tjänsten börjar</div>
 					    	</div>
 					    	<div class="form-group col-md-3">
-								<label for="endDate">Slutdatum*</label>
-								<input type="text" class="form-control" id="endDate" name="endDate" placeholder="" required="required"/>
+								<label for="date">Slutdatum*</label>
+								<input type="text" class="form-control" id="endDate" name="endDate" placeholder="" required="required" value="{BusinessSectorJob/endDate}"/>
 								<div class="help-block with-errors">Datum då tjänsten slutar</div>
 					    	</div>
 			    		</div>
 					</div>
 			  		
 			  		<div style="margin-top: 8px;">
-			  			<label>Ange handledare</label>
-			  			<div id="mentors-wrapper">
+			  			<label>Ange handledare <span style="font-weight: normal; font-size: 90%;"><i>(Förnamn, efternamn och telefonnummer krävs för att en handledare ska sparas)</i></span></label>
 			  			
+			  			<div id="mentors-wrapper">
+							<xsl:for-each select="BusinessSectorJob/mentors/BusinessSectorMentor">
+								<div class="row collapse in" style="margin-bottom: 8px;">
+									<input style="display: none;" id="mentor-id-{id}" name="mentor-id-{id}" type="text" value="{id}"/>
+									<div class="form-group col-md-3">
+										<label for="mentor-firstname">Förnamn</label><input type="text" class="form-control" id="mentor-firstname" name="mentor-firstname_{id}" placeholder="" value="{firstname}"/>
+									</div>
+									<div class="form-group col-md-3">
+										<label for="mentor-lastname">Efternamn</label><input type="text" class="form-control" id="mentor-lastname" name="mentor-lastname_{id}" placeholder="" value="{lastname}"/>
+									</div>
+									<div class="form-group col-md-2">
+										<label for="mentor-phone">Telefonnummer</label><input type="number" class="form-control" id="mentor-phone" name="mentor-phone_{id}" placeholder="" value="{mobilePhone}"/>
+									</div>
+									<div class="form-group col-md-3">
+										<label for="mentor-email">E-post</label><input type="email" class="col-md-3 form-control" id="mentor-email" name="mentor-email_{id}" placeholder="" value="{email}"/>
+									</div>
+									<div class="form-group col-md-1">
+										<label>Ta bort</label>
+										<div class="remove-mentor mgn-top8px glyphicon glyphicon-remove" aria-hidden="true"></div>
+									</div>
+								</div>
+
+							</xsl:for-each>
 				    	</div>
-				    	
 				    	<a href="#" class="add-mentor-btn"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Lägg till ny handledare</a>
 				  	</div>
 				  	
@@ -125,7 +146,7 @@
 				  		<div class="row">
 			  				<div class="col-md-4">
 							    <label for="company">Företag*</label>				    
-							     <input type="text" class="form-control" id="company" name="company" placeholder="" required="required"/>
+							     <input type="text" class="form-control" id="company" name="company" placeholder="" required="required" value="{BusinessSectorJob/company}"/>
 							     <div class="help-block with-errors"></div>						    
 					    	</div>
 				    	</div>
@@ -135,17 +156,17 @@
 				  		<div class="row">
 						    <div class="form-group col-md-5">
 							    <label for="street">Gatuadress*</label>				    
-							    <input type="text" class="form-control" id="street" name="street" placeholder="" required="required"/>	
+							    <input type="text" class="form-control" id="street" name="street" placeholder="" required="required" value="{BusinessSectorJob/streetAddress}"/>	
 							    <div class="help-block with-errors"></div>				    
 						    </div>
 						    <div class="form-group col-md-3">
 							    <label for="postalcode">Postnummer*</label>				    
-							    <input type="number" data-error="Ett postnummer måste ha fem siffror." class="form-control" id="postalcode" name="postalcode" placeholder="" required="required" data-minlength="5"/>
+							    <input type="number" data-error="Ett postnummer måste ha fem siffror." class="form-control" id="postalcode" name="postalcode" placeholder="" required="required" data-minlength="5" value="{BusinessSectorJob/zipCode}"/>
 							    <div class="help-block with-errors"></div>
 						    </div>
 						    <div class="form-group col-md-4">
 							    <label for="postalarea">Postort*</label>				    
-							    <input type="text" class="form-control" id="postalarea" name="postalarea" placeholder="" required="required"/>
+							    <input type="text" class="form-control" id="postalarea" name="postalarea" placeholder="" required="required" value="{BusinessSectorJob/city}"/>
 							    <div class="help-block with-errors"></div>
 						    </div>
 					    </div>
@@ -155,28 +176,28 @@
 						<div class="form-group col-md-3">
 							<label for="manager-firstname">Förnamn*</label>
 							<input type="text" class="form-control" id="manager-firstname"
-								name="manager-firstname" placeholder="" required="required"/>
+								name="manager-firstname" placeholder="" required="required" value="{BusinessSectorJob/BusinessSectorManager/firstname}"/>
 							<p class="help-block with-errors">Förnamn till ansvarig på platsen</p>
 						</div>
 						
 						<div class="form-group col-md-3">
 							<label for="manager-lastname">Efternamn*</label>
 							<input type="text" class="form-control" id="manager-lastname"
-								name="manager-lastname" placeholder="" required="required"/>
+								name="manager-lastname" placeholder="" required="required" value="{BusinessSectorJob/BusinessSectorManager/lastname}"/>
 							<p class="help-block with-errors">Efternamn till ansvarig på platsen</p>
 						</div>
 					
 						<div class="form-group col-md-3">
 							<label for="manager-phone">Telefonnummer*</label>
 							<input type="number" data-error="Ange ett telefonnummer utan bindestreck" class="form-control" id="manager-phone" name="manager-phone"
-								placeholder="" required="required"/>
+								placeholder="" required="required" value="{BusinessSectorJob/BusinessSectorManager/mobilePhone}"/>
 							<p class="help-block with-errors">Telefonnummer till ansvarig på platsen</p>
 						</div>
 					
 						<div class="form-group col-md-3">
 							<label for="manager-email">E-post</label>
 							<input type="email" class="form-control" id="manager-email" name="manager-email"
-								placeholder="" />
+								placeholder="" value="{BusinessSectorJob/BusinessSectorManager/email}"/>
 							<p class="help-block">E-post till ansvarig på platsen</p>
 						</div>
 					</div>
@@ -191,12 +212,26 @@
 				  <div class="panel-body">
 					  	<div class="checkbox">
 						    <label>
-						    	<input type="checkbox" name="isOverEighteen">Måste vara över 18 år</input>
+						    	<xsl:choose>
+						    		<xsl:when test="BusinessSectorJob/isOverEighteen ='true'">
+						    			<input type="checkbox" name="isOverEighteen" checked="checked">Måste vara över 18 år</input>
+						    		</xsl:when>
+						    		<xsl:otherwise>
+						    			<input type="checkbox" name="isOverEighteen">Måste vara över 18 år</input>
+						    		</xsl:otherwise>
+						    	</xsl:choose>
 						    </label>
 					  	</div>
 						<div class="checkbox">
 						    <label>
-						    	<input type="checkbox" name="hasDriversLicense">Måste ha körkort</input>
+						    	<xsl:choose>
+						    		<xsl:when test="BusinessSectorJob/hasDriversLicense = 'true'">
+						    			<input type="checkbox" name="hasDriversLicense" checked="checked">Måste ha körkort</input>
+						    		</xsl:when>
+						    		<xsl:otherwise>
+						    			<input type="checkbox" name="hasDriversLicense">Måste ha körkort</input>
+						    		</xsl:otherwise>
+						    	</xsl:choose>
 						    </label>
 					  	</div>
 					  	
@@ -205,7 +240,14 @@
 							    <label for="driversLicenseType">Välj körkortstyp</label>				    
 							    <select class="form-control" name="driversLicenseType" id="driversLicenseType">
 									<xsl:for-each select="DriversLicenseTypes/DriversLicenseType">
-										<option value="{id}"><xsl:value-of select="name" /> - <xsl:value-of select="description" /></option>
+										<xsl:choose>
+											<xsl:when test="selected = 'true'">
+												<option value="{id}" selected="selected"><xsl:value-of select="name" /> - <xsl:value-of select="description"/></option>
+											</xsl:when>
+											<xsl:otherwise>
+												<option value="{id}"><xsl:value-of select="name" /> - <xsl:value-of select="description" /></option>
+											</xsl:otherwise>
+										</xsl:choose>
 									</xsl:for-each>
 								</select>
 							</div>
@@ -213,7 +255,7 @@
 					  	
 						<div class="form-group">
 						    <label for="work-description">Övriga önskemål och krav</label>				    
-						    <textarea class="form-control" rows="3" id="other-requirements" name="other-requirements"></textarea>							    
+						    <textarea class="form-control" rows="3" id="other-requirements" name="other-requirements"><xsl:value-of select="BusinessSectorJob/freeTextRequirements"></xsl:value-of></textarea>							    
 						    <p class="help-block">Övriga önskemål</p>
 					  	</div>    	
 				  	
@@ -245,6 +287,8 @@
 			
 			<div id="mentor-template">
 				<div class="row collapse" style="margin-bottom: 8px;">
+<!-- 					<input style="display: none;" id="mentor-id" name="mentor-id" type="text"></input> -->
+				
 					<div class="form-group col-md-3">
 						<label for="mentor-firstname">Förnamn</label>
 						<input type="text" class="form-control" id="mentor-firstname"
@@ -257,18 +301,21 @@
 							name="mentor-lastname" placeholder="" />
 					</div>
 			
-					<div class="form-group col-md-3">
+					<div class="form-group col-md-2">
 						<label for="mentor-phone">Telefonnummer</label>
 						<input type="number" class="form-control" id="mentor-phone" name="mentor-phone"
 							placeholder="" />
-			
 					</div>
 			
 					<div class="form-group col-md-3">
 						<label for="mentor-email">E-post</label>
 						<input type="email" class="form-control" id="mentor-email" name="mentor-email"
 							placeholder="" />
-						<!-- <p class="help-block">Valfri</p> -->
+					</div>
+					
+					<div class="form-group col-md-1">
+						<label>Ta bort</label>
+						<div class="remove-mentor mgn-top8px glyphicon glyphicon-remove" aria-hidden="true"></div>
 					</div>
 				</div>
 			</div>	
