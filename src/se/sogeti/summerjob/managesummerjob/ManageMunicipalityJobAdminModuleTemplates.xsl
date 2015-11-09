@@ -24,54 +24,28 @@
 					  	<div class="panel-body">
 						  	<div class="row">
 						  		<div class="col-md-3">
-									<label for="work">Organisation</label>
-									<div id="work"><xsl:value-of select="organization"></xsl:value-of></div>
+									<label>Organisation</label>
+									<div><xsl:value-of select="organization"></xsl:value-of></div>
 								</div>
 								<div class="col-md-3">
-									<label for="description">Förvaltning</label>
-									<div id="description"><xsl:value-of select="administration"></xsl:value-of></div>
+									<label>Förvaltning</label>
+									<div><xsl:value-of select="administration"></xsl:value-of></div>
 								</div>
 								<div class="col-md-3">
-									<label for="description">Plats</label>
-									<div id="description"><xsl:value-of select="location"></xsl:value-of></div>
+									<label>Plats</label>
+									<div><xsl:value-of select="location"></xsl:value-of></div>
 								</div>
 						  	</div>
 						  	<div class="mgn-top8px row">
 								<div class="col-md-3">
-									<label for="startDate">Verksamhetsområde</label>
-									<div id="startDate"><xsl:value-of select="MunicipalityJobArea/name"></xsl:value-of></div>
+									<label>Verksamhetsområde</label>
+									<div><xsl:value-of select="MunicipalityJobArea/name"></xsl:value-of></div>
 								</div>
 								<div class="col-md-9">
-									<label for="startDate">Beskrivning</label>
-									<div id="startDate"><xsl:value-of select="MunicipalityJobArea/description"></xsl:value-of></div>
+									<label>Beskrivning</label>
+									<div><xsl:value-of select="MunicipalityJobArea/description"></xsl:value-of></div>
 								</div>
 						  	</div>
-<!-- 						  	<div class="mgn-top8px row"> -->
-<!-- 						  		<div class="col-md-12"> -->
-<!-- 							  		<label>Handledare</label> -->
-<!-- 							  		<table class="table"> -->
-<!-- 										<thead> -->
-<!-- 											<tr> -->
-<!-- 												<th class="overview">Förnamn</th> -->
-<!-- 												<th class="overview">Efternamn</th>							 -->
-<!-- 												<th class="overview">Telefonnummer</th> -->
-<!-- 												<th class="overview">E-postadress</th> -->
-<!-- 											</tr> -->
-<!-- 										</thead> -->
-						
-<!-- 										<tbody> -->
-<!-- 											<xsl:for-each select="mentors/MunicipalityMentor"> -->
-<!-- 											<tr> -->
-<!-- 									  			<td><xsl:value-of select="firstname"></xsl:value-of></td> -->
-<!-- 									  			<td><xsl:value-of select="lastname"></xsl:value-of></td> -->
-<!-- 									  			<td><xsl:value-of select="mobilePhone"></xsl:value-of></td> -->
-<!-- 									  			<td><xsl:value-of select="email"></xsl:value-of></td> -->
-<!-- 									  		</tr> -->
-<!-- 								  			</xsl:for-each> -->
-<!-- 										</tbody> -->
-<!-- 									</table> -->
-<!-- 								</div> -->
-<!-- 						  	</div> -->
 					  	</div>
 					</div>
 					<div class="panel panel-default">
@@ -102,13 +76,13 @@
 							<div class="mgn-top8px row">
 								<div class="col-md-3">
 									<label>Avdelning</label>
-									<div id="city">
+									<div>
 										<xsl:value-of select="department"></xsl:value-of>
 									</div>								
 								</div>
 								<div class="col-md-3">
 									<label>Geografiskt område</label>
-									<div id="city">
+									<div>
 										<xsl:value-of select="GeoArea/name"></xsl:value-of>
 									</div>								
 								</div>
