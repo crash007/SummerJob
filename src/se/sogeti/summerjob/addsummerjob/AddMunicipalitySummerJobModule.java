@@ -15,6 +15,9 @@ import javax.sql.DataSource;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import se.sogeti.jobapplications.beans.DriversLicenseType;
 import se.sogeti.jobapplications.beans.GeoArea;
 import se.sogeti.jobapplications.beans.business.BusinessSectorJob;
@@ -169,6 +172,10 @@ public class AddMunicipalitySummerJobModule extends AnnotatedRESTModule{
 	@RESTMethod(alias="add/municipalitysummerjob.json", method="post")
 	public void addSummerjob(HttpServletRequest req, HttpServletResponse res, User user, URIParser uriParser) throws IOException, SQLException {
 		log.info("POST");
+		
+//		GsonBuilder builder = new GsonBuilder();
+//        Gson gson = builder.setDateFormat("yyyy-MM-dd").create();
+		
 		PrintWriter writer = res.getWriter();
         String callback = req.getParameter("callback"); 
         JsonResponse.initJsonResponse(res, writer, callback);
@@ -367,6 +374,11 @@ public class AddMunicipalitySummerJobModule extends AnnotatedRESTModule{
 			}
 			return;
 		}
-		JsonResponse.sendJsonResponse("{\"status\":\"success\", \"message\":\"Annonsen har nu sparats. En handläggare kommer att granska annonsen innan den blir synlig för sökande.\"}", callback, writer);
+//		JsonResponse.sendJsonResponse("{\"status\":\"success\", \"message\":\"Annonsen har nu sparats. En handläggare kommer att granska annonsen innan den blir synlig för sökande.\"}", callback, writer);
+		if (jobId != null) {
+			JsonResponse.sendJsonResponse("{\"status\":\"success\", \"newText\":\"Visa översikt av kommunala sommarjobb\", \"newUrl\":\"list-summerjobs?showMunicipalityJobs=true\", \"backText\":\"Fortsätt redigera\", \"backUrl\":\"manage-municipality-job?jobId=" + jobId + "\", \"header\":\"Ändringarna har nu sparats.\", \"message\":\"Annonsen är nu tillgänglig för att matcha kandidater.\"}", callback, writer);
+		} else {
+			JsonResponse.sendJsonResponse("{\"status\":\"success\", \"backUrl\":\"\", \"newUrl\":\"add-municipality-job\", \"header\":\"Annonsen har nu sparats.\", \"message\":\"En handläggare kommer att granska annonsen innan den blir synlig för sökande.\"}", callback, writer);
+		}
 	}
 }

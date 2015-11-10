@@ -289,6 +289,10 @@
 			  					<xsl:otherwise>Skicka</xsl:otherwise>
 			  				</xsl:choose>
 			  			</button>
+			  			
+			  			<xsl:if test="BusinessSectorJob">
+			  				<a href="manage-businesssector-job?jobId={BusinessSectorJob/id}" style="margin-top: 4px;" class="float-rgt btn btn-primary">Tillbaka</a>
+			  			</xsl:if>
 						<span class="glyphicon glyphicon-ok collapse" aria-hidden="true"></span><span class="glyphicon glyphicon-remove collapse" aria-hidden="true"></span>
 					</div>
 			  	</div>

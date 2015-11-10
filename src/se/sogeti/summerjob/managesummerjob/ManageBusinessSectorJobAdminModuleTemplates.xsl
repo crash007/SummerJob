@@ -205,23 +205,23 @@
 			
 			<xsl:choose>
 				<xsl:when test="approvedByUser != '' and approved = 'true'">
-					<button id="approve-businessjob-button" type="button" class="btn btn-success" disabled="disabled">Godkänn</button>
+					<button id="approve-job-button" type="button" class="btn btn-success" disabled="disabled">Godkänn</button>
 				</xsl:when>
 				<xsl:otherwise>
-					<button id="approve-businessjob-button" type="button" class="btn btn-success">Godkänn</button>
+					<button id="approve-job-button" type="button" class="btn btn-success">Godkänn</button>
 				</xsl:otherwise>
 			</xsl:choose>
 			<xsl:choose>
 				<xsl:when test="approvedByUser != '' and approved = 'false'">
-					<button id="disapprove-businessjob-button" type="button" class="mgn-lft8px btn btn-danger" disabled="disabled">Neka</button>
+					<button id="disapprove-job-button" type="button" class="mgn-lft8px btn btn-danger" disabled="disabled">Neka</button>
 				</xsl:when>
 				<xsl:otherwise>
-					<button id="disapprove-businessjob-button" type="button" class="mgn-lft8px btn btn-danger">Neka</button>
+					<button id="disapprove-job-button" type="button" class="mgn-lft8px btn btn-danger">Neka</button>
 				</xsl:otherwise>
 			</xsl:choose>
 			
 			<a href="list-summerjobs?showMunicipalityJobs=false" type="button" class="float-rgt mgn-lft8px btn btn-info">Gå tillbaka</a>
-			<button id="mark-businessjob-as-initiated-button" type="button" class="float-rgt mgn-lft8px btn btn-primary">Markera som påbörjad</button>
+			<button id="mark-job-as-initiated-button" type="button" class="float-rgt mgn-lft8px btn btn-primary">Markera som påbörjad</button>
 			<a href="add-business-sector-job?jobId={id}" id="edit-job-button" type="button" class="float-rgt mgn-lft8px btn btn-warning">Redigera</a>
 		</div>
 	</div>
