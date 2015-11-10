@@ -28,6 +28,23 @@ public class FormUtils {
 		return result;
 	}
 	
+	public static String getParameterNameThatContains(String value, Enumeration<String> paramNames) {
+		String result = null;
+		
+		if (value == null || paramNames == null) {
+			return null;
+		}
+		
+		while(paramNames.hasMoreElements()){
+			String s = paramNames.nextElement();
+			if(s.contains(value)){				
+				result = s;
+				break;
+			}
+		}
+		return result;
+	}
+	
 	public static  <T extends JobApplication> void createJobApplication(T app, HttpServletRequest req, Citizen person){
 		app.setApproved(false);
 		app.setControlled(false);

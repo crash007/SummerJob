@@ -222,7 +222,7 @@
 			
 			<a href="list-summerjobs?showMunicipalityJobs=false" type="button" class="float-rgt mgn-lft8px btn btn-info">Gå tillbaka</a>
 			<button id="mark-businessjob-as-initiated-button" type="button" class="float-rgt mgn-lft8px btn btn-primary">Markera som påbörjad</button>
-			<a href="#" id="edit-job-button" type="button" class="float-rgt mgn-lft8px btn btn-warning">Redigera</a>
+			<a href="add-business-sector-job?jobId={id}" id="edit-job-button" type="button" class="float-rgt mgn-lft8px btn btn-warning">Redigera</a>
 		</div>
 	</div>
 	</xsl:template>

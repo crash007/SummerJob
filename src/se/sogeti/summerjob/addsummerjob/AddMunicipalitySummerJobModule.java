@@ -17,11 +17,14 @@ import org.w3c.dom.Element;
 
 import se.sogeti.jobapplications.beans.DriversLicenseType;
 import se.sogeti.jobapplications.beans.GeoArea;
+import se.sogeti.jobapplications.beans.business.BusinessSectorJob;
+import se.sogeti.jobapplications.beans.business.BusinessSectorMentor;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityJob;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityJobArea;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityManager;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityMentor;
 import se.sogeti.jobapplications.daos.AreaDAO;
+import se.sogeti.jobapplications.daos.ContactDetailsDAO;
 import se.sogeti.jobapplications.daos.DriversLicenseTypeDAO;
 import se.sogeti.jobapplications.daos.GeoAreaDAO;
 import se.sogeti.jobapplications.daos.JobDAO;
@@ -48,6 +51,7 @@ public class AddMunicipalitySummerJobModule extends AnnotatedRESTModule{
 	private PeriodDAO periodDAO;
 	private DriversLicenseTypeDAO driversLicenseTypeDAO;
 	private GeoAreaDAO geoAreaDAO;
+	private ContactDetailsDAO<MunicipalityMentor> municipalityMentorDAO;
 	
 	@Override
 	protected void createDAOs(DataSource dataSource) throws Exception {
@@ -61,6 +65,7 @@ public class AddMunicipalitySummerJobModule extends AnnotatedRESTModule{
 		periodDAO = new PeriodDAO(dataSource, Period.class,hierarchyDaoFactory);
 		driversLicenseTypeDAO = new DriversLicenseTypeDAO(dataSource, DriversLicenseType.class, hierarchyDaoFactory);
 		geoAreaDAO = new GeoAreaDAO(dataSource, GeoArea.class, hierarchyDaoFactory);
+		municipalityMentorDAO = new ContactDetailsDAO<MunicipalityMentor>(dataSource, MunicipalityMentor.class, hierarchyDaoFactory);
 	}
 
 	@Override
@@ -76,26 +81,86 @@ public class AddMunicipalitySummerJobModule extends AnnotatedRESTModule{
 		Element jobForm = doc.createElement("MunicipalityJobForm");
 		doc.getFirstChild().appendChild(jobForm);
 		
+		Integer jobId = NumberUtils.toInt(req.getParameter("jobId"));
+		MunicipalityJob job = null;
+		if (jobId != null && user.isAdmin()) {
+			job = municipalityJobDAO.getById(jobId);
+			XMLUtils.append(doc, jobForm, job);
+		} 
+		
 		Element areasElement = doc.createElement("Areas");
 		List<MunicipalityJobArea> areas = areaDAO.getAll();
+		for (MunicipalityJobArea area : areas) {
+			Element jobArea = doc.createElement("MunicipalityJobArea");
+			XMLUtils.appendNewElement(doc, jobArea, "id", area.getId());
+			XMLUtils.appendNewElement(doc, jobArea, "name", area.getName());
+			XMLUtils.appendNewElement(doc, jobArea, "description", area.getDescription());
+			XMLUtils.appendNewElement(doc, jobArea, "canBeChosenInApplication", area.isCanBeChosenInApplication());
+			
+			if (job != null && job.getArea() != null) {
+				XMLUtils.appendNewElement(doc, jobArea, "selected", 
+						job.getArea().getId().intValue() == area.getId().intValue());
+			}
+			
+			areasElement.appendChild(jobArea);
+		}
 		
-		XMLUtils.append(doc, areasElement,areas);
-		jobForm.appendChild(areasElement);	
+		jobForm.appendChild(areasElement);
+		
+		Element geoAreaElement = doc.createElement("GeoAreas");
+		List<GeoArea> geoAreas = geoAreaDAO.getAll();
+		for (GeoArea geoArea : geoAreas) {
+			Element geoElement = doc.createElement("GeoArea");
+			XMLUtils.appendNewElement(doc, geoElement, "id", geoArea.getId());
+			XMLUtils.appendNewElement(doc, geoElement, "name", geoArea.getName());
+			XMLUtils.appendNewElement(doc, geoElement, "description", geoArea.getDescription());
+
+			if (job != null && job.getGeoArea() != null) {
+				XMLUtils.appendNewElement(doc, geoElement, "selected", 
+						job.getGeoArea().getId().intValue() == geoArea.getId().intValue());
+			}
+			
+			geoAreaElement.appendChild(geoElement);
+		}
+		
+		jobForm.appendChild(geoAreaElement);
 		
 		List<Period> periods = periodDAO.getAll();
-		Element periodsElement =doc.createElement("Periods");
-		XMLUtils.append(doc, periodsElement, periods);
+		Element periodsElement = doc.createElement("Periods");
+		for (Period p : periods) {
+			Element periodElement = doc.createElement("Period");
+			XMLUtils.appendNewElement(doc, periodElement, "id", p.getId());
+			XMLUtils.appendNewElement(doc, periodElement, "name", p.getName());
+			XMLUtils.appendNewElement(doc, periodElement, "startDate", p.getStartDate());
+			XMLUtils.appendNewElement(doc, periodElement, "endDate", p.getEndDate());
+			
+			if (job != null && job.getPeriod() != null) {
+				XMLUtils.appendNewElement(doc, periodElement, "selected", 
+						job.getPeriod().getId().intValue() == p.getId().intValue());
+			}
+			
+			periodsElement.appendChild(periodElement);
+		}
+		
 		jobForm.appendChild(periodsElement);
 		
 		Element driversLicenseElement = doc.createElement("DriversLicenseTypes");
 		List<DriversLicenseType> driverslicenseTypes = driversLicenseTypeDAO.getAll();
+		for (DriversLicenseType type : driverslicenseTypes) {
+			Element licenseType = doc.createElement("DriversLicenseType");
+			XMLUtils.appendNewElement(doc, licenseType, "id", type.getId());
+			XMLUtils.appendNewElement(doc, licenseType, "name", type.getName());
+			XMLUtils.appendNewElement(doc, licenseType, "description", type.getDescription());
+			
+			if (job != null && job.getDriversLicenseType() != null) {
+				XMLUtils.appendNewElement(doc, licenseType, "selected", 
+						job.getDriversLicenseType().getId().intValue() == type.getId().intValue());
+			}
+			
+			driversLicenseElement.appendChild(licenseType);
+		}
+			
 		jobForm.appendChild(driversLicenseElement);
-		XMLUtils.append(doc, driversLicenseElement, driverslicenseTypes);
-		
-		Element geoAreaElement = doc.createElement("GeoAreas");
-		List<GeoArea> geoAreas = geoAreaDAO.getAll();
-		jobForm.appendChild(geoAreaElement);
-		XMLUtils.append(doc, geoAreaElement, geoAreas);
 		
 		return new SimpleForegroundModuleResponse(doc);
 		
@@ -108,7 +173,8 @@ public class AddMunicipalitySummerJobModule extends AnnotatedRESTModule{
         String callback = req.getParameter("callback"); 
         JsonResponse.initJsonResponse(res, writer, callback);
         
-		MunicipalityJob job = new MunicipalityJob();
+        Integer jobId = NumberUtils.toInt(req.getParameter("jobId"));
+		MunicipalityJob job = jobId != null ? municipalityJobDAO.getById(jobId) : new MunicipalityJob();
 		
 		String organization = req.getParameter("organisation");
 		if (organization == null || organization.isEmpty()) {
@@ -153,7 +219,11 @@ public class AddMunicipalitySummerJobModule extends AnnotatedRESTModule{
 		area = areaDAO.getAreaById(areaId);
 		job.setArea(area);
 		
-		job.setCreated(new java.sql.Date(new Date().getTime()));
+		if (jobId != null) {
+			job.setUpdated(new java.sql.Date(new Date().getTime()));
+		} else {
+			job.setCreated(new java.sql.Date(new Date().getTime()));
+		}
 		
 		if(req.getParameter("isOverEighteen")!=null){
 			job.setIsOverEighteen(true);
@@ -171,6 +241,8 @@ public class AddMunicipalitySummerJobModule extends AnnotatedRESTModule{
         		DriversLicenseType licenseType = driversLicenseTypeDAO.getTypeById(typeId);
         		job.setDriversLicenseType(licenseType);
         	}
+		} else {
+			job.setDriversLicenseType(null);
 		}
 		
 		String managerFirstname = req.getParameter("manager-firstname");
@@ -182,7 +254,7 @@ public class AddMunicipalitySummerJobModule extends AnnotatedRESTModule{
 			JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Kontaktupgifter till den ansvarige på arbetsplatsen saknas i annonsen.\"}", callback, writer);
 			return;
 		}
-		MunicipalityManager manager = new MunicipalityManager();
+		MunicipalityManager manager = job.getManager() != null ? job.getManager() : new MunicipalityManager();
 		manager.setFirstname(managerFirstname);
 		manager.setLastname(managerLastname);
 		manager.setMobilePhone(managerPhone);
@@ -190,15 +262,24 @@ public class AddMunicipalitySummerJobModule extends AnnotatedRESTModule{
 		job.setManager(manager);
 		
 		List<MunicipalityMentor> mentors = new ArrayList<MunicipalityMentor>();
-		//Find mentor uuids
-		 List<String> mentorUuids = FormUtils.getMentorUuids(req.getParameterNames());
-		 for(String s:mentorUuids){
+        List<String> mentorUuids = FormUtils.getMentorUuids(req.getParameterNames());
+		for(String s : mentorUuids){
 			 MunicipalityMentor mentor = new MunicipalityMentor();
+			 Integer mentorId = NumberUtils.toInt(req.getParameter("mentor-id-" + s));
+			 
 			 String mentorFirstname = req.getParameter("mentor-firstname_" + s);
 			 String mentorLastname = req.getParameter("mentor-lastname_" + s);
 			 String mentorPhone = req.getParameter("mentor-phone_" + s);
 			 
-			 if (mentorFirstname == null || mentorLastname == null || mentorPhone == null
+			 if (mentorId != null) {
+				 mentor.setId(mentorId);
+				 
+				 if ((mentorFirstname == null && mentorLastname == null && mentorPhone == null)
+						 || (mentorFirstname.isEmpty() && mentorLastname.isEmpty() && mentorPhone.isEmpty())) {
+					 municipalityMentorDAO.removeById(mentorId);
+					 continue;
+				 }
+			 } else if (mentorFirstname == null || mentorLastname == null || mentorPhone == null
 					 || mentorFirstname.isEmpty() || mentorLastname.isEmpty() || mentorPhone.isEmpty()) {
 				 continue;
 			 }
@@ -208,12 +289,16 @@ public class AddMunicipalitySummerJobModule extends AnnotatedRESTModule{
 			 mentor.setEmail(req.getParameter("mentor-email_" + s));
 			 mentor.setMobilePhone(mentorPhone);
 			 mentors.add(mentor);
-		 }
+		}
 		
 		job.setMentors(mentors);
 		
-		job.setApproved(false);
-		job.setControlled(false);
+		if (jobId == null) {
+			job.setApproved(false);
+			job.setControlled(false);
+		} else {
+			job.setInitiatedByUser(user.getUsername());
+		}
 		
 		String workDescription = req.getParameter("work-description");
 		if (workDescription == null || workDescription.isEmpty()) {
@@ -229,7 +314,6 @@ public class AddMunicipalitySummerJobModule extends AnnotatedRESTModule{
 		}
 		job.setWorkTitle(workTitle);
 		
-//		Integer geoAreaId = NumberUtils.toInt(req.getParameter("geoArea"));
 		GeoArea geoArea = geoAreaDAO.getAreaById(NumberUtils.toInt(req.getParameter("geoArea")));
 		if (geoArea == null) {
 			JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Det angivna geografiska området hittades inte.\"}", callback, writer);
@@ -239,32 +323,48 @@ public class AddMunicipalitySummerJobModule extends AnnotatedRESTModule{
 		
 		List<Period> periods = periodDAO.getAll();
 		try {
-			for(Period p:periods){
-				if(req.getParameter("period_"+p.getId())!=null){
-					job.setPeriod(p);
-					
-					Integer numberOfWorkers = NumberUtils.toInt(req.getParameter(p.getName()+"_numberOfWorkersNeeded"));
-					if (numberOfWorkers == null) {
-						JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Antal lediga platser saknas för period "+p.getName()+".\"}", callback, writer);
-						return;
-					}
-					job.setNumberOfWorkersNeeded(numberOfWorkers);
-					
-					log.info("saving form for period: "+p.getName());
-					
-					municipalityJobDAO.add(job);
-					job.setId(null);
-					job.getManager().setId(null);
-					
-					for(MunicipalityMentor m:job.getMentors()){
-						m.setId(null);
+			if (jobId != null) {
+				String parameterName = FormUtils.getParameterNameThatContains("_numberOfWorkersNeeded", req.getParameterNames());
+				Integer numberOfWorkers = NumberUtils.toInt(req.getParameter(parameterName));
+				if (numberOfWorkers == null) {
+					JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Antal lediga platser saknas för perioden.\"}", callback, writer);
+					return;
+				}
+				job.setNumberOfWorkersNeeded(numberOfWorkers);
+				municipalityJobDAO.save(job);
+			} else {
+				for(Period p:periods){
+					if(req.getParameter("period_"+p.getId())!=null){
+						job.setPeriod(p);
+						
+						Integer numberOfWorkers = NumberUtils.toInt(req.getParameter(p.getName()+"_numberOfWorkersNeeded"));
+						if (numberOfWorkers == null) {
+							JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Antal lediga platser saknas för period "+p.getName()+".\"}", callback, writer);
+							return;
+						}
+						job.setNumberOfWorkersNeeded(numberOfWorkers);
+						
+						log.info("saving form for period: "+p.getName());
+						
+						municipalityJobDAO.save(job);
+						
+						job.setId(null);
+						job.getManager().setId(null);
+						
+						for(MunicipalityMentor m:job.getMentors()){
+							m.setId(null);
+						}
 					}
 				}
 			}
 			
 		} catch (SQLException e) {
 			log.error("SQL exception", e);
-			JsonResponse.sendJsonResponse("{\"status\":\"error\", \"message\":\"Något gick fel när annonsen skulle sparas.\"}", callback, writer);
+			if (jobId != null) {
+				JsonResponse.sendJsonResponse("{\"status\":\"error\", \"message\":\"Något gick fel när ändringarna skulle sparas.\"}", callback, writer);
+			} else {
+				JsonResponse.sendJsonResponse("{\"status\":\"error\", \"message\":\"Något gick fel när annonsen skulle sparas.\"}", callback, writer);
+			}
 			return;
 		}
 		JsonResponse.sendJsonResponse("{\"status\":\"success\", \"message\":\"Annonsen har nu sparats. En handläggare kommer att granska annonsen innan den blir synlig för sökande.\"}", callback, writer);
