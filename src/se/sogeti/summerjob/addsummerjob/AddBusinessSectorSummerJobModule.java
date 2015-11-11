@@ -21,7 +21,6 @@ import se.sogeti.jobapplications.beans.DriversLicenseType;
 import se.sogeti.jobapplications.beans.business.BusinessSectorJob;
 import se.sogeti.jobapplications.beans.business.BusinessSectorManager;
 import se.sogeti.jobapplications.beans.business.BusinessSectorMentor;
-import se.sogeti.jobapplications.beans.municipality.MunicipalityJob;
 import se.sogeti.jobapplications.daos.ContactDetailsDAO;
 import se.sogeti.jobapplications.daos.DriversLicenseTypeDAO;
 import se.sogeti.jobapplications.daos.JobDAO;
@@ -148,44 +147,6 @@ public class AddBusinessSectorSummerJobModule extends AnnotatedRESTModule{
         job.setStartDate(Date.valueOf(startDate));
         job.setEndDate(Date.valueOf(endDate));
         
-//        if (jobId != null) {
-//        	if (job.getMentors() != null) {
-//        		for (BusinessSectorMentor mentor : job.getMentors()) {
-//        			businessSectorMentorDAO.removeById(mentor.getId());
-//        		}
-//        	}
-//        }
-        
-//        if (jobId != null) {
-//        	if (job.getMentors() != null) {
-//        		for (BusinessSectorMentor mentor : job.getMentors()) {
-//        			 String mentorFirstname = req.getParameter("existing-mentor-firstname-" + mentor.getId());
-//        			 String mentorLastname = req.getParameter("existing-mentor-lastname-" + mentor.getId());
-//        			 String mentorPhone = req.getParameter("existing-mentor-phone-" + mentor.getId());
-//        			 String mentorEmail = req.getParameter("existing-mentor-email-" + mentor.getId());
-//        			 
-//        			 // Om förnamn, efternamn och telefonnummer är tom, ta då bort den här handledaren.
-//        			 if ((mentorFirstname == null || mentorFirstname.isEmpty()) && (mentorLastname == null || mentorLastname.isEmpty())
-//        					 && (mentorPhone == null || mentorPhone.isEmpty())) {
-//        				 job.getMentors().remove(mentor);
-//        			 } else {
-//        				 if (mentorFirstname != null && !mentorFirstname.isEmpty()) {
-//        					 mentor.setFirstname(mentorFirstname);
-//        				 }
-//        				 
-//        				 if (mentorLastname != null && !mentorLastname.isEmpty()) {
-//        					 mentor.setLastname(mentorLastname);
-//        				 }
-//        				 
-//        				 if (mentorPhone != null && !mentorPhone.isEmpty()) {
-//        					 mentor.setMobilePhone(mentorPhone);
-//        				 }
-//        				 mentor.setEmail(mentorEmail);
-//        			 }
-//        		}
-//        	}
-//        }
-        
         List<BusinessSectorMentor> mentors = new ArrayList<BusinessSectorMentor>();
         List<String> mentorUuids = FormUtils.getMentorUuids(req.getParameterNames());
 		for(String s : mentorUuids){
@@ -263,8 +224,6 @@ public class AddBusinessSectorSummerJobModule extends AnnotatedRESTModule{
         } else {
         	job.setInitiatedByUser(user.getUsername());
         }
-//        job.setApproved(false);
-//        job.setControlled(false);
         
         job.setIsOverEighteen(req.getParameter("isOverEighteen") != null ? true : false);
         log.info("isOverEighteen: " + req.getParameter("isOverEighteen"));

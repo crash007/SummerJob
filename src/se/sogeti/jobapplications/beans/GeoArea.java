@@ -39,6 +39,14 @@ public class GeoArea implements Elementable{
 	@XMLElement
 	private String name;
 	
+	@DAOManaged(columnName="description")
+	@XMLElement
+	private String description;
+	
+	@DAOManaged(columnName="nyko")
+	@XMLElement
+	private String nyko;
+	
 	
 	public Integer getId() {
 		return id;
@@ -68,6 +76,26 @@ public class GeoArea implements Elementable{
 	@Override
 	public String toString() {
 		return "GeoArea [id=" + id + ", name=" + name + "]";
+	}
+
+
+	public String getDescription() {
+		return description;
+	}
+
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+
+	public String getNyko() {
+		return nyko;
+	}
+
+
+	public void setNyko(String nyko) {
+		this.nyko = nyko;
 	}
 
 }
