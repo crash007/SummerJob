@@ -84,6 +84,8 @@ public class AddMunicipalitySummerJobApplicationModule extends AnnotatedRESTModu
 				person = smexServiceHandler.getCitizen(req.getParameter("socialSecurityNumber"));	
 			}catch( SmexServiceException e){
 				log.error(e);
+			}catch(Exception e){
+				log.error(e);
 			}
 			
 			

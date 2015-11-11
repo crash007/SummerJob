@@ -25,9 +25,10 @@ import se.sogeti.jobapplications.beans.municipality.MunicipalityJob;
 import se.sogeti.jobapplications.daos.ContactDetailsDAO;
 import se.sogeti.jobapplications.daos.DriversLicenseTypeDAO;
 import se.sogeti.jobapplications.daos.JobDAO;
-import se.sogeti.periodsadmin.JsonResponse;
+
 import se.sogeti.periodsadmin.beans.Period;
 import se.sogeti.summerjob.FormUtils;
+import se.sogeti.summerjob.JsonResponse;
 import se.unlogic.hierarchy.core.beans.SimpleForegroundModuleResponse;
 import se.unlogic.hierarchy.core.beans.User;
 import se.unlogic.hierarchy.core.interfaces.ForegroundModuleResponse;
