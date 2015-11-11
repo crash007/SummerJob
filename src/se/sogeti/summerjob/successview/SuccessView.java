@@ -22,8 +22,6 @@ public class SuccessView extends AnnotatedForegroundModule {
 			HttpServletResponse res, User user, URIParser uriParser)
 			throws Throwable {
 		
-		System.out.println("i defaultMethod");
-		
 		Document doc = XMLUtils.createDomDocument();
 		Element element = doc.createElement("Document");
 		element.appendChild(RequestUtils.getRequestInfoAsXML(doc, req, uriParser));

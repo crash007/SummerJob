@@ -88,6 +88,7 @@ public class MatchSummerJobsModule extends AnnotatedRESTModule{
 					XMLUtils.append(doc, doc.createElement("AppointedApplications"), job.getApplications());
 				}else{
 					job.setOpenApplications(job.getNumberOfWorkersNeeded());
+					job.setAppointedApplications(0);
 				}
 				
 				XMLUtils.append(doc, matchMunicipalityJobElement, job);
