@@ -119,9 +119,10 @@
 					  	</div>
 				  	</div>
 				  	<div id="geoAreaSelect" class="row">
-					  		<div class="col-md-4">
+					  		<div class="col-md-4 form-group">
 							    <label for="geoArea">Välj geografiskt område*</label>				    
 							    <select class="form-control" name="geoArea" id="geoArea" required="required">
+							    	<option value=""/>
 									<xsl:for-each select="GeoAreas/GeoArea">
 										<xsl:choose>
 											<xsl:when test="selected = 'true'">
@@ -326,10 +327,11 @@
 					  	</div>
 					  	
 					  	<div id="driverslicense_select" class="row">
-					  		<div class="col-md-3">
-							    <label for="driversLicenseType">Välj körkortstyp</label>				    
+					  		<div class="form-group col-md-3">
+							    <label for="driversLicenseType">Välj körkortstyp*</label>				    
 							    <select class="form-control" name="driversLicenseType" id="driversLicenseType">
 									<xsl:for-each select="DriversLicenseTypes/DriversLicenseType">
+										<option value=""/>
 										<xsl:choose>
 											<xsl:when test="selected = 'true'">
 												<option selected="selected" value="{id}"><xsl:value-of select="name" /> - <xsl:value-of select="description" /></option>
@@ -341,6 +343,7 @@
 									</xsl:for-each>
 								</select>
 							</div>
+							<p class="help-block with-errors"></p>
 						</div>
 					  	
 						<div class="form-group">

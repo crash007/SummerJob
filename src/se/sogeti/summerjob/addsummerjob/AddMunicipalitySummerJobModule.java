@@ -244,10 +244,12 @@ public class AddMunicipalitySummerJobModule extends AnnotatedRESTModule{
 		if (hasDriversLicense) {
 			Integer typeId = NumberUtils.toInt(req.getParameter("driversLicenseType"));
         	
-        	if (typeId != null) {
-        		DriversLicenseType licenseType = driversLicenseTypeDAO.getTypeById(typeId);
-        		job.setDriversLicenseType(licenseType);
+        	if (typeId == null) {
+        		JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Om du har körkort måste en körkortstyp väljas.\"}", callback, writer);
+            	return;
         	}
+        	DriversLicenseType licenseType = driversLicenseTypeDAO.getTypeById(typeId);
+        	job.setDriversLicenseType(licenseType);
 		} else {
 			job.setDriversLicenseType(null);
 		}
