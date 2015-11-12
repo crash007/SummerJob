@@ -2,19 +2,13 @@ package se.sogeti.summerjob;
 
 import java.sql.Date;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Enumeration;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import se.sogeti.jobapplications.beans.DriversLicenseType;
 import se.sogeti.jobapplications.beans.JobApplication;
-import se.sogeti.jobapplications.daos.JobApplicationDAO;
-import se.sogeti.periodsadmin.JsonResponse;
-import se.sundsvall.openetown.smex.service.SmexServiceException;
 import se.sundsvall.openetown.smex.vo.Citizen;
-import se.unlogic.standardutils.numbers.NumberUtils;
 
 public class FormUtils {
 	public static List<String> getMentorUuids(Enumeration<String> paramNames) {

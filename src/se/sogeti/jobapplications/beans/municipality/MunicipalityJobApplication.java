@@ -117,4 +117,12 @@ public class MunicipalityJobApplication extends JobApplication{
 		return XMLGenerator.toXML(this, doc);
 	}
 
+	public MunicipalityJob getJob() {
+		return job;
+	}
+
+	public void setJob(MunicipalityJob job) {
+		this.job = job;
+	}
+
 }

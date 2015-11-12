@@ -56,6 +56,10 @@ public abstract class Job implements Requirements,Elementable{
 	
 	@DAOManaged
 	@XMLElement
+	private String addedByUser;
+	
+	@DAOManaged
+	@XMLElement
 	private Boolean isOverEighteen;
 	
 	@DAOManaged
@@ -190,10 +194,12 @@ public abstract class Job implements Requirements,Elementable{
 		return "Job [id=" + id + ", created=" + created + ", updated=" + updated + ", workTitle=" + workTitle
 				+ ", workDescription=" + workDescription + ", numberOfWorkersNeeded=" + numberOfWorkersNeeded
 				+ ", approved=" + approved + ", controlledDate=" + controlledDate + ", controlled=" + controlled
-				+ ", approvedByUser=" + approvedByUser + ", isOverEighteen=" + isOverEighteen + ", hasDriversLicense="
-				+ hasDriversLicense + ", driversLicenseType=" + driversLicenseType + ", freeTextRequirements="
-				+ freeTextRequirements + ", streetAddress=" + streetAddress + ", zipCode=" + zipCode + ", city=" + city
-				+ "]";
+				+ ", approvedByUser=" + approvedByUser + ", addedByUser=" + addedByUser + ", isOverEighteen="
+				+ isOverEighteen + ", hasDriversLicense=" + hasDriversLicense + ", driversLicenseType="
+				+ driversLicenseType + ", freeTextRequirements=" + freeTextRequirements + ", streetAddress="
+				+ streetAddress + ", zipCode=" + zipCode + ", city=" + city + ", initiatedByUser=" + initiatedByUser
+				+ ", adminNotes=" + adminNotes + ", openApplications=" + openApplications + ", appointedApplications="
+				+ appointedApplications + "]";
 	}
 
 	public Boolean getIsOverEighteen() {
@@ -282,5 +288,13 @@ public abstract class Job implements Requirements,Elementable{
 
 	public void setInitiatedByUser(String initiatedByUser) {
 		this.initiatedByUser = initiatedByUser;
+	}
+
+	public String getAddedByUser() {
+		return addedByUser;
+	}
+
+	public void setAddedByUser(String addedByUser) {
+		this.addedByUser = addedByUser;
 	}
 }

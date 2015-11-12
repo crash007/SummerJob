@@ -4,50 +4,30 @@
 	<xsl:output method="html" version="4.0" encoding="ISO-8859-1"/>
 
 	<xsl:template match="Document">
+		<script>
+			var url = '<xsl:value-of select="requestinfo/uri"/>';
+		</script>
 
 		<xsl:apply-templates select="MatchMunicipalityJob"/>
 		<xsl:apply-templates select="MatchMunicipalityApplication"/>
 		
 	</xsl:template>
 	
-	<xsl:template match="MatchMunicipalityJob">
-		
-		<xsl:apply-templates select="MunicipalityJob"/>
-		<xsl:apply-templates select="AppointedApplications"/>
+	<xsl:template match="MatchMunicipalityJob">		
+		<xsl:apply-templates select="MunicipalityJob"/>		
 		<xsl:apply-templates select="MunicipalityApplicationFirstPickCandidates"/>		
 		<xsl:apply-templates select="MunicipalityApplicationSecondPickCandidates"/>		
-		<xsl:apply-templates select="MunicipalityApplicationThirdPickCandidates"/> 	
-		
+		<xsl:apply-templates select="MunicipalityApplicationThirdPickCandidates"/>
+				
 	</xsl:template>
 	
 	 <xsl:template name="candidatesTableTemplate">
 	 	<xsl:param name="header" />
-	 	<div class="col-xs-18 col-md-12">
-		  	<div class="panel panel-default">
-			  <div class="panel-heading">
-			    <h3 class="panel-title"><xsl:value-of select="$header"></xsl:value-of></h3>
-			  </div>
-			  <div class="panel-body">
-			    <table class="table table-bordered">
-				  <thead>
-				  	<tr>
-				  		<th>Förnamn</th>
-	     				<th>Efternamn</th>	     				
-	     			
-				  		<th>Körtkortstyp</th>
-				  		<th>Skola</th>
-				  		<th>Skoltyp</th>
-				  		<th>Postort skv</th>
-				  		<th>Datum</th>
-				  	</tr>
-				  </thead>
-
-				  <tbody>
+	 	<div class="row" style="margin-top:2em;">
+		 	<div class="col-xs-18 col-md-12">
+			  	 <h3><xsl:value-of select="$header"></xsl:value-of></h3>			
  				  	<xsl:apply-templates select="MunicipalityJobApplication"/>				  
-				  </tbody>
-				</table>
 			  </div>
-			</div>
 		  </div>
 	 </xsl:template>
 	
@@ -70,87 +50,158 @@
 	</xsl:template>
 	
 	<xsl:template match="MunicipalityJobApplication">
-		<tr>
-			<td>
-	   			<xsl:value-of select="firstname"></xsl:value-of>
-	   		</td>
-	   		<td>
-	   			<xsl:value-of select="lastname"></xsl:value-of>
-	   		</td>
-	 	
-	   		<td>
-	   			<xsl:value-of select="DriversLicenseType/name"></xsl:value-of>
-	   		</td>
-	   		<td>
-	   			<xsl:value-of select="schoolName"></xsl:value-of>
-	   		</td>
-	   		<td>
-	   			<xsl:value-of select="schoolType"></xsl:value-of>
-	   		</td>
-	   		<td>
-	   			<xsl:value-of select="skvCity"></xsl:value-of>
-	   		</td>
-	   		<td>
-	   			<xsl:value-of select="created"></xsl:value-of>
-	   		</td>
-   		</tr>
-	
+		<div class="candidate">
+			<div class="row">
+				<div class="col-xs-4 col-md-2 bold">Namn</div>
+				<div class="col-md-4 name">
+					<xsl:value-of select="firstname"/>
+		   			<xsl:value-of select="lastname"/>
+	   			</div>
+				
+				<div class="col-xs-4 col-md-2 bold">Personnummer</div>
+				<div class="col-md-4 social-number">
+					<xsl:value-of select="socialSecurityNumber"/>	   		
+	   			</div>
+	   		</div>
+	   		
+	   		<div class="row">
+				<div class="col-xs-4 col-md-2 bold">Körkort</div>
+				<div class="col-md-4">
+					<xsl:value-of select="DriversLicenseType/name"/>
+		   			
+	   			</div>
+				
+				<div class="col-xs-4 col-md-2 bold">Skola</div>
+				<div class="col-md-4">
+					<xsl:value-of select="schoolName"/>	   		
+	   			</div>
+	   		</div>
+	   		
+	   		<div class="row">
+				<div class="col-xs-4 col-md-2 bold">Skoltyp</div>
+				<div class="col-md-4">
+					<xsl:value-of select="schoolType"/>
+	   			</div>
+				
+				
+	   		</div>
+	   		
+	   		<div class="row">
+				<div class="col-md-2 bold">
+					<form name="add-worker">
+						<input type="hidden" name="application-id" value="{id}"/>
+						<button type="submit" class="btn btn-default">Lägg till</button>
+					</form>
+				</div>
+				
+			</div>
+			
+		</div>
+   			
 	</xsl:template>
 	
 	<xsl:template match="MunicipalityJob">
-		
-		<div class="well">
-			<div class="row">
-			<form class="form-horizontal">
-				<div class="form-group">
-				    <label class="col-sm-2 control-label">Rubrik</label>
-				    <div class="col-sm-10">
-				      <p class="form-control-static"><xsl:value-of select="workTitle"/></p>
-				    </div>
-			  	</div>
-			  	<div class="form-group">
-				    <label class="col-sm-2 control-label">Geografisk plats</label>
-				    <div class="col-sm-10">
-				      <p class="form-control-static"><xsl:value-of select="GeoArea/name"/></p>
-				    </div>
-			  	</div>
-			  <div class="form-group">
-			    <label class="col-sm-2 control-label">Verksamhetsområde</label>
-			    <div class="col-sm-10">
-			      <p class="form-control-static"><xsl:value-of select="MunicipalityJobArea/name"/></p>
-			    </div>
-			  </div>
-			  <div class="form-group">
-				    <label class="col-sm-2 control-label">Beskrivning</label>
-				    <div class="col-sm-10">
-				      <p class="form-control-static"><xsl:value-of select="workDescription"/></p>
-				    </div>
-			  </div>
-			  <div class="form-group">
-				    <label class="col-sm-2 control-label">Antal platser</label>
-				    <div class="col-sm-10">
-				      <p class="form-control-static"><xsl:value-of select="numberOfWorkersNeeded"/></p>
-				    </div>
-			  </div>
-			   <div class="form-group">
-				    <label class="col-sm-2 control-label">Tillsatta platser</label>
-				    <div class="col-sm-10">
-				      <p class="form-control-static"><xsl:value-of select="appointedApplications"/></p>
-				    </div>
-			  </div>
-			  <div class="form-group">
-				    <label class="col-sm-2 control-label">Lediga platser</label>
-				    <div class="col-sm-10">
-				      <p class="form-control-static"><xsl:value-of select="openApplications"/></p>
-				    </div>
-			  </div>
-			  <div class="form-group">
-				    <label class="col-sm-2 control-label">Address</label>
-				    <div class="col-sm-10">
-				      <p class="form-control-static"><xsl:value-of select="streetAddress"/></p>
-				    </div>
-			  </div>
-			</form>
+		<div class="row">
+			<input type="hidden" id="job-id" value="{id}"/>			
+			<div class="col-md-12">	
+				<div class="row">
+			
+					<div class="col-xs-4 col-md-3 bold">Rubrik</div>
+					<div class="col-md-3"><xsl:value-of select="workTitle"/></div>
+					<div class="col-xs-4 col-md-3 bold">Geografisk plats</div>
+					<div class="col-md-3"><xsl:value-of select="GeoArea/name"/></div>
+					
+				</div>	  	
+	 			
+	 			<div class="row">
+			
+					<div class="col-xs-4 col-md-3 bold">Verksamhetsområde</div>
+					<div class="col-md-3"><xsl:value-of select="MunicipalityJobArea/name"/></div>
+					<div class="col-xs-4 col-md-3 bold">Antal platser</div>
+					<div class="col-md-3"><xsl:value-of select="numberOfWorkersNeeded"/></div>
+					
+				</div>
+				
+				<div class="row">
+			
+					<div class="col-xs-4 col-md-3 bold">Körkort</div>
+					<div class="col-md-3"><xsl:value-of select="DriversLicenseType/name"/></div>
+					<div class="col-xs-4 col-md-3 bold">Över 18</div>
+					<div class="col-md-3"><xsl:value-of select="isOverEighteen"/></div>
+					
+				</div>
+				<div class="row">
+			
+					<div class="col-xs-4 col-md-3 bold">Tillsatta platser</div>
+					<div class="col-md-3"><xsl:value-of select="appointedApplications"/></div>
+					<div class="col-xs-4 col-md-3 bold">Lediga platser</div>
+					<div class="col-md-3"><xsl:value-of select="openApplications"/></div>
+					
+				</div>
+				<div class="row">
+			
+					<div class="col-xs-4 col-md-3 bold">Address</div>
+					<div class="col-md-3"><xsl:value-of select="streetAddress"/></div>
+					<div class="col-xs-4 col-md-3 bold">Period</div>
+					<div class="col-md-3"><xsl:value-of select="Period/namn"/></div>
+					
+				</div>	
+			
+				<div class="row">
+					<div class="col-xs-4 col-md-3 bold">Beskrivning</div>
+					<div class="col-md-9 col-xs-12"><xsl:value-of select="workDescription"/></div>
+				</div>
+				
+				<h3>Sommarjobbare</h3>
+				
+				<form id="remove-workers-form">
+					<div di="assigned-applications-container">
+						<xsl:for-each select="applications/MunicipalityJobApplication">
+							<div class="assigned-application">
+								<div class="row">
+									<div class="col-xs-4 col-md-3 bold">Namn</div>						
+									<div class="col-md-9 name"><xsl:value-of select="firstname"/><xsl:value-of select="lastname"/></div>						
+								</div>
+								<div class="row">
+									<div class="col-xs-4 col-md-3 bold">Personnummer</div>
+									<div class="col-md-9 social-number"><xsl:value-of select="socialSecurityNumber"/></div>
+								</div>
+								<div class="row">		
+									<div class="col-md-3">Ta bort</div>										
+									<div class="col-md-9">
+							          <input type="checkbox" name="application-id" value="{id}"></input>								        
+									</div>
+								</div>
+							</div>
+						</xsl:for-each>
+						
+					</div>
+					<div class="row">
+						<div class="col-md-3"></div>												
+						<div class="col-md-9">
+							<button type="submit" class="btn btn-default remove-workers-btn">Ta bort</button>
+						</div>
+					</div>
+				</form>
+				
+				<div id="assigned-application-template" class="collapse">
+					<div class="assigned-application">
+						<div class="row">
+							<div class="col-xs-4 col-md-3 bold">Namn</div>						
+							<div class="col-md-9 name"></div>						
+						</div>
+						<div class="row">
+							<div class="col-xs-4 col-md-3 bold">Personnummer</div>
+							<div class="col-md-9 social-number"></div>
+						</div>
+						<div class="row">		
+							<div class="col-md-3">Ta bort</div>										
+							<div class="col-md-9">
+					          <input type="checkbox" name="application-id" value=""></input>								        
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 	  	</div>
 	</xsl:template>		
