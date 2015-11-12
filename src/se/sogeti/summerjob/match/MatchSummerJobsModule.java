@@ -94,17 +94,17 @@ public class MatchSummerJobsModule extends AnnotatedRESTModule{
 				
 				//First hand pick
 				
-				List<MunicipalityJobApplication> firstCandidates = municipalityJobApplicationDAO.getCandidatesByPreferedArea1AndPreferedGeoArea1(job.getArea(), job.getGeoArea(), job.getIsOverEighteen(), job.getDriversLicenseType());
+				List<MunicipalityJobApplication> firstCandidates = municipalityJobApplicationDAO.getCandidatesByPreferedArea1AndPreferedGeoArea1(job.getArea(), job.getGeoArea(), job.getIsOverEighteen(), job.getDriversLicenseType(), job.getPeriod().getStartDate());
 				XMLUtils.append(doc, matchMunicipalityJobElement, "MunicipalityApplicationFirstPickCandidates", firstCandidates);
 				printCandidates(job.getId(), firstCandidates,"first");	
 				
 				//Second hand pick				
-				List<MunicipalityJobApplication> secondCandidates = municipalityJobApplicationDAO.getCandidatesByPreferedArea1AndPreferedGeoArea2(job.getArea(), job.getGeoArea(), job.getIsOverEighteen(), job.getDriversLicenseType());				
+				List<MunicipalityJobApplication> secondCandidates = municipalityJobApplicationDAO.getCandidatesByPreferedArea1AndPreferedGeoArea2(job.getArea(), job.getGeoArea(), job.getIsOverEighteen(), job.getDriversLicenseType(), job.getPeriod().getStartDate());				
 				XMLUtils.append(doc, matchMunicipalityJobElement, "MunicipalityApplicationSecondPickCandidates", secondCandidates);
 				printCandidates(job.getId(), secondCandidates,"second");	
 				
 				//Third hand pick				
-				List<MunicipalityJobApplication> thirdCandidates = municipalityJobApplicationDAO.getCandidatesByPreferedArea2AndPreferedGeoArea1(job.getArea(), job.getGeoArea(), job.getIsOverEighteen(), job.getDriversLicenseType());				
+				List<MunicipalityJobApplication> thirdCandidates = municipalityJobApplicationDAO.getCandidatesByPreferedArea2AndPreferedGeoArea1(job.getArea(), job.getGeoArea(), job.getIsOverEighteen(), job.getDriversLicenseType(), job.getPeriod().getStartDate());				
 				XMLUtils.append(doc, matchMunicipalityJobElement, "MunicipalityApplicationThirdPickCandidates", thirdCandidates);
 				printCandidates(job.getId(), thirdCandidates,"third");
 				
@@ -149,8 +149,6 @@ public class MatchSummerJobsModule extends AnnotatedRESTModule{
 					JsonResponse.sendJsonResponse(result.toJson(), null, writer);
 					return;
 				}
-				
-				
 			}
 			
 			result.putField("status", "success");
@@ -165,7 +163,6 @@ public class MatchSummerJobsModule extends AnnotatedRESTModule{
 		}
 		
 	}
-	
 	
 	@RESTMethod(alias="add-worker.json", method="post")
 	public void addApplicationToJob(HttpServletRequest req, HttpServletResponse res, User user, URIParser uriParser) throws IOException{
@@ -221,7 +218,6 @@ public class MatchSummerJobsModule extends AnnotatedRESTModule{
 		
 	}
 	
-	
 	private void printCandidates(Integer jobId, List<MunicipalityJobApplication> candidates, String prio) {
 		if(candidates!=null){	
 			log.info(prio+" pcik candidates for job "+jobId);
@@ -233,9 +229,5 @@ public class MatchSummerJobsModule extends AnnotatedRESTModule{
 			
 		}
 	}
-	
-	
-
-	
 }
 

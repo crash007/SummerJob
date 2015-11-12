@@ -1,7 +1,11 @@
 package se.sogeti.jobapplications.daos;
 
 import java.lang.reflect.Field;
+import java.sql.Date;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -36,28 +40,57 @@ public class MuncipialityJobApplicationDAO extends JobApplicationDAO<Municipalit
 		// TODO Auto-generated constructor stub
 	}
 
-	public List<MunicipalityJobApplication> getCandidatesByPreferedArea1AndPreferedGeoArea1(MunicipalityJobArea jobArea, GeoArea geoArea,  Boolean overEighteen, DriversLicenseType driversLicense) throws SQLException{		
-		return getCandidates(this.getParamFactory("preferedArea1", MunicipalityJobArea.class).getParameter(jobArea), this.getParamFactory("preferedGeoArea1", GeoArea.class).getParameter(geoArea), overEighteen, driversLicense);
+	public List<MunicipalityJobApplication> getCandidatesByPreferedArea1AndPreferedGeoArea1(MunicipalityJobArea jobArea, GeoArea geoArea,  Boolean overEighteen, DriversLicenseType driversLicense, Date jobStartDate) throws SQLException{		
+		return getCandidates(this.getParamFactory("preferedArea1", MunicipalityJobArea.class).getParameter(jobArea), this.getParamFactory("preferedGeoArea1", GeoArea.class).getParameter(geoArea), overEighteen, driversLicense, jobStartDate);
 	}
 	
-	public List<MunicipalityJobApplication> getCandidatesByPreferedArea1AndPreferedGeoArea2(MunicipalityJobArea jobArea, GeoArea geoArea,  Boolean overEighteen, DriversLicenseType driversLicense) throws SQLException{		
-		return getCandidates(this.getParamFactory("preferedArea1", MunicipalityJobArea.class).getParameter(jobArea), this.getParamFactory("preferedGeoArea2", GeoArea.class).getParameter(geoArea), overEighteen, driversLicense);
+	public List<MunicipalityJobApplication> getCandidatesByPreferedArea1AndPreferedGeoArea2(MunicipalityJobArea jobArea, GeoArea geoArea,  Boolean overEighteen, DriversLicenseType driversLicense, Date jobStartDate) throws SQLException{		
+		return getCandidates(this.getParamFactory("preferedArea1", MunicipalityJobArea.class).getParameter(jobArea), this.getParamFactory("preferedGeoArea2", GeoArea.class).getParameter(geoArea), overEighteen, driversLicense, jobStartDate);
 	}
 	
-	public List<MunicipalityJobApplication> getCandidatesByPreferedArea2AndPreferedGeoArea1(MunicipalityJobArea jobArea, GeoArea geoArea,  Boolean overEighteen, DriversLicenseType driversLicense) throws SQLException{		
-		return getCandidates(this.getParamFactory("preferedArea2", MunicipalityJobArea.class).getParameter(jobArea), this.getParamFactory("preferedGeoArea1", GeoArea.class).getParameter(geoArea), overEighteen, driversLicense);
+	public List<MunicipalityJobApplication> getCandidatesByPreferedArea2AndPreferedGeoArea1(MunicipalityJobArea jobArea, GeoArea geoArea,  Boolean overEighteen, DriversLicenseType driversLicense, Date jobStartDate) throws SQLException{		
+		return getCandidates(this.getParamFactory("preferedArea2", MunicipalityJobArea.class).getParameter(jobArea), this.getParamFactory("preferedGeoArea1", GeoArea.class).getParameter(geoArea), overEighteen, driversLicense, jobStartDate);
 	}
 	
-	public List<MunicipalityJobApplication> getCandidates(QueryParameter<MunicipalityJobApplication, MunicipalityJobArea> areaQuery, QueryParameter<MunicipalityJobApplication, GeoArea> geoQueryArea,  Boolean overEighteen, DriversLicenseType driversLicense) throws SQLException{
+//	public List<MunicipalityJobApplication> getCandidates(QueryParameter<MunicipalityJobApplication, MunicipalityJobArea> areaQuery, QueryParameter<MunicipalityJobApplication, GeoArea> geoQueryArea,  Boolean overEighteen, DriversLicenseType driversLicense) throws SQLException{
+//		HighLevelQuery<MunicipalityJobApplication> query = new HighLevelQuery<MunicipalityJobApplication>();
+//		query.addParameter(areaQuery);
+//		query.addParameter(geoQueryArea);
+//		query.addParameter(this.getParamFactory("approved", Boolean.class).getParameter(true));
+//		query.addParameter(this.getParamFactory("job", MunicipalityJob.class).getIsNullParameter());
+//		
+//		if(overEighteen!=null){
+//			query.addParameter(this.getParamFactory("isOverEighteen", Boolean.class).getParameter(overEighteen));		
+//		}
+//		
+//		if(driversLicense!=null){
+//			query.addParameter(this.getParamFactory("driversLicenseType", DriversLicenseType.class).getParameter(driversLicense, QueryOperators.BIGGER_THAN_OR_EUALS));
+//		}
+//		
+//		query.addRelation(APPLICATION_PREFERED_AREA1_RELATION);
+//		query.addRelation(APPLICATION_PREFERED_AREA2_RELATION);
+//		query.addRelation(APPLICATION_PREFERED_AREA3_RELATION);
+//		query.addRelation(APPLICATION_PREFERED_GEO_AREA1_RELATION);
+//		query.addRelation(APPLICATION_PREFERED_GEO_AREA2_RELATION);
+//		query.addRelation(APPLICATION_PREFERED_GEO_AREA3_RELATION);		
+//		query.addRelation(APPLICATION_DRIVERS_LICENSE_TYPE_RELATION);
+//		query.addRelation(APPLICATION_JOB_RELATION);
+//		
+//		
+//		query.disableAutoRelations(true);
+//		return this.getAll(query);
+//	}
+	
+	public List<MunicipalityJobApplication> getCandidates(QueryParameter<MunicipalityJobApplication, MunicipalityJobArea> areaQuery, QueryParameter<MunicipalityJobApplication, GeoArea> geoQueryArea,  Boolean overEighteen, DriversLicenseType driversLicense, Date jobStartDate) throws SQLException{
 		HighLevelQuery<MunicipalityJobApplication> query = new HighLevelQuery<MunicipalityJobApplication>();
 		query.addParameter(areaQuery);
 		query.addParameter(geoQueryArea);
 		query.addParameter(this.getParamFactory("approved", Boolean.class).getParameter(true));
 		query.addParameter(this.getParamFactory("job", MunicipalityJob.class).getIsNullParameter());
 		
-		if(overEighteen!=null){
-			query.addParameter(this.getParamFactory("isOverEighteen", Boolean.class).getParameter(overEighteen));		
-		}
+//		if(overEighteen!=null){
+//			query.addParameter(this.getParamFactory("isOverEighteen", Boolean.class).getParameter(overEighteen));		
+//		}
 		
 		if(driversLicense!=null){
 			query.addParameter(this.getParamFactory("driversLicenseType", DriversLicenseType.class).getParameter(driversLicense, QueryOperators.BIGGER_THAN_OR_EUALS));
@@ -74,9 +107,44 @@ public class MuncipialityJobApplicationDAO extends JobApplicationDAO<Municipalit
 		
 		
 		query.disableAutoRelations(true);
-		return this.getAll(query);
+		
+		List<MunicipalityJobApplication> candidates = this.getAll(query);
+		
+		if (candidates != null && overEighteen != null && overEighteen.booleanValue() == true) {
+			System.out.println("This job needs candidates that is over 18 years old.");
+			
+			List<MunicipalityJobApplication> candidatesTemp = new ArrayList<MunicipalityJobApplication>(candidates);
+			for (MunicipalityJobApplication app : candidates) {
+				if (!candidateIsOfAge(jobStartDate, app.getDateOfBirth())) { // The candidate is too young when the job starts.
+					candidatesTemp.remove(app);
+					System.out.println("The candidate was too young.");
+				}
+			}
+			candidates = candidatesTemp;
+		}
+		
+		return candidates;
 	}
 	
+	public boolean candidateIsOfAge(Date startDate, Date dateOfBirth) {
+		
+		if (startDate == null || dateOfBirth == null) {
+			return false;
+		}
+		
+		Calendar dob = Calendar.getInstance();
+		dob.setTime(dateOfBirth);
+		Calendar jobStartDate = Calendar.getInstance();
+		jobStartDate.setTime(startDate);
+		int age = jobStartDate.get(Calendar.YEAR) - dob.get(Calendar.YEAR);  
+		if (jobStartDate.get(Calendar.MONTH) < dob.get(Calendar.MONTH)) {
+		  age--;  
+		} else if (jobStartDate.get(Calendar.MONTH) == dob.get(Calendar.MONTH)
+		    && jobStartDate.get(Calendar.DAY_OF_MONTH) < dob.get(Calendar.DAY_OF_MONTH)) {
+		  age--;  
+		}
+		return age >= 18;
+	}
 	
 	
 //	public List<BusinessSectorJobApplication> getAllUnapprovedWithJob() throws SQLException {
