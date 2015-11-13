@@ -95,19 +95,37 @@ public class MatchSummerJobsModule extends AnnotatedRESTModule{
 				
 				//First hand pick
 				
-				List<MunicipalityJobApplication> firstCandidates = municipalityJobApplicationDAO.getCandidatesByPreferedArea1AndPreferedGeoArea1(job.getArea(), job.getGeoArea(), job.getIsOverEighteen(), job.getDriversLicenseType());
-				XMLUtils.append(doc, matchMunicipalityJobElement, "MunicipalityApplicationFirstPickCandidates", firstCandidates);
-				printCandidates(job.getId(), firstCandidates,"first");	
+				List<MunicipalityJobApplication> area1AndGeoArea1Candidates = municipalityJobApplicationDAO.getCandidatesByPreferedArea1AndPreferedGeoArea1(job.getArea(), job.getGeoArea(), job.getIsOverEighteen(), job.getDriversLicenseType());
+				XMLUtils.append(doc, matchMunicipalityJobElement, "Area1AndGeoArea1Candidates", area1AndGeoArea1Candidates);
+				printCandidates(job.getId(), area1AndGeoArea1Candidates,"Area1AndGeoArea1");	
 				
 				//Second hand pick				
-				List<MunicipalityJobApplication> secondCandidates = municipalityJobApplicationDAO.getCandidatesByPreferedArea1AndPreferedGeoArea2(job.getArea(), job.getGeoArea(), job.getIsOverEighteen(), job.getDriversLicenseType());				
-				XMLUtils.append(doc, matchMunicipalityJobElement, "MunicipalityApplicationSecondPickCandidates", secondCandidates);
-				printCandidates(job.getId(), secondCandidates,"second");	
+				List<MunicipalityJobApplication> area1AndGeoArea2Candidates = municipalityJobApplicationDAO.getCandidatesByPreferedArea1AndPreferedGeoArea2(job.getArea(), job.getGeoArea(), job.getIsOverEighteen(), job.getDriversLicenseType());				
+				XMLUtils.append(doc, matchMunicipalityJobElement, "Area1AndGeoArea2Candidates", area1AndGeoArea2Candidates);
+				printCandidates(job.getId(), area1AndGeoArea2Candidates,"Area1AndGeoArea2");	
+				
+				List<MunicipalityJobApplication> area1AndGeoArea3Candidates = municipalityJobApplicationDAO.getCandidatesByPreferedArea1AndPreferedGeoArea3(job.getArea(), job.getGeoArea(), job.getIsOverEighteen(), job.getDriversLicenseType());				
+				XMLUtils.append(doc, matchMunicipalityJobElement, "Area1AndGeoArea2Candidates", area1AndGeoArea3Candidates);
+				printCandidates(job.getId(), area1AndGeoArea3Candidates,"Area1AndGeoArea3");	
+
 				
 				//Third hand pick				
-				List<MunicipalityJobApplication> thirdCandidates = municipalityJobApplicationDAO.getCandidatesByPreferedArea2AndPreferedGeoArea1(job.getArea(), job.getGeoArea(), job.getIsOverEighteen(), job.getDriversLicenseType());				
-				XMLUtils.append(doc, matchMunicipalityJobElement, "MunicipalityApplicationThirdPickCandidates", thirdCandidates);
-				printCandidates(job.getId(), thirdCandidates,"third");
+				List<MunicipalityJobApplication> area2AndGeoArea1 = municipalityJobApplicationDAO.getCandidatesByPreferedArea2AndPreferedGeoArea1(job.getArea(), job.getGeoArea(), job.getIsOverEighteen(), job.getDriversLicenseType());				
+				XMLUtils.append(doc, matchMunicipalityJobElement, "Area2AndGeoArea1Candidates", area2AndGeoArea1);
+				printCandidates(job.getId(), area2AndGeoArea1,"Area2AndGeoArea1");
+				
+				List<MunicipalityJobApplication> area2AndGeoArea2 = municipalityJobApplicationDAO.getCandidatesByPreferedArea2AndPreferedGeoArea2(job.getArea(), job.getGeoArea(), job.getIsOverEighteen(), job.getDriversLicenseType());				
+				XMLUtils.append(doc, matchMunicipalityJobElement, "Area2AndGeoArea2Candidates", area2AndGeoArea2);
+				printCandidates(job.getId(), area2AndGeoArea1,"Area2AndGeoArea2");
+				
+				//Third hand pick
+				List<MunicipalityJobApplication> anyAreaAndGeoArea1Candidates = municipalityJobApplicationDAO.getCandidatesByNoPreferedAreaAndPreferedGeoArea1(job.getGeoArea(), job.getIsOverEighteen(), job.getDriversLicenseType());				
+				XMLUtils.append(doc, matchMunicipalityJobElement, "AnyAreaAndGeoArea1Candidates", anyAreaAndGeoArea1Candidates);
+				printCandidates(job.getId(), anyAreaAndGeoArea1Candidates,"AnyAreaAndGeoArea1");
+			
+				List<MunicipalityJobApplication> anyAreaAndGeoArea2Candidates = municipalityJobApplicationDAO.getCandidatesByNoPreferedAreaAndPreferedGeoArea2(job.getGeoArea(), job.getIsOverEighteen(), job.getDriversLicenseType());				
+				XMLUtils.append(doc, matchMunicipalityJobElement, "AnyAreaAndGeoArea2Candidates", anyAreaAndGeoArea2Candidates);
+				printCandidates(job.getId(), anyAreaAndGeoArea1Candidates,"AnyAreaAndGeoArea2");
 				
 			}else{
 				log.warn("No job with id "+jobId+" found.");
@@ -128,7 +146,7 @@ public class MatchSummerJobsModule extends AnnotatedRESTModule{
 		PrintWriter writer = res.getWriter();
 		JsonObject result = new JsonObject();
 		JsonResponse.initJsonResponse(res, writer, null);
-		Integer applicationId = NumberUtils.toInt(req.getParameter("application-id"));
+		
 		String[] applicationIdStrings =req.getParameterValues("application-id");
 		
 		if(applicationIdStrings!=null){

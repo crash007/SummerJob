@@ -19,6 +19,10 @@ public class MunicipalityJobApplication extends JobApplication{
 	@ManyToOne(remoteKeyField="id",autoGet=false,autoAdd=false,autoUpdate=false)
 	private MunicipalityJob job;
 	
+	@DAOManaged
+	@XMLElement
+	private Boolean noPreferedArea=false;
+	
 	@DAOManaged(columnName="prefered_area_1")
 	@ManyToOne(remoteKeyField="id",autoGet=true)
 	@XMLElement(name="preferedArea1")
@@ -123,6 +127,14 @@ public class MunicipalityJobApplication extends JobApplication{
 
 	public void setJob(MunicipalityJob job) {
 		this.job = job;
+	}
+
+	public Boolean getNoPreferedArea() {
+		return noPreferedArea;
+	}
+
+	public void setNoPreferedArea(Boolean noPreferedArea) {
+		this.noPreferedArea = noPreferedArea;
 	}
 
 }

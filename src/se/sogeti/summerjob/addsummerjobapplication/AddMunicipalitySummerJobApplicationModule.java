@@ -88,20 +88,23 @@ public class AddMunicipalitySummerJobApplicationModule extends AnnotatedRESTModu
 				log.error(e);
 			}
 			
-			
 			FormUtils.createJobApplication(app, req, person);
 			
-			Integer preferedArea1 = NumberUtils.toInt(req.getParameter("preferedArea1"));
-			Integer preferedArea2 = NumberUtils.toInt(req.getParameter("preferedArea2"));
-			Integer preferedArea3 = NumberUtils.toInt(req.getParameter("preferedArea3"));
-			MunicipalityJobArea area1 = areaDAO.getAreaById(preferedArea1);
-			MunicipalityJobArea area2 = areaDAO.getAreaById(preferedArea2);
-			MunicipalityJobArea area3 = areaDAO.getAreaById(preferedArea3);
+			if(req.getParameter("noPreferedArea")!=null){
+				app.setNoPreferedArea(true);
+			}else{			
+				Integer preferedArea1 = NumberUtils.toInt(req.getParameter("preferedArea1"));
+				Integer preferedArea2 = NumberUtils.toInt(req.getParameter("preferedArea2"));
+				Integer preferedArea3 = NumberUtils.toInt(req.getParameter("preferedArea3"));
+				MunicipalityJobArea area1 = areaDAO.getAreaById(preferedArea1);
+				MunicipalityJobArea area2 = areaDAO.getAreaById(preferedArea2);
+				MunicipalityJobArea area3 = areaDAO.getAreaById(preferedArea3);
+				app.setPreferedArea1(area1);
+				app.setPreferedArea2(area2);
+				app.setPreferedArea3(area3);
+			}
 			
 			
-			app.setPreferedArea1(area1);
-			app.setPreferedArea2(area2);
-			app.setPreferedArea3(area3);
 			
 			Integer preferedGeoArea1 = NumberUtils.toInt(req.getParameter("geoArea1"));
 			Integer preferedGeoArea2 = NumberUtils.toInt(req.getParameter("geoArea2"));
