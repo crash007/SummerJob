@@ -11,8 +11,11 @@ import se.sogeti.jobapplications.beans.business.BusinessSectorJobApplication;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityJobApplication;
 import se.unlogic.standardutils.dao.AnnotatedDAO;
 import se.unlogic.standardutils.dao.AnnotatedDAOFactory;
+import se.unlogic.standardutils.dao.Column;
 import se.unlogic.standardutils.dao.HighLevelQuery;
 import se.unlogic.standardutils.dao.MySQLRowLimiter;
+import se.unlogic.standardutils.dao.OrderByCriteria;
+import se.unlogic.standardutils.enums.Order;
 import se.unlogic.standardutils.reflection.ReflectionUtils;
 
 public class JobApplicationDAO<T extends JobApplication> extends SummerJobCommonDAO<T> {
@@ -86,4 +89,23 @@ public class JobApplicationDAO<T extends JobApplication> extends SummerJobCommon
 		return this.get(query);
 	}
 	
+	public List<T> getAllByApprovedAndAscendingOrder(String socialSecurityNumber, boolean approved, boolean orderByAscending) throws SQLException {
+		HighLevelQuery<T> query = new HighLevelQuery<T>();
+		
+		if (socialSecurityNumber != null) {
+			query.addParameter(this.getParamFactory("socialSecurityNumber", String.class).getParameter(socialSecurityNumber));
+		}
+		
+		query.addParameter(this.getParamFactory("approved", Boolean.class).getParameter(approved));
+		Order order = null;
+		if (orderByAscending) {
+			order = Order.ASC;
+		} else {
+			order = Order.DESC;
+		}
+		
+		OrderByCriteria<T> orderCriteria = this.getOrderByCriteria("created", order);
+		query.addOrderByCriteria(orderCriteria);
+		return this.getAll(query);
+	}
 }

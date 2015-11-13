@@ -9,12 +9,12 @@
 			var url = '<xsl:value-of select="requestinfo/uri"/>';
 		</script>
 		<xsl:variable name="isAdmin" select="IsAdmin"/>
-		<xsl:apply-templates select="BusinessSectorJobInfo/BusinessSectorJob"/>
+		<xsl:apply-templates select="BusinessSectorJobInfo"/>
 	</xsl:template>
 	
-	<xsl:template match="BusinessSectorJobInfo/BusinessSectorJob">
+	<xsl:template match="BusinessSectorJobInfo">
 	
-		<div style="display: none" id="jobIdDiv"><xsl:value-of select="id"></xsl:value-of></div>
+		<div style="display: none" id="jobIdDiv"><xsl:value-of select="BusinessSectorJob/id"></xsl:value-of></div>
 
 		<div class="well">
 		  	<div class="panel panel-default">
@@ -25,31 +25,31 @@
 						  	<div class="row">
 						  		<div class="col-md-5">
 									<label>Yrkestitel</label>
-									<div id="work"><xsl:value-of select="workTitle"></xsl:value-of></div>
+									<div id="work"><xsl:value-of select="BusinessSectorJob/workTitle"></xsl:value-of></div>
 								</div>
 						  	</div>
 						  	<div class="mgn-top8px row">
 						  		<div class="col-md-12">
 									<label>Yrkesbeskrivning</label>
-									<div id="description"><xsl:value-of select="workDescription"></xsl:value-of></div>
+									<div id="description"><xsl:value-of select="BusinessSectorJob/workDescription"></xsl:value-of></div>
 								</div>
 						  	</div>
 						  	
 						  	<div class="mgn-top8px row">
 						  		<div class="col-md-3">
 									<label>Antal platser</label>
-									<span class="mgn-lft8px" id="numberNeeded"><xsl:value-of select="numberOfWorkersNeeded"></xsl:value-of></span>
+									<span class="mgn-lft8px" id="numberNeeded"><xsl:value-of select="BusinessSectorJob/numberOfWorkersNeeded"></xsl:value-of></span>
 								</div>
 							</div>
 						  	
 						  	<div class="mgn-top8px row">
 								<div class="col-md-3">
 									<label for="startDate">Startdatum</label>
-									<span class="mgn-lft8px" id="startDate"><xsl:value-of select="startDate"></xsl:value-of></span>
+									<span class="mgn-lft8px" id="startDate"><xsl:value-of select="BusinessSectorJob/startDate"></xsl:value-of></span>
 								</div>
 								<div class="col-md-3">
 									<label for="endDate">Slutdatum</label>
-									<span class="mgn-lft8px" id="endDate"><xsl:value-of select="endDate"></xsl:value-of></span>
+									<span class="mgn-lft8px" id="endDate"><xsl:value-of select="BusinessSectorJob/endDate"></xsl:value-of></span>
 								</div>
 						  	</div>
 						  	<div class="mgn-top8px row">
@@ -66,7 +66,7 @@
 										</thead>
 						
 										<tbody>
-											<xsl:for-each select="mentors/BusinessSectorMentor">
+											<xsl:for-each select="BusinessSectorJob/mentors/BusinessSectorMentor">
 											<tr>
 									  			<td><xsl:value-of select="firstname"></xsl:value-of></td>
 									  			<td><xsl:value-of select="lastname"></xsl:value-of></td>
@@ -89,7 +89,7 @@
 								<div class="col-md-5">
 									<label for="company">Företag</label>
 									<div id="company">
-										<xsl:value-of select="company"></xsl:value-of>
+										<xsl:value-of select="BusinessSectorJob/company"></xsl:value-of>
 									</div>
 								</div>
 							</div>
@@ -97,19 +97,19 @@
 								<div class="col-md-3">
 									<label for="streetAddress">Gatuadress</label>
 									<div id="streetAddress">
-										<xsl:value-of select="streetAddress"></xsl:value-of>
+										<xsl:value-of select="BusinessSectorJob/streetAddress"></xsl:value-of>
 									</div>
 								</div>
 								<div class="col-md-2">
 									<label for="zipcode">Postnummer</label>
 									<div id="zipcode">
-										<xsl:value-of select="zipCode"></xsl:value-of>
+										<xsl:value-of select="BusinessSectorJob/zipCode"></xsl:value-of>
 									</div>
 								</div>
 								<div class="col-md-2">
 									<label for="city">Postort</label>
 									<div id="city">
-										<xsl:value-of select="city"></xsl:value-of>
+										<xsl:value-of select="BusinessSectorJob/city"></xsl:value-of>
 									</div>
 								</div>
 							</div>
@@ -117,25 +117,25 @@
 								<div class="col-md-2">
 									<label>Förnamn</label>
 									<div>
-										<xsl:value-of select="BusinessSectorManager/firstname"></xsl:value-of>
+										<xsl:value-of select="BusinessSectorJob/BusinessSectorManager/firstname"></xsl:value-of>
 									</div>
 								</div>
 								<div class="col-md-2">
 									<label>Efternamn</label>
 									<div>
-										<xsl:value-of select="BusinessSectorManager/lastname"></xsl:value-of>
+										<xsl:value-of select="BusinessSectorJob/BusinessSectorManager/lastname"></xsl:value-of>
 									</div>
 								</div>
 								<div class="col-md-2">
 									<label>Telefonnummer</label>
 									<div>
-										<xsl:value-of select="BusinessSectorManager/mobilePhone"></xsl:value-of>
+										<xsl:value-of select="BusinessSectorJob/BusinessSectorManager/mobilePhone"></xsl:value-of>
 									</div>
 								</div>
 								<div class="col-md-3">
 									<label>E-postadress</label>
 									<div>
-										<xsl:value-of select="BusinessSectorManager/email"></xsl:value-of>
+										<xsl:value-of select="BusinessSectorJob/BusinessSectorManager/email"></xsl:value-of>
 									</div>
 								</div>
 							</div>
@@ -151,7 +151,7 @@
 							<label>Körkort</label>
 							<div>
 								<xsl:choose>
-									<xsl:when test="hasDriversLicense = 'true'">Tjänsten kräver att sökande har körkort av typ <xsl:value-of select="DriversLicenseType/name"></xsl:value-of>.</xsl:when>
+									<xsl:when test="BusinessSectorJob/hasDriversLicense = 'true'">Tjänsten kräver att sökande har körkort av typ <xsl:value-of select="DriversLicenseType/name"></xsl:value-of>.</xsl:when>
 									<xsl:otherwise>Tjänsten kräver <i>ej</i> körkort</xsl:otherwise>
 								</xsl:choose>
 							</div>
@@ -162,7 +162,7 @@
 							<label>Ålder</label>
 							<div>
 								<xsl:choose>
-									<xsl:when test="isOverEighteen = 'true'">Tjänsten kräver att sökande är över 18 år.</xsl:when>
+									<xsl:when test="BusinessSectorJob/isOverEighteen = 'true'">Tjänsten kräver att sökande är över 18 år.</xsl:when>
 									<xsl:otherwise>Tjänsten kräver <i>ej</i> att sökande är över 18 år.</xsl:otherwise>
 								</xsl:choose>
 							</div>
@@ -172,7 +172,7 @@
 						<div class="col-md-12">
 							<label>Övriga krav och önskemål</label>
 							<div>
-								<xsl:value-of select="freeTextRequirements"></xsl:value-of>
+								<xsl:value-of select="BusinessSectorJob/freeTextRequirements"></xsl:value-of>
 							</div>
 						</div>
 					</div>
@@ -199,12 +199,12 @@
 			
 			<div class="form-group">
 				<label for="admin-notes">Handläggarkommentar</label>
-				<textarea class="form-control" rows="5" id="admin-notes" name="admin-notes"><xsl:value-of select="adminNotes"></xsl:value-of></textarea>
+				<textarea class="form-control" rows="5" id="admin-notes" name="admin-notes"><xsl:value-of select="BusinessSectorJob/adminNotes"></xsl:value-of></textarea>
 				<div class="help-block with-errors">Valfri. Skriv här anledningen till godkännande eller nekande av en annons.</div>
 			</div>
 			
 			<xsl:choose>
-				<xsl:when test="approvedByUser != '' and approved = 'true'">
+				<xsl:when test="BusinessSectorJob/approvedByUser != '' and BusinessSectorJob/approved = 'true'">
 					<button id="approve-job-button" type="button" class="btn btn-success" disabled="disabled">Godkänn</button>
 				</xsl:when>
 				<xsl:otherwise>
@@ -212,7 +212,7 @@
 				</xsl:otherwise>
 			</xsl:choose>
 			<xsl:choose>
-				<xsl:when test="approvedByUser != '' and approved = 'false'">
+				<xsl:when test="BusinessSectorJob/approvedByUser != '' and BusinessSectorJob/approved = 'false'">
 					<button id="disapprove-job-button" type="button" class="mgn-lft8px btn btn-danger" disabled="disabled">Neka</button>
 				</xsl:when>
 				<xsl:otherwise>
@@ -220,9 +220,9 @@
 				</xsl:otherwise>
 			</xsl:choose>
 			
-			<a href="list-summerjobs?showMunicipalityJobs=false" type="button" class="float-rgt mgn-lft8px btn btn-info">Gå tillbaka</a>
+			<a href="{listJobsURL}?showMunicipalityJobs=false" type="button" class="float-rgt mgn-lft8px btn btn-info">Gå tillbaka</a>
 			<button id="mark-job-as-initiated-button" type="button" class="float-rgt mgn-lft8px btn btn-primary">Markera som påbörjad</button>
-			<a href="add-business-sector-job?jobId={id}" id="edit-job-button" type="button" class="float-rgt mgn-lft8px btn btn-warning">Redigera</a>
+			<a href="{editURL}?jobId={BusinessSectorJob/id}" id="edit-job-button" type="button" class="float-rgt mgn-lft8px btn btn-warning">Redigera</a>
 		</div>
 	</div>
 	</xsl:template>

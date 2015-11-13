@@ -26,6 +26,8 @@ import se.sogeti.jobapplications.daos.DriversLicenseTypeDAO;
 import se.sogeti.jobapplications.daos.JobDAO;
 import se.sogeti.summerjob.FormUtils;
 import se.sogeti.summerjob.JsonResponse;
+import se.unlogic.hierarchy.core.annotations.ModuleSetting;
+import se.unlogic.hierarchy.core.annotations.TextFieldSettingDescriptor;
 import se.unlogic.hierarchy.core.beans.SimpleForegroundModuleResponse;
 import se.unlogic.hierarchy.core.beans.User;
 import se.unlogic.hierarchy.core.interfaces.ForegroundModuleResponse;
@@ -39,6 +41,9 @@ import se.unlogic.webutils.http.URIParser;
 
 public class AddBusinessSectorSummerJobModule extends AnnotatedRESTModule{
 	
+	@ModuleSetting
+	@TextFieldSettingDescriptor(description="Relativ URL till sidan för att hantera jobbet", name="ManageJobURL")
+	String manageJobURL = "manage-businesssector-job";
 	
 	private JobDAO<BusinessSectorJob> businessSectorJobDAO;
 	private DriversLicenseTypeDAO driversLicenseTypeDAO;
@@ -71,6 +76,7 @@ public class AddBusinessSectorSummerJobModule extends AnnotatedRESTModule{
 		if (jobId != null && user.isAdmin()) {
 			job = businessSectorJobDAO.getById(jobId);
 			XMLUtils.append(doc, jobForm, job);
+			XMLUtils.appendNewElement(doc, jobForm, "manageJobURL", manageJobURL);
 		} 
 		
 		Element driversLicenseElement = doc.createElement("DriversLicenseTypes");
@@ -132,18 +138,19 @@ public class AddBusinessSectorSummerJobModule extends AnnotatedRESTModule{
 			return;
         }
         
-        if (startDate.length() > 10) {
-        	System.out.println("StartDate, före: " + startDate);
-        	startDate = startDate.substring(0, 10);
-        	System.out.println("StartDate, efter: " + startDate);
+        Date jobStartDate, jobEndDate;
+        
+        try {
+        	jobStartDate = Date.valueOf(startDate);
+        	jobEndDate = Date.valueOf(endDate);
+        } catch (IllegalArgumentException e) {
+        	log.error(e);
+        	JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Datumfälten innehåller datum som inte är korrekt angivna\"}", callback, writer);
+			return;
         }
         
-        if (endDate.length() > 10) {
-        	endDate = endDate.substring(0, 10);
-        }
-        
-        job.setStartDate(Date.valueOf(startDate));
-        job.setEndDate(Date.valueOf(endDate));
+        job.setStartDate(jobStartDate);
+        job.setEndDate(jobEndDate);
         
         List<BusinessSectorMentor> mentors = new ArrayList<BusinessSectorMentor>();
         List<String> mentorUuids = FormUtils.getMentorUuids(req.getParameterNames());
