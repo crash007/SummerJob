@@ -115,6 +115,10 @@ public abstract class JobApplication implements Elementable{
 	@XMLElement
 	private String addedByUser;
 	
+	@DAOManaged
+	@XMLElement
+	private Date birthDate;
+	
 	public Integer getId() {
 		return id;
 	}
@@ -327,7 +331,7 @@ public abstract class JobApplication implements Elementable{
 				+ ", firstname=" + firstname + ", lastname=" + lastname + ", streetAddress=" + streetAddress
 				+ ", zipCode=" + zipCode + ", city=" + city + ", email=" + email + ", phoneNumber=" + phoneNumber
 				+ ", schoolName=" + schoolName + ", schoolType=" + schoolType + ", skvCity=" + skvCity + ", adminNotes="
-				+ adminNotes + ", addedByUser=" + addedByUser + "]";
+				+ adminNotes + ", addedByUser=" + addedByUser + ", birtdate=" + birthDate + "]";
 	}
 
 	public String getAddedByUser() {
@@ -345,4 +349,13 @@ public abstract class JobApplication implements Elementable{
 	public Boolean getControlled() {
 		return controlled;
 	}
+
+	public Date getBirthDate() {
+		return birthDate;
+	}
+
+	public void setBirthdate(Date birthdate) {
+		this.birthDate = birthdate;
+	}
+
 }

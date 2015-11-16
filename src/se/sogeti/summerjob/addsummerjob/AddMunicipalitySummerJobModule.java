@@ -15,13 +15,8 @@ import javax.sql.DataSource;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
 import se.sogeti.jobapplications.beans.DriversLicenseType;
 import se.sogeti.jobapplications.beans.GeoArea;
-import se.sogeti.jobapplications.beans.business.BusinessSectorJob;
-import se.sogeti.jobapplications.beans.business.BusinessSectorMentor;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityJob;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityJobArea;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityManager;
@@ -31,7 +26,6 @@ import se.sogeti.jobapplications.daos.ContactDetailsDAO;
 import se.sogeti.jobapplications.daos.DriversLicenseTypeDAO;
 import se.sogeti.jobapplications.daos.GeoAreaDAO;
 import se.sogeti.jobapplications.daos.JobDAO;
-
 import se.sogeti.periodsadmin.beans.Period;
 import se.sogeti.periodsadmin.daos.PeriodDAO;
 import se.sogeti.summerjob.FormUtils;
@@ -245,10 +239,12 @@ public class AddMunicipalitySummerJobModule extends AnnotatedRESTModule{
 		if (hasDriversLicense) {
 			Integer typeId = NumberUtils.toInt(req.getParameter("driversLicenseType"));
         	
-        	if (typeId != null) {
-        		DriversLicenseType licenseType = driversLicenseTypeDAO.getTypeById(typeId);
-        		job.setDriversLicenseType(licenseType);
+        	if (typeId == null) {
+        		JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Om du har körkort måste en körkortstyp väljas.\"}", callback, writer);
+            	return;
         	}
+        	DriversLicenseType licenseType = driversLicenseTypeDAO.getTypeById(typeId);
+        	job.setDriversLicenseType(licenseType);
 		} else {
 			job.setDriversLicenseType(null);
 		}

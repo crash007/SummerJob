@@ -25,6 +25,9 @@ public class JobApplicationDAO<T extends JobApplication> extends SummerJobCommon
 		 APPLICATION_JOB_RELATION=ReflectionUtils.getField(beanClass, "job");
 	}
 	
+	public void save(T bean) throws SQLException {
+		this.addOrUpdate(bean, null);
+	}
 	
 	/**
 	 * To get all applications that has been matched to a certain job.

@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -93,37 +95,45 @@ public class MatchSummerJobsModule extends AnnotatedRESTModule{
 				
 				XMLUtils.append(doc, matchMunicipalityJobElement, job);
 				
-				//First hand pick
+				Date bornBefore =null;
 				
-				List<MunicipalityJobApplication> area1AndGeoArea1Candidates = municipalityJobApplicationDAO.getCandidatesByPreferedArea1AndPreferedGeoArea1(job.getArea(), job.getGeoArea(), job.getIsOverEighteen(), job.getDriversLicenseType());
+				if(job.getMustBeOverEighteen()){
+					Calendar cal = Calendar.getInstance();
+					cal.setTime(job.getPeriod().getStartDate());					
+					cal.set(Calendar.YEAR,cal.get(Calendar.YEAR)-18);
+					bornBefore = cal.getTime();
+				}
+				
+				//First hand pick				
+				List<MunicipalityJobApplication> area1AndGeoArea1Candidates = municipalityJobApplicationDAO.getCandidatesByPreferedArea1AndPreferedGeoArea1(job.getArea(), job.getGeoArea(), bornBefore, job.getDriversLicenseType());
 				XMLUtils.append(doc, matchMunicipalityJobElement, "Area1AndGeoArea1Candidates", area1AndGeoArea1Candidates);
 				printCandidates(job.getId(), area1AndGeoArea1Candidates,"Area1AndGeoArea1");	
 				
 				//Second hand pick				
-				List<MunicipalityJobApplication> area1AndGeoArea2Candidates = municipalityJobApplicationDAO.getCandidatesByPreferedArea1AndPreferedGeoArea2(job.getArea(), job.getGeoArea(), job.getIsOverEighteen(), job.getDriversLicenseType());				
+				List<MunicipalityJobApplication> area1AndGeoArea2Candidates = municipalityJobApplicationDAO.getCandidatesByPreferedArea1AndPreferedGeoArea2(job.getArea(), job.getGeoArea(), bornBefore, job.getDriversLicenseType());				
 				XMLUtils.append(doc, matchMunicipalityJobElement, "Area1AndGeoArea2Candidates", area1AndGeoArea2Candidates);
 				printCandidates(job.getId(), area1AndGeoArea2Candidates,"Area1AndGeoArea2");	
 				
-				List<MunicipalityJobApplication> area1AndGeoArea3Candidates = municipalityJobApplicationDAO.getCandidatesByPreferedArea1AndPreferedGeoArea3(job.getArea(), job.getGeoArea(), job.getIsOverEighteen(), job.getDriversLicenseType());				
+				List<MunicipalityJobApplication> area1AndGeoArea3Candidates = municipalityJobApplicationDAO.getCandidatesByPreferedArea1AndPreferedGeoArea3(job.getArea(), job.getGeoArea(), bornBefore, job.getDriversLicenseType());				
 				XMLUtils.append(doc, matchMunicipalityJobElement, "Area1AndGeoArea2Candidates", area1AndGeoArea3Candidates);
 				printCandidates(job.getId(), area1AndGeoArea3Candidates,"Area1AndGeoArea3");	
 
 				
 				//Third hand pick				
-				List<MunicipalityJobApplication> area2AndGeoArea1 = municipalityJobApplicationDAO.getCandidatesByPreferedArea2AndPreferedGeoArea1(job.getArea(), job.getGeoArea(), job.getIsOverEighteen(), job.getDriversLicenseType());				
+				List<MunicipalityJobApplication> area2AndGeoArea1 = municipalityJobApplicationDAO.getCandidatesByPreferedArea2AndPreferedGeoArea1(job.getArea(), job.getGeoArea(), bornBefore, job.getDriversLicenseType());				
 				XMLUtils.append(doc, matchMunicipalityJobElement, "Area2AndGeoArea1Candidates", area2AndGeoArea1);
 				printCandidates(job.getId(), area2AndGeoArea1,"Area2AndGeoArea1");
 				
-				List<MunicipalityJobApplication> area2AndGeoArea2 = municipalityJobApplicationDAO.getCandidatesByPreferedArea2AndPreferedGeoArea2(job.getArea(), job.getGeoArea(), job.getIsOverEighteen(), job.getDriversLicenseType());				
+				List<MunicipalityJobApplication> area2AndGeoArea2 = municipalityJobApplicationDAO.getCandidatesByPreferedArea2AndPreferedGeoArea2(job.getArea(), job.getGeoArea(), bornBefore, job.getDriversLicenseType());				
 				XMLUtils.append(doc, matchMunicipalityJobElement, "Area2AndGeoArea2Candidates", area2AndGeoArea2);
 				printCandidates(job.getId(), area2AndGeoArea1,"Area2AndGeoArea2");
 				
 				//Third hand pick
-				List<MunicipalityJobApplication> anyAreaAndGeoArea1Candidates = municipalityJobApplicationDAO.getCandidatesByNoPreferedAreaAndPreferedGeoArea1(job.getGeoArea(), job.getIsOverEighteen(), job.getDriversLicenseType());				
+				List<MunicipalityJobApplication> anyAreaAndGeoArea1Candidates = municipalityJobApplicationDAO.getCandidatesByNoPreferedAreaAndPreferedGeoArea1(job.getGeoArea(), bornBefore, job.getDriversLicenseType());				
 				XMLUtils.append(doc, matchMunicipalityJobElement, "AnyAreaAndGeoArea1Candidates", anyAreaAndGeoArea1Candidates);
 				printCandidates(job.getId(), anyAreaAndGeoArea1Candidates,"AnyAreaAndGeoArea1");
 			
-				List<MunicipalityJobApplication> anyAreaAndGeoArea2Candidates = municipalityJobApplicationDAO.getCandidatesByNoPreferedAreaAndPreferedGeoArea2(job.getGeoArea(), job.getIsOverEighteen(), job.getDriversLicenseType());				
+				List<MunicipalityJobApplication> anyAreaAndGeoArea2Candidates = municipalityJobApplicationDAO.getCandidatesByNoPreferedAreaAndPreferedGeoArea2(job.getGeoArea(), bornBefore, job.getDriversLicenseType());				
 				XMLUtils.append(doc, matchMunicipalityJobElement, "AnyAreaAndGeoArea2Candidates", anyAreaAndGeoArea2Candidates);
 				printCandidates(job.getId(), anyAreaAndGeoArea1Candidates,"AnyAreaAndGeoArea2");
 				
@@ -168,8 +178,6 @@ public class MatchSummerJobsModule extends AnnotatedRESTModule{
 					JsonResponse.sendJsonResponse(result.toJson(), null, writer);
 					return;
 				}
-				
-				
 			}
 			
 			result.putField("status", "success");
@@ -184,7 +192,6 @@ public class MatchSummerJobsModule extends AnnotatedRESTModule{
 		}
 		
 	}
-	
 	
 	@RESTMethod(alias="add-worker.json", method="post")
 	public void addApplicationToJob(HttpServletRequest req, HttpServletResponse res, User user, URIParser uriParser) throws IOException{
@@ -240,7 +247,6 @@ public class MatchSummerJobsModule extends AnnotatedRESTModule{
 		
 	}
 	
-	
 	private void printCandidates(Integer jobId, List<MunicipalityJobApplication> candidates, String prio) {
 		if(candidates!=null){	
 			log.info(prio+" pcik candidates for job "+jobId);
@@ -252,9 +258,5 @@ public class MatchSummerJobsModule extends AnnotatedRESTModule{
 			
 		}
 	}
-	
-	
-
-	
 }
 

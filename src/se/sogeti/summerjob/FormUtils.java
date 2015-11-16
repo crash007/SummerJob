@@ -7,12 +7,8 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import se.sogeti.jobapplications.beans.DriversLicenseType;
 import se.sogeti.jobapplications.beans.JobApplication;
-import se.sogeti.jobapplications.daos.JobApplicationDAO;
-import se.sundsvall.openetown.smex.service.SmexServiceException;
 import se.sundsvall.openetown.smex.vo.Citizen;
-import se.unlogic.standardutils.numbers.NumberUtils;
 
 public class FormUtils {
 	public static List<String> getMentorUuids(Enumeration<String> paramNames) {
@@ -62,7 +58,7 @@ public class FormUtils {
 		app.setSocialSecurityNumber(req.getParameter("socialSecurityNumber"));
 		app.setStreetAddress(req.getParameter("street"));
 		app.setZipCode(req.getParameter("postalcode"));
-		
+		app.setBirthdate(FormUtils.getDateOfBirth(req.getParameter("socialSecurityNumber")));
 		
 		
 		app.setPersonalLetter(req.getParameter("personal-letter"));
@@ -87,7 +83,15 @@ public class FormUtils {
 			app.setControlled(true);
 			app.setControlledByUser("System");
 		}
-			
-
+	}
+	
+	public static Date getDateOfBirth(String socialSecurityNumber) {
+		String ssn = socialSecurityNumber.substring(0, 8);
+		String birthDateString = ssn.substring(0, 4) + "-" + ssn.substring(4, 6) + "-" + ssn.substring(6, ssn.length());
+		Date date = null;
+		
+		date = Date.valueOf(birthDateString);
+		
+		return date;
 	}
 }

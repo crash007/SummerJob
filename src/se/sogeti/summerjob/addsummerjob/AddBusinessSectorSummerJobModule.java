@@ -24,8 +24,6 @@ import se.sogeti.jobapplications.beans.business.BusinessSectorMentor;
 import se.sogeti.jobapplications.daos.ContactDetailsDAO;
 import se.sogeti.jobapplications.daos.DriversLicenseTypeDAO;
 import se.sogeti.jobapplications.daos.JobDAO;
-
-import se.sogeti.periodsadmin.beans.Period;
 import se.sogeti.summerjob.FormUtils;
 import se.sogeti.summerjob.JsonResponse;
 import se.unlogic.hierarchy.core.beans.SimpleForegroundModuleResponse;
@@ -234,10 +232,12 @@ public class AddBusinessSectorSummerJobModule extends AnnotatedRESTModule{
         if (hasDriversLicense) {
         	Integer typeId = NumberUtils.toInt(req.getParameter("driversLicenseType"));
         	
-        	if (typeId != null) {
-        		DriversLicenseType licenseType = driversLicenseTypeDAO.getTypeById(typeId);
-        		job.setDriversLicenseType(licenseType);
+        	if (typeId == null) {
+        		JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Om du har körkort måste en körkortstyp väljas.\"}", callback, writer);
+            	return;
         	}
+        	DriversLicenseType licenseType = driversLicenseTypeDAO.getTypeById(typeId);
+        	job.setDriversLicenseType(licenseType);
         }
         
         job.setFreeTextRequirements(req.getParameter("other-requirements"));

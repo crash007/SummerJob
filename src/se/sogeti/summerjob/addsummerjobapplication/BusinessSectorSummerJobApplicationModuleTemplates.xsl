@@ -5,6 +5,9 @@
 
 
 	<xsl:template match="Document">
+		<script>
+			var url = '<xsl:value-of select="requestinfo/uri"/>';
+		</script>
 		
 		<xsl:apply-templates select="JobInfo/BusinessSectorJob"/>
 		<xsl:apply-templates select="JobApplicationForm"/>
@@ -219,14 +222,14 @@
 			    <h3 class="panel-title">Sommarjobb inom näringslivet</h3>
 			  </div>
 			  <div class="panel-body">
-			    <table class="table table-bordered">
+			    <table class="table">
 				  <thead>
 				  	<tr>
 				  		<th>Yrke</th>
 	     				<th>Företag</th>
 	     				<th>Antal platser</th>
 	     				<th>Inkommen</th>
-	     				<th>Sök detta jobb</th>	     				
+	     				<th></th>	     				
 				  	</tr>
 				  </thead>
 				  
@@ -262,119 +265,134 @@
 	</xsl:template>
 	
 	<xsl:template match="JobApplicationForm">
-		<div class="well">
-		<fieldset>
-		<label>Ansök</label>
-		<form method="POST" id="business-job-form">
-			<input type="hidden" name="jobId" value="{jobId}"/>
-
-				<article>
-				
-				  	<div class="form-group">
-					    <label for="personal-letter">Personligt brev*</label>				    
-					    <textarea class="form-control" rows="7" id="personal-letter" name="personal-letter" required="required"></textarea>							    
-					    <p class="help-block">Berätta något</p>
-				  	</div>
-			  	</article>
-				<article>
-				  	 <div class="form-group">
-					    <label for="cvInputFile">Ladda upp ditt cv</label>
-					    <input type="file" id="cvInputFile" name="cvFile"/>
-					    <p class="help-block">Om du har ett cv kan du ladda upp det.</p>
-					  </div>
-				  </article>
-				  
-				  
-			  
-			 
-				<article>
-				
-				  <h3 class="panel-title">Personuppgifter</h3>				  
-				  	<div class="row">
-		  				<div class="col-md-3">
-						    <label for="firstname">Förnamn</label>				    
-						     <input type="text" class="form-control" id="firstname" name="firstname" placeholder=""/>							    
-				    	</div>
-				    	<div class="col-md-3">
-						    <label for="lastname">Efternamn</label>				    
-						     <input type="text" class="form-control" id="lastname" name="lastname" placeholder=""/>							    
-				    	</div>
-				    
-		  				<div class="col-md-3">
-						    <label for="phone">Telefonnummer</label>				    
-						     <input type="text" class="form-control" id="phone" name="phone" placeholder=""/>
-						    
-				    	</div>
-				    
-		  				<div class="col-md-3">
-						    <label for="email">E-post</label>				    
-						     <input type="text" class="form-control" id="email" name="email" placeholder=""/>
-						    <p class="help-block">Valfri</p>
-				    	</div>
-			    	</div>
-	    		</article>  
-			    	
-		    	 	<div class="row">
-				    	<div class="col-md-3">
-					    	<div class="form-group">
-							    <label for="street">Personnummer</label>				    
-							    <input type="text" class="form-control" id="street" name="socialSecurityNumber" placeholder=""/>					    
+		<form method="POST" role="form" id="business-job-application-form" data-toggle="validator">
+			<div class="well">
+				<input type="hidden" name="jobId" value="{jobId}"/>
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h3 class="panel-title">Ansökan</h3>
+						</div>
+						<div class="panel-body">
+						  	<div class="form-group">
+							    <label for="personal-letter">Personligt brev*</label>				    
+							    <textarea class="form-control" rows="7" id="personal-letter" name="personal-letter" required="required"></textarea>							    
+							    <p class="help-block with-errors">Skriv lite information om vem du är, vad du är intresserad av och vad du är duktig på</p>
 						  	</div>
-						</div>
-					</div> 	
-
-					
-				  	<div class="form-group">						
-						<div class="checkbox">
-						    <label>
-						      <input type="checkbox" name="hasDriversLicense">Har du körkort? </input>
-						    </label>
-					  	</div>
-					  	<div id="driverslicense_select" class="row">
-					  		<div class="col-md-3">
-							    <label for="driversLicenseType">Välj körkortstyp</label>				    
-							    <select class="form-control" name="driversLicenseType" id="driversLicenseType">
-									<xsl:for-each select="DriversLicenseTypes/DriversLicenseType">
-										<option value="{id}"><xsl:value-of select="name" /> - <xsl:value-of select="description" /></option>
-									</xsl:for-each>
-								</select>
+							<div class="form-group">
+							    <label for="cvInputFile">Ladda upp ditt cv</label>
+							    <input type="file" id="cvInputFile" name="cvFile"/>
+							    <p class="help-block">Om du har ett cv kan du ladda upp det.</p>
 							</div>
-						</div>
-					</div> 
-					  		
-				
-				
-				<div class="panel panel-default">
-				  <div class="panel-heading">
-				    <h3 class="panel-title">Adress</h3>
-				  </div>
-				  <div class="panel-body">
-			  		<div class="form-group">
-				  		<div class="row">
-						    <div class="col-md-5">
-							    <label for="street">Gatuadress</label>				    
-							    <input type="text" class="form-control" id="street" name="street" placeholder=""/>					    
-						    </div>
-						    <div class="col-md-3">
-							    <label for="postalcode">Postnumer</label>				    
-							    <input type="text" class="form-control" id="postalcode" name="postalcode" placeholder=""/>
-						    </div>
-						    <div class="col-md-4">
-							    <label for="postalarea">Postort</label>				    
-							    <input type="text" class="form-control" id="postalarea" name="postalarea" placeholder=""/>
-						    </div>
+							
+							<div class="form-group">						
+								<div class="checkbox">
+								    <label>
+								      <input type="checkbox" name="hasDriversLicense">Har du körkort?</input>
+								    </label>
+							  	</div>
+							  	<div id="driverslicense_select" class="row">
+							  		<div class="form-group col-md-4">
+									    <label for="driversLicenseType">Välj körkortstyp*</label>				    
+									    <select class="form-control" name="driversLicenseType" id="driversLicenseType">
+									    	<option value="" />
+											<xsl:for-each select="DriversLicenseTypes/DriversLicenseType">
+												<option value="{id}"><xsl:value-of select="name" /> - <xsl:value-of select="description" /></option>
+											</xsl:for-each>
+										</select>
+										<p class="help-block with-errors"></p>
+									</div>
+								</div>
+							</div> 
 					    </div>
-				  	</div>				  	
-				  </div>
-			  	</div>
-			  	
-		  		
-		  		<button type="submit" class="btn btn-default questions-submit">Submit</button>
-				 <span class="glyphicon glyphicon-ok collapse" aria-hidden="true"></span><span class="glyphicon glyphicon-remove collapse" aria-hidden="true"></span>
+					</div>
+				  	
+				 	<div class="panel panel-default">
+				 		<div class="panel-heading">
+				 			<h3 class="panel-title">Personuppgifter</h3>
+				 		</div>
+				 		<div class="panel-body">
+				    	 	<div class="row">
+						    	<div class="col-md-3">
+							    	<div class="form-group">
+									    <label for="street">Personnummer*</label>				    
+									    <input type="text" class="form-control" id="street" name="socialSecurityNumber" placeholder="" required="required"/>
+									    <p class="help-block with-errors"></p>				    
+								  	</div>
+								</div>
+							</div> 	
+						  	<div class="row">
+				  				<div class="form-group col-md-3">
+								    <label for="firstname">Förnamn*</label>				    
+								     <input type="text" class="form-control" id="firstname" name="firstname" placeholder="" required="required"/>	
+								     <p class="help-block with-errors"></p>						    
+						    	</div>
+						    	<div class="form-group col-md-3">
+								    <label for="lastname">Efternamn*</label>				    
+								     <input type="text" class="form-control" id="lastname" name="lastname" placeholder="" required="required"/>	
+								     <p class="help-block with-errors"></p>							    
+						    	</div>
+						    
+				  				<div class="form-group col-md-3">
+								    <label for="phone">Telefonnummer*</label>				    
+								    <input type="text" class="form-control" id="phone" name="phone" placeholder="" required="required"/>
+								    <p class="help-block with-errors"></p>	
+						    	</div>
+				  				<div class="col-md-3">
+								    <label for="email">E-post</label>				    
+								     <input type="text" class="form-control" id="email" name="email" placeholder=""/>
+								    <p class="help-block">Valfri</p>
+						    	</div>
+					    	</div>
+					    	<div class="form-group">
+						  		<div class="row">
+								    <div class="form-group col-md-5">
+									    <label for="street">Gatuadress*</label>				    
+									    <input type="text" class="form-control" id="street" name="street" placeholder="" required="required"/>
+									    <p class="help-block with-errors"></p>		    
+								    </div>
+								    <div class="form-group col-md-3">
+									    <label for="postalcode">Postnummer*</label>				    
+									    <input type="text" class="form-control" id="postalcode" name="postalcode" placeholder="" required="required"/>
+									    <p class="help-block with-errors"></p>	
+								    </div>
+								    <div class="form-group col-md-4">
+									    <label for="postalarea">Postort*</label>				    
+									    <input type="text" class="form-control" id="postalarea" name="postalarea" placeholder="" required="required"/>
+									    <p class="help-block with-errors"></p>
+								    </div>
+							    </div>
+					  		</div>
+					  	</div>
+				  	</div>
+					
+					<div class="panel panel-default">
+			  		<div class="panel-heading">
+			  			<h3 class="panel-title">
+			  				Skicka in ansökan
+			  			</h3>
+			  		</div>  
+			  		<div class="panel-body">
+						<div id="save-failed" class="alert alert-danger" role="alert">
+							<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+							<span class="sr-only">Error:</span>
+							<span class="message"></span>
+						</div>
+						<div id="save-succeeded" class="alert alert-success" role="alert">
+							<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+							<span class="sr-only">Success:</span>
+							<span class="message"></span>
+						</div>
+						
+			  			<button style="margin-top: 4px;" id="submit-business-job-application" type="submit" class="float-rgt btn btn-default questions-submit">
+			  				Skicka
+			  			</button>
+						<span class="glyphicon glyphicon-ok collapse" aria-hidden="true"></span><span class="glyphicon glyphicon-remove collapse" aria-hidden="true"></span>
+					</div>
+			  	</div> 	
+<!-- 			  		<button type="submit" class="btn btn-default questions-submit">Submit</button> -->
+<!-- 					<span class="glyphicon glyphicon-ok collapse" aria-hidden="true"></span><span class="glyphicon glyphicon-remove collapse" aria-hidden="true"></span> -->
+				</div>
 			</form>
-			</fieldset>
-			</div>
-	    	
 	    	
 	</xsl:template>
 

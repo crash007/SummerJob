@@ -1,6 +1,7 @@
 package se.sogeti.jobapplications.daos;
 
 import java.lang.reflect.Field;
+import java.util.Date;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -36,45 +37,45 @@ public class MuncipialityJobApplicationDAO extends JobApplicationDAO<Municipalit
 		// TODO Auto-generated constructor stub
 	}
 
-	public List<MunicipalityJobApplication> getCandidatesByPreferedArea1AndPreferedGeoArea1(MunicipalityJobArea jobArea, GeoArea geoArea,  Boolean overEighteen, DriversLicenseType driversLicense) throws SQLException{		
-		return getCandidates(this.getParamFactory("preferedArea1", MunicipalityJobArea.class).getParameter(jobArea), this.getParamFactory("preferedGeoArea1", GeoArea.class).getParameter(geoArea), overEighteen, driversLicense);
+	public List<MunicipalityJobApplication> getCandidatesByPreferedArea1AndPreferedGeoArea1(MunicipalityJobArea jobArea, GeoArea geoArea,  Date bornBeforeDate, DriversLicenseType driversLicense) throws SQLException{		
+		return getCandidates(this.getParamFactory("preferedArea1", MunicipalityJobArea.class).getParameter(jobArea), this.getParamFactory("preferedGeoArea1", GeoArea.class).getParameter(geoArea), bornBeforeDate, driversLicense);
 	}
 	
-	public List<MunicipalityJobApplication> getCandidatesByPreferedArea1AndPreferedGeoArea2(MunicipalityJobArea jobArea, GeoArea geoArea,  Boolean overEighteen, DriversLicenseType driversLicense) throws SQLException{		
-		return getCandidates(this.getParamFactory("preferedArea1", MunicipalityJobArea.class).getParameter(jobArea), this.getParamFactory("preferedGeoArea2", GeoArea.class).getParameter(geoArea), overEighteen, driversLicense);
+	public List<MunicipalityJobApplication> getCandidatesByPreferedArea1AndPreferedGeoArea2(MunicipalityJobArea jobArea, GeoArea geoArea,  Date bornBeforeDate, DriversLicenseType driversLicense) throws SQLException{		
+		return getCandidates(this.getParamFactory("preferedArea1", MunicipalityJobArea.class).getParameter(jobArea), this.getParamFactory("preferedGeoArea2", GeoArea.class).getParameter(geoArea), bornBeforeDate, driversLicense);
 	}
 	
-	public List<MunicipalityJobApplication> getCandidatesByPreferedArea1AndPreferedGeoArea3(MunicipalityJobArea jobArea, GeoArea geoArea,  Boolean overEighteen, DriversLicenseType driversLicense) throws SQLException{		
-		return getCandidates(this.getParamFactory("preferedArea1", MunicipalityJobArea.class).getParameter(jobArea), this.getParamFactory("preferedGeoArea3", GeoArea.class).getParameter(geoArea), overEighteen, driversLicense);
+	public List<MunicipalityJobApplication> getCandidatesByPreferedArea1AndPreferedGeoArea3(MunicipalityJobArea jobArea, GeoArea geoArea,  Date bornBeforeDate, DriversLicenseType driversLicense) throws SQLException{		
+		return getCandidates(this.getParamFactory("preferedArea1", MunicipalityJobArea.class).getParameter(jobArea), this.getParamFactory("preferedGeoArea3", GeoArea.class).getParameter(geoArea), bornBeforeDate, driversLicense);
 	}
 	
-	public List<MunicipalityJobApplication> getCandidatesByPreferedArea2AndPreferedGeoArea1(MunicipalityJobArea jobArea, GeoArea geoArea,  Boolean overEighteen, DriversLicenseType driversLicense) throws SQLException{		
-		return getCandidates(this.getParamFactory("preferedArea2", MunicipalityJobArea.class).getParameter(jobArea), this.getParamFactory("preferedGeoArea1", GeoArea.class).getParameter(geoArea), overEighteen, driversLicense);
+	public List<MunicipalityJobApplication> getCandidatesByPreferedArea2AndPreferedGeoArea1(MunicipalityJobArea jobArea, GeoArea geoArea,  Date bornBeforeDate, DriversLicenseType driversLicense) throws SQLException{		
+		return getCandidates(this.getParamFactory("preferedArea2", MunicipalityJobArea.class).getParameter(jobArea), this.getParamFactory("preferedGeoArea1", GeoArea.class).getParameter(geoArea), bornBeforeDate, driversLicense);
 	}
 	
-	public List<MunicipalityJobApplication> getCandidatesByPreferedArea2AndPreferedGeoArea2(MunicipalityJobArea jobArea, GeoArea geoArea,  Boolean overEighteen, DriversLicenseType driversLicense) throws SQLException{		
-		return getCandidates(this.getParamFactory("preferedArea2", MunicipalityJobArea.class).getParameter(jobArea), this.getParamFactory("preferedGeoArea2", GeoArea.class).getParameter(geoArea), overEighteen, driversLicense);
+	public List<MunicipalityJobApplication> getCandidatesByPreferedArea2AndPreferedGeoArea2(MunicipalityJobArea jobArea, GeoArea geoArea,  Date bornBeforeDate, DriversLicenseType driversLicense) throws SQLException{		
+		return getCandidates(this.getParamFactory("preferedArea2", MunicipalityJobArea.class).getParameter(jobArea), this.getParamFactory("preferedGeoArea2", GeoArea.class).getParameter(geoArea), bornBeforeDate, driversLicense);
 	}
 
 	public List<MunicipalityJobApplication> getCandidatesByNoPreferedAreaAndPreferedGeoArea1(GeoArea geoArea,
-			Boolean isOverEighteen, DriversLicenseType driversLicenseType) throws SQLException {
+			Date bornBeforeDate, DriversLicenseType driversLicenseType) throws SQLException {
 		// TODO Auto-generated method stub
-		return getCandidates(null, this.getParamFactory("preferedGeoArea1", GeoArea.class).getParameter(geoArea), isOverEighteen, driversLicenseType);
+		return getCandidates(null, this.getParamFactory("preferedGeoArea1", GeoArea.class).getParameter(geoArea), bornBeforeDate, driversLicenseType);
 	}
 	
 	public List<MunicipalityJobApplication> getCandidatesByNoPreferedAreaAndPreferedGeoArea2(GeoArea geoArea,
-			Boolean isOverEighteen, DriversLicenseType driversLicenseType) throws SQLException {
+			Date bornBeforeDate, DriversLicenseType driversLicenseType) throws SQLException {
 		// TODO Auto-generated method stub
-		return getCandidates(null, this.getParamFactory("preferedGeoArea2", GeoArea.class).getParameter(geoArea), isOverEighteen, driversLicenseType);
+		return getCandidates(null, this.getParamFactory("preferedGeoArea2", GeoArea.class).getParameter(geoArea), bornBeforeDate, driversLicenseType);
 	}
 	
 	public List<MunicipalityJobApplication> getCandidatesByNoPreferedAreaAndPreferedGeoArea3(GeoArea geoArea,
-			Boolean isOverEighteen, DriversLicenseType driversLicenseType) throws SQLException {
+			Date bornBeforeDate, DriversLicenseType driversLicenseType) throws SQLException {
 		// TODO Auto-generated method stub
-		return getCandidates(null, this.getParamFactory("preferedGeoArea3", GeoArea.class).getParameter(geoArea), isOverEighteen, driversLicenseType);
+		return getCandidates(null, this.getParamFactory("preferedGeoArea3", GeoArea.class).getParameter(geoArea), bornBeforeDate, driversLicenseType);
 	}
 	
-	public List<MunicipalityJobApplication> getCandidates(QueryParameter<MunicipalityJobApplication, MunicipalityJobArea> areaQuery, QueryParameter<MunicipalityJobApplication, GeoArea> geoQueryArea,  Boolean overEighteen, DriversLicenseType driversLicense) throws SQLException{
+	public List<MunicipalityJobApplication> getCandidates(QueryParameter<MunicipalityJobApplication, MunicipalityJobArea> areaQuery, QueryParameter<MunicipalityJobApplication, GeoArea> geoQueryArea,  Date bornBeforeDate, DriversLicenseType driversLicense) throws SQLException{
 		HighLevelQuery<MunicipalityJobApplication> query = new HighLevelQuery<MunicipalityJobApplication>();
 		
 		if(areaQuery!=null){
@@ -87,8 +88,9 @@ public class MuncipialityJobApplicationDAO extends JobApplicationDAO<Municipalit
 		query.addParameter(this.getParamFactory("approved", Boolean.class).getParameter(true));
 		query.addParameter(this.getParamFactory("job", MunicipalityJob.class).getIsNullParameter());
 		
-		if(overEighteen!=null){
-			query.addParameter(this.getParamFactory("isOverEighteen", Boolean.class).getParameter(overEighteen));		
+		if(bornBeforeDate != null){
+			java.sql.Date bornBeforeSqlDate = new java.sql.Date(bornBeforeDate.getTime());
+			query.addParameter(this.getParamFactory("birthDate", java.sql.Date.class).getParameter(bornBeforeSqlDate, QueryOperators.SMALLER_THAN_OR_EUALS));
 		}
 		
 		if(driversLicense!=null){
@@ -108,7 +110,7 @@ public class MuncipialityJobApplicationDAO extends JobApplicationDAO<Municipalit
 		query.disableAutoRelations(true);
 		return this.getAll(query);
 	}
-
+	
 	
 //	public List<BusinessSectorJobApplication> getAllUnapprovedWithJob() throws SQLException {
 //		HighLevelQuery<BusinessSectorJobApplication> query = new HighLevelQuery<BusinessSectorJobApplication>();

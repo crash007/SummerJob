@@ -60,7 +60,7 @@ public abstract class Job implements Requirements,Elementable{
 	
 	@DAOManaged
 	@XMLElement
-	private Boolean isOverEighteen;
+	private Boolean mustBeOverEighteen;
 	
 	@DAOManaged
 	@XMLElement
@@ -194,16 +194,16 @@ public abstract class Job implements Requirements,Elementable{
 		return "Job [id=" + id + ", created=" + created + ", updated=" + updated + ", workTitle=" + workTitle
 				+ ", workDescription=" + workDescription + ", numberOfWorkersNeeded=" + numberOfWorkersNeeded
 				+ ", approved=" + approved + ", controlledDate=" + controlledDate + ", controlled=" + controlled
-				+ ", approvedByUser=" + approvedByUser + ", addedByUser=" + addedByUser + ", isOverEighteen="
-				+ isOverEighteen + ", hasDriversLicense=" + hasDriversLicense + ", driversLicenseType="
+				+ ", approvedByUser=" + approvedByUser + ", addedByUser=" + addedByUser + ", mustBeOverEighteen="
+				+ mustBeOverEighteen + ", hasDriversLicense=" + hasDriversLicense + ", driversLicenseType="
 				+ driversLicenseType + ", freeTextRequirements=" + freeTextRequirements + ", streetAddress="
 				+ streetAddress + ", zipCode=" + zipCode + ", city=" + city + ", initiatedByUser=" + initiatedByUser
 				+ ", adminNotes=" + adminNotes + ", openApplications=" + openApplications + ", appointedApplications="
 				+ appointedApplications + "]";
 	}
 
-	public Boolean getIsOverEighteen() {
-		return isOverEighteen;
+	public Boolean getMustBeOverEighteen() {
+		return mustBeOverEighteen;
 	}
 
 	public String getFreeTextRequirements() {
@@ -215,7 +215,7 @@ public abstract class Job implements Requirements,Elementable{
 	}
 
 	public void setIsOverEighteen(Boolean isOverEighteen) {
-		this.isOverEighteen = isOverEighteen;
+		this.mustBeOverEighteen = isOverEighteen;
 	}
 
 	public Boolean getHasDriversLicense() {
@@ -297,4 +297,5 @@ public abstract class Job implements Requirements,Elementable{
 	public void setAddedByUser(String addedByUser) {
 		this.addedByUser = addedByUser;
 	}
+
 }

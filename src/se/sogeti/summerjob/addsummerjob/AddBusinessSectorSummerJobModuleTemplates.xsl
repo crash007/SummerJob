@@ -236,9 +236,10 @@
 					  	</div>
 					  	
 					  	<div id="driverslicense_select" class="row">
-					  		<div class="col-md-3">
-							    <label for="driversLicenseType">Välj körkortstyp</label>				    
+					  		<div class="form-group col-md-3">
+							    <label for="driversLicenseType">Välj körkortstyp*</label>				    
 							    <select class="form-control" name="driversLicenseType" id="driversLicenseType">
+							    	<option value="" />
 									<xsl:for-each select="DriversLicenseTypes/DriversLicenseType">
 										<xsl:choose>
 											<xsl:when test="selected = 'true'">
@@ -250,6 +251,7 @@
 										</xsl:choose>
 									</xsl:for-each>
 								</select>
+								<p class="help-block with-errors"></p>
 							</div>
 						</div>
 					  	

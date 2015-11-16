@@ -78,8 +78,8 @@ public class PeriodViewModule extends AnnotatedRESTModule {
 	@RESTMethod(alias="add/period.json", method="post")
 	public void addPeriod(HttpServletRequest req, HttpServletResponse res, User user, URIParser uriParser) throws IOException, SQLException {
 		
-		GsonBuilder builder = new GsonBuilder();
-        Gson gson = builder.setDateFormat("yyyy-MM-dd").create();
+//		GsonBuilder builder = new GsonBuilder();
+//        Gson gson = builder.setDateFormat("yyyy-MM-dd").create();
         
         PrintWriter writer = res.getWriter();
         String callback = req.getParameter("callback"); 
@@ -111,8 +111,9 @@ public class PeriodViewModule extends AnnotatedRESTModule {
 			period.setStartDate(Date.valueOf(startdate));
 			period.setEndDate(Date.valueOf(enddate));
 			periodDAO.save(period);
-			period = periodDAO.getLatestCreatedPeriod();
-			JsonResponse.sendJsonResponse("{\"status\":\"success\", \"data\":" + gson.toJson(period) + "}", callback, writer);
+			JsonResponse.sendJsonResponse("{\"status\":\"success\", \"message\":\"Perioden sparades\"}", callback, writer);
+//			period = periodDAO.getLatestCreatedPeriod();
+//			JsonResponse.sendJsonResponse("{\"status\":\"success\", \"data\":" + gson.toJson(period) + "}", callback, writer);
 			return;
 		} catch (SQLException e) {
 			log.error("SQL exception",e);
