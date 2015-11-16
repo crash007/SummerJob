@@ -29,6 +29,8 @@ import se.sundsvall.openetown.smex.SmexServiceHandler;
 import se.sundsvall.openetown.smex.service.SmexServiceException;
 import se.sundsvall.openetown.smex.vo.Citizen;
 import se.unlogic.hierarchy.core.annotations.InstanceManagerDependency;
+import se.unlogic.hierarchy.core.annotations.ModuleSetting;
+import se.unlogic.hierarchy.core.annotations.TextFieldSettingDescriptor;
 import se.unlogic.hierarchy.core.beans.SimpleForegroundModuleResponse;
 import se.unlogic.hierarchy.core.beans.User;
 import se.unlogic.hierarchy.core.interfaces.ForegroundModuleResponse;
@@ -49,6 +51,10 @@ public class AddMunicipalitySummerJobApplicationModule extends AnnotatedRESTModu
 	private GeoAreaDAO geoAreaDAO;
 	private DriversLicenseTypeDAO driversLicenseTypeDAO;
 	
+	
+	@ModuleSetting
+	@TextFieldSettingDescriptor(description="En ansökan redan finns", name="ApplicationExists")
+	String applicationExistsErrorMessage = "Ett fel inträffade. Kontakta FAVI på 060-******* för mer information.";
 	
 	@InstanceManagerDependency(required = true)
 	private SmexServiceHandler smexServiceHandler;
@@ -108,7 +114,7 @@ public class AddMunicipalitySummerJobApplicationModule extends AnnotatedRESTModu
 
 		if(exisitingApplication != null){
 			log.warn("Municipality application already exists for this user " + exisitingApplication.applicationBasicsToString());
-			JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Ett fel inträffade. Kontakta FAVI på 060-******* för mer information.\"}", callback, writer);
+			JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"" + applicationExistsErrorMessage + "\"}", callback, writer);
 			return;
 		}
 
@@ -119,6 +125,11 @@ public class AddMunicipalitySummerJobApplicationModule extends AnnotatedRESTModu
 		String socialSecurityNumber = req.getParameter("socialSecurityNumber");
 		if (socialSecurityNumber == null || socialSecurityNumber.isEmpty()) {
 			JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Du måste ange ett personnummer i din ansökan.\"}", callback, writer);
+			return;
+		}
+		
+		if (socialSecurityNumber.length() != 12) {
+			JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Personnumret måste bestå av 12 tecken (med sekel och utan bindestreck).\"}", callback, writer);
 			return;
 		}
 

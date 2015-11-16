@@ -17,6 +17,8 @@ import se.sogeti.jobapplications.beans.business.BusinessSectorJob;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityJob;
 import se.sogeti.jobapplications.daos.JobDAO;
 import se.sogeti.summerjob.JsonResponse;
+import se.unlogic.hierarchy.core.annotations.ModuleSetting;
+import se.unlogic.hierarchy.core.annotations.TextFieldSettingDescriptor;
 import se.unlogic.hierarchy.core.beans.SimpleForegroundModuleResponse;
 import se.unlogic.hierarchy.core.beans.User;
 import se.unlogic.hierarchy.core.interfaces.ForegroundModuleResponse;
@@ -32,6 +34,14 @@ import se.unlogic.webutils.http.URIParser;
 public class ManageMunicipalityJobAdminModule extends AnnotatedRESTModule {
 	
 	JobDAO<MunicipalityJob> municipalityJobDAO;
+	
+	@ModuleSetting
+	@TextFieldSettingDescriptor(description="Relativ URL till sidan för att lägga till och redigera ett jobb", name="AddEditJobURL")
+	String editJobURL="add-municipality-job";
+	
+	@ModuleSetting
+	@TextFieldSettingDescriptor(description="Relativ URL till sidan för att lista näringslivsjobb", name="ListJobsURL")
+	String listJobsURL="list-summerjobs";
 	
 	@Override
 	protected void createDAOs(DataSource dataSource) throws Exception {
@@ -62,6 +72,8 @@ public class ManageMunicipalityJobAdminModule extends AnnotatedRESTModule {
 		
 		MunicipalityJob job = municipalityJobDAO.getById(jobId);
 		XMLUtils.append(doc, jobElement, job);
+		XMLUtils.appendNewElement(doc, jobElement, "editJobURL", editJobURL);
+		XMLUtils.appendNewElement(doc, jobElement, "listJobsURL", listJobsURL);
 		
 		return new SimpleForegroundModuleResponse(doc);
 	}

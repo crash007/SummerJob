@@ -254,7 +254,8 @@
 						    	</div>
 						    	<div class="form-group col-md-3">
 								    <label for="manager">Telefonnummer*</label>				    
-								     <input type="text" class="form-control" id="manager-phone" name="manager-phone" placeholder="" required="required" value="{MunicipalityJob/MunicipalityManager/mobilePhone}"/>
+								     <input type="text" class="numberValidation form-control" id="manager-phone" name="manager-phone" placeholder="" required="required" value="{MunicipalityJob/MunicipalityManager/mobilePhone}"/>
+								     <p class="help-block">Endast siffror</p>
 						    	</div>
 				  				<div class="col-md-3">
 								    <label for="manager">E-post</label>				    
@@ -277,7 +278,8 @@
 										<label for="mentor-lastname">Efternamn</label><input type="text" class="form-control" id="mentor-lastname" name="mentor-lastname_{id}" placeholder="" value="{lastname}"/>
 									</div>
 									<div class="form-group col-md-2">
-										<label for="mentor-phone">Telefonnummer</label><input type="number" class="form-control" id="mentor-phone" name="mentor-phone_{id}" placeholder="" value="{mobilePhone}"/>
+										<label for="mentor-phone">Telefonnummer</label><input type="text" class="numberValidation form-control" id="mentor-phone" name="mentor-phone_{id}" placeholder="" value="{mobilePhone}"/>
+										<p class="help-block">Endast siffror</p>
 									</div>
 									<div class="form-group col-md-3">
 										<label for="mentor-email">E-post</label><input type="email" class="col-md-3 form-control" id="mentor-email" name="mentor-email_{id}" placeholder="" value="{email}"/>
@@ -375,14 +377,14 @@
 							<span class="message"></span>
 						</div>
 						
-			  			<button style="margin-top: 4px;" id="submit-municipality-job" type="submit" class="btn btn-default questions-submit">
+			  			<button style="margin-top: 4px;" id="submit-municipality-job" type="submit" class="float-rgt mgn-lft8px btn btn-success questions-submit">
 			  				<xsl:choose>
 			  					<xsl:when test="MunicipalityJob">Spara</xsl:when>
 			  					<xsl:otherwise>Skicka</xsl:otherwise>
 			  				</xsl:choose>
 			  			</button>
 			  			<xsl:if test="MunicipalityJob">
-			  				<a href="manage-municipality-job?jobId={MunicipalityJob/id}" style="margin-top: 4px;" class="float-rgt btn btn-primary">Tillbaka</a>
+			  				<a href="{manageJobURL}?jobId={MunicipalityJob/id}" style="margin-top: 4px;" class="float-rgt btn btn-primary">Tillbaka</a>
 			  			</xsl:if>
 						<span class="glyphicon glyphicon-ok collapse" aria-hidden="true"></span><span class="glyphicon glyphicon-remove collapse" aria-hidden="true"></span>
 					</div>
@@ -403,8 +405,8 @@
 			    
 	  				<div class="col-md-2">
 					    <label for="mentor">Telefonnummer</label>				    
-					     <input type="text" class="form-control" id="mentor-phone" name="mentor-phone" placeholder=""/>
-					    
+					     <input type="text" class="numberValidation form-control" id="mentor-phone" name="mentor-phone" placeholder=""/>
+					    <p class="help-block">Endast siffror</p>
 			    	</div>
 			    
 	  				<div class="col-md-3">

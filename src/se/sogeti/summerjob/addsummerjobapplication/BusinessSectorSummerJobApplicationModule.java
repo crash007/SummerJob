@@ -27,6 +27,8 @@ import se.sundsvall.openetown.smex.SmexServiceHandler;
 import se.sundsvall.openetown.smex.service.SmexServiceException;
 import se.sundsvall.openetown.smex.vo.Citizen;
 import se.unlogic.hierarchy.core.annotations.InstanceManagerDependency;
+import se.unlogic.hierarchy.core.annotations.ModuleSetting;
+import se.unlogic.hierarchy.core.annotations.TextFieldSettingDescriptor;
 import se.unlogic.hierarchy.core.beans.SimpleForegroundModuleResponse;
 import se.unlogic.hierarchy.core.beans.User;
 import se.unlogic.hierarchy.core.interfaces.ForegroundModuleResponse;
@@ -48,6 +50,7 @@ public class BusinessSectorSummerJobApplicationModule extends AnnotatedRESTModul
 //	@ModuleSetting
 //	@TextFieldSettingDescriptor(description="Felmeddelande för ", name="Errormessage")
 //	String errorMEssage="dsfgsddfgsd";
+
 	
 	@InstanceManagerDependency(required = true)
 	private SmexServiceHandler smexServiceHandler;
@@ -123,8 +126,8 @@ public class BusinessSectorSummerJobApplicationModule extends AnnotatedRESTModul
 					return;
 				}
 				
-				if (socialSecurityNumber.length() != 12 && socialSecurityNumber.length() != 13) {
-					JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Personnumret måste bestå av 12 eller 13 tecken (med eller utan bindestreck).\"}", callback, writer);
+				if (socialSecurityNumber.length() != 12) {
+					JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Personnumret måste bestå av 12 tecken (med sekel och utan bindestreck).\"}", callback, writer);
 					return;
 				}
 				

@@ -9,12 +9,12 @@
 			var url = '<xsl:value-of select="requestinfo/uri"/>';
 		</script>
 		<xsl:variable name="isAdmin" select="IsAdmin"/>
-		<xsl:apply-templates select="MunicipalityJobInfo/MunicipalityJob"/>
+		<xsl:apply-templates select="MunicipalityJobInfo"/>
 	</xsl:template>
 	
-	<xsl:template match="MunicipalityJobInfo/MunicipalityJob">
+	<xsl:template match="MunicipalityJobInfo">
 	
-		<div style="display: none" id="jobIdDiv"><xsl:value-of select="id"></xsl:value-of></div>
+		<div style="display: none" id="jobIdDiv"><xsl:value-of select="MunicipalityJob/id"></xsl:value-of></div>
 
 		<div class="well">
 		  	<div class="panel panel-default">
@@ -25,25 +25,25 @@
 						  	<div class="row">
 						  		<div class="col-md-3">
 									<label>Organisation</label>
-									<div><xsl:value-of select="organization"></xsl:value-of></div>
+									<div><xsl:value-of select="MunicipalityJob/organization"></xsl:value-of></div>
 								</div>
 								<div class="col-md-3">
 									<label>Förvaltning</label>
-									<div><xsl:value-of select="administration"></xsl:value-of></div>
+									<div><xsl:value-of select="MunicipalityJob/administration"></xsl:value-of></div>
 								</div>
 								<div class="col-md-3">
 									<label>Plats</label>
-									<div><xsl:value-of select="location"></xsl:value-of></div>
+									<div><xsl:value-of select="MunicipalityJob/location"></xsl:value-of></div>
 								</div>
 						  	</div>
 						  	<div class="mgn-top8px row">
 								<div class="col-md-3">
 									<label>Verksamhetsområde</label>
-									<div><xsl:value-of select="MunicipalityJobArea/name"></xsl:value-of></div>
+									<div><xsl:value-of select="MunicipalityJob/MunicipalityJobArea/name"></xsl:value-of></div>
 								</div>
 								<div class="col-md-9">
 									<label>Beskrivning</label>
-									<div><xsl:value-of select="MunicipalityJobArea/description"></xsl:value-of></div>
+									<div><xsl:value-of select="MunicipalityJob/MunicipalityJobArea/description"></xsl:value-of></div>
 								</div>
 						  	</div>
 					  	</div>
@@ -57,19 +57,19 @@
 								<div class="col-md-3">
 									<label for="company">Gatuadress</label>
 									<div id="company">
-										<xsl:value-of select="streetAddress"></xsl:value-of>
+										<xsl:value-of select="MunicipalityJob/streetAddress"></xsl:value-of>
 									</div>
 								</div>
 								<div class="col-md-2">
 									<label for="zipcode">Postnummer</label>
 									<div id="zipcode">
-										<xsl:value-of select="zipCode"></xsl:value-of>
+										<xsl:value-of select="MunicipalityJob/zipCode"></xsl:value-of>
 									</div>
 								</div>
 								<div class="col-md-2">
 									<label for="city">Postort</label>
 									<div id="city">
-										<xsl:value-of select="city"></xsl:value-of>
+										<xsl:value-of select="MunicipalityJob/city"></xsl:value-of>
 									</div>
 								</div>
 							</div>
@@ -77,13 +77,13 @@
 								<div class="col-md-3">
 									<label>Avdelning</label>
 									<div>
-										<xsl:value-of select="department"></xsl:value-of>
+										<xsl:value-of select="MunicipalityJob/department"></xsl:value-of>
 									</div>								
 								</div>
 								<div class="col-md-3">
 									<label>Geografiskt område</label>
 									<div>
-										<xsl:value-of select="GeoArea/name"></xsl:value-of>
+										<xsl:value-of select="MunicipalityJob/GeoArea/name"></xsl:value-of>
 									</div>								
 								</div>
 							</div>
@@ -98,21 +98,21 @@
 						<div class="mgn-top8px row">
 							<div class="col-md-3 ">
 								<label>Rubrik</label>
-								<div><xsl:value-of select="workTitle"></xsl:value-of></div>
+								<div><xsl:value-of select="MunicipalityJob/workTitle"></xsl:value-of></div>
 							</div>
 							<div class="col-md-9">
 								<label>Arbetsbeskrivning</label>
-								<div><xsl:value-of select="workDescription"></xsl:value-of></div>
+								<div><xsl:value-of select="MunicipalityJob/workDescription"></xsl:value-of></div>
 							</div>
 						</div>
 						<div class="row mgn-top8px">
 							<div class="col-md-3">
 								<label>Antal lediga platser</label>
-								<div><xsl:value-of select="numberOfWorkersNeeded"></xsl:value-of></div>
+								<div><xsl:value-of select="MunicipalityJob/numberOfWorkersNeeded"></xsl:value-of></div>
 							</div>
 							<div class="col-md-5">
 								<label>Period</label>
-								<div><xsl:value-of select="Period/name"></xsl:value-of><i> (<xsl:value-of select="Period/startDate"></xsl:value-of> - <xsl:value-of select="Period/endDate"></xsl:value-of>)</i></div>
+								<div><xsl:value-of select="MunicipalityJob/Period/name"></xsl:value-of><i> (<xsl:value-of select="MunicipalityJob/Period/startDate"></xsl:value-of> - <xsl:value-of select="MunicipalityJob/Period/endDate"></xsl:value-of>)</i></div>
 							</div>
 						</div>
 						<div class="row mgn-top8px">
@@ -122,19 +122,19 @@
 							<div class="col-md-12 row">
 								<div class="col-md-2">
 									<label>Förnamn</label>
-									<div><xsl:value-of select="MunicipalityManager/firstname"></xsl:value-of></div>
+									<div><xsl:value-of select="MunicipalityJob/MunicipalityManager/firstname"></xsl:value-of></div>
 								</div>
 								<div class="col-md-3">
 									<label>Efternamn</label>
-									<div><xsl:value-of select="MunicipalityManager/lastname"></xsl:value-of></div>
+									<div><xsl:value-of select="MunicipalityJob/MunicipalityManager/lastname"></xsl:value-of></div>
 								</div>
 								<div class="col-md-2">
 									<label>Telefonnummer</label>
-									<div><xsl:value-of select="MunicipalityManager/mobilePhone"></xsl:value-of></div>
+									<div><xsl:value-of select="MunicipalityJob/MunicipalityManager/mobilePhone"></xsl:value-of></div>
 								</div>
 								<div class="col-md-5">
 									<label>E-postadress</label>
-									<div><xsl:value-of select="MunicipalityManager/email"></xsl:value-of></div>
+									<div><xsl:value-of select="MunicipalityJob/MunicipalityManager/email"></xsl:value-of></div>
 								</div>
 							</div>
 						</div>
@@ -155,7 +155,7 @@
 											</tr>
 										</thead>
 										<tbody>
-											<xsl:apply-templates select="mentors/MunicipalityMentor" />
+											<xsl:apply-templates select="MunicipalityJob/mentors/MunicipalityMentor" />
 										</tbody>
 									</table>
 								</div>
@@ -174,7 +174,7 @@
 							<label>Körkort</label>
 							<div>
 								<xsl:choose>
-									<xsl:when test="hasDriversLicense = 'true'">Tjänsten kräver att sökande har körkort av typ <xsl:value-of select="DriversLicenseType/name"></xsl:value-of>.</xsl:when>
+									<xsl:when test="MunicipalityJob/hasDriversLicense = 'true'">Tjänsten kräver att sökande har körkort av typ <xsl:value-of select="DriversLicenseType/name"></xsl:value-of>.</xsl:when>
 									<xsl:otherwise>Tjänsten kräver <i>ej</i> körkort</xsl:otherwise>
 								</xsl:choose>
 							</div>
@@ -183,7 +183,7 @@
 							<label>Ålder</label>
 							<div>
 								<xsl:choose>
-									<xsl:when test="isOverEighteen = 'true'">Tjänsten kräver att sökande är över 18 år.</xsl:when>
+									<xsl:when test="MunicipalityJob/isOverEighteen = 'true'">Tjänsten kräver att sökande är över 18 år.</xsl:when>
 									<xsl:otherwise>Tjänsten kräver <i>ej</i> att sökande är över 18 år.</xsl:otherwise>
 								</xsl:choose>
 							</div>
@@ -193,7 +193,7 @@
 						<div class="col-md-12">
 							<label>Övriga krav och önskemål</label>
 							<div>
-								<xsl:value-of select="freeTextRequirements"></xsl:value-of>
+								<xsl:value-of select="MunicipalityJob/freeTextRequirements"></xsl:value-of>
 							</div>
 						</div>
 					</div>
@@ -220,12 +220,12 @@
 			
 			<div class="form-group">
 				<label for="admin-notes">Handläggarkommentar</label>
-				<textarea class="form-control" rows="5" id="admin-notes" name="admin-notes"><xsl:value-of select="adminNotes"></xsl:value-of></textarea>
+				<textarea class="form-control" rows="5" id="admin-notes" name="admin-notes"><xsl:value-of select="MunicipalityJob/adminNotes"></xsl:value-of></textarea>
 				<div class="help-block with-errors">Valfri. Skriv här anledningen till godkännande eller nekande av en annons.</div>
 			</div>
 			
 			<xsl:choose>
-				<xsl:when test="approvedByUser != '' and approved = 'true'">
+				<xsl:when test="MunicipalityJob/approvedByUser != '' and MunicipalityJob/approved = 'true'">
 					<button id="approve-job-button" type="button" class="btn btn-success" disabled="disabled">Godkänn</button>
 				</xsl:when>
 				<xsl:otherwise>
@@ -233,7 +233,7 @@
 				</xsl:otherwise>
 			</xsl:choose>
 			<xsl:choose>
-				<xsl:when test="approvedByUser != '' and approved = 'false'">
+				<xsl:when test="MunicipalityJob/approvedByUser != '' and MunicipalityJob/approved = 'false'">
 					<button id="disapprove-job-button" type="button" class="mgn-lft8px btn btn-danger" disabled="disabled">Neka</button>
 				</xsl:when>
 				<xsl:otherwise>
@@ -241,9 +241,9 @@
 				</xsl:otherwise>
 			</xsl:choose>
 			
-			<a href="list-summerjobs?showMunicipalityJobs=true" type="button" class="float-rgt mgn-lft8px btn btn-info">Gå tillbaka</a>
+			<a href="{listJobsURL}?showMunicipalityJobs=true" type="button" class="float-rgt mgn-lft8px btn btn-info">Gå tillbaka</a>
 			<button id="mark-job-as-initiated-button" type="button" class="float-rgt mgn-lft8px btn btn-primary">Markera som påbörjad</button>
-			<a href="add-municipality-job?jobId={id}" id="edit-job-button" type="button" class="float-rgt mgn-lft8px btn btn-warning">Redigera</a>
+			<a href="{editJobURL}?jobId={MunicipalityJob/id}" id="edit-job-button" type="button" class="float-rgt mgn-lft8px btn btn-warning">Redigera</a>
 		</div>
 	</div>
 	</xsl:template>

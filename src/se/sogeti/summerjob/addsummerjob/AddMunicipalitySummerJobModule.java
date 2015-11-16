@@ -30,6 +30,8 @@ import se.sogeti.periodsadmin.beans.Period;
 import se.sogeti.periodsadmin.daos.PeriodDAO;
 import se.sogeti.summerjob.FormUtils;
 import se.sogeti.summerjob.JsonResponse;
+import se.unlogic.hierarchy.core.annotations.ModuleSetting;
+import se.unlogic.hierarchy.core.annotations.TextFieldSettingDescriptor;
 import se.unlogic.hierarchy.core.beans.SimpleForegroundModuleResponse;
 import se.unlogic.hierarchy.core.beans.User;
 import se.unlogic.hierarchy.core.interfaces.ForegroundModuleResponse;
@@ -43,6 +45,9 @@ import se.unlogic.webutils.http.URIParser;
 
 public class AddMunicipalitySummerJobModule extends AnnotatedRESTModule{
 	
+	@ModuleSetting
+	@TextFieldSettingDescriptor(description="Relativ URL till sidan för att hantera jobbet", name="ManageJobURL")
+	String manageJobURL = "manage-municipality-job";
 	
 	private JobDAO<MunicipalityJob> municipalityJobDAO;
 	private AreaDAO areaDAO;
@@ -51,6 +56,7 @@ public class AddMunicipalitySummerJobModule extends AnnotatedRESTModule{
 	private GeoAreaDAO geoAreaDAO;
 	private ContactDetailsDAO<MunicipalityMentor> municipalityMentorDAO;
 	
+
 	@Override
 	protected void createDAOs(DataSource dataSource) throws Exception {
 		// TODO Auto-generated method stub
@@ -84,6 +90,7 @@ public class AddMunicipalitySummerJobModule extends AnnotatedRESTModule{
 		if (jobId != null && user.isAdmin()) {
 			job = municipalityJobDAO.getById(jobId);
 			XMLUtils.append(doc, jobForm, job);
+			XMLUtils.appendNewElement(doc, jobForm, "manageJobURL", manageJobURL);
 		} 
 		
 		Element areasElement = doc.createElement("Areas");

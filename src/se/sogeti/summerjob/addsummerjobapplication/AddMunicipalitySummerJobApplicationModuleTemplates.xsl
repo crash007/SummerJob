@@ -157,7 +157,7 @@
 				    	<div class="col-md-3">
 					    	<div class="form-group">
 							    <label for="street">Personnummer*</label>				    
-							    <input type="text" class="form-control" id="street" name="socialSecurityNumber" placeholder="" required="required"/>
+							    <input type="text" data-error="Med sekel angivet. 12 tecken." data-minlength="12" data-maxlength="12" class="form-control numberValidation" id="street" name="socialSecurityNumber" placeholder="" required="required"/>
 							    <p class="help-block with-errors"></p>				    
 						  	</div>
 						</div>
@@ -177,8 +177,8 @@
 				    
 		  				<div class="col-md-3 form-group">
 						    <label for="phone">Telefonnummer*</label>				    
-						    <input type="text" class="form-control" id="phone" name="phone" placeholder="" required="required"/>
-						    <p class="help-block with-errors"></p>
+						    <input type="text" class="numberValidation form-control" id="phone" name="phone" placeholder="" required="required"/>
+						    <p class="help-block with-errors">Endast siffror</p>
 				    	</div>
 				    
 		  				<div class="col-md-3">
@@ -226,7 +226,7 @@
 							<span class="message"></span>
 						</div>
 						
-			  			<button style="margin-top: 4px;" id="submit-municipality-job-application" type="submit" class="float-rgt btn btn-default questions-submit">
+			  			<button style="margin-top: 4px;" id="submit-municipality-job-application" type="submit" class="float-rgt btn btn-success questions-submit">
 			  				Skicka
 			  			</button>
 						<span class="glyphicon glyphicon-ok collapse" aria-hidden="true"></span><span class="glyphicon glyphicon-remove collapse" aria-hidden="true"></span>
