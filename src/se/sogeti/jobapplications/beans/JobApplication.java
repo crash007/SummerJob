@@ -30,9 +30,6 @@ public abstract class JobApplication implements Elementable{
 	@XMLElement
 	private Boolean hasDriversLicense;
 	
-	@DAOManaged
-	@XMLElement
-	private Boolean isOverEighteen;
 	
 	@DAOManaged(columnName="driversLicenseTypeId")
 	@ManyToOne(remoteKeyField="id", autoGet = true, autoAdd = true, autoUpdate = true)
@@ -177,14 +174,6 @@ public abstract class JobApplication implements Elementable{
 		this.controlledDate = approvedDate;
 	}
 
-	public Boolean isOverEighteen() {
-		return isOverEighteen;
-	}
-
-	public void setOverEighteen(Boolean isOverEighteen) {
-		this.isOverEighteen = isOverEighteen;
-	}
-
 	public String getSocialSecurityNumber() {
 		return socialSecurityNumber;
 	}
@@ -324,14 +313,14 @@ public abstract class JobApplication implements Elementable{
 	@Override
 	public String toString() {
 		return "JobApplication [id=" + id + ", ranking=" + ranking + ", created=" + created + ", hasDriversLicense="
-				+ hasDriversLicense + ", isOverEighteen=" + isOverEighteen + ", driversLicenseType="
-				+ driversLicenseType + ", personalLetter=" + personalLetter + ", cvLocation=" + cvLocation
-				+ ", approved=" + approved + ", controlled=" + controlled + ", controlledByUser=" + controlledByUser
-				+ ", controlledDate=" + controlledDate + ", socialSecurityNumber=" + socialSecurityNumber
-				+ ", firstname=" + firstname + ", lastname=" + lastname + ", streetAddress=" + streetAddress
-				+ ", zipCode=" + zipCode + ", city=" + city + ", email=" + email + ", phoneNumber=" + phoneNumber
-				+ ", schoolName=" + schoolName + ", schoolType=" + schoolType + ", skvCity=" + skvCity + ", adminNotes="
-				+ adminNotes + ", addedByUser=" + addedByUser + ", birtdate=" + birthDate + "]";
+				+ hasDriversLicense + ", driversLicenseType=" + driversLicenseType + ", personalLetter="
+				+ personalLetter + ", cvLocation=" + cvLocation + ", approved=" + approved + ", controlled="
+				+ controlled + ", controlledByUser=" + controlledByUser + ", controlledDate=" + controlledDate
+				+ ", socialSecurityNumber=" + socialSecurityNumber + ", firstname=" + firstname + ", lastname="
+				+ lastname + ", streetAddress=" + streetAddress + ", zipCode=" + zipCode + ", city=" + city + ", email="
+				+ email + ", phoneNumber=" + phoneNumber + ", schoolName=" + schoolName + ", schoolType=" + schoolType
+				+ ", skvCity=" + skvCity + ", adminNotes=" + adminNotes + ", addedByUser=" + addedByUser
+				+ ", birthDate=" + birthDate + "]";
 	}
 
 	public String getAddedByUser() {

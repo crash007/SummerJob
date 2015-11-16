@@ -47,8 +47,6 @@ public class FormUtils {
 		app.setCvLocation(req.getParameter("cvFile"));
 		
 		app.setHasDriversLicense(req.getParameter("hasDriversLicense") !=null ? true:false);
-		app.setOverEighteen(req.getParameter("isOverEighteen") !=null ? true:false);
-		
 		
 		app.setCity(req.getParameter("postalarea"));
 		app.setEmail(req.getParameter("email"));

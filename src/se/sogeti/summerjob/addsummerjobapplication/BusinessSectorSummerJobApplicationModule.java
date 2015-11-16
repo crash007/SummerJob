@@ -24,6 +24,7 @@ import se.sogeti.jobapplications.daos.JobApplicationDAO;
 import se.sogeti.summerjob.FormUtils;
 import se.sogeti.summerjob.JsonResponse;
 import se.sundsvall.openetown.smex.SmexServiceHandler;
+import se.sundsvall.openetown.smex.service.SmexServiceException;
 import se.sundsvall.openetown.smex.vo.Citizen;
 import se.unlogic.hierarchy.core.annotations.InstanceManagerDependency;
 import se.unlogic.hierarchy.core.beans.SimpleForegroundModuleResponse;
@@ -127,11 +128,11 @@ public class BusinessSectorSummerJobApplicationModule extends AnnotatedRESTModul
 					return;
 				}
 				
-//				try {
-//					person = smexServiceHandler.getCitizen(socialSecurityNumber);
-//				} catch (SmexServiceException e){
-//					log.error(e);
-//				}
+				try {
+					person = smexServiceHandler.getCitizen(socialSecurityNumber);
+				} catch (SmexServiceException e){
+					log.error(e);
+				}
 				
 				FormUtils.createJobApplication(app, req, person);
 				
@@ -161,23 +162,10 @@ public class BusinessSectorSummerJobApplicationModule extends AnnotatedRESTModul
 					return;
 				}
 				
-				Calendar dob = Calendar.getInstance();
 				if (app.getBirthDate() == null) {
 					JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Personnumret innehåller inget korrekt datum.\"}", callback, writer);
 					return;
 				}
-				dob.setTime(app.getBirthDate());
-				Calendar jobStartDate = Calendar.getInstance();
-				jobStartDate.setTime(job.getStartDate());
-				int age = jobStartDate.get(Calendar.YEAR) - dob.get(Calendar.YEAR);  
-				if (jobStartDate.get(Calendar.MONTH) < dob.get(Calendar.MONTH)) {
-				  age--;  
-				} else if (jobStartDate.get(Calendar.MONTH) == dob.get(Calendar.MONTH)
-				    && jobStartDate.get(Calendar.DAY_OF_MONTH) < dob.get(Calendar.DAY_OF_MONTH)) {
-				  age--;  
-				}
-				
-				app.setOverEighteen(age >= 18 ? true : false);
 				
 				//Worker applies for a job but has not yet got the job.
 				app.setAssigned(false);
