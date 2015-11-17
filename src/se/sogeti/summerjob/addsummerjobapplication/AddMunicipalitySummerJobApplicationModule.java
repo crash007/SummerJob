@@ -56,6 +56,10 @@ public class AddMunicipalitySummerJobApplicationModule extends AnnotatedRESTModu
 	@TextFieldSettingDescriptor(description="En ansökan redan finns", name="ApplicationExists")
 	String applicationExistsErrorMessage = "Ett fel inträffade. Kontakta FAVI på 060-******* för mer information.";
 	
+	@ModuleSetting
+	@TextFieldSettingDescriptor(description="Relativ URL till den plats där ansökan hanteras", name="ManageApplicationURL")
+	String manageApplicationURL = "manage-municipality-app";
+	
 	@InstanceManagerDependency(required = true)
 	private SmexServiceHandler smexServiceHandler;
 	
@@ -85,19 +89,71 @@ public class AddMunicipalitySummerJobApplicationModule extends AnnotatedRESTModu
 		Element form = doc.createElement("MunicipalityJobApplicationForm");
 		doc.getFirstChild().appendChild(form);
 		
+		XMLUtils.appendNewElement(doc, form, "manageAppURL", manageApplicationURL);
+		
+		MunicipalityJobApplication app = null;
+		Integer appId = NumberUtils.toInt(req.getParameter("appId"));
+		if (appId != null) {
+			app = jobApplicationDAO.getById(appId);
+			XMLUtils.append(doc, form, app);
+		}
+		
 		Element areasElement = doc.createElement("Areas");
 		List<MunicipalityJobArea> areas = areaDAO.getAll();		
-		XMLUtils.append(doc, areasElement,areas);
+		for (MunicipalityJobArea area : areas) {
+			Element areaElement = doc.createElement("Area");
+			XMLUtils.appendNewElement(doc, areaElement, "id", area.getId());
+			XMLUtils.appendNewElement(doc, areaElement, "name", area.getName());
+			XMLUtils.appendNewElement(doc, areaElement, "canBeChosenInApplication", area.isCanBeChosenInApplication());
+
+			if (app != null && app.getPreferedArea1() != null 
+					&& app.getPreferedArea1().getId().intValue() == area.getId().intValue()) {
+				XMLUtils.appendNewElement(doc, areaElement, "selectedArea1", true);
+			} else if (app != null && app.getPreferedArea2() != null 
+					&& app.getPreferedArea2().getId().intValue() == area.getId().intValue()) {
+				XMLUtils.appendNewElement(doc, areaElement, "selectedArea2", true);
+			} else if (app != null && app.getPreferedArea3() != null 
+					&& app.getPreferedArea3().getId().intValue() == area.getId().intValue()) {
+				XMLUtils.appendNewElement(doc, areaElement, "selectedArea3", true);
+			}
+			areasElement.appendChild(areaElement);
+		}
 		form.appendChild(areasElement);	
 		
 		Element geoAreasElement = doc.createElement("GeoAreas");
 		List<GeoArea> geoAreas = geoAreaDAO.getAll();
-		XMLUtils.append(doc, geoAreasElement, geoAreas);
+		for (GeoArea geoArea : geoAreas) {
+			Element geoElement = doc.createElement("GeoArea");
+			XMLUtils.appendNewElement(doc, geoElement, "id", geoArea.getId());
+			XMLUtils.appendNewElement(doc, geoElement, "name", geoArea.getName());
+
+			if (app != null && app.getPreferedGeoArea1() != null 
+					&& app.getPreferedGeoArea1().getId().intValue() == geoArea.getId().intValue()) {
+				XMLUtils.appendNewElement(doc, geoElement, "selectedGeoArea1", true);
+			} else if (app != null && app.getPreferedGeoArea2() != null 
+					&& app.getPreferedGeoArea2().getId().intValue() == geoArea.getId().intValue()) {
+				XMLUtils.appendNewElement(doc, geoElement, "selectedGeoArea2", true);
+			} else if (app != null && app.getPreferedGeoArea3() != null 
+					&& app.getPreferedGeoArea3().getId().intValue() == geoArea.getId().intValue()) {
+				XMLUtils.appendNewElement(doc, geoElement, "selectedGeoArea3", true);
+			}
+			geoAreasElement.appendChild(geoElement);
+		}
 		form.appendChild(geoAreasElement);
 		
 		Element driversLicenseElement = doc.createElement("DriversLicenseTypes");
 		List<DriversLicenseType> licenseTypes = driversLicenseTypeDAO.getAll();
-		XMLUtils.append(doc, driversLicenseElement, licenseTypes);
+		for (DriversLicenseType type : licenseTypes) {
+			Element typeElement = doc.createElement("DriversLicenseType");
+			XMLUtils.appendNewElement(doc, typeElement, "id", type.getId());
+			XMLUtils.appendNewElement(doc, typeElement, "name", type.getName());
+			XMLUtils.appendNewElement(doc, typeElement, "description", type.getDescription());
+			if (app != null && app.getDriversLicenseType() != null) {
+				XMLUtils.appendNewElement(doc, typeElement, "selected", 
+						app.getDriversLicenseType().getId().intValue() == type.getId().intValue());
+			}
+			driversLicenseElement.appendChild(typeElement);
+		}
 		form.appendChild(driversLicenseElement);
 		
 		return new SimpleForegroundModuleResponse(doc);
@@ -112,13 +168,14 @@ public class AddMunicipalitySummerJobApplicationModule extends AnnotatedRESTModu
 
 		MunicipalityJobApplication exisitingApplication = jobApplicationDAO.getbySocialSecurityNumber(req.getParameter("socialSecurityNumber"));
 
-		if(exisitingApplication != null){
+		if(exisitingApplication != null && !user.isAdmin()){
 			log.warn("Municipality application already exists for this user " + exisitingApplication.applicationBasicsToString());
 			JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"" + applicationExistsErrorMessage + "\"}", callback, writer);
 			return;
 		}
 
-		MunicipalityJobApplication app = new MunicipalityJobApplication();
+		Integer appId = NumberUtils.toInt(req.getParameter("appId"));
+		MunicipalityJobApplication app = appId != null ? jobApplicationDAO.getById(appId) : new MunicipalityJobApplication();
 
 		Citizen person = null;
 
@@ -129,29 +186,37 @@ public class AddMunicipalitySummerJobApplicationModule extends AnnotatedRESTModu
 		}
 		
 		if (socialSecurityNumber.length() != 12) {
-			JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Personnumret måste bestå av 12 tecken (med sekel och utan bindestreck).\"}", callback, writer);
+			JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Personnumret måste bestå av 12 tecken (ÅÅÅÅMMDDxxxx).\"}", callback, writer);
 			return;
 		}
 
-		try {
-			person = smexServiceHandler.getCitizen(socialSecurityNumber);	
-		} catch(SmexServiceException e) {
-			log.error(e);
-		}
+//		try {
+//			person = smexServiceHandler.getCitizen(socialSecurityNumber);	
+//		} catch(SmexServiceException e) {
+//			log.error(e);
+//		}
 
 		FormUtils.createJobApplication(app, req, person);
+		
+		boolean workWithAnything = req.getParameter("noPreferedArea") != null ? true : false;
+		
+		if (!workWithAnything) {
+			Integer preferedArea1 = NumberUtils.toInt(req.getParameter("preferedArea1"));
+			Integer preferedArea2 = NumberUtils.toInt(req.getParameter("preferedArea2"));
+			Integer preferedArea3 = NumberUtils.toInt(req.getParameter("preferedArea3"));
+			MunicipalityJobArea area1 = areaDAO.getAreaById(preferedArea1);
+			MunicipalityJobArea area2 = areaDAO.getAreaById(preferedArea2);
+			MunicipalityJobArea area3 = areaDAO.getAreaById(preferedArea3);
 
-		Integer preferedArea1 = NumberUtils.toInt(req.getParameter("preferedArea1"));
-		Integer preferedArea2 = NumberUtils.toInt(req.getParameter("preferedArea2"));
-		Integer preferedArea3 = NumberUtils.toInt(req.getParameter("preferedArea3"));
-		MunicipalityJobArea area1 = areaDAO.getAreaById(preferedArea1);
-		MunicipalityJobArea area2 = areaDAO.getAreaById(preferedArea2);
-		MunicipalityJobArea area3 = areaDAO.getAreaById(preferedArea3);
-
-		app.setPreferedArea1(area1);
-		app.setPreferedArea2(area2);
-		app.setPreferedArea3(area3);
-
+			app.setPreferedArea1(area1);
+			app.setPreferedArea2(area2);
+			app.setPreferedArea3(area3);
+		} else {
+			app.setPreferedArea1(null);
+			app.setPreferedArea2(null);
+			app.setPreferedArea3(null);
+		}
+		
 		Integer preferedGeoArea1 = NumberUtils.toInt(req.getParameter("geoArea1"));
 		Integer preferedGeoArea2 = NumberUtils.toInt(req.getParameter("geoArea2"));
 		Integer preferedGeoArea3 = NumberUtils.toInt(req.getParameter("geoArea3"));
@@ -183,7 +248,7 @@ public class AddMunicipalitySummerJobApplicationModule extends AnnotatedRESTModu
 				app.getLastname() == null || app.getLastname().isEmpty() || app.getPhoneNumber() == null || app.getPhoneNumber().isEmpty() ||
 				app.getSocialSecurityNumber() == null || app.getSocialSecurityNumber().isEmpty() ||
 				app.getStreetAddress() == null || app.getStreetAddress().isEmpty() || 
-				app.getZipCode() == null || app.getZipCode().isEmpty()) {
+				app.getZipCode() == null || app.getZipCode().isEmpty() || app.getEmail() == null || app.getEmail().isEmpty()) {
 			JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Fälten för personuppgifter kan inte lämnas tomma. Det enda som inte krävs är en e-postadress.\"}", callback, writer);
 			return;
 		}
@@ -199,9 +264,21 @@ public class AddMunicipalitySummerJobApplicationModule extends AnnotatedRESTModu
 		}
 
 		log.info(app);
+		
+		// A new application
+		if (appId == null) {
+			if (user != null && user.getUsername() != null) {
+				app.setAddedByUser(user.getUsername());
+			}
+		}
+		
 		try {
 			jobApplicationDAO.save(app);
-			JsonResponse.sendJsonResponse("{\"status\":\"success\", \"message\":\"Din ansökan har nu sparats.\"}", callback, writer);
+			if (appId != null) {
+				JsonResponse.sendJsonResponse("{\"status\":\"success\", \"message\":\"Ändringarna har nu sparats.\"}", callback, writer);
+			} else {
+				JsonResponse.sendJsonResponse("{\"status\":\"success\", \"message\":\"Din ansökan har nu sparats.\"}", callback, writer);
+			}
 		} catch (SQLException e) {
 			log.error(e);
 			JsonResponse.sendJsonResponse("{\"status\":\"error\", \"message\":\"Något gick fel när ansökan skulle sparas.\"}", callback, writer);

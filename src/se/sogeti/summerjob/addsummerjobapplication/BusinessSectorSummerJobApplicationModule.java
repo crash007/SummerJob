@@ -64,7 +64,6 @@ public class BusinessSectorSummerJobApplicationModule extends AnnotatedRESTModul
 		jobApplicationDAO = new JobApplicationDAO<BusinessSectorJobApplication>(dataSource, BusinessSectorJobApplication.class, hierarchyDaoFactory);
 		jobDAO = new BusinessSectorJobDAO(dataSource, BusinessSectorJob.class, hierarchyDaoFactory);
 		driversLicenseTypeDAO = new DriversLicenseTypeDAO(dataSource, DriversLicenseType.class, hierarchyDaoFactory);
-	
 	}
 
 	@Override
@@ -127,7 +126,7 @@ public class BusinessSectorSummerJobApplicationModule extends AnnotatedRESTModul
 				}
 				
 				if (socialSecurityNumber.length() != 12) {
-					JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Personnumret måste bestå av 12 tecken (med sekel och utan bindestreck).\"}", callback, writer);
+					JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Personnumret måste bestå av 12 tecken (ÅÅÅÅMMDDxxxx).\"}", callback, writer);
 					return;
 				}
 				
@@ -155,7 +154,7 @@ public class BusinessSectorSummerJobApplicationModule extends AnnotatedRESTModul
 						app.getLastname() == null || app.getLastname().isEmpty() || app.getPhoneNumber() == null || app.getPhoneNumber().isEmpty() ||
 						app.getSocialSecurityNumber() == null || app.getSocialSecurityNumber().isEmpty() ||
 						app.getStreetAddress() == null || app.getStreetAddress().isEmpty() || 
-						app.getZipCode() == null || app.getZipCode().isEmpty()) {
+						app.getZipCode() == null || app.getZipCode().isEmpty() || app.getEmail() == null || app.getEmail().isEmpty()) {
 					JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Fälten för personuppgifter kan inte lämnas tomma. Det enda som inte krävs är en e-postadress.\"}", callback, writer);
 					return;
 				}

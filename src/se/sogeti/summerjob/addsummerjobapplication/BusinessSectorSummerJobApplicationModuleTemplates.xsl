@@ -268,6 +268,66 @@
 		<form method="POST" role="form" id="business-job-application-form" data-toggle="validator">
 			<div class="well">
 				<input type="hidden" name="jobId" value="{jobId}"/>
+					
+					<div class="panel panel-default">
+				 		<div class="panel-heading">
+				 			<h3 class="panel-title">Personuppgifter</h3>
+				 		</div>
+				 		<div class="panel-body">
+				    	 	<div class="row">
+						    	<div class="col-md-3">
+							    	<div class="form-group">
+									    <label for="street">Personnummer*</label>				    
+									    <input type="text" data-error="ÅÅÅÅDDMMxxxx" data-minlength="12" maxlength="12" class="form-control" id="street" name="socialSecurityNumber" placeholder="" required="required"/>
+									    <p class="help-block with-errors">ÅÅÅÅDDMMxxxx</p>				    
+								  	</div>
+								</div>
+							</div> 	
+						  	<div class="row">
+				  				<div class="form-group col-md-3">
+								    <label for="firstname">Förnamn*</label>				    
+								     <input type="text" class="form-control" id="firstname" name="firstname" placeholder="" required="required"/>	
+								     <p class="help-block with-errors"></p>						    
+						    	</div>
+						    	<div class="form-group col-md-3">
+								    <label for="lastname">Efternamn*</label>				    
+								     <input type="text" class="form-control" id="lastname" name="lastname" placeholder="" required="required"/>	
+								     <p class="help-block with-errors"></p>							    
+						    	</div>
+						    
+				  				<div class="form-group col-md-3">
+								    <label for="phone">Telefonnummer*</label>				    
+								    <input type="text" class="form-control numberValidation" id="phone" name="phone" placeholder="" required="required"/>
+								    <p class="help-block with-errors">Endast siffror</p>	
+						    	</div>
+				  				<div class="form-group col-md-3">
+								    <label for="email">E-post*</label>				    
+								     <input type="email" class="form-control" id="email" name="email" placeholder="" required="required"/>
+								    <p class="help-block with-errors"></p>
+						    	</div>
+					    	</div>
+					    	<div class="form-group">
+						  		<div class="row">
+								    <div class="form-group col-md-5">
+									    <label for="street">Gatuadress*</label>				    
+									    <input type="text" class="form-control" id="street" name="street" placeholder="" required="required"/>
+									    <p class="help-block with-errors"></p>		    
+								    </div>
+								    <div class="form-group col-md-3">
+									    <label for="postalcode">Postnummer*</label>				    
+									    <input type="text" class="form-control" id="postalcode" name="postalcode" placeholder="" required="required"/>
+									    <p class="help-block with-errors"></p>	
+								    </div>
+								    <div class="form-group col-md-4">
+									    <label for="postalarea">Postort*</label>				    
+									    <input type="text" class="form-control" id="postalarea" name="postalarea" placeholder="" required="required"/>
+									    <p class="help-block with-errors"></p>
+								    </div>
+							    </div>
+					  		</div>
+					  	</div>
+				  	</div>
+				
 					<div class="panel panel-default">
 						<div class="panel-heading">
 							<h3 class="panel-title">Ansökan</h3>
@@ -305,65 +365,6 @@
 							</div> 
 					    </div>
 					</div>
-				  	
-				 	<div class="panel panel-default">
-				 		<div class="panel-heading">
-				 			<h3 class="panel-title">Personuppgifter</h3>
-				 		</div>
-				 		<div class="panel-body">
-				    	 	<div class="row">
-						    	<div class="col-md-3">
-							    	<div class="form-group">
-									    <label for="street">Personnummer*</label>				    
-									    <input type="text" data-error="Med sekel angivet. 12 tecken." data-minlength="12" class="form-control" id="street" name="socialSecurityNumber" placeholder="" required="required"/>
-									    <p class="help-block with-errors"></p>				    
-								  	</div>
-								</div>
-							</div> 	
-						  	<div class="row">
-				  				<div class="form-group col-md-3">
-								    <label for="firstname">Förnamn*</label>				    
-								     <input type="text" class="form-control" id="firstname" name="firstname" placeholder="" required="required"/>	
-								     <p class="help-block with-errors"></p>						    
-						    	</div>
-						    	<div class="form-group col-md-3">
-								    <label for="lastname">Efternamn*</label>				    
-								     <input type="text" class="form-control" id="lastname" name="lastname" placeholder="" required="required"/>	
-								     <p class="help-block with-errors"></p>							    
-						    	</div>
-						    
-				  				<div class="form-group col-md-3">
-								    <label for="phone">Telefonnummer*</label>				    
-								    <input type="text" class="form-control numberValidation" id="phone" name="phone" placeholder="" required="required"/>
-								    <p class="help-block with-errors">Endast siffror</p>	
-						    	</div>
-				  				<div class="col-md-3">
-								    <label for="email">E-post</label>				    
-								     <input type="text" class="form-control" id="email" name="email" placeholder=""/>
-								    <p class="help-block">Valfri</p>
-						    	</div>
-					    	</div>
-					    	<div class="form-group">
-						  		<div class="row">
-								    <div class="form-group col-md-5">
-									    <label for="street">Gatuadress*</label>				    
-									    <input type="text" class="form-control" id="street" name="street" placeholder="" required="required"/>
-									    <p class="help-block with-errors"></p>		    
-								    </div>
-								    <div class="form-group col-md-3">
-									    <label for="postalcode">Postnummer*</label>				    
-									    <input type="text" class="form-control" id="postalcode" name="postalcode" placeholder="" required="required"/>
-									    <p class="help-block with-errors"></p>	
-								    </div>
-								    <div class="form-group col-md-4">
-									    <label for="postalarea">Postort*</label>				    
-									    <input type="text" class="form-control" id="postalarea" name="postalarea" placeholder="" required="required"/>
-									    <p class="help-block with-errors"></p>
-								    </div>
-							    </div>
-					  		</div>
-					  	</div>
-				  	</div>
 					
 					<div class="panel panel-default">
 			  		<div class="panel-heading">
