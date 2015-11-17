@@ -15,6 +15,7 @@ import se.unlogic.standardutils.dao.Column;
 import se.unlogic.standardutils.dao.HighLevelQuery;
 import se.unlogic.standardutils.dao.MySQLRowLimiter;
 import se.unlogic.standardutils.dao.OrderByCriteria;
+import se.unlogic.standardutils.dao.QueryOperators;
 import se.unlogic.standardutils.enums.Order;
 import se.unlogic.standardutils.reflection.ReflectionUtils;
 
@@ -98,6 +99,7 @@ public class JobApplicationDAO<T extends JobApplication> extends SummerJobCommon
 		
 		query.addParameter(this.getParamFactory("approved", Boolean.class).getParameter(approved));
 		Order order = null;
+		
 		if (orderByAscending) {
 			order = Order.ASC;
 		} else {
@@ -108,4 +110,13 @@ public class JobApplicationDAO<T extends JobApplication> extends SummerJobCommon
 		query.addOrderByCriteria(orderCriteria);
 		return this.getAll(query);
 	}
+	
+	public T getByIdWithJob(Integer id) throws SQLException {
+           HighLevelQuery<T> query = new HighLevelQuery<T>();
+           query.addParameter(this.getParamFactory("id", Integer.class).getParameter(id));
+           query.addRelation(APPLICATION_JOB_RELATION);
+           query.disableAutoRelations(true);
+           return this.get(query);
+   }
+
 }

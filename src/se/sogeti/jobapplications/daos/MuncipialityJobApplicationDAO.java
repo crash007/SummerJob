@@ -110,20 +110,5 @@ public class MuncipialityJobApplicationDAO extends JobApplicationDAO<Municipalit
 		query.disableAutoRelations(true);
 		return this.getAll(query);
 	}
-	
-	
-//	public List<BusinessSectorJobApplication> getAllUnapprovedWithJob() throws SQLException {
-//		HighLevelQuery<BusinessSectorJobApplication> query = new HighLevelQuery<BusinessSectorJobApplication>();
-//		query.addParameter(this.getParamFactory("approved", boolean.class).getParameter(false));
-//		query.addRelation(APPLICATION_JOB_RELATION);
-//		return this.getAll(query);
-//	}
-//	
-//	public List<BusinessSectorJobApplication> getAllApprovedWithJob() throws SQLException {
-//		HighLevelQuery<BusinessSectorJobApplication> query = new HighLevelQuery<BusinessSectorJobApplication>();
-//		query.addParameter(this.getParamFactory("approved", boolean.class).getParameter(true));
-//		query.addRelation(APPLICATION_JOB_RELATION);
-//		return this.getAll(query);
-//	}
 
 }
