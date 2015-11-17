@@ -138,6 +138,14 @@ public class AddBusinessSectorSummerJobModule extends AnnotatedRESTModule{
 			return;
         }
         
+        if (startDate.length() > 10) {
+        	startDate = startDate.substring(0, 10);
+        }
+        
+        if (endDate.length() > 10) {
+        	endDate = endDate.substring(0, 10);
+        }
+        
         Date jobStartDate, jobEndDate;
         
         try {
