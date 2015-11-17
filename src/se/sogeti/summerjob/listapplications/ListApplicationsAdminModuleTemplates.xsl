@@ -12,6 +12,27 @@
 		<xsl:variable name="isAdmin" select="IsAdmin"/>
 		
 		<div class="well">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">Ansˆkningar efter personnummer</h3>
+				</div>
+				<div class="panel-body">
+					<form method="POST" role="form" id="search-applications-form" data-toggle="validator">
+						<div class="row">
+							<div class="form-group">
+								<div class="col-md-3">
+									<input type="text" name="socialSecurityNumber" value="" placeholder="" class="numberValidation form-control" data-error="≈≈≈≈MMDDxxxx" data-minlength="12" maxlength="12" />
+									<p class="help-block with-errors">≈≈≈≈MMDDxxxx</p>
+								</div>
+								<div style="padding-left: 0px" class="col-md-2">
+									<button type="submit" class="btn btn-primary">Skicka</button>
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+			
 			<div class="row">
 				<div class="col-md-6 col-xs-12">
 					<xsl:apply-templates select="ApprovedMunicipality"></xsl:apply-templates>
