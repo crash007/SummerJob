@@ -13,6 +13,7 @@ import se.unlogic.standardutils.dao.AnnotatedDAOFactory;
 import se.unlogic.standardutils.dao.HighLevelQuery;
 import se.unlogic.standardutils.dao.MySQLRowLimiter;
 import se.unlogic.standardutils.dao.OrderByCriteria;
+import se.unlogic.standardutils.dao.QueryOperators;
 import se.unlogic.standardutils.enums.Order;
 import se.unlogic.standardutils.reflection.ReflectionUtils;
 
@@ -91,8 +92,8 @@ public class JobApplicationDAO<T extends JobApplication> extends SummerJobCommon
 	public List<T> getAllByApprovedAndDescendingOrder(String socialSecurityNumber, boolean approved, boolean orderByDescending) throws SQLException {
 		HighLevelQuery<T> query = new HighLevelQuery<T>();
 		
-		if (socialSecurityNumber != null) {
-			query.addParameter(this.getParamFactory("socialSecurityNumber", String.class).getParameter(socialSecurityNumber));
+		if (socialSecurityNumber != null) {			
+			query.addParameter(this.getParamFactory("socialSecurityNumber", String.class).getParameter(socialSecurityNumber, QueryOperators.LIKE));
 		}
 		
 		query.addParameter(this.getParamFactory("approved", Boolean.class).getParameter(approved));
