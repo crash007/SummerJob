@@ -160,7 +160,7 @@
 						
 						<form id="matched-workers-form">
 							<div id="matched-applications-container">
-								<xsl:for-each select="applications/BusinessJobApplication">
+								<xsl:for-each select="applications/BusinessSectorJobApplication">
 									<xsl:if test="status ='MATCHED'">
 										<div class="matched-application">
 											<div class="row">
@@ -198,7 +198,7 @@
 						
 						<form id="denied-workers-form">
 							<div id="denied-applications-container">
-								<xsl:for-each select="applications/BusinessJobApplication">
+								<xsl:for-each select="applications/BusinessSectorJobApplication">
 									<xsl:if test="status ='DENIED'">
 										<div class="denied-application">
 											<div class="row">
