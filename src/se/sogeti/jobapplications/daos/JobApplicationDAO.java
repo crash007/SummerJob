@@ -2,6 +2,7 @@ package se.sogeti.jobapplications.daos;
 
 import java.lang.reflect.Field;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -98,7 +99,7 @@ public class JobApplicationDAO<T extends JobApplication> extends SummerJobCommon
 		return this.get(query);
 	}
 	
-	public List<T> getAllByApprovedAndAscendingOrder(String socialSecurityNumber, boolean approved, boolean orderByAscending) throws SQLException {
+	public List<T> getAllByApprovedAndDescendingOrder(String socialSecurityNumber, boolean approved, boolean orderByDescending) throws SQLException {
 		HighLevelQuery<T> query = new HighLevelQuery<T>();
 		
 		if (socialSecurityNumber != null) {
@@ -107,15 +108,16 @@ public class JobApplicationDAO<T extends JobApplication> extends SummerJobCommon
 		
 		query.addParameter(this.getParamFactory("approved", Boolean.class).getParameter(approved));
 		Order order = null;
-		
-		if (orderByAscending) {
-			order = Order.ASC;
-		} else {
+		if (orderByDescending) {
 			order = Order.DESC;
+		} else {
+			order = Order.ASC;
 		}
 		
-		OrderByCriteria<T> orderCriteria = this.getOrderByCriteria("created", order);
-		query.addOrderByCriteria(orderCriteria);
+		OrderByCriteria<T> orderByRanking = this.getOrderByCriteria("ranking", Order.DESC);
+		OrderByCriteria<T> orderByCreated = this.getOrderByCriteria("created", order);
+		query.addOrderByCriteria(orderByRanking);
+		query.addOrderByCriteria(orderByCreated);
 		return this.getAll(query);
 	}
 	

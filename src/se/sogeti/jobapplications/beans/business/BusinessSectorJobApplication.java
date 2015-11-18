@@ -40,4 +40,14 @@ public class BusinessSectorJobApplication extends JobApplication{
 		return XMLGenerator.toXML(this, doc);
 	}
 
+
+	public BusinessSectorJob getJob() {
+		return job;
+	}
+
+
+	public void setJob(BusinessSectorJob job) {
+		this.job = job;
+	}
+
 }

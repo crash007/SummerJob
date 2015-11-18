@@ -268,6 +268,67 @@
 		<form method="POST" role="form" id="business-job-application-form" data-toggle="validator">
 			<div class="well">
 				<input type="hidden" name="jobId" value="{jobId}"/>
+				<input type="hidden" name="appId" value="{BusinessSectorJobApplication/id}"/>
+					
+					<div class="panel panel-default">
+				 		<div class="panel-heading">
+				 			<h3 class="panel-title">Personuppgifter</h3>
+				 		</div>
+				 		<div class="panel-body">
+				    	 	<div class="row">
+						    	<div class="col-md-3">
+							    	<div class="form-group">
+									    <label for="street">Personnummer*</label>				    
+									    <input type="text" value="{BusinessSectorJobApplication/socialSecurityNumber}" data-error="ÅÅÅÅDDMMxxxx" data-minlength="12" maxlength="12" class="form-control" id="street" name="socialSecurityNumber" placeholder="" required="required"/>
+									    <p class="help-block with-errors">ÅÅÅÅDDMMxxxx</p>				    
+								  	</div>
+								</div>
+							</div> 	
+						  	<div class="row">
+				  				<div class="form-group col-md-3">
+								    <label for="firstname">Förnamn*</label>				    
+								     <input type="text" value="{BusinessSectorJobApplication/firstname}" class="form-control" id="firstname" name="firstname" placeholder="" required="required"/>	
+								     <p class="help-block with-errors"></p>						    
+						    	</div>
+						    	<div class="form-group col-md-3">
+								    <label for="lastname">Efternamn*</label>				    
+								     <input type="text" value="{BusinessSectorJobApplication/lastname}" class="form-control" id="lastname" name="lastname" placeholder="" required="required"/>	
+								     <p class="help-block with-errors"></p>							    
+						    	</div>
+						    
+				  				<div class="form-group col-md-3">
+								    <label for="phone">Telefonnummer*</label>				    
+								    <input type="text" value="{BusinessSectorJobApplication/phoneNumber}" class="form-control numberValidation" id="phone" name="phone" placeholder="" required="required"/>
+								    <p class="help-block with-errors">Endast siffror</p>	
+						    	</div>
+				  				<div class="form-group col-md-3">
+								    <label for="email">E-post*</label>				    
+								    <input type="email" value="{BusinessSectorJobApplication/email}" class="form-control" id="email" name="email" placeholder="" required="required"/>
+								    <p class="help-block with-errors"></p>
+						    	</div>
+					    	</div>
+					    	<div class="form-group">
+						  		<div class="row">
+								    <div class="form-group col-md-5">
+									    <label for="street">Gatuadress*</label>				    
+									    <input type="text" value="{BusinessSectorJobApplication/streetAddress}" class="form-control" id="street" name="street" placeholder="" required="required"/>
+									    <p class="help-block with-errors"></p>		    
+								    </div>
+								    <div class="form-group col-md-3">
+									    <label for="postalcode">Postnummer*</label>				    
+									    <input type="text" value="{BusinessSectorJobApplication/zipCode}" class="form-control" id="postalcode" name="postalcode" placeholder="" required="required"/>
+									    <p class="help-block with-errors"></p>	
+								    </div>
+								    <div class="form-group col-md-4">
+									    <label for="postalarea">Postort*</label>				    
+									    <input type="text" value="{BusinessSectorJobApplication/city}" class="form-control" id="postalarea" name="postalarea" placeholder="" required="required"/>
+									    <p class="help-block with-errors"></p>
+								    </div>
+							    </div>
+					  		</div>
+					  	</div>
+				  	</div>
+				
 					<div class="panel panel-default">
 						<div class="panel-heading">
 							<h3 class="panel-title">Ansökan</h3>
@@ -275,7 +336,9 @@
 						<div class="panel-body">
 						  	<div class="form-group">
 							    <label for="personal-letter">Personligt brev*</label>				    
-							    <textarea class="form-control" rows="7" id="personal-letter" name="personal-letter" required="required"></textarea>							    
+							    <textarea class="form-control" rows="7" id="personal-letter" name="personal-letter" required="required">
+							    	<xsl:value-of select="BusinessSectorJobApplication/personalLetter"></xsl:value-of>
+							    </textarea>							    
 							    <p class="help-block with-errors">Skriv lite information om vem du är, vad du är intresserad av och vad du är duktig på</p>
 						  	</div>
 							<div class="form-group">
@@ -287,7 +350,14 @@
 							<div class="form-group">						
 								<div class="checkbox">
 								    <label>
-								      <input type="checkbox" name="hasDriversLicense">Har du körkort?</input>
+								    	<xsl:choose>
+								    		<xsl:when test="BusinessSectorJobApplication/hasDriversLicense = 'true'">
+										    	<input type="checkbox" name="hasDriversLicense" checked="checked">Har du körkort?</input>	
+								    		</xsl:when>
+								    		<xsl:otherwise>
+										      <input type="checkbox" name="hasDriversLicense">Har du körkort?</input>
+								    		</xsl:otherwise>
+								    	</xsl:choose>
 								    </label>
 							  	</div>
 							  	<div id="driverslicense_select" class="row">
@@ -296,7 +366,14 @@
 									    <select class="form-control" name="driversLicenseType" id="driversLicenseType">
 									    	<option value="" />
 											<xsl:for-each select="DriversLicenseTypes/DriversLicenseType">
-												<option value="{id}"><xsl:value-of select="name" /> - <xsl:value-of select="description" /></option>
+												<xsl:choose>
+													<xsl:when test="selected = 'true'">
+														<option selected="selected" value="{id}"><xsl:value-of select="name" /> - <xsl:value-of select="description" /></option>
+													</xsl:when>
+													<xsl:otherwise>
+														<option value="{id}"><xsl:value-of select="name" /> - <xsl:value-of select="description" /></option>
+													</xsl:otherwise>
+												</xsl:choose>
 											</xsl:for-each>
 										</select>
 										<p class="help-block with-errors"></p>
@@ -305,96 +382,46 @@
 							</div> 
 					    </div>
 					</div>
-				  	
-				 	<div class="panel panel-default">
-				 		<div class="panel-heading">
-				 			<h3 class="panel-title">Personuppgifter</h3>
-				 		</div>
-				 		<div class="panel-body">
-				    	 	<div class="row">
-						    	<div class="col-md-3">
-							    	<div class="form-group">
-									    <label for="street">Personnummer*</label>				    
-									    <input type="text" data-error="Med sekel angivet. 12 tecken." data-minlength="12" class="form-control" id="street" name="socialSecurityNumber" placeholder="" required="required"/>
-									    <p class="help-block with-errors"></p>				    
-								  	</div>
-								</div>
-							</div> 	
-						  	<div class="row">
-				  				<div class="form-group col-md-3">
-								    <label for="firstname">Förnamn*</label>				    
-								     <input type="text" class="form-control" id="firstname" name="firstname" placeholder="" required="required"/>	
-								     <p class="help-block with-errors"></p>						    
-						    	</div>
-						    	<div class="form-group col-md-3">
-								    <label for="lastname">Efternamn*</label>				    
-								     <input type="text" class="form-control" id="lastname" name="lastname" placeholder="" required="required"/>	
-								     <p class="help-block with-errors"></p>							    
-						    	</div>
-						    
-				  				<div class="form-group col-md-3">
-								    <label for="phone">Telefonnummer*</label>				    
-								    <input type="text" class="form-control numberValidation" id="phone" name="phone" placeholder="" required="required"/>
-								    <p class="help-block with-errors">Endast siffror</p>	
-						    	</div>
-				  				<div class="col-md-3">
-								    <label for="email">E-post</label>				    
-								     <input type="text" class="form-control" id="email" name="email" placeholder=""/>
-								    <p class="help-block">Valfri</p>
-						    	</div>
-					    	</div>
-					    	<div class="form-group">
-						  		<div class="row">
-								    <div class="form-group col-md-5">
-									    <label for="street">Gatuadress*</label>				    
-									    <input type="text" class="form-control" id="street" name="street" placeholder="" required="required"/>
-									    <p class="help-block with-errors"></p>		    
-								    </div>
-								    <div class="form-group col-md-3">
-									    <label for="postalcode">Postnummer*</label>				    
-									    <input type="text" class="form-control" id="postalcode" name="postalcode" placeholder="" required="required"/>
-									    <p class="help-block with-errors"></p>	
-								    </div>
-								    <div class="form-group col-md-4">
-									    <label for="postalarea">Postort*</label>				    
-									    <input type="text" class="form-control" id="postalarea" name="postalarea" placeholder="" required="required"/>
-									    <p class="help-block with-errors"></p>
-								    </div>
-							    </div>
-					  		</div>
-					  	</div>
-				  	</div>
 					
 					<div class="panel panel-default">
-			  		<div class="panel-heading">
-			  			<h3 class="panel-title">
-			  				Skicka in ansökan
-			  			</h3>
-			  		</div>  
-			  		<div class="panel-body">
-						<div id="save-failed" class="alert alert-danger" role="alert">
-							<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-							<span class="sr-only">Error:</span>
-							<span class="message"></span>
+				  		<div class="panel-heading">
+				  			<h3 class="panel-title">Skicka in ansökan</h3>
+				  		</div>  
+				  		<div class="panel-body">
+							<div id="save-failed" class="alert alert-danger" role="alert">
+								<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+								<span class="sr-only">Error:</span>
+								<span class="message"></span>
+							</div>
+							<div id="save-succeeded" class="alert alert-success" role="alert">
+								<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+								<span class="sr-only">Success:</span>
+								<span class="message"></span>
+							</div>
+							<xsl:choose>
+								<xsl:when test="BusinessSectorJobApplication">
+									<button style="margin-top: 4px;" id="submit-business-job-application" type="submit" class="float-rgt btn btn-success questions-submit">
+				  						Spara
+				  					</button>
+								</xsl:when>
+								<xsl:otherwise>
+									<button style="margin-top: 4px;" id="submit-business-job-application" type="submit" class="float-rgt btn btn-success questions-submit">
+				  						Skicka
+				  					</button>
+								</xsl:otherwise>
+							</xsl:choose>
+<!-- 							<xsl:if test="MunicipalityJobApplication"> -->
+<!-- 			  					<a href="{manageAppURL}?appId={MunicipalityJobApplication/id}" style="margin-top: 4px;" class="float-rgt btn btn-primary">Tillbaka</a> -->
+<!-- 			  				</xsl:if> -->
+<!-- 				  			<button style="margin-top: 4px;" id="submit-business-job-application" type="submit" class="float-rgt btn btn-success questions-submit"> -->
+<!-- 				  				Skicka -->
+<!-- 				  			</button> -->
+							<span class="glyphicon glyphicon-ok collapse" aria-hidden="true"></span><span class="glyphicon glyphicon-remove collapse" aria-hidden="true"></span>
 						</div>
-						<div id="save-succeeded" class="alert alert-success" role="alert">
-							<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-							<span class="sr-only">Success:</span>
-							<span class="message"></span>
-						</div>
-						
-			  			<button style="margin-top: 4px;" id="submit-business-job-application" type="submit" class="float-rgt btn btn-success questions-submit">
-			  				Skicka
-			  			</button>
-						<span class="glyphicon glyphicon-ok collapse" aria-hidden="true"></span><span class="glyphicon glyphicon-remove collapse" aria-hidden="true"></span>
-					</div>
-			  	</div> 	
-<!-- 			  		<button type="submit" class="btn btn-default questions-submit">Submit</button> -->
-<!-- 					<span class="glyphicon glyphicon-ok collapse" aria-hidden="true"></span><span class="glyphicon glyphicon-remove collapse" aria-hidden="true"></span> -->
+				  	</div> 	
 				</div>
 			</form>
 	    	
 	</xsl:template>
-
 	
 </xsl:stylesheet>					
