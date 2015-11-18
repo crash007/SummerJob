@@ -53,9 +53,70 @@
 				});						    							  									
 			});	
 			</script>		
-	
-			<h1>Administera perioder</h1>
 			
+			<h1>Admin</h1>
+			
+			<h2>Administrera lön</h2>
+			<div class="well">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h3 class="panel-title">Aktuell timlön</h3>
+					</div>
+					<div class="panel-body">
+						<form id="salary-list-form">
+							<fieldset>
+								<table id="salary-table">
+									<thead>
+										<th>Namn</th>
+										<th>Timlön</th>
+									</thead>
+									<tbody>
+										<xsl:apply-templates select="Salaries/Salary"/>
+									</tbody>
+								</table>
+							</fieldset>
+							<input class="btn btn-primary" style="margin-top: 4px;" id="salary-save" type="submit" value="Spara"></input>
+						</form>
+					</div>
+					<div id="save-salary-failed" class="alert alert-danger" role="alert">
+						<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+						<span class="sr-only">Error:</span>
+						<span class="message"></span>
+					</div>
+					<div id="save-salary-succeeded" class="alert alert-success" role="alert">
+						<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+						<span class="sr-only">Success:</span>
+						<span class="message"></span>
+					</div>
+				</div>
+			</div>
+			
+			<h2>Administrera "Plats för samtal"</h2>
+			<div class="well">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h3 class="panel-title">Aktuell "Plats för samtal"</h3>
+					</div>
+					<div class="panel-body">
+						<form id="place-for-information-form">
+							<input type="text" class="form-control" maxlength="255" name="placeforinformation" value="{PlaceForInformation/name}"/>
+							<input class="btn btn-primary" style="margin-top: 8px;" id="place-save-changes" type="submit" value="Spara"></input>
+						</form>
+						<div id="save-place-failed" class="alert alert-danger" role="alert">
+							<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+							<span class="sr-only">Error:</span>
+							<span class="message"></span>
+						</div>
+						<div id="save-place-succeeded" class="alert alert-success" role="alert">
+							<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+							<span class="sr-only">Success:</span>
+							<span class="message"></span>
+						</div>
+					</div>
+				</div>
+			</div>
+	
+			<h2>Administera perioder</h2>
 			<div class="well">
 				<div class="panel panel-default">
 					<div class="panel-heading">
@@ -77,6 +138,16 @@
 							<input class="btn btn-primary" style="margin-top: 4px;" id="periods-save-changes" type="submit" value="Spara ändringar"></input>
 							</fieldset>				
 						</form>
+						<div id="save-period-failed" class="alert alert-danger" role="alert">
+							<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+							<span class="sr-only">Error:</span>
+							<span class="message"></span>
+						</div>
+						<div id="save-period-succeeded" class="alert alert-success" role="alert">
+							<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+							<span class="sr-only">Success:</span>
+							<span class="message"></span>
+						</div>
 					</div>
 				</div>
 			
@@ -110,6 +181,13 @@
 				</div>
 			</div>
 						
+	</xsl:template>
+	
+	<xsl:template match="Salary">
+		<tr>
+			<td><xsl:value-of select="name"></xsl:value-of></td>
+			<td><input class="form-control" name="salary_{id}" type="number" value="{amountInSEK}" /></td>
+		</tr>
 	</xsl:template>
 	
 	<xsl:template match="Period">

@@ -17,7 +17,11 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import se.sogeti.periodsadmin.beans.Period;
+import se.sogeti.periodsadmin.beans.PlaceForInformation;
+import se.sogeti.periodsadmin.beans.Salary;
 import se.sogeti.periodsadmin.daos.PeriodDAO;
+import se.sogeti.periodsadmin.daos.PlaceForInformationDAO;
+import se.sogeti.periodsadmin.daos.SalaryDAO;
 import se.sogeti.summerjob.JsonResponse;
 import se.unlogic.hierarchy.core.beans.SimpleForegroundModuleResponse;
 import se.unlogic.hierarchy.core.beans.User;
@@ -25,6 +29,7 @@ import se.unlogic.hierarchy.core.interfaces.ForegroundModuleResponse;
 import se.unlogic.hierarchy.core.utils.HierarchyAnnotatedDAOFactory;
 import se.unlogic.hierarchy.foregroundmodules.rest.AnnotatedRESTModule;
 import se.unlogic.hierarchy.foregroundmodules.rest.RESTMethod;
+import se.unlogic.standardutils.numbers.NumberUtils;
 import se.unlogic.standardutils.xml.XMLUtils;
 import se.unlogic.webutils.http.RequestUtils;
 import se.unlogic.webutils.http.URIParser;
@@ -36,22 +41,30 @@ import com.google.gson.GsonBuilder;
 public class PeriodViewModule extends AnnotatedRESTModule {
 
 	private PeriodDAO periodDAO;
+	private SalaryDAO salaryDAO;
+	private PlaceForInformationDAO placeDAO;
 
 	@Override
 	public ForegroundModuleResponse defaultMethod(HttpServletRequest req,
 			HttpServletResponse res, User user, URIParser uriParser)
 			throws Throwable {
+		
 		Document doc = XMLUtils.createDomDocument();
 		Element element = doc.createElement("Document");
-		
 		element.appendChild(RequestUtils.getRequestInfoAsXML(doc, req, uriParser));
 		element.appendChild(this.sectionInterface.getSectionDescriptor().toXML(doc));
-		
 		element.appendChild(this.moduleDescriptor.toXML(doc));
 		doc.appendChild(element);
 		
-		Element periodsElement = doc.createElement("Periods");
+		List<Salary> salaries = salaryDAO.getAll();
+		Element salariesElement = doc.createElement("Salaries");
+		XMLUtils.append(doc, salariesElement, salaries);
+		doc.getFirstChild().appendChild(salariesElement);
 		
+		PlaceForInformation place = placeDAO.getById(1);
+		XMLUtils.append(doc, element, place);
+		
+		Element periodsElement = doc.createElement("Periods");
 		List<Period> periodList = periodDAO.getPeriodsOrderedByDate();
 		
 		if(periodList != null){
@@ -73,6 +86,8 @@ public class PeriodViewModule extends AnnotatedRESTModule {
 	protected void createDAOs(DataSource dataSource) throws Exception {
 		HierarchyAnnotatedDAOFactory daoFactory = new HierarchyAnnotatedDAOFactory(dataSource, systemInterface);
 		periodDAO = new PeriodDAO(dataSource, Period.class, daoFactory);
+		salaryDAO = new SalaryDAO(dataSource, Salary.class, daoFactory);
+		placeDAO = new PlaceForInformationDAO(dataSource, PlaceForInformation.class, daoFactory);
 	}
 	
 	@RESTMethod(alias="add/period.json", method="post")
@@ -122,6 +137,66 @@ public class PeriodViewModule extends AnnotatedRESTModule {
 		}				
 	}
 	
+	@RESTMethod(alias="save/salary.json", method="post")
+	public void saveSalary(HttpServletRequest req, HttpServletResponse res, User user, URIParser uriParser) throws IOException, SQLException {
+        PrintWriter writer = res.getWriter();
+        String callback = req.getParameter("callback"); 
+        JsonResponse.initJsonResponse(res, writer, callback);
+        
+        Integer salary1Amount = NumberUtils.toInt(req.getParameter("salary_1"));
+        Integer salary2Amount = NumberUtils.toInt(req.getParameter("salary_2"));
+        
+        Salary salary1 = salaryDAO.getById(1);
+        if (salary1Amount == null) {
+        	JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Lönen kan inte lämnas tom.\"}", callback, writer);
+			return;
+        }
+        salary1.setAmountInSEK(salary1Amount);
+        
+        Salary salary2 = salaryDAO.getById(2);
+        if (salary2Amount == null) {
+        	JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Lönen kan inte lämnas tom.\"}", callback, writer);
+			return;
+        }
+        salary2.setAmountInSEK(salary2Amount);
+        
+        try {
+        	salaryDAO.save(salary1);
+        	salaryDAO.save(salary2);
+        } catch (SQLException e) {
+          	log.error("Exception when trying to update the salaries: ", e);
+        	JsonResponse.sendJsonResponse("{\"status\":\"error\", \"message\":\"Databasfel. Kunde inte uppdatera lönerna.\"}", callback, writer);
+			return;
+        }
+        JsonResponse.sendJsonResponse("{\"status\":\"success\", \"message\":\"Uppdatering genomförd.\"}", callback, writer);
+	}
+	
+	@RESTMethod(alias="save/placeforinformation.json", method="post")
+	public void savePlaceForInformation(HttpServletRequest req, HttpServletResponse res, User user, URIParser uriParser) throws IOException, SQLException {
+        PrintWriter writer = res.getWriter();
+        String callback = req.getParameter("callback"); 
+        JsonResponse.initJsonResponse(res, writer, callback);
+        
+        String placeString = req.getParameter("placeforinformation");
+        PlaceForInformation place = placeDAO.getById(1);
+        
+        if (placeString == null) {
+        	JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Fältet kan inte lämnas tomt.\"}", callback, writer);
+			return;
+        }
+        
+        place.setName(placeString);
+        
+        try {
+        	placeDAO.save(place);
+        } catch (SQLException e) {
+          	log.error("Exception when trying to update the place for information: ", e);
+        	JsonResponse.sendJsonResponse("{\"status\":\"error\", \"message\":\"Databasfel. Kunde inte uppdatera 'Plats för samtal'.\"}", callback, writer);
+			return;
+        }
+        JsonResponse.sendJsonResponse("{\"status\":\"success\", \"message\":\"Uppdatering genomförd.\"}", callback, writer);
+	}
+	
 	@RESTMethod(alias="update/periods.json", method="post")
 	public void updatePeriods(HttpServletRequest req, HttpServletResponse res, User user, URIParser uriParser) throws IOException, SQLException {
         PrintWriter writer = res.getWriter();
@@ -160,11 +235,11 @@ public class PeriodViewModule extends AnnotatedRESTModule {
 				periodDAO.update(p);
 			} catch (SQLException e) {
 	        	log.error("Exception when trying to update the periods: ", e);
-	        	JsonResponse.sendJsonResponse("{\"status\":\"error\", \"message\":\"Något gick fel.\"}", callback, writer);
+	        	JsonResponse.sendJsonResponse("{\"status\":\"error\", \"message\":\"Databasfel. Kunde inte uppdatera perioderna.\"}", callback, writer);
 				return;
 			}        	
         }
         
-        JsonResponse.sendJsonResponse("{\"status\":\"success\", \"data\":\"Uppdatering genomförd.\"}", callback, writer);
+        JsonResponse.sendJsonResponse("{\"status\":\"success\", \"message\":\"Uppdatering genomförd.\"}", callback, writer);
 	}
 }
