@@ -252,6 +252,7 @@
 					   		<td>
 					   			<xsl:value-of select="created"></xsl:value-of>
 					   		</td>
+					   		
 			   			</tr>
 				  	</xsl:for-each>
 				  </tbody>
@@ -302,6 +303,12 @@
 					   		<td>
 					   			<xsl:value-of select="controlledDate"></xsl:value-of>
 					   		</td>
+					   		<td>
+					   			<a href="{/Document/requestinfo/contextpath}/{/Document/Municipality/ManageBusinessJobsUrl}?jobId={id}">Hantera</a>
+					   		</td>
+					   		<td>
+					   			<a href="{/Document/requestinfo/contextpath}/{/Document/Municipality/MatchBusinessJobsUrl}?jobId={id}">Matcha</a>
+					   		</td>
 				   		</tr>
 					  </xsl:for-each>
 				   				   	
@@ -350,6 +357,10 @@
 					   		<td>
 					   			<xsl:value-of select="created"></xsl:value-of>
 					   		</td>
+					   		<td>
+					   			<a href="{/Document/requestinfo/contextpath}/{/Document/Municipality/ManageBusinessJobsUrl}?jobId={id}">Hantera</a>
+					   		</td>
+					   		
 				   		</tr>
 				  	</xsl:for-each>
 				  	
