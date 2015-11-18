@@ -19,6 +19,7 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import se.sogeti.jobapplications.beans.ApplicationStatus;
 import se.sogeti.jobapplications.beans.business.BusinessSectorJob;
 import se.sogeti.jobapplications.beans.business.BusinessSectorJobApplication;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityJob;
@@ -27,6 +28,7 @@ import se.sogeti.jobapplications.daos.BusinessSectorJobApplicationDAO;
 import se.sogeti.jobapplications.daos.JobApplicationDAO;
 import se.sogeti.jobapplications.daos.JobDAO;
 import se.sogeti.jobapplications.daos.MuncipialityJobApplicationDAO;
+import se.sogeti.summerjob.FormUtils;
 import se.sogeti.summerjob.JsonResponse;
 import se.unlogic.hierarchy.core.beans.SimpleForegroundModuleResponse;
 import se.unlogic.hierarchy.core.beans.User;
@@ -85,12 +87,15 @@ public class MatchSummerJobsModule extends AnnotatedRESTModule{
 				
 				if(job.getApplications()!=null){
 					
-					job.setAppointedApplications(job.getApplications().size());
-					job.setOpenApplications(job.getNumberOfWorkersNeeded()-job.getApplications().size());
-					XMLUtils.append(doc, doc.createElement("AppointedApplications"), job.getApplications());
+					job.setMatchedApplications(FormUtils.countApplications(job.getApplications(), ApplicationStatus.MATCHED));
+					//job.setAssignedApplications(FormUtils.countApplications(job.getApplications(), ApplicationStatus.ASSIGNED));
+					job.setOpenApplications(job.getNumberOfWorkersNeeded()-FormUtils.countApplications(job.getApplications(), ApplicationStatus.MATCHED));
+					//XMLUtils.append(doc, doc.createElement("AppointedApplications"), job.getApplications());
+					
 				}else{
 					job.setOpenApplications(job.getNumberOfWorkersNeeded());
-					job.setAppointedApplications(0);
+					job.setMatchedApplications(0);
+					
 				}
 				
 				XMLUtils.append(doc, matchMunicipalityJobElement, job);
@@ -167,6 +172,7 @@ public class MatchSummerJobsModule extends AnnotatedRESTModule{
 					
 					if(jobApplication!=null){
 						jobApplication.setJob(null);
+						jobApplication.setStatus(ApplicationStatus.NONE);
 						municipalityJobApplicationDAO.save(jobApplication);
 					}else{
 						log.warn("No application with id: "+id);
@@ -193,7 +199,7 @@ public class MatchSummerJobsModule extends AnnotatedRESTModule{
 		
 	}
 	
-	@RESTMethod(alias="add-worker.json", method="post")
+	@RESTMethod(alias="match-worker.json", method="post")
 	public void addApplicationToJob(HttpServletRequest req, HttpServletResponse res, User user, URIParser uriParser) throws IOException{
 		log.info("Request for add-worker.json");
 		
@@ -211,7 +217,7 @@ public class MatchSummerJobsModule extends AnnotatedRESTModule{
 				
 				if(jobApplication!=null){
 					if(job!=null){
-					
+						jobApplication.setStatus(ApplicationStatus.MATCHED);
 						jobApplication.setJob(job);
 						municipalityJobApplicationDAO.save(jobApplication);
 						
@@ -247,9 +253,55 @@ public class MatchSummerJobsModule extends AnnotatedRESTModule{
 		
 	}
 	
+	
+	@RESTMethod(alias="deny-workers.json", method="post")
+	public void denyWorker(HttpServletRequest req, HttpServletResponse res, User user, URIParser uriParser) throws IOException{
+		log.info("Request for assign-workers.json");
+		
+		PrintWriter writer = res.getWriter();
+		JsonObject result = new JsonObject();
+		JsonResponse.initJsonResponse(res, writer, null);
+		
+		String[] applicationIdStrings =req.getParameterValues("application-id");
+		
+		if(applicationIdStrings!=null){
+			for(String id:applicationIdStrings){
+				
+				try {
+					MunicipalityJobApplication jobApplication = municipalityJobApplicationDAO.getByIdWithJob(NumberUtils.toInt(id));
+					
+					
+					if(jobApplication!=null){
+						log.info(jobApplication.getJob());
+						jobApplication.setStatus(ApplicationStatus.DENIED);
+						municipalityJobApplicationDAO.save(jobApplication);
+					}else{
+						log.warn("No application with id: "+id);
+					}
+				} catch (SQLException e) {
+					log.error("Exception when getting application",e);
+					result.putField("status", "error");
+					result.putField("message", "Error when calling db");
+					JsonResponse.sendJsonResponse(result.toJson(), null, writer);
+					return;
+				}
+			}
+			
+			result.putField("status", "success");
+			result.putField("message", "Denied applications");
+			JsonResponse.sendJsonResponse(result.toJson(), null, writer);
+			
+		}else{
+			log.info("Parameter application-id was null.");
+			result.putField("status", "fail");
+			result.putField("message", "parameter application-id is missing");
+			JsonResponse.sendJsonResponse(result.toJson(), null, writer);
+		}
+		
+	}
 	private void printCandidates(Integer jobId, List<MunicipalityJobApplication> candidates, String prio) {
 		if(candidates!=null){	
-			log.info(prio+" pcik candidates for job "+jobId);
+			log.info(prio+" pick candidates for job "+jobId);
 			for(MunicipalityJobApplication app:candidates){						
 				log.info(app);					
 			}

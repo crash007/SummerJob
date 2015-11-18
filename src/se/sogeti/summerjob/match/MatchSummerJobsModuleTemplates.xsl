@@ -9,7 +9,7 @@
 		</script>
 
 		<xsl:apply-templates select="MatchMunicipalityJob"/>
-		<xsl:apply-templates select="MatchMunicipalityApplication"/>
+<!-- 		<xsl:apply-templates select="MatchMunicipalityApplication"/> -->
 		
 	</xsl:template>
 	
@@ -90,6 +90,7 @@
 				<div class="col-xs-4 col-md-2 bold">Namn</div>
 				<div class="col-md-4 name">
 					<xsl:value-of select="firstname"/>
+					<xsl:text> </xsl:text>
 		   			<xsl:value-of select="lastname"/>
 	   			</div>
 				
@@ -159,7 +160,7 @@
 			   			<a href="#" name="show-less" style="display:none">Minska</a>
 			   		</div>
 				<div class="col-md-4 bold">
-					<form name="add-worker">
+					<form name="match-worker">
 						<input type="hidden" name="application-id" value="{id}"/>
 						<button type="submit" class="btn btn-default">Lägg till</button>
 					</form>
@@ -223,42 +224,86 @@
 					<div class="col-md-9 col-xs-12"><xsl:value-of select="workDescription"/></div>
 				</div>
 				
-				<h3>Sommarjobbare</h3>
-				
-				<form id="remove-workers-form">
-					<div id="assigned-applications-container">
-						<xsl:for-each select="applications/MunicipalityJobApplication">
-							<div class="assigned-application">
-								<div class="row">
-									<div class="col-xs-4 col-md-3 bold">Namn</div>						
-									<div class="col-md-9 name"><xsl:value-of select="firstname"/><xsl:value-of select="lastname"/></div>						
-								</div>
-								<div class="row">
-									<div class="col-xs-4 col-md-3 bold">Personnummer</div>
-									<div class="col-md-9 social-number"><xsl:value-of select="socialSecurityNumber"/></div>
-								</div>
+				<div class="row">
+					<div class="col-md-6 col-xs-12">
+						<h3>Matchade sommarjobbare</h3>
+						
+						<form id="matched-workers-form">
+							<div id="matched-applications-container">
+								<xsl:for-each select="applications/MunicipalityJobApplication">
+									<xsl:if test="status ='MATCHED'">
+										<div class="matched-application">
+											<div class="row">
+												<div class="col-xs-4 col-md-3 bold">Namn</div>						
+												<div class="col-md-9 name"><xsl:value-of select="firstname"/><xsl:text> </xsl:text><xsl:value-of select="lastname"/></div>						
+											</div>
+											<div class="row">
+												<div class="col-xs-4 col-md-3 bold">Personnummer</div>
+												<div class="col-md-9 social-number"><xsl:value-of select="socialSecurityNumber"/></div>
+											</div>										
+											<div class="row">		
+												<div class="col-md-3">Markera</div>										
+												<div class="col-md-9">
+										          <input type="checkbox" name="application-id" value="{id}"></input>								        
+												</div>
+											</div>
+										</div>
+									</xsl:if>
+								</xsl:for-each>
 								
-								
-								<div class="row">		
-									<div class="col-md-3">Ta bort</div>										
-									<div class="col-md-9">
-							          <input type="checkbox" name="application-id" value="{id}"></input>								        
-									</div>
+							</div>
+							<div class="row">
+								<div class="col-md-3"></div>												
+								<div class="col-md-2">
+									<button type="submit" class="btn btn-default remove-workers-btn">Ta bort</button>
+								</div>
+								<div class="col-md-2">
+									<button type="submit" class="btn btn-default deny-btn">Neka</button>
 								</div>
 							</div>
-						</xsl:for-each>
+						</form>
+					</div>
+					<div class="col-md-6 col-xs-12">
+						<h3>Tackat nej till detta jobb</h3>
 						
+						<form id="denied-workers-form">
+							<div id="denied-applications-container">
+								<xsl:for-each select="applications/MunicipalityJobApplication">
+									<xsl:if test="status ='DENIED'">
+										<div class="denied-application">
+											<div class="row">
+												<div class="col-xs-4 col-md-3 bold">Namn</div>						
+												<div class="col-md-9 name"><xsl:value-of select="firstname"/><xsl:text> </xsl:text><xsl:value-of select="lastname"/></div>						
+											</div>
+											<div class="row">
+												<div class="col-xs-4 col-md-3 bold">Personnummer</div>
+												<div class="col-md-9 social-number"><xsl:value-of select="socialSecurityNumber"/></div>
+											</div>
+											
+											<div class="row">		
+												<div class="col-md-3">Markera</div>										
+												<div class="col-md-9">
+										          <input type="checkbox" name="application-id" value="{id}"></input>								        
+												</div>
+											</div>
+										</div>
+									</xsl:if>
+								</xsl:for-each>
+								
+							</div>
+							
+							<div class="row">
+								<div class="col-md-3"></div>												
+								<div class="col-md-9">
+									<button type="submit" class="btn btn-default change-to-matched-btn">Ändra till matchad</button>
+								</div>
+							</div>
+						</form>
 					</div>
-					<div class="row">
-						<div class="col-md-3"></div>												
-						<div class="col-md-9">
-							<button type="submit" class="btn btn-default remove-workers-btn">Ta bort</button>
-						</div>
-					</div>
-				</form>
+				 </div>
 				
-				<div id="assigned-application-template" class="collapse">
-					<div class="assigned-application">
+				<div id="matched-application-template" class="collapse">
+					<div class="matched-application">
 						<div class="row">
 							<div class="col-xs-4 col-md-3 bold">Namn</div>						
 							<div class="col-md-9 name"></div>						
@@ -268,7 +313,7 @@
 							<div class="col-md-9 social-number"></div>
 						</div>
 						<div class="row">		
-							<div class="col-md-3">Ta bort</div>										
+							<div class="col-md-3">Markera</div>										
 							<div class="col-md-9">
 					          <input type="checkbox" name="application-id" value=""></input>								        
 							</div>

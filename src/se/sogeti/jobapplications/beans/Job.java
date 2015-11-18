@@ -62,9 +62,9 @@ public abstract class Job implements Requirements,Elementable{
 	@XMLElement
 	private Boolean mustBeOverEighteen;
 	
-	@DAOManaged
-	@XMLElement
-	private Boolean hasDriversLicense;
+//	@DAOManaged
+//	@XMLElement
+//	private Boolean hasDriversLicense;
 	
 	@DAOManaged(columnName="driversLicenseTypeId")
 	@XMLElement
@@ -99,23 +99,10 @@ public abstract class Job implements Requirements,Elementable{
 	private Integer openApplications;
 	
 	@XMLElement
-	private Integer appointedApplications;
+	private Integer matchedApplications;
 	
-	public Integer getOpenApplications() {
-		return openApplications;
-	}
-
-	public void setOpenApplications(Integer openApplications) {
-		this.openApplications = openApplications;
-	}
-
-	public Integer getAppointedApplications() {
-		return appointedApplications;
-	}
-
-	public void setAppointedApplications(Integer appointedApplications) {
-		this.appointedApplications = appointedApplications;
-	}
+//	@XMLElement
+//	private Integer assignedApplications;
 
 	public Integer getId() {
 		return id;
@@ -195,11 +182,10 @@ public abstract class Job implements Requirements,Elementable{
 				+ ", workDescription=" + workDescription + ", numberOfWorkersNeeded=" + numberOfWorkersNeeded
 				+ ", approved=" + approved + ", controlledDate=" + controlledDate + ", controlled=" + controlled
 				+ ", approvedByUser=" + approvedByUser + ", addedByUser=" + addedByUser + ", mustBeOverEighteen="
-				+ mustBeOverEighteen + ", hasDriversLicense=" + hasDriversLicense + ", driversLicenseType="
-				+ driversLicenseType + ", freeTextRequirements=" + freeTextRequirements + ", streetAddress="
-				+ streetAddress + ", zipCode=" + zipCode + ", city=" + city + ", initiatedByUser=" + initiatedByUser
-				+ ", adminNotes=" + adminNotes + ", openApplications=" + openApplications + ", appointedApplications="
-				+ appointedApplications + "]";
+				+ mustBeOverEighteen + ", driversLicenseType=" + driversLicenseType + ", freeTextRequirements="
+				+ freeTextRequirements + ", streetAddress=" + streetAddress + ", zipCode=" + zipCode + ", city=" + city
+				+ ", initiatedByUser=" + initiatedByUser + ", adminNotes=" + adminNotes + ", openApplications="
+				+ openApplications + ", matchedApplications=" + matchedApplications + "]";
 	}
 
 	public Boolean getMustBeOverEighteen() {
@@ -218,13 +204,13 @@ public abstract class Job implements Requirements,Elementable{
 		this.mustBeOverEighteen = isOverEighteen;
 	}
 
-	public Boolean getHasDriversLicense() {
-		return hasDriversLicense;
-	}
-
-	public void setHasDriversLicense(Boolean hasDriversLicense) {
-		this.hasDriversLicense = hasDriversLicense;
-	}
+//	public Boolean getHasDriversLicense() {
+//		return hasDriversLicense;
+//	}
+//
+//	public void setHasDriversLicense(Boolean hasDriversLicense) {
+//		this.hasDriversLicense = hasDriversLicense;
+//	}
 
 	public DriversLicenseType getDriversLicenseType() {
 		return driversLicenseType;
@@ -296,6 +282,34 @@ public abstract class Job implements Requirements,Elementable{
 
 	public void setAddedByUser(String addedByUser) {
 		this.addedByUser = addedByUser;
+	}
+
+	public Integer getOpenApplications() {
+		return openApplications;
+	}
+
+	public void setOpenApplications(Integer openApplications) {
+		this.openApplications = openApplications;
+	}
+
+	public Integer getMatchedApplications() {
+		return matchedApplications;
+	}
+
+	public void setMatchedApplications(Integer matchedApplications) {
+		this.matchedApplications = matchedApplications;
+	}
+
+//	public Integer getAssignedApplications() {
+//		return assignedApplications;
+//	}
+//
+//	public void setAssignedApplications(Integer assignedApplications) {
+//		this.assignedApplications = assignedApplications;
+//	}
+
+	public void setMustBeOverEighteen(Boolean mustBeOverEighteen) {
+		this.mustBeOverEighteen = mustBeOverEighteen;
 	}
 
 }

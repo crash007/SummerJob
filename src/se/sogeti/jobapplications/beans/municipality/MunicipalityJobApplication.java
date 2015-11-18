@@ -3,6 +3,7 @@ package se.sogeti.jobapplications.beans.municipality;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import se.sogeti.jobapplications.beans.ApplicationStatus;
 import se.sogeti.jobapplications.beans.GeoArea;
 import se.sogeti.jobapplications.beans.JobApplication;
 import se.unlogic.standardutils.dao.annotations.DAOManaged;
@@ -14,6 +15,11 @@ import se.unlogic.standardutils.xml.XMLGenerator;
 @Table(name="summer_job_municipality_job_application")
 @XMLElement
 public class MunicipalityJobApplication extends JobApplication{
+
+	public MunicipalityJobApplication() {
+		super();
+		
+	}
 
 	@DAOManaged(columnName="jobId")
 	@ManyToOne(remoteKeyField="id",autoGet=false,autoAdd=false,autoUpdate=false)

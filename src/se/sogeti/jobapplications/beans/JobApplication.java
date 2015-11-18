@@ -17,7 +17,6 @@ public abstract class JobApplication implements Elementable{
 	@XMLElement
 	private Integer id;
 
-
 	@DAOManaged
 	@XMLElement
 	private Integer ranking;
@@ -26,11 +25,18 @@ public abstract class JobApplication implements Elementable{
 	@XMLElement
 	private Date created;
 	
-	@DAOManaged
-	@XMLElement
-	private Boolean hasDriversLicense;
-	
-	
+	public JobApplication() {
+		super();
+		this.status=ApplicationStatus.NONE;
+		this.ranking=10;
+		this.approved=false;
+		this.controlled=false;
+	}
+
+//	@DAOManaged
+//	@XMLElement
+//	private Boolean hasDriversLicense;
+		
 	@DAOManaged(columnName="driversLicenseTypeId")
 	@ManyToOne(remoteKeyField="id", autoGet = true, autoAdd = true, autoUpdate = true)
 	@XMLElement
@@ -116,6 +122,10 @@ public abstract class JobApplication implements Elementable{
 	@XMLElement
 	private Date birthDate;
 	
+	@DAOManaged
+	@XMLElement
+	private ApplicationStatus status;
+	
 	public Integer getId() {
 		return id;
 	}
@@ -133,13 +143,13 @@ public abstract class JobApplication implements Elementable{
 		this.ranking = ranking;
 	}
 
-	public Boolean isHasDriversLicense() {
-		return hasDriversLicense;
-	}
-
-	public void setHasDriversLicense(Boolean hasDriversLicense) {
-		this.hasDriversLicense = hasDriversLicense;
-	}
+//	public Boolean isHasDriversLicense() {
+//		return hasDriversLicense;
+//	}
+//
+//	public void setHasDriversLicense(Boolean hasDriversLicense) {
+//		this.hasDriversLicense = hasDriversLicense;
+//	}
 
 	public DriversLicenseType getDriversLicenseType() {
 		return driversLicenseType;
@@ -312,15 +322,14 @@ public abstract class JobApplication implements Elementable{
 	
 	@Override
 	public String toString() {
-		return "JobApplication [id=" + id + ", ranking=" + ranking + ", created=" + created + ", hasDriversLicense="
-				+ hasDriversLicense + ", driversLicenseType=" + driversLicenseType + ", personalLetter="
-				+ personalLetter + ", cvLocation=" + cvLocation + ", approved=" + approved + ", controlled="
-				+ controlled + ", controlledByUser=" + controlledByUser + ", controlledDate=" + controlledDate
-				+ ", socialSecurityNumber=" + socialSecurityNumber + ", firstname=" + firstname + ", lastname="
-				+ lastname + ", streetAddress=" + streetAddress + ", zipCode=" + zipCode + ", city=" + city + ", email="
-				+ email + ", phoneNumber=" + phoneNumber + ", schoolName=" + schoolName + ", schoolType=" + schoolType
-				+ ", skvCity=" + skvCity + ", adminNotes=" + adminNotes + ", addedByUser=" + addedByUser
-				+ ", birthDate=" + birthDate + "]";
+		return "JobApplication [id=" + id + ", ranking=" + ranking + ", created=" + created + ", driversLicenseType="
+				+ driversLicenseType + ", personalLetter=" + personalLetter + ", cvLocation=" + cvLocation
+				+ ", approved=" + approved + ", controlled=" + controlled + ", controlledByUser=" + controlledByUser
+				+ ", controlledDate=" + controlledDate + ", socialSecurityNumber=" + socialSecurityNumber
+				+ ", firstname=" + firstname + ", lastname=" + lastname + ", streetAddress=" + streetAddress
+				+ ", zipCode=" + zipCode + ", city=" + city + ", email=" + email + ", phoneNumber=" + phoneNumber
+				+ ", schoolName=" + schoolName + ", schoolType=" + schoolType + ", skvCity=" + skvCity + ", adminNotes="
+				+ adminNotes + ", addedByUser=" + addedByUser + ", birthDate=" + birthDate + ", status=" + status + "]";
 	}
 
 	public String getAddedByUser() {
@@ -345,6 +354,18 @@ public abstract class JobApplication implements Elementable{
 
 	public void setBirthdate(Date birthdate) {
 		this.birthDate = birthdate;
+	}
+
+	public ApplicationStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(ApplicationStatus status) {
+		this.status = status;
+	}
+
+	public void setBirthDate(Date birthDate) {
+		this.birthDate = birthDate;
 	}
 
 }

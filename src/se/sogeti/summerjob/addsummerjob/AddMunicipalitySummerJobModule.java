@@ -241,7 +241,7 @@ public class AddMunicipalitySummerJobModule extends AnnotatedRESTModule{
 		}
 		
 		boolean hasDriversLicense = req.getParameter("hasDriversLicense") != null ? true : false;
-		job.setHasDriversLicense(hasDriversLicense);
+		
 		
 		if (hasDriversLicense) {
 			Integer typeId = NumberUtils.toInt(req.getParameter("driversLicenseType"));

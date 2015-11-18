@@ -13,6 +13,7 @@ import javax.sql.DataSource;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import se.sogeti.jobapplications.beans.ApplicationStatus;
 import se.sogeti.jobapplications.beans.DriversLicenseType;
 import se.sogeti.jobapplications.beans.GeoArea;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityJobApplication;
@@ -119,7 +120,7 @@ public class AddMunicipalitySummerJobApplicationModule extends AnnotatedRESTModu
 		}
 
 		MunicipalityJobApplication app = new MunicipalityJobApplication();
-
+		
 		Citizen person = null;
 
 		String socialSecurityNumber = req.getParameter("socialSecurityNumber");
@@ -136,6 +137,8 @@ public class AddMunicipalitySummerJobApplicationModule extends AnnotatedRESTModu
 		try {
 			person = smexServiceHandler.getCitizen(socialSecurityNumber);	
 		} catch(SmexServiceException e) {
+			log.error(e);
+		}catch(Exception e){
 			log.error(e);
 		}
 
@@ -170,7 +173,10 @@ public class AddMunicipalitySummerJobApplicationModule extends AnnotatedRESTModu
 		app.setPreferedGeoArea2(geoArea2);
 		app.setPreferedGeoArea3(geoArea3);
 		
-		if (app.isHasDriversLicense()) {
+		//TODO
+		//Duplicate code in business
+		boolean hasDriversLicense = req.getParameter("hasDriversLicense") !=null ? true:false;
+		if (hasDriversLicense) {
 			Integer typeId = NumberUtils.toInt(req.getParameter("driversLicenseType"));
 			if (typeId == null) {
 				JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Om du har körkort måste du ange en körkortstyp\"}", callback, writer);

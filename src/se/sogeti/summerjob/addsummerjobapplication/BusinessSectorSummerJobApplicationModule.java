@@ -15,6 +15,7 @@ import javax.sql.DataSource;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import se.sogeti.jobapplications.beans.ApplicationStatus;
 import se.sogeti.jobapplications.beans.DriversLicenseType;
 import se.sogeti.jobapplications.beans.business.BusinessSectorJob;
 import se.sogeti.jobapplications.beans.business.BusinessSectorJobApplication;
@@ -140,7 +141,7 @@ public class BusinessSectorSummerJobApplicationModule extends AnnotatedRESTModul
 				FormUtils.createJobApplication(app, req, person);
 				
 				boolean hasDriversLicense = req.getParameter("hasDriversLicense") != null ? true : false;				
-				app.setHasDriversLicense(hasDriversLicense);
+				
 				
 				if (hasDriversLicense) {
 					Integer typeId = NumberUtils.toInt(req.getParameter("driversLicenseType"));
@@ -171,7 +172,7 @@ public class BusinessSectorSummerJobApplicationModule extends AnnotatedRESTModul
 				}
 				
 				//Worker applies for a job but has not yet got the job.
-				app.setAssigned(false);
+				app.setStatus(ApplicationStatus.MATCHED);
 				
 				if(job.getApplications() != null) {
 					job.getApplications().add(app);
