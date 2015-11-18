@@ -141,12 +141,12 @@
 			
 			<div class="row collapse">
 				<div class="col-xs-4 col-md-2 bold">Plats 2</div>
-				<div class="col-md-4 social-number"><xsl:value-of select="preferedArea2/name"/></div>
+				<div class="col-md-4 social-number"><xsl:value-of select="preferedGeoArea2/name"/></div>
 			</div>
 			
 			<div class="row collapse">
 				<div class="col-xs-4 col-md-2 bold">Plats 3</div>
-				<div class="col-md-4 social-number"><xsl:value-of select="preferedArea3/name"/></div>
+				<div class="col-md-4 social-number"><xsl:value-of select="preferedGeoArea3/name"/></div>
 			</div>
 			
 			<div class="row collapse">
@@ -162,7 +162,7 @@
 				<div class="col-md-4 bold">
 					<form name="match-worker">
 						<input type="hidden" name="application-id" value="{id}"/>
-						<button type="submit" class="btn btn-default">Lägg till</button>
+						<button type="submit" class="btn btn-default set-matched-btn">sätt matchad</button>
 					</form>
 				</div>
 				
@@ -199,7 +199,7 @@
 					<div class="col-xs-4 col-md-3 bold">Körkort</div>
 					<div class="col-md-3"><xsl:value-of select="DriversLicenseType/name"/></div>
 					<div class="col-xs-4 col-md-3 bold">Över 18</div>
-					<div class="col-md-3"><xsl:value-of select="isOverEighteen"/></div>
+					<div class="col-md-3"><xsl:value-of select="mustBeOverEighteen"/></div>
 					
 				</div>
 				<div class="row">
@@ -295,7 +295,7 @@
 							<div class="row">
 								<div class="col-md-3"></div>												
 								<div class="col-md-9">
-									<button type="submit" class="btn btn-default change-to-matched-btn">Ändra till matchad</button>
+									<button type="submit" class="btn btn-default from-denied-to-matched-btn">Ändra till matchad</button>
 								</div>
 							</div>
 						</form>

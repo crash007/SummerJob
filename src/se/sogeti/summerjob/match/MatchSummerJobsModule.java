@@ -120,7 +120,7 @@ public class MatchSummerJobsModule extends AnnotatedRESTModule{
 				printCandidates(job.getId(), area1AndGeoArea2Candidates,"Area1AndGeoArea2");	
 				
 				List<MunicipalityJobApplication> area1AndGeoArea3Candidates = municipalityJobApplicationDAO.getCandidatesByPreferedArea1AndPreferedGeoArea3(job.getArea(), job.getGeoArea(), bornBefore, job.getDriversLicenseType());				
-				XMLUtils.append(doc, matchMunicipalityJobElement, "Area1AndGeoArea2Candidates", area1AndGeoArea3Candidates);
+				XMLUtils.append(doc, matchMunicipalityJobElement, "Area1AndGeoArea3Candidates", area1AndGeoArea3Candidates);
 				printCandidates(job.getId(), area1AndGeoArea3Candidates,"Area1AndGeoArea3");	
 
 				
@@ -245,7 +245,7 @@ public class MatchSummerJobsModule extends AnnotatedRESTModule{
 				JsonResponse.sendJsonResponse(result.toJson(), null, writer);
 			}
 		}else{
-			log.info("Paramter id was null for job or application.");
+			log.info("Parameter id was null for job or application.");
 			result.putField("status", "fail");
 			result.putField("message", "parameter id is missing for job or application");
 			JsonResponse.sendJsonResponse(result.toJson(), null, writer);
