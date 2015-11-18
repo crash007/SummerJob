@@ -27,7 +27,7 @@ public abstract class SummerJobCommonDAO<T> extends AnnotatedDAO<T>{
 		return this.get(query);
 	}
 
-	public java.util.List<T> getByFieldAndBoolAndUsername(String field,boolean param,Integer rows, String username) throws SQLException{
+	public java.util.List<T> getByFieldAndBoolAndUsername(String field,boolean param,Integer rows, String addedByUsername) throws SQLException{
 		HighLevelQuery<T> query = new HighLevelQuery<T>();
 		query.addParameter(this.getParamFactory(field, Boolean.class).getParameter(param));
 		
@@ -36,8 +36,8 @@ public abstract class SummerJobCommonDAO<T> extends AnnotatedDAO<T>{
 			query.setRowLimiter(limit);
 		}
 		
-		if(username!=null){
-			query.addParameter(this.getParamFactory("addedByUser", String.class).getParameter(username));
+		if(addedByUsername!=null){
+			query.addParameter(this.getParamFactory("addedByUser", String.class).getParameter(addedByUsername));
 		}
 		
 		return this.getAll(query);

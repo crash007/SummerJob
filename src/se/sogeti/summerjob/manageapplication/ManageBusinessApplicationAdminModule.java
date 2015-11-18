@@ -15,7 +15,9 @@ import org.w3c.dom.Element;
 
 import se.sogeti.jobapplications.beans.business.BusinessSectorJobApplication;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityJobApplication;
+import se.sogeti.jobapplications.daos.BusinessSectorJobApplicationDAO;
 import se.sogeti.jobapplications.daos.JobApplicationDAO;
+import se.sogeti.jobapplications.daos.JobDAO;
 import se.sogeti.summerjob.JsonResponse;
 import se.unlogic.hierarchy.core.annotations.ModuleSetting;
 import se.unlogic.hierarchy.core.annotations.TextFieldSettingDescriptor;
@@ -32,7 +34,7 @@ import se.unlogic.webutils.http.URIParser;
 
 public class ManageBusinessApplicationAdminModule extends AnnotatedRESTModule {
 	
-	JobApplicationDAO<MunicipalityJobApplication> appDAO;
+	BusinessSectorJobApplicationDAO jobApplicationDAO;
 	
 	@ModuleSetting
 	@TextFieldSettingDescriptor(description="Relativ URL till sidan för att lägga till och redigera en ansökan", name="AddEditAppURL")
@@ -42,14 +44,12 @@ public class ManageBusinessApplicationAdminModule extends AnnotatedRESTModule {
 	@TextFieldSettingDescriptor(description="Relativ URL till sidan för att lista ansökningar", name="ListAppsURL")
 	String listJobApplicationsURL="list-applications";
 	
-	private JobApplicationDAO<BusinessSectorJobApplication> jobApplicationDAO;
-	
 	@Override
 	protected void createDAOs(DataSource dataSource) throws Exception {
 		super.createDAOs(dataSource);
 		
 		HierarchyAnnotatedDAOFactory hierarchyDaoFactory = new HierarchyAnnotatedDAOFactory(dataSource, systemInterface);
-		jobApplicationDAO = new JobApplicationDAO<BusinessSectorJobApplication>(dataSource, BusinessSectorJobApplication.class, hierarchyDaoFactory);
+		jobApplicationDAO = new BusinessSectorJobApplicationDAO(dataSource, BusinessSectorJobApplication.class, hierarchyDaoFactory);
 	}
 
 	@Override
@@ -66,7 +66,11 @@ public class ManageBusinessApplicationAdminModule extends AnnotatedRESTModule {
 		Integer appId = NumberUtils.toInt(req.getParameter("appId"));
 		
 		if(appId != null){
-			BusinessSectorJobApplication app = jobApplicationDAO.getById(appId);
+			BusinessSectorJobApplication app = jobApplicationDAO.getByIdWithJob(appId);
+			if (app == null || app.getJob() == null) {
+				return new SimpleForegroundModuleResponse(doc);
+			}
+			
 			Element jobInfo = doc.createElement("ApplicationInfo");
 			XMLUtils.append(doc, jobInfo, app);
 			doc.getFirstChild().appendChild(jobInfo);

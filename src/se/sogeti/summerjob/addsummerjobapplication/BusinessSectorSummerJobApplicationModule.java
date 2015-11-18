@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,17 +14,22 @@ import javax.sql.DataSource;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import se.sogeti.jobapplications.beans.ApplicationStatus;
 import se.sogeti.jobapplications.beans.DriversLicenseType;
 import se.sogeti.jobapplications.beans.business.BusinessSectorJob;
 import se.sogeti.jobapplications.beans.business.BusinessSectorJobApplication;
+import se.sogeti.jobapplications.daos.BusinessSectorJobApplicationDAO;
 import se.sogeti.jobapplications.daos.BusinessSectorJobDAO;
 import se.sogeti.jobapplications.daos.DriversLicenseTypeDAO;
 import se.sogeti.jobapplications.daos.JobApplicationDAO;
 import se.sogeti.summerjob.FormUtils;
 import se.sogeti.summerjob.JsonResponse;
 import se.sundsvall.openetown.smex.SmexServiceHandler;
+import se.sundsvall.openetown.smex.service.SmexServiceException;
 import se.sundsvall.openetown.smex.vo.Citizen;
 import se.unlogic.hierarchy.core.annotations.InstanceManagerDependency;
+import se.unlogic.hierarchy.core.annotations.ModuleSetting;
+import se.unlogic.hierarchy.core.annotations.TextFieldSettingDescriptor;
 import se.unlogic.hierarchy.core.beans.SimpleForegroundModuleResponse;
 import se.unlogic.hierarchy.core.beans.User;
 import se.unlogic.hierarchy.core.interfaces.ForegroundModuleResponse;
@@ -40,13 +44,13 @@ import se.unlogic.webutils.http.URIParser;
 public class BusinessSectorSummerJobApplicationModule extends AnnotatedRESTModule{
 	
 	
-	private JobApplicationDAO<BusinessSectorJobApplication> jobApplicationDAO;
+	private BusinessSectorJobApplicationDAO jobApplicationDAO;
 	private BusinessSectorJobDAO jobDAO;
 	private DriversLicenseTypeDAO driversLicenseTypeDAO;
 	
-//	@ModuleSetting
-//	@TextFieldSettingDescriptor(description="Felmeddelande för ", name="Errormessage")
-//	String errorMEssage="dsfgsddfgsd";
+	@ModuleSetting
+	@TextFieldSettingDescriptor(description="Relativ URL till den plats där ansökan hanteras", name="ManageApplicationURL")
+	String manageApplicationURL = "manage-business-app";
 
 	
 	@InstanceManagerDependency(required = true)
@@ -58,7 +62,7 @@ public class BusinessSectorSummerJobApplicationModule extends AnnotatedRESTModul
 		
 		HierarchyAnnotatedDAOFactory hierarchyDaoFactory = new HierarchyAnnotatedDAOFactory(dataSource, systemInterface);
 		
-		jobApplicationDAO = new JobApplicationDAO<BusinessSectorJobApplication>(dataSource, BusinessSectorJobApplication.class, hierarchyDaoFactory);
+		jobApplicationDAO = new BusinessSectorJobApplicationDAO(dataSource, BusinessSectorJobApplication.class, hierarchyDaoFactory);
 		jobDAO = new BusinessSectorJobDAO(dataSource, BusinessSectorJob.class, hierarchyDaoFactory);
 		driversLicenseTypeDAO = new DriversLicenseTypeDAO(dataSource, DriversLicenseType.class, hierarchyDaoFactory);
 	}
@@ -76,7 +80,7 @@ public class BusinessSectorSummerJobApplicationModule extends AnnotatedRESTModul
 		element.appendChild(this.sectionInterface.getSectionDescriptor().toXML(doc));
 		element.appendChild(this.moduleDescriptor.toXML(doc));
 		doc.appendChild(element);
-
+		
 		if(jobId!=null){
 			BusinessSectorJob job = jobDAO.getById(jobId);
 			log.info(job);
@@ -85,6 +89,7 @@ public class BusinessSectorSummerJobApplicationModule extends AnnotatedRESTModul
 			doc.getFirstChild().appendChild(jobInfo);
 
 			Element jobApplication = doc.createElement("JobApplicationForm");
+			XMLUtils.appendNewElement(doc, jobApplication, "manageAppURL", manageApplicationURL);
 			XMLUtils.appendNewElement(doc, jobApplication, "jobId", job.getId());
 			BusinessSectorJobApplication app = null;
 			if (appId != null) {
@@ -107,7 +112,6 @@ public class BusinessSectorSummerJobApplicationModule extends AnnotatedRESTModul
 				}
 				driversLicenseElement.appendChild(typeElement);
 			}
-//			XMLUtils.append(doc, driversLicenseElement, driverslicenseTypes);
 			
 			doc.getFirstChild().appendChild(jobApplication);
 			
@@ -122,33 +126,44 @@ public class BusinessSectorSummerJobApplicationModule extends AnnotatedRESTModul
 	}
 	
 	@RESTMethod(alias="save/businessapplication.json", method="post")
-	public void saveApplication(HttpServletRequest req, HttpServletResponse res, User user, URIParser uriParser) throws IOException, SQLException {
+	public void saveApplication(HttpServletRequest req, HttpServletResponse res, User user, URIParser uriParser) {
 			log.info("POST");
-			System.out.println("POST");
-			PrintWriter writer = res.getWriter();
+			PrintWriter writer = null;
+			try {
+				writer = res.getWriter();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
 			String callback = req.getParameter("callback"); 
 			JsonResponse.initJsonResponse(res, writer, callback);
 			
 			Integer jobId = NumberUtils.toInt(req.getParameter("jobId"));
-			System.out.println("Ska hämta jobbet");
-			BusinessSectorJob job = jobDAO.getByIdWithApplications(jobId);
-			System.out.println("Har hämtat jobbet");
+			BusinessSectorJob job = null;
+			try {
+				job = jobDAO.getByIdWithApplications(jobId);
+			} catch (SQLException e1) {
+				log.error(e1);
+				JsonResponse.sendJsonResponse("{\"status\":\"error\", \"message\":\"Databasfel. Kunde inte hämta jobbet som ansökan ska tillhöra.\"}", callback, writer);
+				return;
+			}
 			
 			if(job != null) {
-				System.out.println("job != null");
 				Integer appId = NumberUtils.toInt(req.getParameter("appId"));
-//				BusinessSectorJobApplication app = appId != null ? jobApplicationDAO.getById(appId) : new BusinessSectorJobApplication();
 				BusinessSectorJobApplication app = null;
 				
 				if (appId != null) {
-					app = getApplicationFromJob(job.getApplications(), appId);
+					try {
+						app = jobApplicationDAO.getByIdWithJob(appId);
+					} catch (SQLException e) {
+						log.error(e);
+						JsonResponse.sendJsonResponse("{\"status\":\"error\", \"message\":\"Databasfel. Det går inte att hämta upp den ansökan som ska ändras.\"}", callback, writer);
+						return;
+					}
 				}
 				
-				// If this is a new application or if getApplicationsFromJob returened null
+				// If this is a new application or if getApplicationsFromJob returned null
 				if (app == null) {
 					app = new BusinessSectorJobApplication();
-				} else {
-					app.setId(job.getId());
 				}
 				
 				Citizen person = null;
@@ -158,35 +173,43 @@ public class BusinessSectorSummerJobApplicationModule extends AnnotatedRESTModul
 					JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Du måste ange ett personnummer i din ansökan.\"}", callback, writer);
 					return;
 				}
+				
 
 				if (socialSecurityNumber.length() != 12) {
 					JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Personnumret måste bestå av 12 tecken (ÅÅÅÅMMDDxxxx).\"}", callback, writer);
 					return;
 				}
 
-//								try {
-//									person = smexServiceHandler.getCitizen(socialSecurityNumber);
-//								} catch (SmexServiceException e){
-//									log.error(e);
-//								}
-
+				try {
+					person = smexServiceHandler.getCitizen(socialSecurityNumber);
+				} catch (SmexServiceException e){
+					log.error(e);
+				} catch (Exception e) {
+					log.error(e);
+				}
+				
 				FormUtils.createJobApplication(app, req, person);
 
-				boolean hasDriversLicense = req.getParameter("hasDriversLicense") != null ? true : false;				
-				app.setHasDriversLicense(hasDriversLicense);
-
+				boolean hasDriversLicense = req.getParameter("hasDriversLicense") != null ? true : false;
 				if (hasDriversLicense) {
 					Integer typeId = NumberUtils.toInt(req.getParameter("driversLicenseType"));
 					if (typeId == null) {
 						JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Om du har körkort måste du ange en körkortstyp\"}", callback, writer);
 						return;
 					}
-					DriversLicenseType type = driversLicenseTypeDAO.getTypeById(typeId);
-					app.setDriversLicenseType(type);
+					DriversLicenseType type = null;
+					try {
+						type = driversLicenseTypeDAO.getTypeById(typeId);
+						app.setDriversLicenseType(type);
+					} catch (SQLException e1) {
+						log.error(e1);
+						JsonResponse.sendJsonResponse("{\"status\":\"error\", \"message\":\"Databasfel. Kunde inte hämta körkortstypen.\"}", callback, writer);
+						return;
+					}
 				} else {
 					app.setDriversLicenseType(null);
 				}
-
+				
 				if (app.getFirstname() == null || app.getFirstname().isEmpty() || app.getCity() == null || app.getCity().isEmpty() ||
 						app.getLastname() == null || app.getLastname().isEmpty() || app.getPhoneNumber() == null || app.getPhoneNumber().isEmpty() ||
 						app.getSocialSecurityNumber() == null || app.getSocialSecurityNumber().isEmpty() ||
@@ -200,27 +223,11 @@ public class BusinessSectorSummerJobApplicationModule extends AnnotatedRESTModul
 					JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Du måste ge ett kort personligt brev i din ansökan.\"}", callback, writer);
 					return;
 				}
-
-				Calendar dob = Calendar.getInstance();
-				if (app.getDateOfBirth() == null) {
+				
+				if (app.getBirthDate() == null) {
 					JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Personnumret innehåller inget korrekt datum.\"}", callback, writer);
 					return;
 				}
-				dob.setTime(app.getDateOfBirth());
-				Calendar jobStartDate = Calendar.getInstance();
-				jobStartDate.setTime(job.getStartDate());
-				int age = jobStartDate.get(Calendar.YEAR) - dob.get(Calendar.YEAR);  
-				if (jobStartDate.get(Calendar.MONTH) < dob.get(Calendar.MONTH)) {
-					age--;  
-				} else if (jobStartDate.get(Calendar.MONTH) == dob.get(Calendar.MONTH)
-						&& jobStartDate.get(Calendar.DAY_OF_MONTH) < dob.get(Calendar.DAY_OF_MONTH)) {
-					age--;  
-				}
-
-				app.setOverEighteen(age >= 18 ? true : false);
-
-				//Worker applies for a job but has not yet got the job.
-				app.setAssigned(false);
 				
 				if (app.getId() == null) {
 					if(job.getApplications() != null) {
@@ -232,36 +239,36 @@ public class BusinessSectorSummerJobApplicationModule extends AnnotatedRESTModul
 					}
 				}
 
-				log.debug("PRECIS INNAN DET SKA SPARAS");
-
 				try {
+					log.info("Ska påbörja sparning");
 					if (app.getId() == null) {
-						jobDAO.update(job);
+						log.info("Det är en ny ansökan");
+						jobDAO.save(job);
 						JsonResponse.sendJsonResponse("{\"status\":\"success\", \"message\":\"Din ansökan har nu sparats.\"}", callback, writer);
 					} else {
+						log.info("Vi redigerar en befintlig");
 						jobApplicationDAO.save(app);
 						JsonResponse.sendJsonResponse("{\"status\":\"success\", \"message\":\"Ändringarna har nu sparats.\"}", callback, writer);
 					}
 				} catch (SQLException e) {
 					log.error(e);
-					JsonResponse.sendJsonResponse("{\"status\":\"error\", \"message\":\"Något gick fel när ansökan skulle sparas.\"}", callback, writer);
+					JsonResponse.sendJsonResponse("{\"status\":\"error\", \"message\":\"Databasfel. Ansökan kunde inte sparas.\"}", callback, writer);
 				}
 			} else {
 				JsonResponse.sendJsonResponse("{\"status\":\"error\", \"message\":\"Något gick fel när ansökan skulle sparas.\"}", callback, writer);
-			}
+		}
 	}
 	
-	
-	private BusinessSectorJobApplication getApplicationFromJob(List<BusinessSectorJobApplication> applications, Integer applicationId) {
-		if (applicationId == null || applications == null) {
-			return null;
-		}
-		
-		for (BusinessSectorJobApplication app : applications) {
-			if (app.getId().intValue() == applicationId.intValue()) {
-				return app;
-			}
-		}
-		return null;
-	}
+//	private BusinessSectorJobApplication getApplicationFromJob(List<BusinessSectorJobApplication> applications, Integer applicationId) {
+//		if (applicationId == null || applications == null) {
+//			return null;
+//		}
+//		
+//		for (BusinessSectorJobApplication app : applications) {
+//			if (app.getId().intValue() == applicationId.intValue()) {
+//				return app;
+//			}
+//		}
+//		return null;
+//	}
 }

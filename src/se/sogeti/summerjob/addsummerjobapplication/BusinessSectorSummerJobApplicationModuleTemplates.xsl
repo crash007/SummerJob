@@ -400,22 +400,19 @@
 							</div>
 							<xsl:choose>
 								<xsl:when test="BusinessSectorJobApplication">
-									<button style="margin-top: 4px;" id="submit-business-job-application" type="submit" class="float-rgt btn btn-success questions-submit">
+									<button style="margin-top: 4px;" id="submit-business-job-application" type="submit" class="float-rgt mgn-lft8px btn btn-success questions-submit">
 				  						Spara
 				  					</button>
 								</xsl:when>
 								<xsl:otherwise>
-									<button style="margin-top: 4px;" id="submit-business-job-application" type="submit" class="float-rgt btn btn-success questions-submit">
+									<button style="margin-top: 4px;" id="submit-business-job-application" type="submit" class="float-rgt mgn-lft8px btn btn-success questions-submit">
 				  						Skicka
 				  					</button>
 								</xsl:otherwise>
 							</xsl:choose>
-<!-- 							<xsl:if test="MunicipalityJobApplication"> -->
-<!-- 			  					<a href="{manageAppURL}?appId={MunicipalityJobApplication/id}" style="margin-top: 4px;" class="float-rgt btn btn-primary">Tillbaka</a> -->
-<!-- 			  				</xsl:if> -->
-<!-- 				  			<button style="margin-top: 4px;" id="submit-business-job-application" type="submit" class="float-rgt btn btn-success questions-submit"> -->
-<!-- 				  				Skicka -->
-<!-- 				  			</button> -->
+							<xsl:if test="BusinessSectorJobApplication">
+			  					<a href="{manageAppURL}?appId={BusinessSectorJobApplication/id}" style="margin-top: 4px;" class="float-rgt btn btn-primary">Tillbaka</a>
+			  				</xsl:if>
 							<span class="glyphicon glyphicon-ok collapse" aria-hidden="true"></span><span class="glyphicon glyphicon-remove collapse" aria-hidden="true"></span>
 						</div>
 				  	</div> 	

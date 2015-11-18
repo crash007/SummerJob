@@ -7,8 +7,10 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import se.sogeti.jobapplications.beans.ApplicationStatus;
 import se.sogeti.jobapplications.beans.JobApplication;
 import se.sundsvall.openetown.smex.vo.Citizen;
+import se.unlogic.standardutils.bool.BooleanUtils;
 
 public class FormUtils {
 	public static List<String> getMentorUuids(Enumeration<String> paramNames) {
@@ -42,14 +44,9 @@ public class FormUtils {
 	}
 	
 	public static  <T extends JobApplication> void createJobApplication(T app, HttpServletRequest req, Citizen person){
-		app.setApproved(false);
-		app.setControlled(false);
-		app.setCvLocation(req.getParameter("cvFile"));
-		
-		app.setHasDriversLicense(req.getParameter("hasDriversLicense") !=null ? true:false);
-		app.setOverEighteen(req.getParameter("isOverEighteen") !=null ? true:false);
 		
 		
+		app.setCvLocation(req.getParameter("cvFile"));		
 		app.setCity(req.getParameter("postalarea"));
 		app.setEmail(req.getParameter("email"));
 		app.setFirstname(req.getParameter("firstname"));
@@ -58,17 +55,11 @@ public class FormUtils {
 		app.setSocialSecurityNumber(req.getParameter("socialSecurityNumber"));
 		app.setStreetAddress(req.getParameter("street"));
 		app.setZipCode(req.getParameter("postalcode"));
-		app.setDateOfBirth(FormUtils.getDateOfBirth(req.getParameter("socialSecurityNumber")));
-		
-		
+		app.setBirthdate(FormUtils.getDateOfBirth(req.getParameter("socialSecurityNumber")));
+				
 		app.setPersonalLetter(req.getParameter("personal-letter"));
-		
-		app.setRanking(3);
+
 		app.setCreated(new Date(new java.util.Date().getTime()));
-		
-		app.setControlled(false);
-		app.setApproved(false);
-		
 		
 		//Citizen person = smexServiceHandler.getCitizen(app.getSocialSecurityNumber());
 		if(person!=null){
@@ -89,9 +80,25 @@ public class FormUtils {
 		String ssn = socialSecurityNumber.substring(0, 8);
 		String birthDateString = ssn.substring(0, 4) + "-" + ssn.substring(4, 6) + "-" + ssn.substring(6, ssn.length());
 		Date date = null;
-		try {
-			date = Date.valueOf(birthDateString);
-		} catch (IllegalArgumentException e) {}
+		
+		date = Date.valueOf(birthDateString);
+		
 		return date;
+	}
+	
+	public static Integer countApplications(List<? extends JobApplication> applications, ApplicationStatus status){
+		
+		if(applications!=null){
+			Integer result=0;
+			for(JobApplication app:applications){
+				if(app.getStatus().equals(status)){
+					result++;
+				}
+			}
+			return result;
+		}else{
+			return null;
+		}
+		
 	}
 }

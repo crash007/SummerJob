@@ -3,6 +3,7 @@ package se.sogeti.jobapplications.beans.municipality;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import se.sogeti.jobapplications.beans.ApplicationStatus;
 import se.sogeti.jobapplications.beans.GeoArea;
 import se.sogeti.jobapplications.beans.JobApplication;
 import se.unlogic.standardutils.dao.annotations.DAOManaged;
@@ -15,9 +16,18 @@ import se.unlogic.standardutils.xml.XMLGenerator;
 @XMLElement
 public class MunicipalityJobApplication extends JobApplication{
 
+	public MunicipalityJobApplication() {
+		super();
+		
+	}
+
 	@DAOManaged(columnName="jobId")
 	@ManyToOne(remoteKeyField="id",autoGet=false,autoAdd=false,autoUpdate=false)
 	private MunicipalityJob job;
+	
+	@DAOManaged
+	@XMLElement
+	private Boolean noPreferedArea=false;
 	
 	@DAOManaged(columnName="prefered_area_1")
 	@ManyToOne(remoteKeyField="id",autoGet=true)
@@ -123,6 +133,14 @@ public class MunicipalityJobApplication extends JobApplication{
 
 	public void setJob(MunicipalityJob job) {
 		this.job = job;
+	}
+
+	public Boolean getNoPreferedArea() {
+		return noPreferedArea;
+	}
+
+	public void setNoPreferedArea(Boolean noPreferedArea) {
+		this.noPreferedArea = noPreferedArea;
 	}
 
 }

@@ -8,11 +8,8 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import se.sogeti.jobapplications.beans.JobApplication;
-import se.sogeti.jobapplications.beans.business.BusinessSectorJobApplication;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityJobApplication;
-import se.unlogic.standardutils.dao.AnnotatedDAO;
 import se.unlogic.standardutils.dao.AnnotatedDAOFactory;
-import se.unlogic.standardutils.dao.Column;
 import se.unlogic.standardutils.dao.HighLevelQuery;
 import se.unlogic.standardutils.dao.MySQLRowLimiter;
 import se.unlogic.standardutils.dao.OrderByCriteria;
@@ -22,6 +19,7 @@ import se.unlogic.standardutils.reflection.ReflectionUtils;
 public class JobApplicationDAO<T extends JobApplication> extends SummerJobCommonDAO<T> {
 
 	private static Field APPLICATION_JOB_RELATION;
+	
 	public JobApplicationDAO(DataSource dataSource,
 			Class<T> beanClass,
 			AnnotatedDAOFactory daoFactory) {
@@ -111,4 +109,7 @@ public class JobApplicationDAO<T extends JobApplication> extends SummerJobCommon
 		query.addOrderByCriteria(orderByCreated);
 		return this.getAll(query);
 	}
+	
+
+
 }

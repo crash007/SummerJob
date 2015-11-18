@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,6 +19,7 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import se.sogeti.jobapplications.beans.ApplicationStatus;
 import se.sogeti.jobapplications.beans.business.BusinessSectorJob;
 import se.sogeti.jobapplications.beans.business.BusinessSectorJobApplication;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityJob;
@@ -25,6 +28,7 @@ import se.sogeti.jobapplications.daos.BusinessSectorJobApplicationDAO;
 import se.sogeti.jobapplications.daos.JobApplicationDAO;
 import se.sogeti.jobapplications.daos.JobDAO;
 import se.sogeti.jobapplications.daos.MuncipialityJobApplicationDAO;
+import se.sogeti.summerjob.FormUtils;
 import se.sogeti.summerjob.JsonResponse;
 import se.unlogic.hierarchy.core.beans.SimpleForegroundModuleResponse;
 import se.unlogic.hierarchy.core.beans.User;
@@ -83,30 +87,60 @@ public class MatchSummerJobsModule extends AnnotatedRESTModule{
 				
 				if(job.getApplications()!=null){
 					
-					job.setAppointedApplications(job.getApplications().size());
-					job.setOpenApplications(job.getNumberOfWorkersNeeded()-job.getApplications().size());
-					XMLUtils.append(doc, doc.createElement("AppointedApplications"), job.getApplications());
+					job.setMatchedApplications(FormUtils.countApplications(job.getApplications(), ApplicationStatus.MATCHED));
+					//job.setAssignedApplications(FormUtils.countApplications(job.getApplications(), ApplicationStatus.ASSIGNED));
+					job.setOpenApplications(job.getNumberOfWorkersNeeded()-FormUtils.countApplications(job.getApplications(), ApplicationStatus.MATCHED));
+					//XMLUtils.append(doc, doc.createElement("AppointedApplications"), job.getApplications());
+					
 				}else{
 					job.setOpenApplications(job.getNumberOfWorkersNeeded());
+					job.setMatchedApplications(0);
+					
 				}
 				
 				XMLUtils.append(doc, matchMunicipalityJobElement, job);
 				
-				//First hand pick
+				Date bornBefore =null;
 				
-				List<MunicipalityJobApplication> firstCandidates = municipalityJobApplicationDAO.getCandidatesByPreferedArea1AndPreferedGeoArea1(job.getArea(), job.getGeoArea(), job.getIsOverEighteen(), job.getDriversLicenseType(), job.getPeriod().getStartDate());
-				XMLUtils.append(doc, matchMunicipalityJobElement, "MunicipalityApplicationFirstPickCandidates", firstCandidates);
-				printCandidates(job.getId(), firstCandidates,"first");	
+				if(job.getMustBeOverEighteen()){
+					Calendar cal = Calendar.getInstance();
+					cal.setTime(job.getPeriod().getStartDate());					
+					cal.set(Calendar.YEAR,cal.get(Calendar.YEAR)-18);
+					bornBefore = cal.getTime();
+				}
+				
+				//First hand pick				
+				List<MunicipalityJobApplication> area1AndGeoArea1Candidates = municipalityJobApplicationDAO.getCandidatesByPreferedArea1AndPreferedGeoArea1(job.getArea(), job.getGeoArea(), bornBefore, job.getDriversLicenseType());
+				XMLUtils.append(doc, matchMunicipalityJobElement, "Area1AndGeoArea1Candidates", area1AndGeoArea1Candidates);
+				printCandidates(job.getId(), area1AndGeoArea1Candidates,"Area1AndGeoArea1");	
 				
 				//Second hand pick				
-				List<MunicipalityJobApplication> secondCandidates = municipalityJobApplicationDAO.getCandidatesByPreferedArea1AndPreferedGeoArea2(job.getArea(), job.getGeoArea(), job.getIsOverEighteen(), job.getDriversLicenseType(), job.getPeriod().getStartDate());				
-				XMLUtils.append(doc, matchMunicipalityJobElement, "MunicipalityApplicationSecondPickCandidates", secondCandidates);
-				printCandidates(job.getId(), secondCandidates,"second");	
+				List<MunicipalityJobApplication> area1AndGeoArea2Candidates = municipalityJobApplicationDAO.getCandidatesByPreferedArea1AndPreferedGeoArea2(job.getArea(), job.getGeoArea(), bornBefore, job.getDriversLicenseType());				
+				XMLUtils.append(doc, matchMunicipalityJobElement, "Area1AndGeoArea2Candidates", area1AndGeoArea2Candidates);
+				printCandidates(job.getId(), area1AndGeoArea2Candidates,"Area1AndGeoArea2");	
+				
+				List<MunicipalityJobApplication> area1AndGeoArea3Candidates = municipalityJobApplicationDAO.getCandidatesByPreferedArea1AndPreferedGeoArea3(job.getArea(), job.getGeoArea(), bornBefore, job.getDriversLicenseType());				
+				XMLUtils.append(doc, matchMunicipalityJobElement, "Area1AndGeoArea2Candidates", area1AndGeoArea3Candidates);
+				printCandidates(job.getId(), area1AndGeoArea3Candidates,"Area1AndGeoArea3");	
+
 				
 				//Third hand pick				
-				List<MunicipalityJobApplication> thirdCandidates = municipalityJobApplicationDAO.getCandidatesByPreferedArea2AndPreferedGeoArea1(job.getArea(), job.getGeoArea(), job.getIsOverEighteen(), job.getDriversLicenseType(), job.getPeriod().getStartDate());				
-				XMLUtils.append(doc, matchMunicipalityJobElement, "MunicipalityApplicationThirdPickCandidates", thirdCandidates);
-				printCandidates(job.getId(), thirdCandidates,"third");
+				List<MunicipalityJobApplication> area2AndGeoArea1 = municipalityJobApplicationDAO.getCandidatesByPreferedArea2AndPreferedGeoArea1(job.getArea(), job.getGeoArea(), bornBefore, job.getDriversLicenseType());				
+				XMLUtils.append(doc, matchMunicipalityJobElement, "Area2AndGeoArea1Candidates", area2AndGeoArea1);
+				printCandidates(job.getId(), area2AndGeoArea1,"Area2AndGeoArea1");
+				
+				List<MunicipalityJobApplication> area2AndGeoArea2 = municipalityJobApplicationDAO.getCandidatesByPreferedArea2AndPreferedGeoArea2(job.getArea(), job.getGeoArea(), bornBefore, job.getDriversLicenseType());				
+				XMLUtils.append(doc, matchMunicipalityJobElement, "Area2AndGeoArea2Candidates", area2AndGeoArea2);
+				printCandidates(job.getId(), area2AndGeoArea1,"Area2AndGeoArea2");
+				
+				//Third hand pick
+				List<MunicipalityJobApplication> anyAreaAndGeoArea1Candidates = municipalityJobApplicationDAO.getCandidatesByNoPreferedAreaAndPreferedGeoArea1(job.getGeoArea(), bornBefore, job.getDriversLicenseType());				
+				XMLUtils.append(doc, matchMunicipalityJobElement, "AnyAreaAndGeoArea1Candidates", anyAreaAndGeoArea1Candidates);
+				printCandidates(job.getId(), anyAreaAndGeoArea1Candidates,"AnyAreaAndGeoArea1");
+			
+				List<MunicipalityJobApplication> anyAreaAndGeoArea2Candidates = municipalityJobApplicationDAO.getCandidatesByNoPreferedAreaAndPreferedGeoArea2(job.getGeoArea(), bornBefore, job.getDriversLicenseType());				
+				XMLUtils.append(doc, matchMunicipalityJobElement, "AnyAreaAndGeoArea2Candidates", anyAreaAndGeoArea2Candidates);
+				printCandidates(job.getId(), anyAreaAndGeoArea1Candidates,"AnyAreaAndGeoArea2");
 				
 			}else{
 				log.warn("No job with id "+jobId+" found.");
@@ -127,7 +161,7 @@ public class MatchSummerJobsModule extends AnnotatedRESTModule{
 		PrintWriter writer = res.getWriter();
 		JsonObject result = new JsonObject();
 		JsonResponse.initJsonResponse(res, writer, null);
-		Integer applicationId = NumberUtils.toInt(req.getParameter("application-id"));
+		
 		String[] applicationIdStrings =req.getParameterValues("application-id");
 		
 		if(applicationIdStrings!=null){
@@ -138,6 +172,7 @@ public class MatchSummerJobsModule extends AnnotatedRESTModule{
 					
 					if(jobApplication!=null){
 						jobApplication.setJob(null);
+						jobApplication.setStatus(ApplicationStatus.NONE);
 						municipalityJobApplicationDAO.save(jobApplication);
 					}else{
 						log.warn("No application with id: "+id);
@@ -164,7 +199,7 @@ public class MatchSummerJobsModule extends AnnotatedRESTModule{
 		
 	}
 	
-	@RESTMethod(alias="add-worker.json", method="post")
+	@RESTMethod(alias="match-worker.json", method="post")
 	public void addApplicationToJob(HttpServletRequest req, HttpServletResponse res, User user, URIParser uriParser) throws IOException{
 		log.info("Request for add-worker.json");
 		
@@ -182,7 +217,7 @@ public class MatchSummerJobsModule extends AnnotatedRESTModule{
 				
 				if(jobApplication!=null){
 					if(job!=null){
-					
+						jobApplication.setStatus(ApplicationStatus.MATCHED);
 						jobApplication.setJob(job);
 						municipalityJobApplicationDAO.save(jobApplication);
 						
@@ -218,9 +253,55 @@ public class MatchSummerJobsModule extends AnnotatedRESTModule{
 		
 	}
 	
+	
+	@RESTMethod(alias="deny-workers.json", method="post")
+	public void denyWorker(HttpServletRequest req, HttpServletResponse res, User user, URIParser uriParser) throws IOException{
+		log.info("Request for assign-workers.json");
+		
+		PrintWriter writer = res.getWriter();
+		JsonObject result = new JsonObject();
+		JsonResponse.initJsonResponse(res, writer, null);
+		
+		String[] applicationIdStrings =req.getParameterValues("application-id");
+		
+		if(applicationIdStrings!=null){
+			for(String id:applicationIdStrings){
+				
+				try {
+					MunicipalityJobApplication jobApplication = municipalityJobApplicationDAO.getByIdWithJob(NumberUtils.toInt(id));
+					
+					
+					if(jobApplication!=null){
+						log.info(jobApplication.getJob());
+						jobApplication.setStatus(ApplicationStatus.DENIED);
+						municipalityJobApplicationDAO.save(jobApplication);
+					}else{
+						log.warn("No application with id: "+id);
+					}
+				} catch (SQLException e) {
+					log.error("Exception when getting application",e);
+					result.putField("status", "error");
+					result.putField("message", "Error when calling db");
+					JsonResponse.sendJsonResponse(result.toJson(), null, writer);
+					return;
+				}
+			}
+			
+			result.putField("status", "success");
+			result.putField("message", "Denied applications");
+			JsonResponse.sendJsonResponse(result.toJson(), null, writer);
+			
+		}else{
+			log.info("Parameter application-id was null.");
+			result.putField("status", "fail");
+			result.putField("message", "parameter application-id is missing");
+			JsonResponse.sendJsonResponse(result.toJson(), null, writer);
+		}
+		
+	}
 	private void printCandidates(Integer jobId, List<MunicipalityJobApplication> candidates, String prio) {
 		if(candidates!=null){	
-			log.info(prio+" pcik candidates for job "+jobId);
+			log.info(prio+" pick candidates for job "+jobId);
 			for(MunicipalityJobApplication app:candidates){						
 				log.info(app);					
 			}
