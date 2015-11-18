@@ -25,6 +25,7 @@ import se.sogeti.jobapplications.beans.business.BusinessSectorJobApplication;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityJob;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityJobApplication;
 import se.sogeti.jobapplications.daos.BusinessSectorJobApplicationDAO;
+import se.sogeti.jobapplications.daos.BusinessSectorJobDAO;
 import se.sogeti.jobapplications.daos.JobApplicationDAO;
 import se.sogeti.jobapplications.daos.JobDAO;
 import se.sogeti.jobapplications.daos.MuncipialityJobApplicationDAO;
@@ -43,12 +44,10 @@ import se.unlogic.standardutils.xml.XMLUtils;
 import se.unlogic.webutils.http.RequestUtils;
 import se.unlogic.webutils.http.URIParser;
 
-public class MatchSummerJobsModule extends AnnotatedRESTModule{
+public class MatchBusinessJobsModule extends AnnotatedRESTModule{
 	
 
-	private JobDAO<MunicipalityJob> municipalityJobDAO;
-	private MuncipialityJobApplicationDAO municipalityJobApplicationDAO;
-	private JobDAO<BusinessSectorJob> businessJobDAO;
+	private BusinessSectorJobDAO businessJobDAO;
 	private BusinessSectorJobApplicationDAO businessJobApplicationDAO;
 	
 	@Override
@@ -56,9 +55,7 @@ public class MatchSummerJobsModule extends AnnotatedRESTModule{
 		super.createDAOs(dataSource);	
 		HierarchyAnnotatedDAOFactory daoFactory = new HierarchyAnnotatedDAOFactory(dataSource, systemInterface);		
 
-		municipalityJobDAO = new JobDAO<MunicipalityJob>(dataSource, MunicipalityJob.class, daoFactory);
-		municipalityJobApplicationDAO = new MuncipialityJobApplicationDAO(dataSource, MunicipalityJobApplication.class, daoFactory);
-		businessJobDAO = new JobDAO<BusinessSectorJob>(dataSource, BusinessSectorJob.class, daoFactory);
+		businessJobDAO = new BusinessSectorJobDAO(dataSource, BusinessSectorJob.class, daoFactory);
 		businessJobApplicationDAO = new BusinessSectorJobApplicationDAO(dataSource, BusinessSectorJobApplication.class, daoFactory);
 	}
 
@@ -80,10 +77,10 @@ public class MatchSummerJobsModule extends AnnotatedRESTModule{
 		}
 	
 		if(jobId!=null){
-			MunicipalityJob job = municipalityJobDAO.getById(jobId);
+			BusinessSectorJob job = businessJobDAO.getByIdWithApplications(jobId);
 			if(job!=null){
-				Element matchMunicipalityJobElement = doc.createElement("MatchMunicipalityJob");
-				doc.getFirstChild().appendChild(matchMunicipalityJobElement);
+				Element matchBusinessJobElement = doc.createElement("MatchBusinessJob");
+				doc.getFirstChild().appendChild(matchBusinessJobElement);
 				
 				if(job.getApplications()!=null){
 					
@@ -94,54 +91,38 @@ public class MatchSummerJobsModule extends AnnotatedRESTModule{
 					
 				}else{
 					job.setOpenApplications(job.getNumberOfWorkersNeeded());
-					job.setMatchedApplications(0);
-					
+					job.setMatchedApplications(0);					
 				}
 				
-				XMLUtils.append(doc, matchMunicipalityJobElement, job);
-				
-				Date bornBefore =null;
-				
-				if(job.getMustBeOverEighteen()){
-					Calendar cal = Calendar.getInstance();
-					cal.setTime(job.getPeriod().getStartDate());					
-					cal.set(Calendar.YEAR,cal.get(Calendar.YEAR)-18);
-					bornBefore = cal.getTime();
-				}
-				
-				//First hand pick				
-				List<MunicipalityJobApplication> area1AndGeoArea1Candidates = municipalityJobApplicationDAO.getCandidatesByPreferedArea1AndPreferedGeoArea1(job.getArea(), job.getGeoArea(), bornBefore, job.getDriversLicenseType());
-				XMLUtils.append(doc, matchMunicipalityJobElement, "Area1AndGeoArea1Candidates", area1AndGeoArea1Candidates);
-				printCandidates(job.getId(), area1AndGeoArea1Candidates,"Area1AndGeoArea1");	
-				
-				//Second hand pick				
-				List<MunicipalityJobApplication> area1AndGeoArea2Candidates = municipalityJobApplicationDAO.getCandidatesByPreferedArea1AndPreferedGeoArea2(job.getArea(), job.getGeoArea(), bornBefore, job.getDriversLicenseType());				
-				XMLUtils.append(doc, matchMunicipalityJobElement, "Area1AndGeoArea2Candidates", area1AndGeoArea2Candidates);
-				printCandidates(job.getId(), area1AndGeoArea2Candidates,"Area1AndGeoArea2");	
-				
-				List<MunicipalityJobApplication> area1AndGeoArea3Candidates = municipalityJobApplicationDAO.getCandidatesByPreferedArea1AndPreferedGeoArea3(job.getArea(), job.getGeoArea(), bornBefore, job.getDriversLicenseType());				
-				XMLUtils.append(doc, matchMunicipalityJobElement, "Area1AndGeoArea3Candidates", area1AndGeoArea3Candidates);
-				printCandidates(job.getId(), area1AndGeoArea3Candidates,"Area1AndGeoArea3");	
-
-				
-				//Third hand pick				
-				List<MunicipalityJobApplication> area2AndGeoArea1 = municipalityJobApplicationDAO.getCandidatesByPreferedArea2AndPreferedGeoArea1(job.getArea(), job.getGeoArea(), bornBefore, job.getDriversLicenseType());				
-				XMLUtils.append(doc, matchMunicipalityJobElement, "Area2AndGeoArea1Candidates", area2AndGeoArea1);
-				printCandidates(job.getId(), area2AndGeoArea1,"Area2AndGeoArea1");
-				
-				List<MunicipalityJobApplication> area2AndGeoArea2 = municipalityJobApplicationDAO.getCandidatesByPreferedArea2AndPreferedGeoArea2(job.getArea(), job.getGeoArea(), bornBefore, job.getDriversLicenseType());				
-				XMLUtils.append(doc, matchMunicipalityJobElement, "Area2AndGeoArea2Candidates", area2AndGeoArea2);
-				printCandidates(job.getId(), area2AndGeoArea1,"Area2AndGeoArea2");
-				
-				//Third hand pick
-				List<MunicipalityJobApplication> anyAreaAndGeoArea1Candidates = municipalityJobApplicationDAO.getCandidatesByNoPreferedAreaAndPreferedGeoArea1(job.getGeoArea(), bornBefore, job.getDriversLicenseType());				
-				XMLUtils.append(doc, matchMunicipalityJobElement, "AnyAreaAndGeoArea1Candidates", anyAreaAndGeoArea1Candidates);
-				printCandidates(job.getId(), anyAreaAndGeoArea1Candidates,"AnyAreaAndGeoArea1");
+				XMLUtils.append(doc, matchBusinessJobElement, job);
 			
-				List<MunicipalityJobApplication> anyAreaAndGeoArea2Candidates = municipalityJobApplicationDAO.getCandidatesByNoPreferedAreaAndPreferedGeoArea2(job.getGeoArea(), bornBefore, job.getDriversLicenseType());				
-				XMLUtils.append(doc, matchMunicipalityJobElement, "AnyAreaAndGeoArea2Candidates", anyAreaAndGeoArea2Candidates);
-				printCandidates(job.getId(), anyAreaAndGeoArea1Candidates,"AnyAreaAndGeoArea2");
 				
+				//sort applications by drivers license and if over 18
+				//First hand pick				
+				List<BusinessSectorJobApplication> goodCandidates = businessJobApplicationDAO.getCandidatesFulfillingCriteras(job);
+				if(goodCandidates!=null){
+					for(BusinessSectorJobApplication candidate: goodCandidates){
+						log.info(candidate);
+					}
+					
+					XMLUtils.append(doc, matchBusinessJobElement, "GoodCandidates", goodCandidates);
+				}else{
+					log.info("No candidates fulling job criteras");
+				}
+				
+				
+				List<BusinessSectorJobApplication> badCandidates = businessJobApplicationDAO.getCandidatesNotFulfillingCriteras(job);
+				if(badCandidates!=null){
+					for(BusinessSectorJobApplication candidate: badCandidates){
+						log.info(candidate);
+					}
+				}else{
+					log.info("No candidates Not fulling job criteras");
+				}
+				
+				XMLUtils.append(doc, matchBusinessJobElement, "BadCandidates", badCandidates);
+				
+
 			}else{
 				log.warn("No job with id "+jobId+" found.");
 			}
@@ -168,12 +149,12 @@ public class MatchSummerJobsModule extends AnnotatedRESTModule{
 			for(String id:applicationIdStrings){
 				
 				try {
-					MunicipalityJobApplication jobApplication = municipalityJobApplicationDAO.getById(NumberUtils.toInt(id));
+					BusinessSectorJobApplication jobApplication = businessJobApplicationDAO.getByIdWithJob(NumberUtils.toInt(id));
 					
 					if(jobApplication!=null){
 						jobApplication.setJob(null);
 						jobApplication.setStatus(ApplicationStatus.NONE);
-						municipalityJobApplicationDAO.save(jobApplication);
+						businessJobApplicationDAO.save(jobApplication);
 					}else{
 						log.warn("No application with id: "+id);
 					}
@@ -212,14 +193,14 @@ public class MatchSummerJobsModule extends AnnotatedRESTModule{
 		if(applicationId!=null && jobId!=null){
 			try {
 				log.debug("Getting application with id: "+applicationId);
-				MunicipalityJobApplication jobApplication = municipalityJobApplicationDAO.getById(applicationId);
-				MunicipalityJob job = municipalityJobDAO.getById(jobId);
+				BusinessSectorJobApplication jobApplication = businessJobApplicationDAO.getByIdWithJob(applicationId);
+				BusinessSectorJob job = businessJobDAO.getByIdWithApplications(jobId);
 				
 				if(jobApplication!=null){
 					if(job!=null){
 						jobApplication.setStatus(ApplicationStatus.MATCHED);
 						jobApplication.setJob(job);
-						municipalityJobApplicationDAO.save(jobApplication);
+						businessJobApplicationDAO.save(jobApplication);
 						
 						result.putField("status", "success");
 						result.putField("message", "Added job id:"+jobId+" to job application "+applicationId);
@@ -268,13 +249,13 @@ public class MatchSummerJobsModule extends AnnotatedRESTModule{
 			for(String id:applicationIdStrings){
 				
 				try {
-					MunicipalityJobApplication jobApplication = municipalityJobApplicationDAO.getByIdWithJob(NumberUtils.toInt(id));
+					BusinessSectorJobApplication jobApplication = businessJobApplicationDAO.getByIdWithJob(NumberUtils.toInt(id));
 					
 					
 					if(jobApplication!=null){
 						log.info(jobApplication.getJob());
 						jobApplication.setStatus(ApplicationStatus.DENIED);
-						municipalityJobApplicationDAO.save(jobApplication);
+						businessJobApplicationDAO.save(jobApplication);
 					}else{
 						log.warn("No application with id: "+id);
 					}
@@ -299,16 +280,6 @@ public class MatchSummerJobsModule extends AnnotatedRESTModule{
 		}
 		
 	}
-	private void printCandidates(Integer jobId, List<MunicipalityJobApplication> candidates, String prio) {
-		if(candidates!=null){	
-			log.info(prio+" pick candidates for job "+jobId);
-			for(MunicipalityJobApplication app:candidates){						
-				log.info(app);					
-			}
-		}else{
-			log.info("No "+prio+" pick candidates found for job:"+jobId);
-			
-		}
-	}
+	
 }
 
