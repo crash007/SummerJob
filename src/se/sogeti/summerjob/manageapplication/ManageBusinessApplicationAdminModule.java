@@ -77,6 +77,15 @@ public class ManageBusinessApplicationAdminModule extends AnnotatedRESTModule {
 			XMLUtils.appendNewElement(doc, jobInfo, "listJobApplicationsURL", listJobApplicationsURL);
 			XMLUtils.appendNewElement(doc, jobInfo, "editBusinessAppURL", 
 					editBusinessApplicationURL + "?jobId=" + app.getJob().getId() + "&appId=" + app.getId());
+			
+			Element rankingsElement = doc.createElement("Rankings");
+			for (int i = 1; i < 11; i++) {
+				Element ranking = doc.createElement("Ranking");
+				XMLUtils.appendNewElement(doc, ranking, "value", i);
+				XMLUtils.appendNewElement(doc, ranking, "selected", app.getRanking().intValue() == i);
+				rankingsElement.appendChild(ranking);
+			}
+			jobInfo.appendChild(rankingsElement);
 		} 
 		
 		return new SimpleForegroundModuleResponse(doc);
@@ -93,7 +102,7 @@ public class ManageBusinessApplicationAdminModule extends AnnotatedRESTModule {
         if (appId == null) {
         	JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Kunde inte hämta den aktuella ansökan för att spara ändringarna.\"}", callback, writer);
         }
-        BusinessSectorJobApplication app = jobApplicationDAO.getById(appId);
+        BusinessSectorJobApplication app = jobApplicationDAO.getByIdWithJob(appId);
         
         app.setApproved(true);
         app.setApprovedDate(new Date(Calendar.getInstance().getTimeInMillis()));
@@ -101,6 +110,7 @@ public class ManageBusinessApplicationAdminModule extends AnnotatedRESTModule {
         app.setControlledByUser(user.getUsername());
         app.setControlledDate(new Date(Calendar.getInstance().getTimeInMillis()));
         app.setAdminNotes(req.getParameter("adminNotes"));
+        app.setRanking(NumberUtils.toInt(req.getParameter("ranking")));
         
 		try {
 			jobApplicationDAO.save(app);
@@ -123,13 +133,14 @@ public class ManageBusinessApplicationAdminModule extends AnnotatedRESTModule {
         if (appId == null) {
         	JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Kunde inte hämta den aktuella ansökan för att spara ändringarna.\"}", callback, writer);
         }
-        BusinessSectorJobApplication app = jobApplicationDAO.getById(appId);
+        BusinessSectorJobApplication app = jobApplicationDAO.getByIdWithJob(appId);
         
         app.setApproved(false);
         app.setControlledByUser(user.getUsername());
         app.setControlled(true);
         app.setControlledDate(new Date(Calendar.getInstance().getTimeInMillis()));
         app.setAdminNotes(req.getParameter("adminNotes"));
+        app.setRanking(NumberUtils.toInt(req.getParameter("ranking")));
         
 		try {
 			jobApplicationDAO.save(app);

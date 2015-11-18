@@ -104,7 +104,7 @@ public class JobApplicationDAO<T extends JobApplication> extends SummerJobCommon
 			order = Order.ASC;
 		}
 		
-		OrderByCriteria<T> orderByRanking = this.getOrderByCriteria("ranking", Order.DESC);
+		OrderByCriteria<T> orderByRanking = this.getOrderByCriteria("ranking", Order.ASC);
 		OrderByCriteria<T> orderByCreated = this.getOrderByCriteria("created", order);
 		query.addOrderByCriteria(orderByRanking);
 		query.addOrderByCriteria(orderByCreated);

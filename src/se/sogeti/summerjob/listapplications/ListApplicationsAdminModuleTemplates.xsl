@@ -21,7 +21,7 @@
 						<div class="row">
 							<div class="form-group">
 								<div class="col-md-3">
-									<input type="text" name="socialSecurityNumber" value="" placeholder="" class="numberValidation form-control" data-error="電電MMDDxxxx" data-minlength="12" maxlength="12" />
+									<input type="text" name="socialSecurityNumber" value="" placeholder="" class="numberValidation form-control" data-error="電電MMDDxxxx" maxlength="12" />
 									<p class="help-block with-errors">電電MMDDxxxx</p>
 								</div>
 								<div style="padding-left: 0px" class="col-md-2">

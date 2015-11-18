@@ -119,6 +119,24 @@
 					<span class="message"></span>
 				</div>
 				
+				<div class="row form-group">
+					<div class="col-md-2">
+						<label>Ranking</label><br/>
+						<select class="form-control" name="ranking">
+							<xsl:for-each select="Rankings/Ranking">
+								<xsl:choose>
+									<xsl:when test="selected = 'true'">
+										<option selected="selected" value="{value}"><xsl:value-of select="value"></xsl:value-of></option>
+									</xsl:when>
+									<xsl:otherwise>
+										<option value="{value}"><xsl:value-of select="value"></xsl:value-of></option>
+									</xsl:otherwise>
+								</xsl:choose>
+							</xsl:for-each>
+						</select>
+					</div>
+				</div>
+				
 				<div class="form-group">
 					<label for="admin-notes">Handläggarkommentar</label>
 					<textarea class="form-control" rows="5" id="admin-notes" name="admin-notes"><xsl:value-of select="BusinessSectorJobApplication/adminNotes"></xsl:value-of></textarea>
