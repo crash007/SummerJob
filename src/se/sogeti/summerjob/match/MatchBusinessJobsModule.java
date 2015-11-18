@@ -151,8 +151,7 @@ public class MatchBusinessJobsModule extends AnnotatedRESTModule{
 				try {
 					BusinessSectorJobApplication jobApplication = businessJobApplicationDAO.getByIdWithJob(NumberUtils.toInt(id));
 					
-					if(jobApplication!=null){
-						jobApplication.setJob(null);
+					if(jobApplication!=null){						
 						jobApplication.setStatus(ApplicationStatus.NONE);
 						businessJobApplicationDAO.save(jobApplication);
 					}else{

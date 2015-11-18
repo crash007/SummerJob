@@ -34,7 +34,32 @@
 				  </thead>
 				  
 				  <tbody>
-				   	<xsl:apply-templates select="NewMunicipalityJobs/MunicipalityJob"/>				   	
+				   	<!-- xsl:apply-templates select="NewMunicipalityJobs/MunicipalityJob"/-->
+				   	<xsl:for-each select="NewMunicipalityJobs/MunicipalityJob">
+			
+							<tr>
+								<td>
+						   			<xsl:value-of select="organization"></xsl:value-of>
+						   		</td>
+						   		<td>
+						   			<xsl:value-of select="MunicipalityJobArea/name"/>
+						   		</td>
+						   		<td>
+						   			<xsl:value-of select="GeoArea/name"/>
+						   		</td>
+						   		<td>
+						   			<xsl:value-of select="numberOfWorkersNeeded"></xsl:value-of>
+						   		</td>
+						   		<td>
+						   			<xsl:value-of select="Period/name"></xsl:value-of>
+						   		</td>
+						   		<td>
+						   			<a href="{/Document/requestinfo/contextpath}/{/Document/Municipality/ManageMunicipalityJobsUrl}?jobId={id}">Hantera</a>
+						   		</td>
+					   		</tr>
+						
+				   	</xsl:for-each>
+				   					   	
 				  </tbody>
 				</table>
 			  </div>
@@ -60,7 +85,34 @@
 				  </thead>
 				  
 				  <tbody>
-				 	 <xsl:apply-templates select="approvedMunicipalityJobs/MunicipalityJob"/>
+				 	 <!-- xsl:apply-templates select="approvedMunicipalityJobs/MunicipalityJob"/-->
+				 	 <xsl:for-each select="approvedMunicipalityJobs/MunicipalityJob">
+			
+							<tr>
+								<td>
+						   			<xsl:value-of select="organization"></xsl:value-of>
+						   		</td>
+						   		<td>
+						   			<xsl:value-of select="MunicipalityJobArea/name"/>
+						   		</td>
+						   		<td>
+						   			<xsl:value-of select="GeoArea/name"/>
+						   		</td>
+						   		<td>
+						   			<xsl:value-of select="numberOfWorkersNeeded"></xsl:value-of>
+						   		</td>
+						   		<td>
+						   			<xsl:value-of select="Period/name"></xsl:value-of>
+						   		</td>
+						   		<td>
+						   			<a href="{/Document/requestinfo/contextpath}/{/Document/Municipality/ManageMunicipalityJobsUrl}?jobId={id}">Hantera</a>
+						   		</td>
+						   		<td>
+						   			<a href="{/Document/requestinfo/contextpath}/{/Document/Municipality/MatchMunicipalityJobsUrl}?jobId={id}">Matcha</a>
+						   		</td>
+					   		</tr>
+						
+				   	</xsl:for-each>
 				  </tbody>
 				</table>
 			  </div>
@@ -200,6 +252,7 @@
 					   		<td>
 					   			<xsl:value-of select="created"></xsl:value-of>
 					   		</td>
+					   		
 			   			</tr>
 				  	</xsl:for-each>
 				  </tbody>
@@ -250,6 +303,12 @@
 					   		<td>
 					   			<xsl:value-of select="controlledDate"></xsl:value-of>
 					   		</td>
+					   		<td>
+					   			<a href="{/Document/requestinfo/contextpath}/{/Document/Municipality/ManageBusinessJobsUrl}?jobId={id}">Hantera</a>
+					   		</td>
+					   		<td>
+					   			<a href="{/Document/requestinfo/contextpath}/{/Document/Municipality/MatchBusinessJobsUrl}?jobId={id}">Matcha</a>
+					   		</td>
 				   		</tr>
 					  </xsl:for-each>
 				   				   	
@@ -298,6 +357,10 @@
 					   		<td>
 					   			<xsl:value-of select="created"></xsl:value-of>
 					   		</td>
+					   		<td>
+					   			<a href="{/Document/requestinfo/contextpath}/{/Document/Municipality/ManageBusinessJobsUrl}?jobId={id}">Hantera</a>
+					   		</td>
+					   		
 				   		</tr>
 				  	</xsl:for-each>
 				  	
@@ -332,7 +395,7 @@
 	   			<xsl:value-of select="Period/name"></xsl:value-of>
 	   		</td>
 	   		<td>
-	   			<a href="{/Document/requestinfo/contextpath}/matchjobs?jobId={id}">Matcha</a>
+	   			<a href="{/Document/requestinfo/contextpath}/{/Document/Municipality/MatchMunicipalityJobsUrl}?jobId={id}">Matcha</a>
 	   		</td>
    		</tr>
 	</xsl:template>

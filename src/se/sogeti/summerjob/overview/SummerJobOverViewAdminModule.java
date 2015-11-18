@@ -41,6 +41,22 @@ public class SummerJobOverViewAdminModule extends AnnotatedForegroundModule{
 	@TextFieldSettingDescriptor(name="Rows", description="Number of rows to display in each panel",required=true,formatValidator=PositiveStringIntegerValidator.class)
 	private Integer rows=20;
 	
+	@ModuleSetting(allowsNull=false)
+	@TextFieldSettingDescriptor(name="Match municipality jobs url", description="relativ url för matchning av kommunala jobb",required=true)
+	private String matchMunicipalityUrl="matchjobs";
+	
+	@ModuleSetting(allowsNull=false)
+	@TextFieldSettingDescriptor(name="Match business jobs url", description="relativ url för matchning av näringslivsjobb",required=true)
+	private String matchBusinessUrl="match-business-jobs";
+
+	@ModuleSetting(allowsNull=false)
+	@TextFieldSettingDescriptor(name="Match municipality jobs url", description="relativ url för matchning av kommunala jobb",required=true)
+	private String manageMunicipalityUrl="manage-municipality-job";
+	
+	@ModuleSetting(allowsNull=false)
+	@TextFieldSettingDescriptor(name="Match business jobs url", description="relativ url för matchning av näringslivsjobb",required=true)
+	private String manageBusinessUrl="manage-businesssector-job";
+	
 	@Override
 	protected void createDAOs(DataSource dataSource) throws Exception {
 		super.createDAOs(dataSource);	
@@ -93,6 +109,13 @@ public class SummerJobOverViewAdminModule extends AnnotatedForegroundModule{
 			}
 			
 			Element municipality = doc.createElement("Municipality");
+
+			//URls
+			XMLUtils.appendNewElement(doc,municipality, "MatchMunicipalityJobsUrl",matchMunicipalityUrl);
+			XMLUtils.appendNewElement(doc,municipality, "MatchBusinessJobsUrl",matchBusinessUrl);
+			XMLUtils.appendNewElement(doc,municipality, "ManageMunicipalityJobsUrl",manageMunicipalityUrl);
+			XMLUtils.appendNewElement(doc,municipality, "ManageBusinessJobsUrl",manageBusinessUrl);
+			
 			doc.getFirstChild().appendChild(municipality);
 			Element newMunicipalityJobsElement = doc.createElement("NewMunicipalityJobs");
 			
