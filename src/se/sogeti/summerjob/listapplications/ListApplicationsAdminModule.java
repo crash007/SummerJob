@@ -43,7 +43,7 @@ public class ListApplicationsAdminModule extends AnnotatedForegroundModule {
 	
 	@ModuleSetting
 	@TextFieldSettingDescriptor(description="Relativ url till att hantera näringslivsansökningar",name="ManageBusinessApplication")
-	private String manageBusinessUrl="manage-businesssector-app";
+	private String manageBusinessUrl="manage-business-app";
 	
 	@Override
 	protected void createDAOs(DataSource dataSource) throws Exception {

@@ -15,7 +15,7 @@ import se.unlogic.standardutils.xml.XMLGenerator;
 public class BusinessSectorJobApplication extends JobApplication{
 	
 	@DAOManaged(columnName="jobId")
-	@ManyToOne(remoteKeyField="id",autoGet=true,autoAdd=false,autoUpdate=false)
+	@ManyToOne(remoteKeyField="id",autoGet=false,autoAdd=false,autoUpdate=false)
 	@XMLElement
 	private BusinessSectorJob job;
 	

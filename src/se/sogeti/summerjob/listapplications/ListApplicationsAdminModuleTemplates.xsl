@@ -147,7 +147,7 @@
 					</div>
 					<div class="row">
 						<div class="col-xs-5">
-							<a href="#" class="bold">Hantera ansökan</a>
+							<a href="{url}" class="bold">Hantera ansökan</a>
 						</div>
 					</div>
 				</div>
