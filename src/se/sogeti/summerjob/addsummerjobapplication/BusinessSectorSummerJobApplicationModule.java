@@ -24,11 +24,8 @@ import se.sogeti.jobapplications.daos.JobApplicationDAO;
 import se.sogeti.summerjob.FormUtils;
 import se.sogeti.summerjob.JsonResponse;
 import se.sundsvall.openetown.smex.SmexServiceHandler;
-import se.sundsvall.openetown.smex.service.SmexServiceException;
 import se.sundsvall.openetown.smex.vo.Citizen;
 import se.unlogic.hierarchy.core.annotations.InstanceManagerDependency;
-import se.unlogic.hierarchy.core.annotations.ModuleSetting;
-import se.unlogic.hierarchy.core.annotations.TextFieldSettingDescriptor;
 import se.unlogic.hierarchy.core.beans.SimpleForegroundModuleResponse;
 import se.unlogic.hierarchy.core.beans.User;
 import se.unlogic.hierarchy.core.interfaces.ForegroundModuleResponse;
@@ -140,7 +137,20 @@ public class BusinessSectorSummerJobApplicationModule extends AnnotatedRESTModul
 			if(job != null) {
 				System.out.println("job != null");
 				Integer appId = NumberUtils.toInt(req.getParameter("appId"));
-				BusinessSectorJobApplication app = appId != null ? jobApplicationDAO.getById(appId) : new BusinessSectorJobApplication();
+//				BusinessSectorJobApplication app = appId != null ? jobApplicationDAO.getById(appId) : new BusinessSectorJobApplication();
+				BusinessSectorJobApplication app = null;
+				
+				if (appId != null) {
+					app = getApplicationFromJob(job.getApplications(), appId);
+				}
+				
+				// If this is a new application or if getApplicationsFromJob returened null
+				if (app == null) {
+					app = new BusinessSectorJobApplication();
+				} else {
+					app.setId(job.getId());
+				}
+				
 				Citizen person = null;
 
 				String socialSecurityNumber = req.getParameter("socialSecurityNumber");
@@ -154,11 +164,11 @@ public class BusinessSectorSummerJobApplicationModule extends AnnotatedRESTModul
 					return;
 				}
 
-				//				try {
-				//					person = smexServiceHandler.getCitizen(socialSecurityNumber);
-				//				} catch (SmexServiceException e){
-				//					log.error(e);
-				//				}
+//								try {
+//									person = smexServiceHandler.getCitizen(socialSecurityNumber);
+//								} catch (SmexServiceException e){
+//									log.error(e);
+//								}
 
 				FormUtils.createJobApplication(app, req, person);
 
@@ -212,7 +222,7 @@ public class BusinessSectorSummerJobApplicationModule extends AnnotatedRESTModul
 				//Worker applies for a job but has not yet got the job.
 				app.setAssigned(false);
 				
-				if (appId == null) {
+				if (app.getId() == null) {
 					if(job.getApplications() != null) {
 						job.getApplications().add(app);
 					} else {
@@ -222,15 +232,15 @@ public class BusinessSectorSummerJobApplicationModule extends AnnotatedRESTModul
 					}
 				}
 
-				log.info(app);
-				System.out.println("PRECIS INNAN DET SKA SPARAS");
+				log.debug("PRECIS INNAN DET SKA SPARAS");
 
 				try {
-					jobDAO.update(job);
-					if (appId != null) {
-						JsonResponse.sendJsonResponse("{\"status\":\"success\", \"message\":\"Ändringarna har nu sparats.\"}", callback, writer);
-					} else {
+					if (app.getId() == null) {
+						jobDAO.update(job);
 						JsonResponse.sendJsonResponse("{\"status\":\"success\", \"message\":\"Din ansökan har nu sparats.\"}", callback, writer);
+					} else {
+						jobApplicationDAO.save(app);
+						JsonResponse.sendJsonResponse("{\"status\":\"success\", \"message\":\"Ändringarna har nu sparats.\"}", callback, writer);
 					}
 				} catch (SQLException e) {
 					log.error(e);
@@ -241,4 +251,17 @@ public class BusinessSectorSummerJobApplicationModule extends AnnotatedRESTModul
 			}
 	}
 	
+	
+	private BusinessSectorJobApplication getApplicationFromJob(List<BusinessSectorJobApplication> applications, Integer applicationId) {
+		if (applicationId == null || applications == null) {
+			return null;
+		}
+		
+		for (BusinessSectorJobApplication app : applications) {
+			if (app.getId().intValue() == applicationId.intValue()) {
+				return app;
+			}
+		}
+		return null;
+	}
 }
