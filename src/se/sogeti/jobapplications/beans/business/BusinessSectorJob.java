@@ -35,7 +35,14 @@ public class BusinessSectorJob extends Job{
 	@DAOManaged
 	@XMLElement
 	private String company;
-
+	
+	@DAOManaged
+	@XMLElement
+	private Date lastApplicationDay;
+	
+	@DAOManaged
+	@XMLElement
+	private String corporateNumber;
 	
 	@DAOManaged
 	@XMLElement
@@ -106,5 +113,21 @@ public class BusinessSectorJob extends Job{
 	public String toString() {
 		return "BusinessSectorJob [manager=" + manager + ", startDate=" + startDate + ", endDate=" + endDate
 				+ ", company=" + company + ", applications=" + applications + ", mentors=" + mentors + "]";
+	}
+
+	public Date getLastApplicationDay() {
+		return lastApplicationDay;
+	}
+
+	public void setLastApplicationDay(Date lastApplicationDay) {
+		this.lastApplicationDay = lastApplicationDay;
+	}
+
+	public String getCorporateNumber() {
+		return corporateNumber;
+	}
+
+	public void setCorporateNumber(String corporateNumber) {
+		this.corporateNumber = corporateNumber;
 	}
 }

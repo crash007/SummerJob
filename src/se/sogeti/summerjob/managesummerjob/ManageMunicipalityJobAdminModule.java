@@ -97,6 +97,7 @@ public class ManageMunicipalityJobAdminModule extends AnnotatedRESTModule {
         job.setControlled(true);
         job.setControlledDate(new Date(Calendar.getInstance().getTimeInMillis()));
         job.setAdminNotes(req.getParameter("adminNotes"));
+        job.setDescriptionForEmploymentPapers(req.getParameter("descriptionForEmploymentPapers"));
         
 		try {
 			municipalityJobDAO.save(job);
@@ -126,6 +127,7 @@ public class ManageMunicipalityJobAdminModule extends AnnotatedRESTModule {
         job.setControlled(true);
         job.setControlledDate(new Date(Calendar.getInstance().getTimeInMillis()));
         job.setAdminNotes(req.getParameter("adminNotes"));
+        job.setDescriptionForEmploymentPapers(req.getParameter("descriptionForEmploymentPapers"));
         
 		try {
 			municipalityJobDAO.save(job);
@@ -152,6 +154,7 @@ public class ManageMunicipalityJobAdminModule extends AnnotatedRESTModule {
         
         job.setInitiatedByUser(user.getUsername());
         job.setAdminNotes(req.getParameter("adminNotes"));
+        job.setDescriptionForEmploymentPapers(req.getParameter("descriptionForEmploymentPapers"));
         
 		try {
 			municipalityJobDAO.save(job);

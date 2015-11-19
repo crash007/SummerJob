@@ -132,8 +132,9 @@ public class AddBusinessSectorSummerJobModule extends AnnotatedRESTModule{
         
         String startDate = req.getParameter("startDate");
         String endDate = req.getParameter("endDate");
+        String lastApplicationDay = req.getParameter("lastApplicationDay");
         
-        if (startDate == null || endDate == null || startDate.isEmpty() || endDate.isEmpty()) {
+        if (startDate == null || endDate == null || startDate.isEmpty() || endDate.isEmpty() || lastApplicationDay == null || lastApplicationDay.isEmpty()) {
         	JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Datumfälten kan inte lämnas tomma.\"}", callback, writer);
 			return;
         }
@@ -146,11 +147,16 @@ public class AddBusinessSectorSummerJobModule extends AnnotatedRESTModule{
         	endDate = endDate.substring(0, 10);
         }
         
-        Date jobStartDate, jobEndDate;
+        if (lastApplicationDay.length() > 10) {
+        	lastApplicationDay = lastApplicationDay.substring(0, 10);
+        }
+        
+        Date jobStartDate, jobEndDate, jobLastApplicationDay;
         
         try {
         	jobStartDate = Date.valueOf(startDate);
         	jobEndDate = Date.valueOf(endDate);
+        	jobLastApplicationDay = Date.valueOf(lastApplicationDay);
         } catch (IllegalArgumentException e) {
         	log.error(e);
         	JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Datumfälten innehåller datum som inte är korrekt angivna\"}", callback, writer);
@@ -159,6 +165,7 @@ public class AddBusinessSectorSummerJobModule extends AnnotatedRESTModule{
         
         job.setStartDate(jobStartDate);
         job.setEndDate(jobEndDate);
+        job.setLastApplicationDay(jobLastApplicationDay);
         
         List<BusinessSectorMentor> mentors = new ArrayList<BusinessSectorMentor>();
         List<String> mentorUuids = FormUtils.getMentorUuids(req.getParameterNames());
@@ -192,10 +199,16 @@ public class AddBusinessSectorSummerJobModule extends AnnotatedRESTModule{
 		
 		job.setMentors(mentors);
         
+		String corporateNumber = req.getParameter("corporate-number");
 		String company = req.getParameter("company");
         String streetAddress = req.getParameter("street");
         String zipCode = req.getParameter("postalcode");
         String city = req.getParameter("postalarea");
+        
+        if (corporateNumber == null || corporateNumber.isEmpty()) {
+        	JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Fältet för organisationsnummer kan inte lämnas tomt.\"}", callback, writer);
+        	return;
+        }
         
         if (company == null || company.isEmpty()) {
         	JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Fältet för företagsnamn kan inte lämnas tomt.\"}", callback, writer);
@@ -212,15 +225,17 @@ public class AddBusinessSectorSummerJobModule extends AnnotatedRESTModule{
         job.setZipCode(zipCode);
         job.setCity(city);
         job.setCompany(company);
+        job.setCorporateNumber(corporateNumber);
         
         String managerFirstname = req.getParameter("manager-firstname");
         String managerLastname = req.getParameter("manager-lastname");
         String managerPhone = req.getParameter("manager-phone");
-        String managerEmail = req.getParameter("manager-email"); // VALFRI!
+        String managerEmail = req.getParameter("manager-email");
         
         if (managerFirstname == null || managerLastname == null || managerPhone == null
-        		|| managerFirstname.isEmpty() || managerLastname.isEmpty() || managerPhone.isEmpty()) {
-        	JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Namn- och telefonnummerfälten kan inte lämnas tomma för den ansvarige på arbetsplatsen.\"}", callback, writer);
+        		|| managerFirstname.isEmpty() || managerLastname.isEmpty() || managerPhone.isEmpty()
+        		|| managerEmail == null || managerEmail.isEmpty()) {
+        	JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Namn-, telefonnummer- och e-postfälten kan inte lämnas tomma för den ansvarige på arbetsplatsen.\"}", callback, writer);
         	return;
         }
         

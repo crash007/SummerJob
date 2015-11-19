@@ -32,6 +32,7 @@
 					onSelect : function(selected) {
 						$(this).focus();
 						$("input[name*='endDate']").datepicker("option", "minDate", selected);
+						$("input[name*='lastApplicationDay']").datepicker("option", "maxDate", selected);
 					},
 					
 					buttonText: 'Startdatum'
@@ -47,7 +48,19 @@
 						$("input[name*='startDate']").datepicker("option", "maxDate", selected);
 					},
 					buttonText: 'Slutdatum'
-				});								    							  									
+				});
+				
+				$( "input[name*='lastApplicationDay']" ).datepicker({
+					showOn: "button",
+					buttonImage: '<xsl:value-of select="/Document/requestinfo/contextpath"/>/static/f/<xsl:value-of select="/Document/module/sectionID"/>/<xsl:value-of select="/Document/module/moduleID"/>/pics/calendar_grid.png',
+					buttonImageOnly: true,
+					minDate: new Date(),
+					onSelect : function(selected) {
+						$(this).focus();
+<!-- 						$("input[name*='startDate']").datepicker("option", "maxDate", selected); -->
+					},
+					buttonText: 'Slutdatum'
+				});							    							  									
 			});	
 		</script>		
 		
@@ -59,6 +72,19 @@
 		<form class="well" role="form" method="POST" id="business-sector-add-job-form" data-toggle="validator">
 		
 				<input name="jobId" style="display: none" class="form-control" type="text" value="{BusinessSectorJob/id}"/>
+				
+<!-- 				<div class="panel panel-default"> -->
+<!-- 					<div class="panel-heading"> -->
+<!-- 						<h3 class="panel-title">Ansökningsdag</h3> -->
+<!-- 					</div> -->
+<!-- 					<div class="panel-body"> -->
+<!-- 						<div class="form-group col-md-3"> -->
+<!-- 							<label for="date">Sista ansökningsdag*</label> -->
+<!-- 							<input type="text" class="form-control" data-error="ÅÅÅÅ-MM-DD" id="lastApplicationDay" name="lastApplicationDay" placeholder="" required="required" value="{BusinessSectorJob/lastApplicationDay}"/> -->
+<!-- 							<div class="help-block with-errors"></div> -->
+<!-- 					    </div> -->
+<!-- 					</div> -->
+<!-- 				</div> -->
 		
 			  	<div class="panel panel-default">
 				  <div class="panel-heading">
@@ -101,6 +127,11 @@
 								<input type="text" class="form-control" data-error="ÅÅÅÅ-MM-DD" id="endDate" name="endDate" placeholder="" required="required" value="{BusinessSectorJob/endDate}"/>
 								<div class="help-block with-errors">Datum då tjänsten slutar</div>
 					    	</div>
+					    	<div class="form-group col-md-3">
+								<label for="date">Sista ansökningsdag*</label>
+								<input type="text" class="form-control" data-error="ÅÅÅÅ-MM-DD" id="lastApplicationDay" name="lastApplicationDay" placeholder="" required="required" value="{BusinessSectorJob/lastApplicationDay}"/>
+								<div class="help-block with-errors"></div>
+						    </div>
 			    		</div>
 					</div>
 			  		
@@ -122,7 +153,8 @@
 										<p class="help-block">Endast siffror</p>
 									</div>
 									<div class="form-group col-md-3">
-										<label for="mentor-email">E-post</label><input type="email" class="col-md-3 form-control" id="mentor-email" name="mentor-email_{id}" placeholder="" value="{email}"/>
+										<label for="mentor-email">E-post</label>
+										<input type="email" class="col-md-3 form-control" id="mentor-email" name="mentor-email_{id}" placeholder="" value="{email}"/>
 									</div>
 									<div class="form-group col-md-1">
 										<label>Ta bort</label>
@@ -145,6 +177,11 @@
 				  <div class="panel-body">
 				  	<div class="form-group">
 				  		<div class="row">
+				  			<div class="col-md-3">
+							    <label for="corporate-number">Organisationsnummer*</label>				    
+							     <input type="text" class="form-control" id="corporate-number" name="corporate-number" placeholder="" required="required" value="{BusinessSectorJob/corporateNumber}"/>
+							     <div class="help-block with-errors"></div>						    
+					    	</div>
 			  				<div class="col-md-4">
 							    <label for="company">Företag*</label>				    
 							     <input type="text" class="form-control" id="company" name="company" placeholder="" required="required" value="{BusinessSectorJob/company}"/>
@@ -173,36 +210,38 @@
 					    </div>
 				  	</div>
 				  	
-				  	<div class="row" style="margin-bottom: 8px;">
-						<div class="form-group col-md-3">
-							<label for="manager-firstname">Förnamn*</label>
-							<input type="text" class="form-control" id="manager-firstname"
-								name="manager-firstname" placeholder="" required="required" value="{BusinessSectorJob/BusinessSectorManager/firstname}"/>
-							<p class="help-block with-errors">Förnamn till ansvarig på platsen</p>
-						</div>
+				  	<div style="margin-bottom: 8px;">
+				  		<label>Ange chef på arbetsplatsen</label>
+				  		<div class="row">
+							<div class="form-group col-md-3">
+								<label for="manager-firstname">Förnamn*</label>
+								<input type="text" class="form-control" id="manager-firstname"
+									name="manager-firstname" placeholder="" required="required" value="{BusinessSectorJob/BusinessSectorManager/firstname}"/>
+								<p class="help-block with-errors">Förnamn till ansvarig på platsen</p>
+							</div>
+							
+							<div class="form-group col-md-3">
+								<label for="manager-lastname">Efternamn*</label>
+								<input type="text" class="form-control" id="manager-lastname"
+									name="manager-lastname" placeholder="" required="required" value="{BusinessSectorJob/BusinessSectorManager/lastname}"/>
+								<p class="help-block with-errors">Efternamn till ansvarig på platsen</p>
+							</div>
 						
-						<div class="form-group col-md-3">
-							<label for="manager-lastname">Efternamn*</label>
-							<input type="text" class="form-control" id="manager-lastname"
-								name="manager-lastname" placeholder="" required="required" value="{BusinessSectorJob/BusinessSectorManager/lastname}"/>
-							<p class="help-block with-errors">Efternamn till ansvarig på platsen</p>
+							<div class="form-group col-md-3">
+								<label for="manager-phone">Telefonnummer*</label>
+								<input type="text" data-error="Ange ett telefonnummer utan bindestreck" class="numberValidation form-control" id="manager-phone" name="manager-phone"
+									placeholder="" required="required" value="{BusinessSectorJob/BusinessSectorManager/mobilePhone}"/>
+								<p class="help-block with-errors">Telefonnummer till ansvarig på platsen</p>
+							</div>
+						
+							<div class="form-group col-md-3">
+								<label for="manager-email">E-post*</label>
+								<input type="email" class="form-control" id="manager-email" name="manager-email"
+									placeholder="" value="{BusinessSectorJob/BusinessSectorManager/email}" required="required"/>
+								<p class="help-block with-errors">E-post till ansvarig på platsen</p>
+							</div>
 						</div>
-					
-						<div class="form-group col-md-3">
-							<label for="manager-phone">Telefonnummer*</label>
-							<input type="text" data-error="Ange ett telefonnummer utan bindestreck" class="numberValidation form-control" id="manager-phone" name="manager-phone"
-								placeholder="" required="required" value="{BusinessSectorJob/BusinessSectorManager/mobilePhone}"/>
-							<p class="help-block with-errors">Telefonnummer till ansvarig på platsen</p>
-						</div>
-					
-						<div class="form-group col-md-3">
-							<label for="manager-email">E-post</label>
-							<input type="email" class="form-control" id="manager-email" name="manager-email"
-								placeholder="" value="{BusinessSectorJob/BusinessSectorManager/email}"/>
-							<p class="help-block">E-post till ansvarig på platsen</p>
-						</div>
-					</div>
-				  	
+				  	</div>
 				  </div>
 			  	</div>
 			  	

@@ -219,6 +219,12 @@
 			</div>
 			
 			<div class="form-group">
+				<label for="description-employment-papers">Text på anställningsbevis</label>
+				<textarea class="form-control" rows="3" id="description-employment-papers" name="description-employment-papers"><xsl:value-of select="BusinessSectorJob/descriptionForEmploymentPapers"></xsl:value-of></textarea>
+				<div class="help-block with-errors">Skriv här information om arbetet som ska hamna på anställningsbeviset. Om det här fältet är tomt används arbetsbeskrivningen.</div>
+			</div>
+			
+			<div class="form-group">
 				<label for="admin-notes">Handläggarkommentar</label>
 				<textarea class="form-control" rows="5" id="admin-notes" name="admin-notes"><xsl:value-of select="MunicipalityJob/adminNotes"></xsl:value-of></textarea>
 				<div class="help-block with-errors">Valfri. Skriv här anledningen till godkännande eller nekande av en annons.</div>

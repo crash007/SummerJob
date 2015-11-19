@@ -30,7 +30,7 @@
 						  	</div>
 						  	<div class="mgn-top8px row">
 						  		<div class="col-md-12">
-									<label>Yrkesbeskrivning</label>
+									<label>Arbetsbeskrivning</label>
 									<div id="description"><xsl:value-of select="BusinessSectorJob/workDescription"></xsl:value-of></div>
 								</div>
 						  	</div>
@@ -50,6 +50,10 @@
 								<div class="col-md-3">
 									<label for="endDate">Slutdatum</label>
 									<span class="mgn-lft8px" id="endDate"><xsl:value-of select="BusinessSectorJob/endDate"></xsl:value-of></span>
+								</div>
+								<div class="col-md-4">
+									<label for="lastApplicationDay">Sista ansökningsdag</label>
+									<span class="mgn-lft8px" id="lastApplicationDay"><xsl:value-of select="BusinessSectorJob/lastApplicationDay"></xsl:value-of></span>
 								</div>
 						  	</div>
 						  	<div class="mgn-top8px row">
@@ -86,6 +90,12 @@
 						</div>
 						<div class="panel-body">
 							<div class="row">
+								<div class="col-md-3">
+									<label for="corporate-number">Organisationsnummer</label>
+									<div id="corporate-number">
+										<xsl:value-of select="BusinessSectorJob/corporateNumber"></xsl:value-of>
+									</div>
+								</div>
 								<div class="col-md-5">
 									<label for="company">Företag</label>
 									<div id="company">
@@ -113,29 +123,32 @@
 									</div>
 								</div>
 							</div>
-							<div class="mgn-top8px row">
-								<div class="col-md-2">
-									<label>Förnamn</label>
-									<div>
-										<xsl:value-of select="BusinessSectorJob/BusinessSectorManager/firstname"></xsl:value-of>
+							<div class="mgn-top8px">
+								<label class="mgn-top8px">Ansvarig på arbetsplatsen</label>
+								<div class="row">
+									<div class="col-md-2">
+										<label>Förnamn</label>
+										<div>
+											<xsl:value-of select="BusinessSectorJob/BusinessSectorManager/firstname"></xsl:value-of>
+										</div>
 									</div>
-								</div>
-								<div class="col-md-2">
-									<label>Efternamn</label>
-									<div>
-										<xsl:value-of select="BusinessSectorJob/BusinessSectorManager/lastname"></xsl:value-of>
+									<div class="col-md-2">
+										<label>Efternamn</label>
+										<div>
+											<xsl:value-of select="BusinessSectorJob/BusinessSectorManager/lastname"></xsl:value-of>
+										</div>
 									</div>
-								</div>
-								<div class="col-md-2">
-									<label>Telefonnummer</label>
-									<div>
-										<xsl:value-of select="BusinessSectorJob/BusinessSectorManager/mobilePhone"></xsl:value-of>
+									<div class="col-md-2">
+										<label>Telefonnummer</label>
+										<div>
+											<xsl:value-of select="BusinessSectorJob/BusinessSectorManager/mobilePhone"></xsl:value-of>
+										</div>
 									</div>
-								</div>
-								<div class="col-md-3">
-									<label>E-postadress</label>
-									<div>
-										<xsl:value-of select="BusinessSectorJob/BusinessSectorManager/email"></xsl:value-of>
+									<div class="col-md-3">
+										<label>E-postadress</label>
+										<div>
+											<xsl:value-of select="BusinessSectorJob/BusinessSectorManager/email"></xsl:value-of>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -195,6 +208,12 @@
 				<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
 				<span class="sr-only">Success:</span>
 				<span class="message"></span>
+			</div>
+			
+			<div class="form-group">
+				<label for="description-employment-papers">Text på anställningsbevis</label>
+				<textarea class="form-control" rows="3" id="description-employment-papers" name="description-employment-papers"><xsl:value-of select="BusinessSectorJob/descriptionForEmploymentPapers"></xsl:value-of></textarea>
+				<div class="help-block with-errors">Skriv här information om arbetet som ska hamna på anställningsbeviset. Om det här fältet är tomt används arbetsbeskrivningen.</div>
 			</div>
 			
 			<div class="form-group">

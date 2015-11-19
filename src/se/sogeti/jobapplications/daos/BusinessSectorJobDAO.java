@@ -1,17 +1,15 @@
 package se.sogeti.jobapplications.daos;
 
-import java.lang.reflect.Field;
+import java.sql.Date;
 import java.sql.SQLException;
-import java.util.List;
+import java.util.Calendar;
 
 import javax.sql.DataSource;
 
-import se.sogeti.jobapplications.beans.Job;
 import se.sogeti.jobapplications.beans.business.BusinessSectorJob;
-import se.sogeti.jobapplications.beans.business.BusinessSectorJobApplication;
 import se.unlogic.standardutils.dao.AnnotatedDAOFactory;
 import se.unlogic.standardutils.dao.HighLevelQuery;
-import se.unlogic.standardutils.reflection.ReflectionUtils;
+import se.unlogic.standardutils.dao.QueryOperators;
 
 public class BusinessSectorJobDAO extends JobDAO<BusinessSectorJob>{
 	public BusinessSectorJobDAO(DataSource dataSource, Class<BusinessSectorJob> beanClass,
@@ -29,7 +27,17 @@ public class BusinessSectorJobDAO extends JobDAO<BusinessSectorJob>{
 //		query.addRelation(JOB_APPLICATIONS_RELATION);
 //		return this.get(query);
 //	}
-
 	
-
+	public java.util.List<BusinessSectorJob> getAllApproved() throws SQLException {
+		System.out.println("getAllApproved i BusinessSectorJobDAO");
+		return this.getByFieldAndBoolAndLastApplicationDayNotPassed("approved", true);
+	}
+	
+	public java.util.List<BusinessSectorJob> getByFieldAndBoolAndLastApplicationDayNotPassed(String field, boolean param) throws SQLException {
+		System.out.println("getByFieldAndBoolAndLastApplicationDayNotPassed i BusinessSectorJobDAO");
+		HighLevelQuery<BusinessSectorJob> query = new HighLevelQuery<BusinessSectorJob>();
+		query.addParameter(this.getParamFactory(field, Boolean.class).getParameter(param));
+		query.addParameter(this.getParamFactory("lastApplicationDay", Date.class).getParameter(new Date(Calendar.getInstance().getTimeInMillis()), QueryOperators.BIGGER_THAN_OR_EUALS));
+		return this.getAll(query);
+	}
 }

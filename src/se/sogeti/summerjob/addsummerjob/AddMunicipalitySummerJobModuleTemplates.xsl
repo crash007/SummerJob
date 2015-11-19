@@ -258,9 +258,9 @@
 								     <p class="help-block">Endast siffror</p>
 						    	</div>
 				  				<div class="col-md-3">
-								    <label for="manager">E-post</label>				    
-								     <input type="text" class="form-control" id="manager-email" name="manager-email" placeholder="" value="{MunicipalityJob/MunicipalityManager/email}"/>
-								    <p class="help-block">Valfri</p>
+								    <label for="manager">E-post*</label>				    
+								     <input type="email" class="form-control" id="manager-email" name="manager-email" required="required" placeholder="" value="{MunicipalityJob/MunicipalityManager/email}"/>
+								    <p class="help-block"></p>
 						    	</div>						    	
 				    	</div>
 			    	</div>

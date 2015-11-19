@@ -259,9 +259,11 @@ public class AddMunicipalitySummerJobModule extends AnnotatedRESTModule{
 		String managerFirstname = req.getParameter("manager-firstname");
 		String managerLastname = req.getParameter("manager-lastname");
 		String managerPhone = req.getParameter("manager-phone");
+		String managerEmail = req.getParameter("manager-email");
 		
 		if (managerFirstname == null || managerLastname == null || managerPhone == null
-				|| managerFirstname.isEmpty() || managerLastname.isEmpty() || managerPhone.isEmpty()) {
+				|| managerFirstname.isEmpty() || managerLastname.isEmpty() || managerPhone.isEmpty()
+				|| managerEmail == null || managerEmail.isEmpty()) {
 			JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Kontaktupgifter till den ansvarige på arbetsplatsen saknas i annonsen.\"}", callback, writer);
 			return;
 		}
@@ -269,7 +271,7 @@ public class AddMunicipalitySummerJobModule extends AnnotatedRESTModule{
 		manager.setFirstname(managerFirstname);
 		manager.setLastname(managerLastname);
 		manager.setMobilePhone(managerPhone);
-		manager.setEmail(req.getParameter("manager-email"));
+		manager.setEmail(managerEmail);
 		job.setManager(manager);
 		
 		List<MunicipalityMentor> mentors = new ArrayList<MunicipalityMentor>();

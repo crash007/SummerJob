@@ -96,6 +96,7 @@ public class ManageBusinessSectorJobAdminModule extends AnnotatedRESTModule {
         job.setControlled(true);
         job.setControlledDate(new Date(Calendar.getInstance().getTimeInMillis()));
         job.setAdminNotes(req.getParameter("adminNotes"));
+        job.setDescriptionForEmploymentPapers(req.getParameter("descriptionForEmploymentPapers"));
         
 		try {
 			businessSectorJobDAO.save(job);
@@ -125,6 +126,7 @@ public class ManageBusinessSectorJobAdminModule extends AnnotatedRESTModule {
         job.setControlled(true);
         job.setControlledDate(new Date(Calendar.getInstance().getTimeInMillis()));
         job.setAdminNotes(req.getParameter("adminNotes"));
+        job.setDescriptionForEmploymentPapers(req.getParameter("descriptionForEmploymentPapers"));
         
 		try {
 			businessSectorJobDAO.save(job);
@@ -151,6 +153,7 @@ public class ManageBusinessSectorJobAdminModule extends AnnotatedRESTModule {
         
         job.setInitiatedByUser(user.getUsername());
         job.setAdminNotes(req.getParameter("adminNotes"));
+        job.setDescriptionForEmploymentPapers(req.getParameter("descriptionForEmploymentPapers"));
         
 		try {
 			businessSectorJobDAO.save(job);
