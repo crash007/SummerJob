@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
+import org.datacontract.schemas._2004._07.sundsvall_meta_smex.MentorData;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -274,37 +275,37 @@ public class AddMunicipalitySummerJobModule extends AnnotatedRESTModule{
 		manager.setEmail(managerEmail);
 		job.setManager(manager);
 		
-		List<MunicipalityMentor> mentors = new ArrayList<MunicipalityMentor>();
-        List<String> mentorUuids = FormUtils.getMentorUuids(req.getParameterNames());
-		for(String s : mentorUuids){
-			 MunicipalityMentor mentor = new MunicipalityMentor();
-			 Integer mentorId = NumberUtils.toInt(req.getParameter("mentor-id-" + s));
-			 
-			 String mentorFirstname = req.getParameter("mentor-firstname_" + s);
-			 String mentorLastname = req.getParameter("mentor-lastname_" + s);
-			 String mentorPhone = req.getParameter("mentor-phone_" + s);
-			 
-			 if (mentorId != null) {
-				 mentor.setId(mentorId);
-				 
-				 if ((mentorFirstname == null && mentorLastname == null && mentorPhone == null)
-						 || (mentorFirstname.isEmpty() && mentorLastname.isEmpty() && mentorPhone.isEmpty())) {
-					 municipalityMentorDAO.removeById(mentorId);
-					 continue;
-				 }
-			 } else if (mentorFirstname == null || mentorLastname == null || mentorPhone == null
-					 || mentorFirstname.isEmpty() || mentorLastname.isEmpty() || mentorPhone.isEmpty()) {
-				 continue;
-			 }
-			 
-			 mentor.setFirstname(mentorFirstname);
-			 mentor.setLastname(mentorLastname);
-			 mentor.setEmail(req.getParameter("mentor-email_" + s));
-			 mentor.setMobilePhone(mentorPhone);
-			 mentors.add(mentor);
-		}
-		
-		job.setMentors(mentors);
+//		List<MunicipalityMentor> mentors = new ArrayList<MunicipalityMentor>();
+//        List<String> mentorUuids = FormUtils.getMentorUuids(req.getParameterNames());
+//		for(String s : mentorUuids){
+//			 MunicipalityMentor mentor = new MunicipalityMentor();
+//			 Integer mentorId = NumberUtils.toInt(req.getParameter("mentor-id-" + s));
+//			 
+//			 String mentorFirstname = req.getParameter("mentor-firstname_" + s);
+//			 String mentorLastname = req.getParameter("mentor-lastname_" + s);
+//			 String mentorPhone = req.getParameter("mentor-phone_" + s);
+//			 
+//			 if (mentorId != null) {
+//				 mentor.setId(mentorId);
+//				 
+//				 if ((mentorFirstname == null && mentorLastname == null && mentorPhone == null)
+//						 || (mentorFirstname.isEmpty() && mentorLastname.isEmpty() && mentorPhone.isEmpty())) {
+//					 municipalityMentorDAO.removeById(mentorId);
+//					 continue;
+//				 }
+//			 } else if (mentorFirstname == null || mentorLastname == null || mentorPhone == null
+//					 || mentorFirstname.isEmpty() || mentorLastname.isEmpty() || mentorPhone.isEmpty()) {
+//				 continue;
+//			 }
+//			 
+//			 mentor.setFirstname(mentorFirstname);
+//			 mentor.setLastname(mentorLastname);
+//			 mentor.setEmail(req.getParameter("mentor-email_" + s));
+//			 mentor.setMobilePhone(mentorPhone);
+//			 mentors.add(mentor);
+//		}
+//		
+//		job.setMentors(mentors);
 		
 		if (jobId == null) {
 			job.setApproved(false);
@@ -349,23 +350,48 @@ public class AddMunicipalitySummerJobModule extends AnnotatedRESTModule{
 				for(Period p:periods){
 					if(req.getParameter("period_"+p.getId())!=null){
 						job.setPeriod(p);
-						
+
+						List<MunicipalityMentor> mentors = new ArrayList<MunicipalityMentor>();
+						List<String> mentorUuids = FormUtils.getMentorUuids(req.getParameterNames());
+						for(String s : mentorUuids){
+							if (NumberUtils.toInt(s.split("_")[1]).intValue() == p.getId().intValue()) {
+								MunicipalityMentor mentor = new MunicipalityMentor();
+								String mentorFirstname = req.getParameter("mentor-firstname_" + s);
+								String mentorLastname = req.getParameter("mentor-lastname_" + s);
+								String mentorPhone = req.getParameter("mentor-phone_" + s);
+
+								if (mentorFirstname == null || mentorLastname == null || mentorPhone == null
+										|| mentorFirstname.isEmpty() || mentorLastname.isEmpty() || mentorPhone.isEmpty()) {
+									continue;
+								}
+
+								mentor.setFirstname(mentorFirstname);
+								mentor.setLastname(mentorLastname);
+								mentor.setEmail(req.getParameter("mentor-email_" + s));
+								mentor.setMobilePhone(mentorPhone);
+								mentors.add(mentor);
+							}
+							job.setMentors(mentors);
+						}
+
 						Integer numberOfWorkers = NumberUtils.toInt(req.getParameter(p.getName()+"_numberOfWorkersNeeded"));
 						if (numberOfWorkers == null) {
 							JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Antal lediga platser saknas för period "+p.getName()+".\"}", callback, writer);
 							return;
 						}
 						job.setNumberOfWorkersNeeded(numberOfWorkers);
-						
+
 						log.info("saving form for period: "+p.getName());
-						
+
 						municipalityJobDAO.save(job);
-						
+
 						job.setId(null);
 						job.getManager().setId(null);
-						
-						for(MunicipalityMentor m:job.getMentors()){
-							m.setId(null);
+
+						if (job.getMentors() != null) {
+							for(MunicipalityMentor m:job.getMentors()){
+								m.setId(null);
+							}
 						}
 					}
 				}

@@ -19,6 +19,7 @@ public class FormUtils {
 			String s = paramNames.nextElement();
 			if(s.startsWith("mentor-firstname")){				
 				String uuid = s.split("_")[1];
+				uuid += "_" + s.split("_")[2];
 				
 				result.add(uuid);
 			}

@@ -119,34 +119,32 @@
 					  	</div>
 				  	</div>
 				  	<div id="geoAreaSelect" class="row">
-					  		<div class="col-md-4 form-group">
-							    <label for="geoArea">Välj geografiskt område*</label>				    
-							    <select class="form-control" name="geoArea" id="geoArea" required="required">
-							    	<option value=""/>
-									<xsl:for-each select="GeoAreas/GeoArea">
-										<xsl:choose>
-											<xsl:when test="selected = 'true'">
-												<option selected="selected" value="{id}"><xsl:value-of select="name"/></option>
-											</xsl:when>
-											<xsl:otherwise>
-												<option value="{id}"><xsl:value-of select="name" /></option>
-											</xsl:otherwise>
-										</xsl:choose>
-									</xsl:for-each>
-								</select>
-								<p class="help-block with-errors">Det geografiska område arbetsplatsen tillhör</p>
-							</div>
-							<div class="col-md-6">
-								<label>Området omfattar</label>
+				  		<div class="col-md-4 form-group">
+						    <label for="geoArea">Välj geografiskt område*</label>				    
+						    <select class="form-control" name="geoArea" id="geoArea" required="required">
+						    	<option value=""/>
 								<xsl:for-each select="GeoAreas/GeoArea">
-									<div class="mgn-top8px" style="display: none;" id="geoarea-description_{id}"><xsl:value-of select="description"></xsl:value-of></div>
+									<xsl:choose>
+										<xsl:when test="selected = 'true'">
+											<option selected="selected" value="{id}"><xsl:value-of select="name"/></option>
+										</xsl:when>
+										<xsl:otherwise>
+											<option value="{id}"><xsl:value-of select="name" /></option>
+										</xsl:otherwise>
+									</xsl:choose>
 								</xsl:for-each>
-							</div>
+							</select>
+							<p class="help-block with-errors">Det geografiska område arbetsplatsen tillhör</p>
+						</div>
+						<div class="col-md-6">
+							<label>Området omfattar</label>
+							<xsl:for-each select="GeoAreas/GeoArea">
+								<div class="mgn-top8px" style="display: none;" id="geoarea-description_{id}"><xsl:value-of select="description"></xsl:value-of></div>
+							</xsl:for-each>
+						</div>
 					</div>
 				  </div>
 			  	</div>
-			  	
-			  	
 			  	<div class="panel panel-default">
 				  <div class="panel-heading">
 				    <h3 class="panel-title">Arbete</h3>
@@ -168,132 +166,187 @@
 					    <p class="help-block with-errors">Beskriv vad arbetsuppgifterna kommer vara</p>
 				  	</div>				  	
 				  	
-				  	<div class="form-group">
-					  	<label for="period">Välj perioder*</label>
-						  <table id="period-table" class="table">
-						  	<thead>
-						  		<tr>
-						  			<th>Välj</th>
-						  			<th>Periodnamn</th>
-						  			<th>Startdatum</th>
-						  			<th>Slutdatum</th>
-						  			<th>Antal platser*</th>
-						  		</tr>
-						  	</thead>
-						  	<tbody>
-								<div class="checkbox-group">
-									<xsl:choose>
-									<xsl:when test="MunicipalityJob">
-										<xsl:variable name="numberOfWorkers" select="MunicipalityJob/numberOfWorkersNeeded"></xsl:variable>
-										<xsl:for-each select="Periods/Period">
-										<xsl:choose>
-									  		<xsl:when test="selected = 'true'">
-								  				<tr class="form-group">
-										  			<td>
-										  			    <input class="period-checkbox" type="checkbox" name="period_{id}" disabled="disabled" checked="checked"/>
-													</td>							  			
-										  			<td><xsl:value-of select="name"/></td>
-										  			<td><xsl:value-of select="startDate"/></td>
-										  			<td><xsl:value-of select="endDate"/></td>
-										  			<td>								  				
-									    				<input value="{$numberOfWorkers}" class="form-control numberOfWorkersField" type="number" min="1" max="99" name="{name}_numberOfWorkersNeeded" id="{name}_numberOfWorkersNeeded"/>	
-									    				<p class="help-block">Skriv ett heltal mellan 1 och 99</p>	 
-								    				</td>
-									  			</tr>
-								  			</xsl:when>
-								  			<xsl:otherwise>
-								  				<tr class="form-group">
-										  			<td>
-										  			    <input class="period-checkbox" type="checkbox" name="period_{id}" disabled="disabled"/>
-													</td>							  			
-										  			<td><xsl:value-of select="name"/></td>
-										  			<td><xsl:value-of select="startDate"/></td>
-										  			<td><xsl:value-of select="endDate"/></td>
-										  			<td>								  				
-									    				<input class="form-control numberOfWorkersField" type="number" min="1" max="99" name="{name}_numberOfWorkersNeeded" id="{name}_numberOfWorkersNeeded" disabled="disabled"/>	
-									    				<p class="help-block">Skriv ett heltal mellan 1 och 99</p>	 
-								    				</td>
-									  			</tr>
-								  			</xsl:otherwise>
-								  			</xsl:choose>
-							  			</xsl:for-each>	
-									</xsl:when>
-									<xsl:otherwise>
-										<xsl:for-each select="Periods/Period">
-									  			<tr class="form-group">
-										  			<td>
-										  			    <input class="period-checkbox" type="checkbox" name="period_{id}" />
-													</td>							  			
-										  			<td><xsl:value-of select="name"/></td>
-										  			<td><xsl:value-of select="startDate"/></td>
-										  			<td><xsl:value-of select="endDate"/></td>
-										  			<td>								  				
-									    				<input class="form-control numberOfWorkersField" type="number" min="1" max="99" name="{name}_numberOfWorkersNeeded" id="{name}_numberOfWorkersNeeded" />	
-									    				<p class="help-block">Skriv ett heltal mellan 1 och 99</p>	 
-								    				</td>
-									  			</tr>
-								  		</xsl:for-each>	
-									</xsl:otherwise>
-									</xsl:choose>
-							  	</div>					  		
-						  	</tbody>
-					  	</table>
-					  	<p style="display: none; color: #a94442;" id="period-errors" class="help-block with-errors">Du måste välja minst en period</p>
-					</div>
+				  	<div id="periods-group" class="form-group">
+				  		<label>Välj perioder*</label>
+				  		<div class="row">
+					  		<div class="col-md-1 bold">Välj</div>
+					  		<div class="col-md-2 bold">Periodnamn</div>
+					  		<div class="col-md-2 bold">Startdatum</div>
+					  		<div class="col-md-2 bold">Slutdatum</div>
+					  		<div class="col-md-3 bold">Antal platser*</div>
+				  		</div>
+				  		<xsl:for-each select="Periods/Period">
+				  			<div class="period-div" id="periodnr_{id}">
+					  			<div style="margin-bottom: 0px" class="row form-group">
+									<div class="col-md-1"><input class="period-checkbox" type="checkbox" name="period_{id}" /></div>
+							  		<div class="col-md-2"><xsl:value-of select="name"/></div>
+							  		<div class="col-md-2"><xsl:value-of select="startDate"/></div>
+							  		<div class="col-md-2"><xsl:value-of select="endDate"/></div>
+							  		<div class="col-md-3">
+							  			<input class="form-control numberOfWorkersField" disabled="disabled" type="number" min="1" max="99" name="{name}_numberOfWorkersNeeded" id="{name}_numberOfWorkersNeeded"/>
+	 									<p class="help-block">Skriv ett heltal mellan 1 och 99</p>
+							  		</div>		  			
+					  			</div>
+					  			<div style="margin-bottom: 8px" class="add-mentor-div hidden">
+					  				<label>Ange handledare</label>
+					  				<div id="mentors-wrapper">
+							  			<xsl:for-each select="MunicipalityJob/mentors/MunicipalityMentor">
+											<div class="row collapse in" style="margin-bottom: 8px;">
+												<input style="display: none;" id="mentor-id-{id}" name="mentor-id-{id}" type="text" value="{id}"/>
+												<div class="form-group col-md-3">
+													<label for="mentor-firstname">Förnamn</label><input type="text" class="form-control" id="mentor-firstname" name="mentor-firstname_{id}" placeholder="" value="{firstname}"/>
+												</div>
+												<div class="form-group col-md-3">
+													<label for="mentor-lastname">Efternamn</label><input type="text" class="form-control" id="mentor-lastname" name="mentor-lastname_{id}" placeholder="" value="{lastname}"/>
+												</div>
+												<div class="form-group col-md-2">
+													<label for="mentor-phone">Telefonnummer</label><input type="text" class="numberValidation form-control" id="mentor-phone" name="mentor-phone_{id}" placeholder="" value="{mobilePhone}"/>
+													<p class="help-block">Endast siffror</p>
+												</div>
+												<div class="form-group col-md-3">
+													<label for="mentor-email">E-post</label><input type="email" class="col-md-3 form-control" id="mentor-email" name="mentor-email_{id}" placeholder="" value="{email}"/>
+												</div>
+												<div class="form-group col-md-1">
+													<label>Ta bort</label>
+													<div class="remove-mentor mgn-top8px glyphicon glyphicon-remove" aria-hidden="true"></div>
+												</div>
+											</div>
+										</xsl:for-each>
+							    	</div>
+					  				<a href="#" class="add-municipality-mentor-btn"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Lägg till handledare</a>
+					  			</div>
+				  			</div>
+				  		</xsl:for-each>
+				  	</div>
+				  	
+<!-- 				  	<div class="form-group"> -->
+<!-- 					  	<label for="period">Välj perioder*</label> -->
+<!-- 						  <table id="period-table" class="table"> -->
+<!-- 						  	<thead> -->
+<!-- 						  		<tr> -->
+<!-- 						  			<th>Välj</th> -->
+<!-- 						  			<th>Periodnamn</th> -->
+<!-- 						  			<th>Startdatum</th> -->
+<!-- 						  			<th>Slutdatum</th> -->
+<!-- 						  			<th>Antal platser*</th> -->
+<!-- 						  		</tr> -->
+<!-- 						  	</thead> -->
+<!-- 						  	<tbody> -->
+<!-- 								<div class="checkbox-group"> -->
+<!-- 									<xsl:choose> -->
+<!-- 									<xsl:when test="MunicipalityJob"> -->
+<!-- 										<xsl:variable name="numberOfWorkers" select="MunicipalityJob/numberOfWorkersNeeded"></xsl:variable> -->
+<!-- 										<xsl:for-each select="Periods/Period"> -->
+<!-- 										<xsl:choose> -->
+<!-- 									  		<xsl:when test="selected = 'true'"> -->
+<!-- 								  				<tr class="form-group"> -->
+<!-- 										  			<td> -->
+<!-- 										  			    <input class="period-checkbox" type="checkbox" name="period_{id}" disabled="disabled" checked="checked"/> -->
+<!-- 													</td>							  			 -->
+<!-- 										  			<td><xsl:value-of select="name"/></td> -->
+<!-- 										  			<td><xsl:value-of select="startDate"/></td> -->
+<!-- 										  			<td><xsl:value-of select="endDate"/></td> -->
+<!-- 										  			<td>								  				 -->
+<!-- 									    				<input value="{$numberOfWorkers}" class="form-control numberOfWorkersField" type="number" min="1" max="99" name="{name}_numberOfWorkersNeeded" id="{name}_numberOfWorkersNeeded"/>	 -->
+<!-- 									    				<p class="help-block">Skriv ett heltal mellan 1 och 99</p>	  -->
+<!-- 								    				</td> -->
+<!-- 									  			</tr> -->
+<!-- 								  			</xsl:when> -->
+<!-- 								  			<xsl:otherwise> -->
+<!-- 								  				<tr class="form-group"> -->
+<!-- 										  			<td> -->
+<!-- 										  			    <input class="period-checkbox" type="checkbox" name="period_{id}" disabled="disabled"/> -->
+<!-- 													</td>							  			 -->
+<!-- 										  			<td><xsl:value-of select="name"/></td> -->
+<!-- 										  			<td><xsl:value-of select="startDate"/></td> -->
+<!-- 										  			<td><xsl:value-of select="endDate"/></td> -->
+<!-- 										  			<td>								  				 -->
+<!-- 									    				<input class="form-control numberOfWorkersField" type="number" min="1" max="99" name="{name}_numberOfWorkersNeeded" id="{name}_numberOfWorkersNeeded" disabled="disabled"/>	 -->
+<!-- 									    				<p class="help-block">Skriv ett heltal mellan 1 och 99</p>	  -->
+<!-- 								    				</td> -->
+<!-- 									  			</tr> -->
+<!-- 								  			</xsl:otherwise> -->
+<!-- 								  			</xsl:choose> -->
+<!-- 							  			</xsl:for-each>	 -->
+<!-- 									</xsl:when> -->
+<!-- 									<xsl:otherwise> -->
+<!-- 										<xsl:for-each select="Periods/Period"> -->
+<!-- 									  			<tr class="form-group"> -->
+<!-- 										  			<td> -->
+<!-- 										  			    <input class="period-checkbox" type="checkbox" name="period_{id}" /> -->
+<!-- 													</td>							  			 -->
+<!-- 										  			<td><xsl:value-of select="name"/></td> -->
+<!-- 										  			<td><xsl:value-of select="startDate"/></td> -->
+<!-- 										  			<td><xsl:value-of select="endDate"/></td> -->
+<!-- 										  			<td>								  				 -->
+<!-- 									    				<input class="form-control numberOfWorkersField" type="number" min="1" max="99" name="{name}_numberOfWorkersNeeded" id="{name}_numberOfWorkersNeeded" />	 -->
+<!-- 									    				<p class="help-block">Skriv ett heltal mellan 1 och 99</p>	  -->
+<!-- 								    				</td> -->
+<!-- 									  			</tr> -->
+<!-- 								  		</xsl:for-each>	 -->
+<!-- 									</xsl:otherwise> -->
+<!-- 									</xsl:choose> -->
+<!-- 							  	</div>					  		 -->
+<!-- 						  	</tbody> -->
+<!-- 					  	</table> -->
+<!-- 					  	<p style="display: none; color: #a94442;" id="period-errors" class="help-block with-errors">Du måste välja minst en period</p> -->
+<!-- 					</div> -->
 					
 					<div>
 			  			<label>Ange chef på arbetsplatsen</label>
 			  			<div class="row">
 				  				<div class="form-group col-md-3">
 								    <label for="manager">Förnamn*</label>				    
-								     <input type="text" class="form-control" id="manager-firstname" name="manager-firstname" placeholder="" required="required" value="{MunicipalityJob/MunicipalityManager/firstname}"/>							    
+								     <input type="text" class="form-control" id="manager-firstname" name="manager-firstname" placeholder="" required="required" value="{MunicipalityJob/MunicipalityManager/firstname}"/>
+								     <p class="help-block with-errors"></p>							    
 						    	</div>
 						    	<div class="form-group col-md-3">
 								    <label for="manager">Efternamn*</label>				    
-								     <input type="text" class="form-control" id="manager-lastname" name="manager-lastname" placeholder="" required="required" value="{MunicipalityJob/MunicipalityManager/lastname}"/>							    
+								     <input type="text" class="form-control" id="manager-lastname" name="manager-lastname" placeholder="" required="required" value="{MunicipalityJob/MunicipalityManager/lastname}"/>	
+								     <p class="help-block with-errors"></p>						    
 						    	</div>
 						    	<div class="form-group col-md-3">
 								    <label for="manager">Telefonnummer*</label>				    
-								     <input type="text" class="numberValidation form-control" id="manager-phone" name="manager-phone" placeholder="" required="required" value="{MunicipalityJob/MunicipalityManager/mobilePhone}"/>
-								     <p class="help-block">Endast siffror</p>
+								     <input type="text" class="numberValidation form-control" data-error="Endast siffror" id="manager-phone" name="manager-phone" placeholder="" required="required" value="{MunicipalityJob/MunicipalityManager/mobilePhone}"/>
+								     <p class="help-block with-errors">Endast siffror</p>
 						    	</div>
 				  				<div class="col-md-3">
 								    <label for="manager">E-post*</label>				    
-								     <input type="email" class="form-control" id="manager-email" name="manager-email" required="required" placeholder="" value="{MunicipalityJob/MunicipalityManager/email}"/>
-								    <p class="help-block"></p>
+								     <input type="email" class="form-control" data-error="Fyll i en giltig e-postadress" id="manager-email" name="manager-email" required="required" placeholder="" value="{MunicipalityJob/MunicipalityManager/email}"/>
+								    <p class="help-block with-errors"></p>
 						    	</div>						    	
 				    	</div>
 			    	</div>
 			  		
-			  		<div class="form-group">
-			  			<label>Ange handledare <span style="font-weight: normal; font-size: 90%;"><i>(Förnamn, efternamn och telefonnummer krävs för att en handledare ska sparas)</i></span></label>
-			  			<div id="mentors-wrapper">
-				  			<xsl:for-each select="MunicipalityJob/mentors/MunicipalityMentor">
-								<div class="row collapse in" style="margin-bottom: 8px;">
-									<input style="display: none;" id="mentor-id-{id}" name="mentor-id-{id}" type="text" value="{id}"/>
-									<div class="form-group col-md-3">
-										<label for="mentor-firstname">Förnamn</label><input type="text" class="form-control" id="mentor-firstname" name="mentor-firstname_{id}" placeholder="" value="{firstname}"/>
-									</div>
-									<div class="form-group col-md-3">
-										<label for="mentor-lastname">Efternamn</label><input type="text" class="form-control" id="mentor-lastname" name="mentor-lastname_{id}" placeholder="" value="{lastname}"/>
-									</div>
-									<div class="form-group col-md-2">
-										<label for="mentor-phone">Telefonnummer</label><input type="text" class="numberValidation form-control" id="mentor-phone" name="mentor-phone_{id}" placeholder="" value="{mobilePhone}"/>
-										<p class="help-block">Endast siffror</p>
-									</div>
-									<div class="form-group col-md-3">
-										<label for="mentor-email">E-post</label><input type="email" class="col-md-3 form-control" id="mentor-email" name="mentor-email_{id}" placeholder="" value="{email}"/>
-									</div>
-									<div class="form-group col-md-1">
-										<label>Ta bort</label>
-										<div class="remove-mentor mgn-top8px glyphicon glyphicon-remove" aria-hidden="true"></div>
-									</div>
-								</div>
-							</xsl:for-each>
-				    	</div>
+<!-- 			  		<div class="form-group"> -->
+<!-- 			  			<label>Ange handledare <span style="font-weight: normal; font-size: 90%;"><i>(Förnamn, efternamn och telefonnummer krävs för att en handledare ska sparas)</i></span></label> -->
+<!-- 			  			<div id="mentors-wrapper"> -->
+<!-- 				  			<xsl:for-each select="MunicipalityJob/mentors/MunicipalityMentor"> -->
+<!-- 								<div class="row collapse in" style="margin-bottom: 8px;"> -->
+<!-- 									<input style="display: none;" id="mentor-id-{id}" name="mentor-id-{id}" type="text" value="{id}"/> -->
+<!-- 									<div class="form-group col-md-3"> -->
+<!-- 										<label for="mentor-firstname">Förnamn</label><input type="text" class="form-control" id="mentor-firstname" name="mentor-firstname_{id}" placeholder="" value="{firstname}"/> -->
+<!-- 									</div> -->
+<!-- 									<div class="form-group col-md-3"> -->
+<!-- 										<label for="mentor-lastname">Efternamn</label><input type="text" class="form-control" id="mentor-lastname" name="mentor-lastname_{id}" placeholder="" value="{lastname}"/> -->
+<!-- 									</div> -->
+<!-- 									<div class="form-group col-md-2"> -->
+<!-- 										<label for="mentor-phone">Telefonnummer</label><input type="text" class="numberValidation form-control" id="mentor-phone" name="mentor-phone_{id}" placeholder="" value="{mobilePhone}"/> -->
+<!-- 										<p class="help-block">Endast siffror</p> -->
+<!-- 									</div> -->
+<!-- 									<div class="form-group col-md-3"> -->
+<!-- 										<label for="mentor-email">E-post</label><input type="email" class="col-md-3 form-control" id="mentor-email" name="mentor-email_{id}" placeholder="" value="{email}"/> -->
+<!-- 									</div> -->
+<!-- 									<div class="form-group col-md-1"> -->
+<!-- 										<label>Ta bort</label> -->
+<!-- 										<div class="remove-mentor mgn-top8px glyphicon glyphicon-remove" aria-hidden="true"></div> -->
+<!-- 									</div> -->
+<!-- 								</div> -->
+<!-- 							</xsl:for-each> -->
+<!-- 				    	</div> -->
 				    	
-				    	<a href="#" class="add-mentor-btn"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Lägg till handledare</a>
-				  	</div>
+<!-- 				    	<a href="#" class="add-mentor-btn"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Lägg till handledare</a> -->
+<!-- 				  	</div> -->
 				  	
 				  </div>
 		  		</div>		
@@ -332,8 +385,8 @@
 					  		<div class="form-group col-md-3">
 							    <label for="driversLicenseType">Välj körkortstyp*</label>				    
 							    <select class="form-control" name="driversLicenseType" id="driversLicenseType">
+									<option value=""/>
 									<xsl:for-each select="DriversLicenseTypes/DriversLicenseType">
-										<option value=""/>
 										<xsl:choose>
 											<xsl:when test="selected = 'true'">
 												<option selected="selected" value="{id}"><xsl:value-of select="name" /> - <xsl:value-of select="description" /></option>
