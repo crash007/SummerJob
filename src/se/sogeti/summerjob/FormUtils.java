@@ -17,9 +17,14 @@ public class FormUtils {
 		List<String> result = new ArrayList<String>();
 		while(paramNames.hasMoreElements()){
 			String s = paramNames.nextElement();
-			if(s.startsWith("mentor-firstname")){				
-				String uuid = s.split("_")[1];
-				uuid += "_" + s.split("_")[2];
+			if(s.startsWith("mentor-firstname")){		
+				String[] splitted = s.split("_");
+//				String uuid = s.split("_")[1];
+				
+				String uuid = splitted[1];
+				if (splitted.length == 3) {
+					uuid += "_" + s.split("_")[2];
+				}
 				
 				result.add(uuid);
 			}
@@ -45,7 +50,6 @@ public class FormUtils {
 	}
 	
 	public static  <T extends JobApplication> void createJobApplication(T app, HttpServletRequest req, Citizen person){
-		
 		
 		app.setCvLocation(req.getParameter("cvFile"));		
 		app.setCity(req.getParameter("postalarea"));

@@ -175,48 +175,90 @@
 					  		<div class="col-md-2 bold">Slutdatum</div>
 					  		<div class="col-md-3 bold">Antal platser*</div>
 				  		</div>
-				  		<xsl:for-each select="Periods/Period">
-				  			<div class="period-div" id="periodnr_{id}">
-					  			<div style="margin-bottom: 0px" class="row form-group">
-									<div class="col-md-1"><input class="period-checkbox" type="checkbox" name="period_{id}" /></div>
-							  		<div class="col-md-2"><xsl:value-of select="name"/></div>
-							  		<div class="col-md-2"><xsl:value-of select="startDate"/></div>
-							  		<div class="col-md-2"><xsl:value-of select="endDate"/></div>
-							  		<div class="col-md-3">
-							  			<input class="form-control numberOfWorkersField" disabled="disabled" type="number" min="1" max="99" name="{name}_numberOfWorkersNeeded" id="{name}_numberOfWorkersNeeded"/>
-	 									<p class="help-block">Skriv ett heltal mellan 1 och 99</p>
-							  		</div>		  			
-					  			</div>
-					  			<div style="margin-bottom: 8px" class="add-mentor-div hidden">
-					  				<label>Ange handledare</label>
-					  				<div id="mentors-wrapper">
-							  			<xsl:for-each select="MunicipalityJob/mentors/MunicipalityMentor">
-											<div class="row collapse in" style="margin-bottom: 8px;">
-												<input style="display: none;" id="mentor-id-{id}" name="mentor-id-{id}" type="text" value="{id}"/>
-												<div class="form-group col-md-3">
-													<label for="mentor-firstname">Förnamn</label><input type="text" class="form-control" id="mentor-firstname" name="mentor-firstname_{id}" placeholder="" value="{firstname}"/>
-												</div>
-												<div class="form-group col-md-3">
-													<label for="mentor-lastname">Efternamn</label><input type="text" class="form-control" id="mentor-lastname" name="mentor-lastname_{id}" placeholder="" value="{lastname}"/>
-												</div>
-												<div class="form-group col-md-2">
-													<label for="mentor-phone">Telefonnummer</label><input type="text" class="numberValidation form-control" id="mentor-phone" name="mentor-phone_{id}" placeholder="" value="{mobilePhone}"/>
-													<p class="help-block">Endast siffror</p>
-												</div>
-												<div class="form-group col-md-3">
-													<label for="mentor-email">E-post</label><input type="email" class="col-md-3 form-control" id="mentor-email" name="mentor-email_{id}" placeholder="" value="{email}"/>
-												</div>
-												<div class="form-group col-md-1">
-													<label>Ta bort</label>
-													<div class="remove-mentor mgn-top8px glyphicon glyphicon-remove" aria-hidden="true"></div>
-												</div>
-											</div>
-										</xsl:for-each>
-							    	</div>
-					  				<a href="#" class="add-municipality-mentor-btn"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Lägg till handledare</a>
-					  			</div>
-				  			</div>
-				  		</xsl:for-each>
+				  		<xsl:choose>
+				  			<xsl:when test="MunicipalityJob">
+				  				<xsl:variable name="numberOfWorkers" select="MunicipalityJob/numberOfWorkersNeeded"></xsl:variable>
+				  				<xsl:for-each select="Periods/Period">
+						  			<div class="period-div" id="periodnr_{id}">
+							  			<div style="margin-bottom: 0px" class="row form-group">
+						  					<xsl:choose>
+						  						<xsl:when test="selected = 'true'">
+						  							<div class="col-md-1"><input class="period-checkbox" type="checkbox" name="period_{id}" checked="checked" disabled="disabled"/></div>
+						  						</xsl:when>
+						  						<xsl:otherwise>
+													<div class="col-md-1"><input class="period-checkbox" type="checkbox" name="period_{id}" disabled="disabled" /></div>
+						  						</xsl:otherwise>
+						  					</xsl:choose>
+									  		<div class="col-md-2"><xsl:value-of select="name"/></div>
+									  		<div class="col-md-2"><xsl:value-of select="startDate"/></div>
+									  		<div class="col-md-2"><xsl:value-of select="endDate"/></div>
+									  		<div class="col-md-3">
+									  			<xsl:choose>
+									  				<xsl:when test="selected = 'true'">
+									  					<input value="{$numberOfWorkers}" class="form-control numberOfWorkersField" required="required" type="number" min="1" max="99" name="{name}_numberOfWorkersNeeded" id="{name}_numberOfWorkersNeeded"/>
+			 											<p class="help-block">Skriv ett heltal mellan 1 och 99</p>
+									  				</xsl:when>
+									  				<xsl:otherwise>
+									  					<input class="form-control numberOfWorkersField" disabled="disabled" type="number" min="1" max="99" name="{name}_numberOfWorkersNeeded" id="{name}_numberOfWorkersNeeded"/>
+			 											<p class="help-block">Skriv ett heltal mellan 1 och 99</p>
+									  				</xsl:otherwise>
+									  			</xsl:choose>
+									  		</div>		  			
+							  			</div>
+							  			<div style="margin-bottom: 8px" class="add-mentor-div hidden">
+							  				<label>Ange handledare</label>
+							  				<div id="mentors-wrapper">
+									  			<xsl:for-each select="mentors/MunicipalityMentor">
+													<div class="row collapse in" style="margin-bottom: 8px;">
+														<input style="display: none;" id="mentor-id-{id}" name="mentor-id-{id}" type="text" value="{id}"/>
+														<div class="form-group col-md-3">
+															<label for="mentor-firstname">Förnamn</label><input type="text" class="form-control" id="mentor-firstname" name="mentor-firstname_{id}" placeholder="" value="{firstname}"/>
+														</div>
+														<div class="form-group col-md-3">
+															<label for="mentor-lastname">Efternamn</label><input type="text" class="form-control" id="mentor-lastname" name="mentor-lastname_{id}" placeholder="" value="{lastname}"/>
+														</div>
+														<div class="form-group col-md-2">
+															<label for="mentor-phone">Telefonnummer</label><input type="text" class="numberValidation form-control" id="mentor-phone" name="mentor-phone_{id}" placeholder="" value="{mobilePhone}"/>
+															<p class="help-block">Endast siffror</p>
+														</div>
+														<div class="form-group col-md-3">
+															<label for="mentor-email">E-post</label><input type="email" class="col-md-3 form-control" id="mentor-email" name="mentor-email_{id}" placeholder="" value="{email}"/>
+														</div>
+														<div class="remove-mentor form-group col-md-1">
+															<label>Ta bort</label>
+															<div class="mgn-top8px glyphicon glyphicon-remove" aria-hidden="true"></div>
+														</div>
+													</div>
+												</xsl:for-each>
+									    	</div>
+							  				<a href="#" class="add-municipality-mentor-btn"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Lägg till handledare</a>
+							  			</div>
+						  			</div>
+						  		</xsl:for-each>
+				  			</xsl:when>
+				  			<xsl:otherwise>
+				  				<xsl:for-each select="Periods/Period">
+						  			<div class="period-div" id="periodnr_{id}">
+							  			<div style="margin-bottom: 0px" class="row form-group">
+											<div class="col-md-1"><input class="period-checkbox" type="checkbox" name="period_{id}" /></div>
+									  		<div class="col-md-2"><xsl:value-of select="name"/></div>
+									  		<div class="col-md-2"><xsl:value-of select="startDate"/></div>
+									  		<div class="col-md-2"><xsl:value-of select="endDate"/></div>
+									  		<div class="col-md-3">
+									  			<input class="form-control numberOfWorkersField" disabled="disabled" type="number" min="1" max="99" name="{name}_numberOfWorkersNeeded" id="{name}_numberOfWorkersNeeded"/>
+			 									<p class="help-block">Skriv ett heltal mellan 1 och 99</p>
+									  		</div>		  			
+							  			</div>
+							  			<div style="margin-bottom: 8px" class="add-mentor-div hidden">
+							  				<label>Ange handledare</label>
+							  				<div id="mentors-wrapper">
+									    	</div>
+							  				<a href="#" class="add-municipality-mentor-btn"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Lägg till handledare</a>
+							  			</div>
+						  			</div>
+						  		</xsl:for-each>
+				  			</xsl:otherwise>
+				  		</xsl:choose>
 				  	</div>
 				  	
 <!-- 				  	<div class="form-group"> -->
@@ -468,9 +510,9 @@
 					    <p class="help-block">Valfri</p>
 			    	</div>
 			    	
-			    	<div class="form-group col-md-1">
+			    	<div class="remove-mentor form-group col-md-1">
 						<label>Ta bort</label>
-						<div class="remove-mentor mgn-top8px glyphicon glyphicon-remove" aria-hidden="true"></div>
+						<div class="mgn-top8px glyphicon glyphicon-remove" aria-hidden="true"></div>
 					</div>
 		    	</div>
 	    	
