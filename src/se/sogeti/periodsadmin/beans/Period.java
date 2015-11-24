@@ -52,9 +52,8 @@ public class Period implements Elementable{
 	private Date endDate;
 	
 	@DAOManaged
-	@OrderBy
 	@XMLElement
-	private Integer sortIndex;
+	private Boolean isUnique;
 	
 	public Integer getId() {
 		return id;
@@ -88,14 +87,6 @@ public class Period implements Elementable{
 		return endDate;
 	}
 	
-	public void setSortIndex(Integer sortIndex) {
-		this.sortIndex = sortIndex;
-	}
-	
-	public Integer getSortIndex() {
-		return sortIndex;
-	}
-
 	@Override
 	public String toString() {
 		return name + " (id: " + getId() + ")";
@@ -104,5 +95,13 @@ public class Period implements Elementable{
 	@Override
 	public Element toXML(Document doc) {
 		return XMLGenerator.toXML(this, doc);
+	}
+
+	public Boolean getIsUnique() {
+		return isUnique;
+	}
+
+	public void setIsUnique(Boolean isUnique) {
+		this.isUnique = isUnique;
 	}
 }

@@ -95,9 +95,6 @@ public abstract class Job implements Requirements,Elementable{
 	@XMLElement
 	private String adminNotes;
 	
-	@DAOManaged
-	@XMLElement
-	private String descriptionForEmploymentPapers;
 	
 	@XMLElement
 	private Integer openApplications;
@@ -314,15 +311,6 @@ public abstract class Job implements Requirements,Elementable{
 
 	public void setMustBeOverEighteen(Boolean mustBeOverEighteen) {
 		this.mustBeOverEighteen = mustBeOverEighteen;
-	}
-
-	public String getDescriptionForEmploymentPapers() {
-		return descriptionForEmploymentPapers;
-	}
-
-	public void setDescriptionForEmploymentPapers(
-			String descriptionForEmploymentPapers) {
-		this.descriptionForEmploymentPapers = descriptionForEmploymentPapers;
 	}
 
 }

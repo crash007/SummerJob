@@ -42,6 +42,7 @@ public class PeriodDAO extends AnnotatedDAO<Period> {
 	
 	public List<Period> getPeriodsOrderedByDate() throws SQLException {
 		HighLevelQuery<Period> query = new HighLevelQuery<Period>();
+		query.addParameter(this.getParamFactory("isUnique", Boolean.class).getParameter(false));
 		query.addOrderByCriteria(this.getOrderByCriteria("startDate", Order.ASC));
 		return this.getAll(query);
 	}

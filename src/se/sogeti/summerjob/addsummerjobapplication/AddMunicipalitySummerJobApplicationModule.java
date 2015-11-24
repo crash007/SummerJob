@@ -1,6 +1,7 @@
 package se.sogeti.summerjob.addsummerjobapplication;
 
 
+import java.awt.Desktop;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;

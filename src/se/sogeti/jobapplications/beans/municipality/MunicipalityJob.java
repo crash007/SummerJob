@@ -70,6 +70,14 @@ public class MunicipalityJob extends Job{
 	@XMLElement
 	private String department;
 	
+	@DAOManaged
+	@XMLElement
+	private String descriptionForEmploymentPapers;
+	
+	@DAOManaged
+	@XMLElement
+	private String descriptionForCallPapers;
+	
 	public Period getPeriod() {
 		return period;
 	}
@@ -163,4 +171,20 @@ public class MunicipalityJob extends Job{
 		this.geoArea = geoArea;
 	}
 
+	public String getDescriptionForEmploymentPapers() {
+		return descriptionForEmploymentPapers;
+	}
+
+	public void setDescriptionForEmploymentPapers(
+			String descriptionForEmploymentPapers) {
+		this.descriptionForEmploymentPapers = descriptionForEmploymentPapers;
+	}
+
+	public String getDescriptionForCallPapers() {
+		return descriptionForCallPapers;
+	}
+
+	public void setDescriptionForCallPapers(String descriptionForCallPapers) {
+		this.descriptionForCallPapers = descriptionForCallPapers;
+	}
 }

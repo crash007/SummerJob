@@ -16,9 +16,11 @@ import javax.sql.DataSource;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import se.sogeti.periodsadmin.beans.AccountingEntry;
 import se.sogeti.periodsadmin.beans.Period;
 import se.sogeti.periodsadmin.beans.PlaceForInformation;
 import se.sogeti.periodsadmin.beans.Salary;
+import se.sogeti.periodsadmin.daos.AccountingEntryDAO;
 import se.sogeti.periodsadmin.daos.PeriodDAO;
 import se.sogeti.periodsadmin.daos.PlaceForInformationDAO;
 import se.sogeti.periodsadmin.daos.SalaryDAO;
@@ -30,6 +32,7 @@ import se.unlogic.hierarchy.core.utils.HierarchyAnnotatedDAOFactory;
 import se.unlogic.hierarchy.foregroundmodules.rest.AnnotatedRESTModule;
 import se.unlogic.hierarchy.foregroundmodules.rest.RESTMethod;
 import se.unlogic.standardutils.numbers.NumberUtils;
+import se.unlogic.standardutils.string.StringUtils;
 import se.unlogic.standardutils.xml.XMLUtils;
 import se.unlogic.webutils.http.RequestUtils;
 import se.unlogic.webutils.http.URIParser;
@@ -43,6 +46,7 @@ public class PeriodViewModule extends AnnotatedRESTModule {
 	private PeriodDAO periodDAO;
 	private SalaryDAO salaryDAO;
 	private PlaceForInformationDAO placeDAO;
+	private AccountingEntryDAO accountingEntryDAO;
 
 	@Override
 	public ForegroundModuleResponse defaultMethod(HttpServletRequest req,
@@ -60,6 +64,11 @@ public class PeriodViewModule extends AnnotatedRESTModule {
 		Element salariesElement = doc.createElement("Salaries");
 		XMLUtils.append(doc, salariesElement, salaries);
 		doc.getFirstChild().appendChild(salariesElement);
+		
+		List<AccountingEntry> accountingEntries = accountingEntryDAO.getAll();
+		Element accountingEntriesElement = doc.createElement("AccountingEntries");
+		XMLUtils.append(doc, accountingEntriesElement, accountingEntries);
+		doc.getFirstChild().appendChild(accountingEntriesElement);
 		
 		PlaceForInformation place = placeDAO.getById(1);
 		XMLUtils.append(doc, element, place);
@@ -88,6 +97,7 @@ public class PeriodViewModule extends AnnotatedRESTModule {
 		periodDAO = new PeriodDAO(dataSource, Period.class, daoFactory);
 		salaryDAO = new SalaryDAO(dataSource, Salary.class, daoFactory);
 		placeDAO = new PlaceForInformationDAO(dataSource, PlaceForInformation.class, daoFactory);
+		accountingEntryDAO = new AccountingEntryDAO(dataSource, AccountingEntry.class, daoFactory);
 	}
 	
 	@RESTMethod(alias="add/period.json", method="post")
@@ -166,6 +176,49 @@ public class PeriodViewModule extends AnnotatedRESTModule {
         } catch (SQLException e) {
           	log.error("Exception when trying to update the salaries: ", e);
         	JsonResponse.sendJsonResponse("{\"status\":\"error\", \"message\":\"Databasfel. Kunde inte uppdatera lönerna.\"}", callback, writer);
+			return;
+        }
+        JsonResponse.sendJsonResponse("{\"status\":\"success\", \"message\":\"Uppdatering genomförd.\"}", callback, writer);
+	}
+	
+	@RESTMethod(alias="save/accountingentries.json", method="post")
+	public void saveAccountingEntries(HttpServletRequest req, HttpServletResponse res, User user, URIParser uriParser) throws IOException, SQLException {
+        PrintWriter writer = res.getWriter();
+        String callback = req.getParameter("callback"); 
+        JsonResponse.initJsonResponse(res, writer, callback);
+        
+        String ansvarPrio = req.getParameter("ansvarPrio");
+        String verksamhetPrio = req.getParameter("verksamhetPrio");
+        String aktivitetPrio = req.getParameter("aktivitetPrio");
+        
+        String ansvarRegular = req.getParameter("ansvarRegular");
+        String verksamhetRegular = req.getParameter("verksamhetRegular");
+        String aktivitetRegular = req.getParameter("aktivitetRegular");
+        
+        AccountingEntry prio = accountingEntryDAO.getById(1);
+        if (StringUtils.isEmpty(ansvarPrio) || StringUtils.isEmpty(verksamhetPrio) || StringUtils.isEmpty(aktivitetPrio)) {
+        	JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Fälten för kontering kan inte lämnas tomma\"}", callback, writer);
+			return;
+        }
+        prio.setAnsvar(ansvarPrio);
+        prio.setVerksamhet(verksamhetPrio);
+        prio.setAktivitet(aktivitetPrio);
+        
+        AccountingEntry regular = accountingEntryDAO.getById(2);
+        if (StringUtils.isEmpty(ansvarRegular) || StringUtils.isEmpty(verksamhetRegular) || StringUtils.isEmpty(aktivitetRegular)) {
+        	JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Fälten för kontering kan inte lämnas tomma\"}", callback, writer);
+			return;
+        }
+        regular.setAnsvar(ansvarRegular);
+        regular.setVerksamhet(verksamhetRegular);
+        regular.setAktivitet(aktivitetRegular);
+        
+        try {
+        	accountingEntryDAO.save(prio);
+        	accountingEntryDAO.save(regular);
+        } catch (SQLException e) {
+          	log.error("Exception when trying to update the accounting entries: ", e);
+        	JsonResponse.sendJsonResponse("{\"status\":\"error\", \"message\":\"Databasfel. Kunde inte uppdatera konteringarna.\"}", callback, writer);
 			return;
         }
         JsonResponse.sendJsonResponse("{\"status\":\"success\", \"message\":\"Uppdatering genomförd.\"}", callback, writer);

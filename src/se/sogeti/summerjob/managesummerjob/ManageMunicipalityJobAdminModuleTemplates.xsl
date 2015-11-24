@@ -219,8 +219,14 @@
 			</div>
 			
 			<div class="form-group">
+				<label for="description-call-papers">Text på kallelse</label>
+				<textarea class="form-control" rows="3" id="description-call-papers" name="description-call-papers"><xsl:value-of select="MunicipalityJob/descriptionForCallPapers"></xsl:value-of></textarea>
+				<div class="help-block with-errors">Skriv här information som ska hamna på kallelsebrevet.</div>
+			</div>
+			
+			<div class="form-group">
 				<label for="description-employment-papers">Text på anställningsbevis</label>
-				<textarea class="form-control" rows="3" id="description-employment-papers" name="description-employment-papers"><xsl:value-of select="BusinessSectorJob/descriptionForEmploymentPapers"></xsl:value-of></textarea>
+				<textarea class="form-control" rows="3" id="description-employment-papers" name="description-employment-papers"><xsl:value-of select="MunicipalityJob/descriptionForEmploymentPapers"></xsl:value-of></textarea>
 				<div class="help-block with-errors">Skriv här information om arbetet som ska hamna på anställningsbeviset. Om det här fältet är tomt används arbetsbeskrivningen.</div>
 			</div>
 			

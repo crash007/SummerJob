@@ -91,6 +91,63 @@
 				</div>
 			</div>
 			
+			<h2>Administrera konteringar</h2>
+			<div class="well">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h3 class="panel-title">Aktuella konteringar</h3>
+					</div>
+					<div class="panel-body">
+						<form id="accounting-entries-list-form">
+							<fieldset>
+								<table id="accounting-entries-table">
+									<thead>
+										<th>Typ</th>
+										<th>Ansvar</th>
+										<th>Verksamhet</th>
+										<th>Aktivitet</th>
+									</thead>
+									<tbody>
+										<xsl:for-each select="AccountingEntries/AccountingEntry">
+											<xsl:choose>
+												<xsl:when test="isPrio = 'true'">
+													<tr>
+														<td>Prio</td>
+														<td><input class="numberValidation form-control" name="ansvarPrio" type="text" value="{ansvar}" /></td>
+														<td><input class="numberValidation form-control" name="verksamhetPrio" type="text" value="{verksamhet}" /></td>
+														<td><input class="numberValidation form-control" name="aktivitetPrio" type="text" value="{aktivitet}" /></td>
+													</tr>
+												</xsl:when>
+												<xsl:otherwise>
+													<tr>
+														<td>Vanlig</td>
+														<td><input class="numberValidation form-control" name="ansvarRegular" type="text" value="{ansvar}" /></td>
+														<td><input class="numberValidation form-control" name="verksamhetRegular" type="text" value="{verksamhet}" /></td>
+														<td><input class="numberValidation form-control" name="aktivitetRegular" type="text" value="{aktivitet}" /></td>
+													</tr>
+												</xsl:otherwise>
+											</xsl:choose>
+										
+										</xsl:for-each>
+									</tbody>
+								</table>
+							</fieldset>
+							<input class="btn btn-primary" style="margin-top: 4px;" id="salary-save" type="submit" value="Spara"></input>
+						</form>
+					</div>
+					<div id="save-accounting-failed" class="alert alert-danger" role="alert">
+						<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+						<span class="sr-only">Error:</span>
+						<span class="message"></span>
+					</div>
+					<div id="save-accounting-succeeded" class="alert alert-success" role="alert">
+						<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+						<span class="sr-only">Success:</span>
+						<span class="message"></span>
+					</div>
+				</div>
+			</div>
+			
 			<h2>Administrera "Plats för samtal"</h2>
 			<div class="well">
 				<div class="panel panel-default">

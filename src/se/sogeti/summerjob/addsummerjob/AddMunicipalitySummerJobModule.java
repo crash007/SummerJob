@@ -132,7 +132,10 @@ public class AddMunicipalitySummerJobModule extends AnnotatedRESTModule{
 		jobForm.appendChild(geoAreaElement);
 		
 		List<Period> periods = periodDAO.getAll();
-		List<MunicipalityMentor> mentors = job.getMentors();
+		List<MunicipalityMentor> mentors = null;
+		if (job != null) {
+			mentors = job.getMentors();
+		}
 		Element periodsElement = doc.createElement("Periods");
 		for (Period p : periods) {
 			Element periodElement = doc.createElement("Period");
