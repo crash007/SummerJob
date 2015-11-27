@@ -1,11 +1,14 @@
 package se.sogeti.jobapplications.beans.municipality;
 
+import java.util.List;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import se.sogeti.jobapplications.beans.ContactDetails;
 import se.unlogic.standardutils.dao.annotations.DAOManaged;
 import se.unlogic.standardutils.dao.annotations.ManyToOne;
+import se.unlogic.standardutils.dao.annotations.OneToMany;
 import se.unlogic.standardutils.dao.annotations.Table;
 import se.unlogic.standardutils.xml.XMLElement;
 import se.unlogic.standardutils.xml.XMLGenerator;
@@ -17,6 +20,10 @@ public class MunicipalityMentor extends ContactDetails{
 	@DAOManaged(columnName="jobId")
 	@ManyToOne
 	private MunicipalityJob job;
+	
+	@DAOManaged
+	@OneToMany
+	private List<MunicipalityJobApplication> jobApplications;
 	
 	public MunicipalityJob getJob() {
 		return job;
@@ -32,4 +39,11 @@ public class MunicipalityMentor extends ContactDetails{
 		return XMLGenerator.toXML(this, doc);
 	}
 
+	public List<MunicipalityJobApplication> getJobApplications() {
+		return jobApplications;
+	}
+
+	public void setJobApplications(List<MunicipalityJobApplication> jobApplications) {
+		this.jobApplications = jobApplications;
+	}
 }

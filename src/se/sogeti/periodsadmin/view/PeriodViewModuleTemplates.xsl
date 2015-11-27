@@ -4,55 +4,11 @@
 
 	<xsl:include href="classpath://se/unlogic/hierarchy/core/utils/xsl/Common.xsl"/>
 			
-			<xsl:variable name="links">
-				/css/flowengine.css
-				/uitheme/jquery-ui-1.8.7.custom.css
-			</xsl:variable>
 
 	<xsl:template match="Document">	
 			<script>
 				var url = '<xsl:value-of select="requestinfo/uri"/>';
 			</script>
-			
-			<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
-			
-			<script>
-			$(function() {						
-				$( "input[name*='new-period-startdate']" ).datepicker({
-					minDate: new Date(),
-					onSelect : function(selected) {
-						$(this).focus();
-						$("input[name*='new-period-enddate']").datepicker("option", "minDate", selected);
-					},
-				});
-				
-				$( "input[name*='new-period-enddate']" ).datepicker({
-					minDate: new Date(),
-					onSelect : function(selected) {
-						$(this).focus();
-						$("input[name*='new-period-startdate']").datepicker("option", "maxDate", selected);
-					},
-				});		
-				
-				$( "input.period_startdate" ).datepicker({
-					minDate: new Date(),
-					onSelect : function(selected) {
-						$(this).focus();
-						var endDate = $(this).parent().parent().find('input.period_enddate');
-						$(endDate).datepicker("option", "minDate", selected);
-					},
-				});
-				
-				$( "input.period_enddate" ).datepicker({
-					minDate: new Date(),
-					onSelect : function(selected) {
-						$(this).focus();
-						var startDate = $(this).parent().parent().find('input.period_startdate');
-						$(startDate).datepicker("option", "maxDate", selected);
-					},
-				});						    							  									
-			});	
-			</script>		
 			
 			<h1>Admin</h1>
 			

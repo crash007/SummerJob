@@ -107,6 +107,12 @@
 	   		<td>
 	   			<a href='{url}'><strong>Hantera</strong></a>
 	   		</td>
+	   		
+	   		<xsl:if test="approved = 'true'">
+		   		<td>
+		   			<a href="{matchURL}"><strong>Matcha</strong></a>
+		   		</td>
+	   		</xsl:if>
    		</tr>
 	</xsl:template>
 	

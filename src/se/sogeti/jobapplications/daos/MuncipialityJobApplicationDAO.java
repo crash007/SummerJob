@@ -29,6 +29,8 @@ public class MuncipialityJobApplicationDAO extends JobApplicationDAO<Municipalit
 	private static final Field APPLICATION_PREFERED_GEO_AREA2_RELATION = ReflectionUtils.getField(MunicipalityJobApplication.class, "preferedGeoArea2");
 	private static final Field APPLICATION_PREFERED_GEO_AREA3_RELATION = ReflectionUtils.getField(MunicipalityJobApplication.class, "preferedGeoArea3");
 	private static final Field APPLICATION_DRIVERS_LICENSE_TYPE_RELATION = ReflectionUtils.getField(MunicipalityJobApplication.class, "driversLicenseType");
+	
+//	private static final Field APPLICATION_MENTOR_RELATION = ReflectionUtils.getField(MunicipalityJobApplication.class, "personalMentor");
 
 	public MuncipialityJobApplicationDAO(DataSource dataSource, Class<MunicipalityJobApplication> beanClass,
 			AnnotatedDAOFactory daoFactory) {
@@ -54,6 +56,22 @@ public class MuncipialityJobApplicationDAO extends JobApplicationDAO<Municipalit
 	
 	public List<MunicipalityJobApplication> getCandidatesByPreferedArea2AndPreferedGeoArea2(MunicipalityJobArea jobArea, GeoArea geoArea,  Date bornBeforeDate, DriversLicenseType driversLicense) throws SQLException{		
 		return getCandidates(this.getParamFactory("preferedArea2", MunicipalityJobArea.class).getParameter(jobArea), this.getParamFactory("preferedGeoArea2", GeoArea.class).getParameter(geoArea), bornBeforeDate, driversLicense);
+	}
+	
+	public List<MunicipalityJobApplication> getCandidatesByPreferedArea2AndPreferedGeoArea3(MunicipalityJobArea jobArea, GeoArea geoArea,  Date bornBeforeDate, DriversLicenseType driversLicense) throws SQLException{		
+		return getCandidates(this.getParamFactory("preferedArea2", MunicipalityJobArea.class).getParameter(jobArea), this.getParamFactory("preferedGeoArea3", GeoArea.class).getParameter(geoArea), bornBeforeDate, driversLicense);
+	}
+	
+	public List<MunicipalityJobApplication> getCandidatesByPreferedArea3AndPreferedGeoArea1(MunicipalityJobArea jobArea, GeoArea geoArea,  Date bornBeforeDate, DriversLicenseType driversLicense) throws SQLException{		
+		return getCandidates(this.getParamFactory("preferedArea3", MunicipalityJobArea.class).getParameter(jobArea), this.getParamFactory("preferedGeoArea1", GeoArea.class).getParameter(geoArea), bornBeforeDate, driversLicense);
+	}
+	
+	public List<MunicipalityJobApplication> getCandidatesByPreferedArea3AndPreferedGeoArea2(MunicipalityJobArea jobArea, GeoArea geoArea,  Date bornBeforeDate, DriversLicenseType driversLicense) throws SQLException{		
+		return getCandidates(this.getParamFactory("preferedArea3", MunicipalityJobArea.class).getParameter(jobArea), this.getParamFactory("preferedGeoArea2", GeoArea.class).getParameter(geoArea), bornBeforeDate, driversLicense);
+	}
+	
+	public List<MunicipalityJobApplication> getCandidatesByPreferedArea3AndPreferedGeoArea3(MunicipalityJobArea jobArea, GeoArea geoArea,  Date bornBeforeDate, DriversLicenseType driversLicense) throws SQLException{		
+		return getCandidates(this.getParamFactory("preferedArea3", MunicipalityJobArea.class).getParameter(jobArea), this.getParamFactory("preferedGeoArea3", GeoArea.class).getParameter(geoArea), bornBeforeDate, driversLicense);
 	}
 
 	public List<MunicipalityJobApplication> getCandidatesByNoPreferedAreaAndPreferedGeoArea1(GeoArea geoArea,
@@ -127,5 +145,23 @@ public class MuncipialityJobApplicationDAO extends JobApplicationDAO<Municipalit
         
         return this.get(query);
 	}
-
+	
+//	public MunicipalityJobApplication getByIdWithMentor(Integer id) throws SQLException {
+//		HighLevelQuery<MunicipalityJobApplication> query = new HighLevelQuery<MunicipalityJobApplication>();
+//        query.addParameter(this.getParamFactory("id", Integer.class).getParameter(id));
+//		
+//        query.addRelation(APPLICATION_PREFERED_AREA1_RELATION);
+//		query.addRelation(APPLICATION_PREFERED_AREA2_RELATION);
+//		query.addRelation(APPLICATION_PREFERED_AREA3_RELATION);
+//		query.addRelation(APPLICATION_PREFERED_GEO_AREA1_RELATION);
+//		query.addRelation(APPLICATION_PREFERED_GEO_AREA2_RELATION);
+//		query.addRelation(APPLICATION_PREFERED_GEO_AREA3_RELATION);		
+//		query.addRelation(APPLICATION_DRIVERS_LICENSE_TYPE_RELATION);
+////		query.addRelation(APPLICATION_JOB_RELATION);
+//		query.addRelation(APPLICATION_MENTOR_RELATION);
+//        
+//		query.disableAutoRelations(true);
+//        
+//        return this.get(query);
+//	}
 }

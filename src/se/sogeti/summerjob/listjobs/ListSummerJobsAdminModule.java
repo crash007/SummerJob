@@ -41,6 +41,14 @@ public class ListSummerJobsAdminModule extends AnnotatedForegroundModule {
 	@TextFieldSettingDescriptor(description="Relativ url till att hantera näringslivssommarjobb",name="ManageBusinessJob")
 	private String manageBusinessJobUrl="manage-businesssector-job";
 	
+	@ModuleSetting
+	@TextFieldSettingDescriptor(description="Relativ url till att matcha kandidater till näringslivssommarjobb",name="MatchBusinessJob")
+	private String matchBusinessJobUrl="match-business-jobs";
+	
+	@ModuleSetting
+	@TextFieldSettingDescriptor(description="Relativ url till att matcha kandidater till kommunala jobb",name="MatchMunicipalityJob")
+	private String matchMunicipalityJobUrl="match-municipality-jobs";
+	
 	@Override
 	protected void createDAOs(DataSource dataSource) throws Exception {
 		super.createDAOs(dataSource);
@@ -98,6 +106,8 @@ public class ListSummerJobsAdminModule extends AnnotatedForegroundModule {
 					XMLUtils.appendNewElement(doc, municipalityJob, "approvedByUser", job.getApprovedByUser());
 					XMLUtils.appendNewElement(doc, municipalityJob, "controlledDate", job.getControlledDate());
 					XMLUtils.appendNewElement(doc, municipalityJob, "url", manageMunicipalityJobUrl+"?jobId=" + job.getId());
+					XMLUtils.appendNewElement(doc, municipalityJob, "matchURL", matchMunicipalityJobUrl + "?jobId=" + job.getId());
+					XMLUtils.appendNewElement(doc, municipalityJob, "approved", job.getApproved());
 					controlledJobsElement.appendChild(municipalityJob);
 				}
 			}
@@ -113,6 +123,7 @@ public class ListSummerJobsAdminModule extends AnnotatedForegroundModule {
 					XMLUtils.appendNewElement(doc, municipalityJob, "created", job.getCreated());
 					XMLUtils.appendNewElement(doc, municipalityJob, "initiatedByUser", job.getInitiatedByUser());
 					XMLUtils.appendNewElement(doc, municipalityJob, "url", manageMunicipalityJobUrl+"?jobId=" + job.getId());
+					XMLUtils.appendNewElement(doc, municipalityJob, "approved", job.getApproved());
 					uncontrolledJobsElement.appendChild(municipalityJob);
 				}
 			}
@@ -146,6 +157,9 @@ public class ListSummerJobsAdminModule extends AnnotatedForegroundModule {
 					XMLUtils.appendNewElement(doc, businessSectorJob, "approvedByUser", job.getApprovedByUser());
 					XMLUtils.appendNewElement(doc, businessSectorJob, "controlledDate", job.getControlledDate());
 					XMLUtils.appendNewElement(doc, businessSectorJob, "url", manageBusinessJobUrl+"?jobId=" + job.getId());
+					XMLUtils.appendNewElement(doc, businessSectorJob, "matchURL", matchBusinessJobUrl + "?jobId=" + job.getId());
+					XMLUtils.appendNewElement(doc, businessSectorJob, "approved", job.getApproved());
+
 					controlledJobsElement.appendChild(businessSectorJob);
 				}
 			}
@@ -175,6 +189,7 @@ public class ListSummerJobsAdminModule extends AnnotatedForegroundModule {
 					XMLUtils.appendNewElement(doc, businessSectorJob, "approvedByUser", job.getApprovedByUser());
 					XMLUtils.appendNewElement(doc, businessSectorJob, "controlledDate", job.getControlledDate());
 					XMLUtils.appendNewElement(doc, businessSectorJob, "url", manageBusinessJobUrl+"?jobId=" + job.getId());
+					XMLUtils.appendNewElement(doc, businessSectorJob, "approved", job.getApproved());
 					controlledDisapprovedJobsElement.appendChild(businessSectorJob);
 				}
 			}

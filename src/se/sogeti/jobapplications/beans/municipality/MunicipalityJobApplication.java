@@ -3,7 +3,6 @@ package se.sogeti.jobapplications.beans.municipality;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import se.sogeti.jobapplications.beans.ApplicationStatus;
 import se.sogeti.jobapplications.beans.GeoArea;
 import se.sogeti.jobapplications.beans.JobApplication;
 import se.unlogic.standardutils.dao.annotations.DAOManaged;
@@ -18,12 +17,19 @@ public class MunicipalityJobApplication extends JobApplication{
 
 	public MunicipalityJobApplication() {
 		super();
-		
 	}
 
 	@DAOManaged(columnName="jobId")
 	@ManyToOne(remoteKeyField="id",autoGet=false,autoAdd=false,autoUpdate=false)
 	private MunicipalityJob job;
+	
+	@DAOManaged(columnName="personalMentorId")
+	@ManyToOne(remoteKeyField="id", autoGet = true, autoAdd = true, autoUpdate = true)
+	private MunicipalityMentor personalMentor;
+	
+	@DAOManaged
+	@XMLElement
+	private Integer personalMentorId;
 	
 	@DAOManaged
 	@XMLElement
@@ -141,6 +147,22 @@ public class MunicipalityJobApplication extends JobApplication{
 
 	public void setNoPreferedArea(Boolean noPreferedArea) {
 		this.noPreferedArea = noPreferedArea;
+	}
+
+	public MunicipalityMentor getPersonalMentor() {
+		return personalMentor;
+	}
+
+	public void setPersonalMentor(MunicipalityMentor personalMentor) {
+		this.personalMentor = personalMentor;
+	}
+
+	public Integer getPersonalMentorId() {
+		return personalMentorId;
+	}
+
+	public void setPersonalMentorId(Integer personalMentorId) {
+		this.personalMentorId = personalMentorId;
 	}
 
 }

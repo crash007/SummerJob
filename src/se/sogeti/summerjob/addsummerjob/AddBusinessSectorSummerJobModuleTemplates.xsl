@@ -5,64 +5,12 @@
 	
 	<xsl:include href="classpath://se/unlogic/hierarchy/core/utils/xsl/Common.xsl"/>
 
-	<xsl:variable name="links">
-		/css/flowengine.css
-		/uitheme/jquery-ui-1.8.7.custom.css
-	</xsl:variable>
-
 	<xsl:template match="Document">
 		 
-		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
 		<script>
 			var url = '<xsl:value-of select="requestinfo/uri"/>';
 		</script>
 		
-		<xsl:variable name="scripts">
-			/js/jquery.ui.datepicker.js
-			/js/jquery.ui.datepicker-sv.js
-		</xsl:variable>
-		
-		<script>
-			$(function() {						
-				$( "input[name*='startDate']" ).datepicker({
-					showOn: "button",
-					buttonImage: '<xsl:value-of select="/Document/requestinfo/contextpath"/>/static/f/<xsl:value-of select="/Document/module/sectionID"/>/<xsl:value-of select="/Document/module/moduleID"/>/pics/calendar_grid.png',
-					buttonImageOnly: true,
-					minDate: new Date(),
-					onSelect : function(selected) {
-						$(this).focus();
-						$("input[name*='endDate']").datepicker("option", "minDate", selected);
-						$("input[name*='lastApplicationDay']").datepicker("option", "maxDate", selected);
-					},
-					
-					buttonText: 'Startdatum'
-				});
-				
-				$( "input[name*='endDate']" ).datepicker({
-					showOn: "button",
-					buttonImage: '<xsl:value-of select="/Document/requestinfo/contextpath"/>/static/f/<xsl:value-of select="/Document/module/sectionID"/>/<xsl:value-of select="/Document/module/moduleID"/>/pics/calendar_grid.png',
-					buttonImageOnly: true,
-					minDate: new Date(),
-					onSelect : function(selected) {
-						$(this).focus();
-						$("input[name*='startDate']").datepicker("option", "maxDate", selected);
-					},
-					buttonText: 'Slutdatum'
-				});
-				
-				$( "input[name*='lastApplicationDay']" ).datepicker({
-					showOn: "button",
-					buttonImage: '<xsl:value-of select="/Document/requestinfo/contextpath"/>/static/f/<xsl:value-of select="/Document/module/sectionID"/>/<xsl:value-of select="/Document/module/moduleID"/>/pics/calendar_grid.png',
-					buttonImageOnly: true,
-					minDate: new Date(),
-					onSelect : function(selected) {
-						$(this).focus();
-<!-- 						$("input[name*='startDate']").datepicker("option", "maxDate", selected); -->
-					},
-					buttonText: 'Slutdatum'
-				});							    							  									
-			});	
-		</script>		
 		
 		<xsl:variable name="isAdmin" select="IsAdmin"/>
 		<xsl:apply-templates select="BusinessSectorJobForm"/>
@@ -73,19 +21,6 @@
 		
 				<input name="jobId" style="display: none" class="form-control" type="text" value="{BusinessSectorJob/id}"/>
 				
-<!-- 				<div class="panel panel-default"> -->
-<!-- 					<div class="panel-heading"> -->
-<!-- 						<h3 class="panel-title">Ansökningsdag</h3> -->
-<!-- 					</div> -->
-<!-- 					<div class="panel-body"> -->
-<!-- 						<div class="form-group col-md-3"> -->
-<!-- 							<label for="date">Sista ansökningsdag*</label> -->
-<!-- 							<input type="text" class="form-control" data-error="ÅÅÅÅ-MM-DD" id="lastApplicationDay" name="lastApplicationDay" placeholder="" required="required" value="{BusinessSectorJob/lastApplicationDay}"/> -->
-<!-- 							<div class="help-block with-errors"></div> -->
-<!-- 					    </div> -->
-<!-- 					</div> -->
-<!-- 				</div> -->
-		
 			  	<div class="panel panel-default">
 				  <div class="panel-heading">
 				    <h3 class="panel-title">Arbete</h3>

@@ -91,6 +91,14 @@ public class FormUtils {
 		return date;
 	}
 	
+	/**
+	 * Takes a social security number formatted as "YYYYmmddxxxx" and returns "YYmmdd-xxxx".
+	 * Beware, no validation is taken care of.
+	 */
+	public static String getSSNMunicipalityFormatting(String ssn) {
+		return ssn.substring(2, ssn.length() - 4) + "-" + ssn.substring(ssn.length() - 4);
+	}
+	
 	public static Integer countApplications(List<? extends JobApplication> applications, ApplicationStatus status){
 		
 		if(applications!=null){
