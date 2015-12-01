@@ -1,11 +1,9 @@
 package se.sogeti.summerjob;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.sql.Date;
 import java.util.Calendar;
 
 import org.apache.pdfbox.multipdf.PDFMergerUtility;
@@ -14,34 +12,34 @@ import org.apache.pdfbox.pdmodel.PDDocumentCatalog;
 import org.apache.pdfbox.pdmodel.interactive.form.PDAcroForm;
 import org.apache.pdfbox.pdmodel.interactive.form.PDField;
 
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.pdf.AcroFields;
-import com.itextpdf.text.pdf.PdfReader;
-import com.itextpdf.text.pdf.PdfStamper;
-
 import se.sogeti.jobapplications.beans.municipality.MunicipalityJob;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityJobApplication;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityManager;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityMentor;
 import se.sogeti.periodsadmin.beans.AccountingEntry;
+import se.sogeti.periodsadmin.beans.ContactPerson;
+
+import com.itextpdf.text.pdf.AcroFields;
+import com.itextpdf.text.pdf.PdfReader;
+import com.itextpdf.text.pdf.PdfStamper;
 
 public class PDFGenerator {
 	
 	private static String newFilePath = "C:\\Users\\pettejoh\\Desktop\\Sommarjobb\\Dokument\\Omgjorda\\Testpopulering\\";
 	private static String templateFilePath = "C:\\Users\\pettejoh\\Desktop\\Sommarjobb\\Dokument\\Omgjorda\\";
 	
-	public static File generateEmployeeDocuments(MunicipalityJobApplication app, MunicipalityMentor mentor, 
-			int salary, String timeForInfo, String placeForInfo, AccountingEntry accounting) throws IOException, DocumentException {
-		File call = generateCallDocument(app, timeForInfo, placeForInfo);
-		File confirmation = generateConfirmationDocument(app, salary, accounting);
-		File proofOfEmployment = generateProofOfEmployment(app, mentor, salary);
-		File time = generateTimeReport(app);
-		File bank = generateBankDocument(app);
+	public static File generateEmployeeDocuments(MunicipalityJob job, MunicipalityJobApplication app, 
+			int salary, String placeForInfo, AccountingEntry accounting, ContactPerson contact) throws IOException, Exception {
+		File call = generateCallDocument(job, app, placeForInfo);
+		File confirmation = generateConfirmationDocument(job, app, salary, accounting);
+		File proofOfEmployment = generateProofOfEmployment(job, app, app.getPersonalMentor(), salary);
+		File time = generateTimeReport(job, app, accounting);
+		File bank = generateBankDocument(app, contact);
 		File taxDocument = generateTaxDocument(app);
 		
 		File policeDocument = null;
 		// Om jobbet är inom barnomsorgen
-		if (app.getJob().getArea().getId().intValue() == 1) {
+		if (job.getArea().getId().intValue() == 1) {
 			policeDocument = generatePoliceDocument(app);
 		}
 		
@@ -64,12 +62,11 @@ public class PDFGenerator {
 		return allDocuments;
 	}
 	
-	private static File generateConfirmationDocument(MunicipalityJobApplication app, int salary, AccountingEntry accounting) throws IOException {
+	public static File generateConfirmationDocument(MunicipalityJob job, MunicipalityJobApplication app, int salary, AccountingEntry accounting) throws IOException {
 		File file = new File(templateFilePath + "bekraftelse.pdf");
 		PDDocument pdfDocument = PDDocument.load(file);
 		
 		String socialSecurityNumber = app.getSocialSecurityNumber();
-		MunicipalityJob job = app.getJob();
 		setFieldValue(pdfDocument, "bekraftelse-ansvar", accounting.getAnsvar());
 		setFieldValue(pdfDocument, "bekraftelse-verksamhet", accounting.getVerksamhet());
 		setFieldValue(pdfDocument, "bekraftelse-aktivitet", accounting.getAktivitet());
@@ -92,7 +89,7 @@ public class PDFGenerator {
 		return savedFile;
 	}
 	
-	private static File generateProofOfEmployment(MunicipalityJobApplication app, MunicipalityMentor mentor, int salary) throws IOException {
+	public static File generateProofOfEmployment(MunicipalityJob job, MunicipalityJobApplication app, MunicipalityMentor mentor, int salary) throws IOException {
 		File file = new File(templateFilePath + "information_anstallningsbevis.pdf");
 		PDDocument pdfDocument = PDDocument.load(file);
 		
@@ -102,13 +99,16 @@ public class PDFGenerator {
 		setFieldValue(pdfDocument, "anstallning-phone", app.getPhoneNumber());
 		setFieldValue(pdfDocument, "anstallning-streetaddress", app.getStreetAddress());
 		setFieldValue(pdfDocument, "anstallning-zipandcity", app.getZipCode() + " " + app.getCity());
-		MunicipalityJob job = app.getJob();
 		setFieldValue(pdfDocument, "anstallning-workplace", job.getLocation());
 		setFieldValue(pdfDocument, "anstallning-workstreetaddress", job.getStreetAddress());
 		setFieldValue(pdfDocument, "anstallning-workzipandcity", job.getZipCode() + " " + job.getCity());
 		MunicipalityManager manager = job.getManager();
 		setFieldValue(pdfDocument, "anstallning-workmanager", manager.getFirstname() + " " + manager.getLastname() + ", " + manager.getMobilePhone());
-		setFieldValue(pdfDocument, "anstallning-workmentor", mentor.getFirstname() + " " + mentor.getLastname() + ", " + mentor.getMobilePhone());
+		
+		if (mentor != null) {
+			setFieldValue(pdfDocument, "anstallning-workmentor", mentor.getFirstname() + " " + mentor.getLastname() + ", " + mentor.getMobilePhone());
+		}
+		
 		setFieldValue(pdfDocument, "anstallning-salary", salary + "");
 		setFieldValue(pdfDocument, "anstallning-fromdate", job.getPeriod().getStartDate().toString());
 		setFieldValue(pdfDocument, "anstallning-todate", job.getPeriod().getEndDate().toString());
@@ -120,24 +120,26 @@ public class PDFGenerator {
 		return savedFile;
 	}
 	
-	private static File generateBankDocument(MunicipalityJobApplication app) throws IOException {
+	public static File generateBankDocument(MunicipalityJobApplication app, ContactPerson contact) throws IOException {
 		File file = new File(templateFilePath + "overforingsuppdrag.pdf");
 		PDDocument pdfDocument = PDDocument.load(file);
 
-		setFieldValue(pdfDocument, "overforing-socialsecuritynumber", "198907058559");
-		setFieldValue(pdfDocument, "overforing-lastname", "Johansson");
-		setFieldValue(pdfDocument, "overforing-firstname", "Petter");
-		setFieldValue(pdfDocument, "overforing-streetaddress", "Granmodalsgatan 8");
-		setFieldValue(pdfDocument, "overforing-zipandcity", "85238 Sundsvall");
-		setFieldValue(pdfDocument, "overforing-phone", "0703502236");
-		setFieldValue(pdfDocument, "overforing-name", "Petter Johansson");
+		setFieldValue(pdfDocument, "overforing-contactname", contact.getName());
+		setFieldValue(pdfDocument, "overforing-contactphone", contact.getPhoneNumber());
+		setFieldValue(pdfDocument, "overforing-socialsecuritynumber", app.getSocialSecurityNumber());
+		setFieldValue(pdfDocument, "overforing-lastname", app.getLastname());
+		setFieldValue(pdfDocument, "overforing-firstname", app.getFirstname());
+		setFieldValue(pdfDocument, "overforing-streetaddress", app.getStreetAddress());
+		setFieldValue(pdfDocument, "overforing-zipandcity", app.getZipCode() + " " + app.getCity());
+		setFieldValue(pdfDocument, "overforing-phone", app.getPhoneNumber());
+		setFieldValue(pdfDocument, "overforing-name", app.getFirstname() + " " + app.getLastname());
 
 		File savedFile = saveDocument(pdfDocument, app.getSocialSecurityNumber() + "_overforingsuppdrag.pdf");
 		pdfDocument.close();
 		return savedFile;
 	}
 	
-	private static File generateTimeReport(MunicipalityJobApplication app) throws IOException, DocumentException {
+	public static File generateTimeReport(MunicipalityJob job, MunicipalityJobApplication app, AccountingEntry accounting) throws IOException, Exception {
 		PdfReader reader = new PdfReader(templateFilePath + "tjanstgoringsrapport.pdf");
 		OutputStream os = new FileOutputStream(newFilePath + app.getSocialSecurityNumber() + "_tjanstgoringsrapport.pdf");
 		PdfStamper stamper = new PdfStamper(reader, os);
@@ -149,33 +151,36 @@ public class PDFGenerator {
 		acroFields.setField("tjanstgoring-streetaddress", app.getStreetAddress());
 		acroFields.setField("tjanstgoring-zipcode", app.getZipCode());
 		acroFields.setField("tjanstgoring-city", app.getCity());
-		acroFields.setField("tjanstgoring-workplace", app.getJob().getLocation());
+		acroFields.setField("tjanstgoring-workplace", job.getLocation());
 		acroFields.setField("tjanstgoring-phone", app.getPhoneNumber());
+		acroFields.setField("tjanstgoring-ansvar", accounting.getAnsvar());
+		acroFields.setField("tjanstgoring-verksamhet", accounting.getVerksamhet());
+		acroFields.setField("tjanstgoring-aktivitet", accounting.getAktivitet());
 		stamper.close();
 
 		File file = new File(newFilePath + app.getSocialSecurityNumber() + "_tjanstgoringsrapport.pdf");
 		return file;
 	}
 	
-	private static File generateCallDocument(MunicipalityJobApplication app, String timeForInfo, String placeForInfo) throws IOException {
+	public static File generateCallDocument(MunicipalityJob job, MunicipalityJobApplication app, String placeForInfo) throws IOException {
 		File file = new File(templateFilePath + "kallelse.pdf");
 		PDDocument pdfDocument = PDDocument.load(file);
 		
 		setFieldValue(pdfDocument, "kallelse-name", app.getFirstname() + " " + app.getLastname());
 		setFieldValue(pdfDocument, "kallelse-streetaddress", app.getStreetAddress());
 		setFieldValue(pdfDocument, "kallelse-zipandcity", app.getZipCode() + " " + app.getCity());
-		setFieldValue(pdfDocument, "kallelse-specificinfo", app.getJob().getDescriptionForCallPapers());
-		setFieldValue(pdfDocument, "kallelse-timeforinfo", timeForInfo);
+		setFieldValue(pdfDocument, "kallelse-specificinfo", job.getDescriptionForCallPapers());
+		setFieldValue(pdfDocument, "kallelse-timeforinfo", app.getTimeForInformation());
 		setFieldValue(pdfDocument, "kallelse-placeforinfo", placeForInfo);
 		
-		File savedFile = saveDocument(pdfDocument, "198907058559" + "_" + "kallelse.pdf");
+		File savedFile = saveDocument(pdfDocument, app.getSocialSecurityNumber() + "_" + "kallelse.pdf");
 		pdfDocument.close();
 		
 		return savedFile;
 	}
 	
 	public static File generateTaxDocument(MunicipalityJobApplication app) throws IOException {
-		File file = new File(templateFilePath + "Skattebefrielse-redigerad.pdf");
+		File file = new File(templateFilePath + "skattebefrielse.pdf");
 		PDDocument pdfDocument = PDDocument.load(file);
 		
 		String socialSecurityNumber = app.getSocialSecurityNumber();
@@ -224,7 +229,7 @@ public class PDFGenerator {
 		return policeDocument;
 	}
 	
-	private static void setFieldValue(PDDocument pdfDocument, String fieldName, String value) throws IOException {
+	public static void setFieldValue(PDDocument pdfDocument, String fieldName, String value) throws IOException {
 		PDDocumentCatalog docCatalog = pdfDocument.getDocumentCatalog();
 		PDAcroForm acroForm = docCatalog.getAcroForm();
 		PDField field;
@@ -236,7 +241,7 @@ public class PDFGenerator {
 		}
 	}
 	
-	private static File saveDocument(PDDocument pdfDocument, String filename) throws IOException {
+	public static File saveDocument(PDDocument pdfDocument, String filename) throws IOException {
 		File newFile = null;
 		newFile = new File(newFilePath + filename);
 		newFile.createNewFile();

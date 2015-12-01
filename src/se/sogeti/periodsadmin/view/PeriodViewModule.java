@@ -17,10 +17,12 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import se.sogeti.periodsadmin.beans.AccountingEntry;
+import se.sogeti.periodsadmin.beans.ContactPerson;
 import se.sogeti.periodsadmin.beans.Period;
 import se.sogeti.periodsadmin.beans.PlaceForInformation;
 import se.sogeti.periodsadmin.beans.Salary;
 import se.sogeti.periodsadmin.daos.AccountingEntryDAO;
+import se.sogeti.periodsadmin.daos.ContactPersonDAO;
 import se.sogeti.periodsadmin.daos.PeriodDAO;
 import se.sogeti.periodsadmin.daos.PlaceForInformationDAO;
 import se.sogeti.periodsadmin.daos.SalaryDAO;
@@ -37,9 +39,6 @@ import se.unlogic.standardutils.xml.XMLUtils;
 import se.unlogic.webutils.http.RequestUtils;
 import se.unlogic.webutils.http.URIParser;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
 
 public class PeriodViewModule extends AnnotatedRESTModule {
 
@@ -47,6 +46,7 @@ public class PeriodViewModule extends AnnotatedRESTModule {
 	private SalaryDAO salaryDAO;
 	private PlaceForInformationDAO placeDAO;
 	private AccountingEntryDAO accountingEntryDAO;
+	private ContactPersonDAO contactDAO;
 
 	@Override
 	public ForegroundModuleResponse defaultMethod(HttpServletRequest req,
@@ -73,6 +73,9 @@ public class PeriodViewModule extends AnnotatedRESTModule {
 		PlaceForInformation place = placeDAO.getById(1);
 		XMLUtils.append(doc, element, place);
 		
+		ContactPerson contact = contactDAO.getAll().get(0);
+		XMLUtils.append(doc, element, contact);
+		
 		Element periodsElement = doc.createElement("Periods");
 		List<Period> periodList = periodDAO.getPeriodsOrderedByDate();
 		
@@ -98,6 +101,7 @@ public class PeriodViewModule extends AnnotatedRESTModule {
 		salaryDAO = new SalaryDAO(dataSource, Salary.class, daoFactory);
 		placeDAO = new PlaceForInformationDAO(dataSource, PlaceForInformation.class, daoFactory);
 		accountingEntryDAO = new AccountingEntryDAO(dataSource, AccountingEntry.class, daoFactory);
+		contactDAO = new ContactPersonDAO(dataSource, ContactPerson.class, daoFactory);
 	}
 	
 	@RESTMethod(alias="add/period.json", method="post")
@@ -245,6 +249,34 @@ public class PeriodViewModule extends AnnotatedRESTModule {
         } catch (SQLException e) {
           	log.error("Exception when trying to update the place for information: ", e);
         	JsonResponse.sendJsonResponse("{\"status\":\"error\", \"message\":\"Databasfel. Kunde inte uppdatera 'Plats för samtal'.\"}", callback, writer);
+			return;
+        }
+        JsonResponse.sendJsonResponse("{\"status\":\"success\", \"message\":\"Uppdatering genomförd.\"}", callback, writer);
+	}
+	
+	@RESTMethod(alias="save/contactperson.json", method="post")
+	public void saveContactPerson(HttpServletRequest req, HttpServletResponse res, User user, URIParser uriParser) throws IOException, SQLException {
+        PrintWriter writer = res.getWriter();
+        String callback = req.getParameter("callback"); 
+        JsonResponse.initJsonResponse(res, writer, callback);
+        
+        String contactName = req.getParameter("contact-name");
+        String contactPhone = req.getParameter("contact-phone");
+        ContactPerson person = contactDAO.getAll().get(0);
+        
+        if (StringUtils.isEmpty(contactName) || StringUtils.isEmpty(contactPhone)) {
+        	JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Fälten kan inte lämnas tomma.\"}", callback, writer);
+			return;
+        }
+        
+        person.setName(contactName);
+        person.setPhoneNumber(contactPhone);
+        
+        try {
+        	contactDAO.save(person);
+        } catch (SQLException e) {
+          	log.error("Exception when trying to update the contact person: ", e);
+        	JsonResponse.sendJsonResponse("{\"status\":\"error\", \"message\":\"Databasfel. Kunde inte uppdatera kontaktpersonen.\"}", callback, writer);
 			return;
         }
         JsonResponse.sendJsonResponse("{\"status\":\"success\", \"message\":\"Uppdatering genomförd.\"}", callback, writer);

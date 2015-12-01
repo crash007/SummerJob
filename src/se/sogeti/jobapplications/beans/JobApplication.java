@@ -28,9 +28,11 @@ public abstract class JobApplication implements Elementable{
 	public JobApplication() {
 		super();
 		this.status=ApplicationStatus.NONE;
+		this.callStatus = CallStatus.NONE;
 		this.ranking=10;
 		this.approved=false;
 		this.controlled=false;
+		this.applicationType = ApplicationType.REGULAR;
 	}
 
 //	@DAOManaged
@@ -125,6 +127,18 @@ public abstract class JobApplication implements Elementable{
 	@DAOManaged
 	@XMLElement
 	private ApplicationStatus status;
+	
+	@DAOManaged
+	@XMLElement
+	private CallStatus callStatus;
+	
+	@DAOManaged
+	@XMLElement
+	private String timeForInformation;
+	
+	@DAOManaged
+	@XMLElement
+	private ApplicationType applicationType;
 	
 	public Integer getId() {
 		return id;
@@ -366,6 +380,30 @@ public abstract class JobApplication implements Elementable{
 
 	public void setBirthDate(Date birthDate) {
 		this.birthDate = birthDate;
+	}
+
+	public String getTimeForInformation() {
+		return timeForInformation;
+	}
+
+	public void setTimeForInformation(String timeForInformation) {
+		this.timeForInformation = timeForInformation;
+	}
+
+	public CallStatus getCallStatus() {
+		return callStatus;
+	}
+
+	public void setCallStatus(CallStatus callStatus) {
+		this.callStatus = callStatus;
+	}
+
+	public ApplicationType getApplicationType() {
+		return applicationType;
+	}
+
+	public void setApplicationType(ApplicationType applicationType) {
+		this.applicationType = applicationType;
 	}
 
 }

@@ -88,7 +88,7 @@
 									</tbody>
 								</table>
 							</fieldset>
-							<input class="btn btn-primary" style="margin-top: 4px;" id="salary-save" type="submit" value="Spara"></input>
+							<input class="btn btn-primary" style="margin-top: 4px;" id="accounting-save" type="submit" value="Spara"></input>
 						</form>
 					</div>
 					<div id="save-accounting-failed" class="alert alert-danger" role="alert">
@@ -125,6 +125,44 @@
 							<span class="sr-only">Success:</span>
 							<span class="message"></span>
 						</div>
+					</div>
+				</div>
+			</div>
+			
+			<h2>Administrera kontaktperson</h2>
+			<div class="well">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h3 class="panel-title">Aktuell kontaktperson</h3>
+					</div>
+					<div class="panel-body">
+						<form id="contact-person-form">
+							<fieldset>
+								<table id="contact-person-table">
+									<thead>
+										<th>Namn</th>
+										<th>Telefonnummer</th>
+									</thead>
+									<tbody>
+										<tr>
+											<td><input class="form-control" name="contact-name" type="text" value="{ContactPerson/name}" /></td>
+											<td><input class="numberValidation form-control" name="contact-phone" type="text" value="{ContactPerson/phoneNumber}" /></td>
+										</tr>
+									</tbody>
+								</table>
+							</fieldset>
+							<input class="btn btn-primary" style="margin-top: 4px;" id="contact-person-save" type="submit" value="Spara"></input>
+						</form>
+					</div>
+					<div id="save-contact-failed" class="alert alert-danger" role="alert">
+						<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+						<span class="sr-only">Error:</span>
+						<span class="message"></span>
+					</div>
+					<div id="save-contact-succeeded" class="alert alert-success" role="alert">
+						<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+						<span class="sr-only">Success:</span>
+						<span class="message"></span>
 					</div>
 				</div>
 			</div>

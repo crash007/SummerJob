@@ -171,7 +171,7 @@
 				<div class="col-md-4 bold">
 					<form name="match-worker">
 						<input type="hidden" name="application-id" value="{id}"/>
-							<button type="submit" class="btn btn-default set-matched-btn">Matcha</button>
+							<button type="submit" class="btn btn-primary set-matched-btn">Matcha</button>
 					</form>
 				</div>
 			</div>
@@ -244,10 +244,25 @@
 							<div class="col-md-9 col-xs-12"><xsl:value-of select="workDescription"/></div>
 						</div>
 						
+						<div class="mgn-top16px row">
+							<div class="col-md-6 col-xs-12">
+								<h3>Administrera annonsen</h3>
+								<button class="col-md-6 col-xs-12 generate-workplace-document-button btn btn-primary" id="generate-workplace-document_{id}">Generera dokument till arbetsplatsen</button>
+								<div class="col-md-1"></div>
+								<xsl:choose>
+									<xsl:when test="isOpen = 'true'">
+										<button class="col-md-3 col-xs-6 close-job-button btn btn-danger" id="close-job_{id}">Stäng annons</button>
+									</xsl:when>
+									<xsl:otherwise>
+										<button class="col-md-3 col-xs-6 open-job-button btn btn-success" id="open-job_{id}">Öppna annons</button>
+									</xsl:otherwise>
+								</xsl:choose>
+							</div>
+						</div>
+						
 						<div class="row">
 							<div class="col-md-6 col-xs-12">
 								<h3>Matchade sommarjobbare</h3>
-								
 								<form id="matched-workers-form">
 									<div id="matched-applications-container">
 										<xsl:variable name="mentorslist" select="mentors"></xsl:variable>
@@ -288,19 +303,66 @@
 																</xsl:for-each>
 															</select>
 														</div>
-<!-- 														<div class="col-md-2 col-xs-4"><button class="save-personal-mentor btn btn-primary" id="{id}">Spara</button></div> -->
 													</div>
 													<div class="mgn-top8px row">
 														<div class="col-md-3 col-xs-5 bold">Tid för samtal</div>
 														<div class="col-md-4 col-xs-8">
-															<input type="text" class="form-control timeForInfo"></input>
+															<input type="text" id="timeForInfo_{id}" class="form-control timeForInfo" value="{timeForInformation}"></input>
 														</div>
 													</div>
 													<div class="mgn-top8px row">
-														<div class="col-md-2 col-xs-4"><button class="save-personal-mentor btn btn-primary" id="{id}">Spara</button></div>
+														<div class="col-md-3 col-xs-5 bold">Status</div>
+														<div class="col-md-4 col-xs-8 status-select-div">
+															<select id="call-status_{id}" class="form-control call-status">
+																<option value="NONE"></option>
+																<xsl:choose>
+																	<xsl:when test="callStatus = 'READY_TO_BE_CALLED'">
+																		<option selected="selected" value="READY_TO_BE_CALLED">Redo att kallas</option>
+																	</xsl:when>
+																	<xsl:otherwise>
+																		<option value="READY_TO_BE_CALLED">Redo att kallas</option>
+																	</xsl:otherwise>
+																</xsl:choose>
+																<xsl:choose>
+																	<xsl:when test="callStatus = 'HAS_BEEN_CALLED'">
+																		<option selected="selected" value="HAS_BEEN_CALLED">Kallad</option>
+																	</xsl:when>
+																	<xsl:otherwise>
+																		<option value="HAS_BEEN_CALLED">Kallad</option>
+																	</xsl:otherwise>
+																</xsl:choose>
+															</select>
+														</div>
+													</div>
+													<div class="mgn-top8px row">
+														<div class="col-md-2 col-xs-4"><button class="save-application-options btn btn-primary" id="{id}">Spara</button></div>
+													</div>
+													<div class="mgn-top16px row">
+														<div class="col-md-2 col-xs-4 bold">Dokument</div>
+														<div class="col-md-6 col-xs-12">
+															<xsl:choose>
+																<xsl:when test="timeForInformation != '' and callStatus != 'NONE'">
+																	<select id="generate-document-select_{id}" class="form-control generate-document-select">
+																		<option value=""></option>
+																		<option value="ALL">Generera aktuella dokument</option>
+																		<option value="kallelse">Kallelse</option>
+																		<option value="bekraftelse">Bekräftelse för anställning</option>
+																		<option value="anstallningsbevis">Anställningsbevis</option>
+																		<option value="tjanstgoringsrapport">Tjänstgöringsrapport</option>
+																		<option value="bank">Löntagaruppgifter</option>
+																		<option value="skattebefrielse">Lön utan skatteavdrag</option>
+																		<option value="belastningsregister">Utdrag ur belastningsregistret</option>
+																	</select>
+																</xsl:when>
+																<xsl:otherwise>
+																	<select disabled="disabled" id="generate-document-select_{id}" class="form-control"></select>
+																</xsl:otherwise>
+															</xsl:choose>
+														</div>
+														<div class="col-md-2 col-xs-4"><button disabled="disabled" class="generate-document-button btn btn-primary" id="generate-document_{id}">Generera</button></div>
 													</div>
 													<div class="mgn-top8px row">		
-														<div class="col-md-3">Markera</div>										
+														<div class="col-md-3">Markera</div>						
 														<div class="col-md-9">
 												          <input type="checkbox" name="application-id" value="{id}"></input>								        
 														</div>
@@ -311,16 +373,16 @@
 									</div>
 									<div class="mgn-top8px row">
 										<div class="col-md-2">
-											<button type="submit" class="btn btn-default remove-workers-btn">Ta bort</button>
+											<button type="submit" class="btn btn-danger remove-workers-btn">Ta bort</button>
 										</div>
 										<div class="col-md-2">
-											<button type="submit" class="btn btn-default deny-btn">Neka</button>
+											<button type="submit" class="btn btn-warning deny-btn">Tackat nej</button>
 										</div>
 									</div>
 								</form>
 							</div>
 							<div class="col-md-6 col-xs-12">
-								<h3>Tackat nej till detta jobb</h3>
+								<h3>Personer som tackat nej</h3>
 								
 								<form id="denied-workers-form">
 									<div id="denied-applications-container">
@@ -349,9 +411,9 @@
 									</div>
 									
 									<div class="row">
-										<div class="col-md-3"></div>												
+<!-- 										<div class="col-md-3"></div>												 -->
 										<div class="col-md-9">
-											<button type="submit" class="btn btn-default from-denied-to-matched-btn">Ändra till matchad</button>
+											<button type="submit" class="btn btn-primary from-denied-to-matched-btn">Ändra till matchad</button>
 										</div>
 									</div>
 								</form>

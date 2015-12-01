@@ -28,19 +28,58 @@ public class DocxGenerator {
 	
 	private static final String templateFilePath = "C:\\Users\\pettejoh\\Desktop\\Sommarjobb\\Dokument\\Omgjorda\\";
 	private static final String newFilePath = "C:\\Users\\pettejoh\\Desktop\\Sommarjobb\\Dokument\\Omgjorda\\Testpopulering\\";
-	
 
+	public static File generateAllDocuments(MunicipalityJob job) throws Docx4JException, JAXBException, IOException {
+		
+		WordprocessingMLPackage template = getTemplate("tilldelning-arbetsmiljoansvar");
+		String environmentPlaceholders[] = { "{ARB_NAMN}", "{ARB_PNR}", "{ARB_TELEFON}" };
+		List<Map<String, String>> textToAdd = new ArrayList<Map<String, String>>();
+		
+		List<MunicipalityJobApplication> applications = job.getApplications();
+		
+		
+		String periodString = job.getPeriod().getName() 
+				+ " (" + job.getPeriod().getStartDate() + " - " + job.getPeriod().getEndDate() + ")";
+		replacePlaceholder(template, periodString, "TILLDELNING_PERIOD");
+		
+		String allocationPlaceholders[] = { "{TILL_NAMN}", "{TILL_PNR}", "{TILL_TELEFON}" };
+		
+		for (MunicipalityJobApplication app : applications) {
+			Map<String, String> repl = new HashMap<String, String>();
+			repl.put("{TILL_NAMN}", app.getFirstname() + " " + app.getLastname());
+			repl.put("{TILL_PNR}", FormUtils.getSSNMunicipalityFormatting(app.getSocialSecurityNumber()));
+			repl.put("{TILL_TELEFON}", app.getPhoneNumber());
+			textToAdd.add(repl);
+		}
+		
+		replaceTable(allocationPlaceholders, textToAdd, template);
+		textToAdd.clear();
+		
+		for (MunicipalityJobApplication app : applications) {
+			Map<String, String> repl = new HashMap<String, String>();
+			repl.put("{ARB_NAMN}", app.getFirstname() + " " + app.getLastname());
+			repl.put("{ARB_PNR}", FormUtils.getSSNMunicipalityFormatting(app.getSocialSecurityNumber()));
+			repl.put("{ARB_TELEFON}", app.getPhoneNumber());
+			textToAdd.add(repl);
+		}
+		
+		replaceTable(environmentPlaceholders, textToAdd, template);
+
+		File file = writeDocxToStream(template, job.getId() + "_tilldelning-arbetsmiljoansvar");
+		return file;
+	}
+	
 	public static File generateEnvironmentDocument(MunicipalityJob job,
 			List<MunicipalityJobApplication> applications) throws Docx4JException, JAXBException, IOException {
-		WordprocessingMLPackage template = getTemplate("arbetsmiljoansvar");
-		String placeholders[] = { "KANDIDAT_NAMN", "KANDIDAT_PNR", "KANDIDAT_TELEFON" };
+		WordprocessingMLPackage template = getTemplate("arbetsmiljoansvar-test");
+		String placeholders[] = { "{ARB_NAMN}", "{ARB_PNR}", "{ARB_TELEFON}" };
 		List<Map<String, String>> textToAdd = new ArrayList<Map<String, String>>();
 		
 		for (MunicipalityJobApplication app : applications) {
 			Map<String, String> repl = new HashMap<String, String>();
-			repl.put("KANDIDAT_NAMN", app.getFirstname() + " " + app.getLastname());
-			repl.put("KANDIDAT_PNR", FormUtils.getSSNMunicipalityFormatting(app.getSocialSecurityNumber()));
-			repl.put("KANDIDAT_TELEFON", app.getPhoneNumber());
+			repl.put("{ARB_NAMN}", app.getFirstname() + " " + app.getLastname());
+			repl.put("{ARB_PNR}", FormUtils.getSSNMunicipalityFormatting(app.getSocialSecurityNumber()));
+			repl.put("{ARB_TELEFON}", app.getPhoneNumber());
 			textToAdd.add(repl);
 		}
 		
@@ -59,14 +98,14 @@ public class DocxGenerator {
 				+ " (" + job.getPeriod().getStartDate() + " - " + job.getPeriod().getEndDate() + ")";
 		replacePlaceholder(template, periodString, "TILLDELNING_PERIOD");
 		
-		String placeholders[] = { "KANDIDAT_NAMN", "KANDIDAT_PNR", "KANDIDAT_TELEFON" };
+		String placeholders[] = { "{TILL_NAMN}", "{TILL_PNR}", "{TILL_TELEFON}" };
 		List<Map<String, String>> textToAdd = new ArrayList<Map<String, String>>();
 		
 		for (MunicipalityJobApplication app : applications) {
 			Map<String, String> repl = new HashMap<String, String>();
-			repl.put("KANDIDAT_NAMN", app.getFirstname() + " " + app.getLastname());
-			repl.put("KANDIDAT_PNR", FormUtils.getSSNMunicipalityFormatting(app.getSocialSecurityNumber()));
-			repl.put("KANDIDAT_TELEFON", app.getPhoneNumber());
+			repl.put("{TILL_NAMN}", app.getFirstname() + " " + app.getLastname());
+			repl.put("{TILL_PNR}", FormUtils.getSSNMunicipalityFormatting(app.getSocialSecurityNumber()));
+			repl.put("{TILL_TELEFON}", app.getPhoneNumber());
 			textToAdd.add(repl);
 		}
 		
@@ -107,7 +146,6 @@ public class DocxGenerator {
 			Text textElement = (Text) text;
 			if (textElement.getValue().equals(placeholder)) {
 				textElement.setValue(name);
-				System.out.println("Japp, vi hittade ordet!");
 			}
 		}
 	}

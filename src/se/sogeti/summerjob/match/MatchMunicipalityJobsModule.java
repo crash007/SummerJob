@@ -1,6 +1,8 @@
 package se.sogeti.summerjob.match;
 
 
+import java.awt.Desktop;
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -16,13 +18,25 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import se.sogeti.jobapplications.beans.ApplicationStatus;
+import se.sogeti.jobapplications.beans.ApplicationType;
+import se.sogeti.jobapplications.beans.CallStatus;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityJob;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityJobApplication;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityMentor;
 import se.sogeti.jobapplications.daos.JobDAO;
 import se.sogeti.jobapplications.daos.MuncipialityJobApplicationDAO;
+import se.sogeti.periodsadmin.beans.AccountingEntry;
+import se.sogeti.periodsadmin.beans.ContactPerson;
+import se.sogeti.periodsadmin.beans.PlaceForInformation;
+import se.sogeti.periodsadmin.beans.Salary;
+import se.sogeti.periodsadmin.daos.AccountingEntryDAO;
+import se.sogeti.periodsadmin.daos.ContactPersonDAO;
+import se.sogeti.periodsadmin.daos.PlaceForInformationDAO;
+import se.sogeti.periodsadmin.daos.SalaryDAO;
+import se.sogeti.summerjob.DocxGenerator;
 import se.sogeti.summerjob.FormUtils;
 import se.sogeti.summerjob.JsonResponse;
+import se.sogeti.summerjob.PDFGenerator;
 import se.unlogic.hierarchy.core.beans.SimpleForegroundModuleResponse;
 import se.unlogic.hierarchy.core.beans.User;
 import se.unlogic.hierarchy.core.interfaces.ForegroundModuleResponse;
@@ -31,6 +45,7 @@ import se.unlogic.hierarchy.foregroundmodules.rest.AnnotatedRESTModule;
 import se.unlogic.hierarchy.foregroundmodules.rest.RESTMethod;
 import se.unlogic.standardutils.json.JsonObject;
 import se.unlogic.standardutils.numbers.NumberUtils;
+import se.unlogic.standardutils.string.StringUtils;
 import se.unlogic.standardutils.xml.XMLUtils;
 import se.unlogic.webutils.http.RequestUtils;
 import se.unlogic.webutils.http.URIParser;
@@ -39,6 +54,10 @@ public class MatchMunicipalityJobsModule extends AnnotatedRESTModule{
 	
 	private JobDAO<MunicipalityJob> municipalityJobDAO;
 	private MuncipialityJobApplicationDAO municipalityJobApplicationDAO;
+	private SalaryDAO salaryDAO;
+	private PlaceForInformationDAO placeForInformationDAO;
+	private AccountingEntryDAO accountingDAO;
+	private ContactPersonDAO contactDAO;
 	
 	@Override
 	protected void createDAOs(DataSource dataSource) throws Exception {
@@ -47,6 +66,10 @@ public class MatchMunicipalityJobsModule extends AnnotatedRESTModule{
 
 		municipalityJobDAO = new JobDAO<MunicipalityJob>(dataSource, MunicipalityJob.class, daoFactory);
 		municipalityJobApplicationDAO = new MuncipialityJobApplicationDAO(dataSource, MunicipalityJobApplication.class, daoFactory);
+		salaryDAO = new SalaryDAO(dataSource, Salary.class, daoFactory);
+		placeForInformationDAO = new PlaceForInformationDAO(dataSource, PlaceForInformation.class, daoFactory);
+		accountingDAO = new AccountingEntryDAO(dataSource, AccountingEntry.class, daoFactory);
+		contactDAO = new ContactPersonDAO(dataSource, ContactPerson.class, daoFactory);
 	}
 
 	@Override
@@ -183,6 +206,8 @@ public class MatchMunicipalityJobsModule extends AnnotatedRESTModule{
 						jobApplication.setStatus(ApplicationStatus.NONE);
 						jobApplication.setPersonalMentor(null);
 						jobApplication.setPersonalMentorId(null);
+						jobApplication.setCallStatus(CallStatus.NONE);
+						jobApplication.setTimeForInformation(null);
 						municipalityJobApplicationDAO.save(jobApplication);
 					}else{
 						log.warn("No application with id: "+id);
@@ -231,6 +256,8 @@ public class MatchMunicipalityJobsModule extends AnnotatedRESTModule{
 						jobApplication.setJob(job);
 						jobApplication.setPersonalMentor(null);
 						jobApplication.setPersonalMentorId(null);
+						jobApplication.setCallStatus(CallStatus.NONE);
+						jobApplication.setTimeForInformation(null);
 						municipalityJobApplicationDAO.save(jobApplication);
 						
 						result.putField("status", "success");
@@ -323,9 +350,9 @@ public class MatchMunicipalityJobsModule extends AnnotatedRESTModule{
 		}
 	}
 	
-	@RESTMethod(alias="save/personalmentor.json", method="post")
-	public void savePersonalMentor(HttpServletRequest req, HttpServletResponse res, User user, URIParser uriParser) throws IOException{
-		log.info("Request for add-worker.json");
+	@RESTMethod(alias="save/applicationoptions.json", method="post")
+	public void saveApplicationOptions(HttpServletRequest req, HttpServletResponse res, User user, URIParser uriParser) throws IOException {
+		log.info("Request for save/applicationoptions.json");
 		
 		PrintWriter writer = res.getWriter();
 		JsonObject result = new JsonObject();
@@ -333,6 +360,19 @@ public class MatchMunicipalityJobsModule extends AnnotatedRESTModule{
 		Integer jobId = NumberUtils.toInt(req.getParameter("jobId"));
 		Integer applicationId = NumberUtils.toInt(req.getParameter("appId"));
 		Integer mentorId = NumberUtils.toInt(req.getParameter("mentorId"));
+		
+		String timeForInfoString = StringUtils.isEmpty(req.getParameter("timeForInfo")) ? null : req.getParameter("timeForInfo");
+		
+		String callStatusString = req.getParameter("callStatus");
+		CallStatus callStatus = null; 
+		if (callStatusString.equals("READY_TO_BE_CALLED")) {
+			callStatus = CallStatus.READY_TO_BE_CALLED;
+		} else if (callStatusString.equals("HAS_BEEN_CALLED")) {
+			callStatus = CallStatus.HAS_BEEN_CALLED;
+		} else {
+			callStatus = CallStatus.NONE;
+		}
+		
 		
 		if(jobId != null && applicationId != null) {
 			try {
@@ -358,6 +398,9 @@ public class MatchMunicipalityJobsModule extends AnnotatedRESTModule{
 							jobApplication.setPersonalMentor(null);
 							jobApplication.setPersonalMentorId(null);
 						}
+						
+						jobApplication.setTimeForInformation(timeForInfoString);
+						jobApplication.setCallStatus(callStatus);
 						jobApplication.setJob(job);
 						municipalityJobApplicationDAO.save(jobApplication);
 						result.putField("status", "success");
@@ -389,7 +432,151 @@ public class MatchMunicipalityJobsModule extends AnnotatedRESTModule{
 			result.putField("message", "parameter id is missing for job or application");
 			JsonResponse.sendJsonResponse(result.toJson(), null, writer);
 		}
+	}
+	
+	@RESTMethod(alias="generateworkplacedocuments.json", method="post")
+	public void generateWorkplaceDocuments(HttpServletRequest req, HttpServletResponse res, User user, URIParser uriParser) throws IOException, SQLException {
+		log.info("Request for generateworkplacedocument.json");
 		
+		PrintWriter writer = res.getWriter();
+		JsonObject result = new JsonObject();
+		JsonResponse.initJsonResponse(res, writer, null);
+		
+		Integer jobId = NumberUtils.toInt(req.getParameter("jobId"));
+		
+		if (jobId != null) {
+			MunicipalityJob job = municipalityJobDAO.getByIdWithApplications(jobId);
+			
+			File file = null;
+			try {
+				file = DocxGenerator.generateAllDocuments(job);
+			} catch (Exception e) {
+				log.error("Could not generate the desired document.", e);
+				e.printStackTrace();
+				result.putField("status", "fail");
+				result.putField("message", "Kunde inte generera det önskade dokumentet.");
+				JsonResponse.sendJsonResponse(result.toJson(), null, writer);
+				return;
+			}
+			
+			Desktop.getDesktop().open(file);
+			
+		} else {
+			result.putField("status", "fail");
+			result.putField("message", "JobId is null");
+			JsonResponse.sendJsonResponse(result.toJson(), null, writer);
+			return;
+		}
+		result.putField("status", "success");
+		result.putField("message", "Genererade det önskade dokumentet för annonsen med ID: " + jobId.intValue());
+		JsonResponse.sendJsonResponse(result.toJson(), null, writer);
+	}
+	
+	@RESTMethod(alias="generateemployeedocument.json", method="post")
+	public void generateEmployeeDocument(HttpServletRequest req, HttpServletResponse res, User user, URIParser uriParser) throws IOException, SQLException {
+		log.info("Request for generateemployeedocument.json");
+		
+		PrintWriter writer = res.getWriter();
+		JsonObject result = new JsonObject();
+		JsonResponse.initJsonResponse(res, writer, null);
+		
+		Integer jobId = NumberUtils.toInt(req.getParameter("jobId"));
+		Integer appId = NumberUtils.toInt(req.getParameter("appId"));
+		String selectValue = req.getParameter("selectedDocument");
+		
+		if (jobId != null && appId != null && !StringUtils.isEmpty(selectValue)) {
+			MunicipalityJob job = municipalityJobDAO.getById(jobId);
+			MunicipalityJobApplication app = municipalityJobApplicationDAO.getById(appId);
+			Salary salary = !isOverEighteenDuringJob(app.getBirthDate(), job.getPeriod().getEndDate()) 
+					? salaryDAO.getById(1) : salaryDAO.getById(2);
+			
+			PlaceForInformation place = placeForInformationDAO.getAll().get(0);
+			AccountingEntry accounting = app.getApplicationType() == ApplicationType.PRIO ? accountingDAO.getById(1) : accountingDAO.getById(2);
+			ContactPerson contact = contactDAO.getAll().get(0);
+			
+			File file = null;
+			try {
+				file = generateDocumentFromSelectValue(selectValue, job, app, salary.getAmountInSEK(),
+						place.getName(), accounting, contact);
+			} catch (Exception e) {
+				log.error("Could not generate the desired document.", e);
+				e.printStackTrace();
+				result.putField("status", "fail");
+				result.putField("message", "Kunde inte generera det önskade dokumentet.");
+				JsonResponse.sendJsonResponse(result.toJson(), null, writer);
+				return;
+			}
+			/**
+			 * TODO Open fungerar endast om ingen annan också har samma/en tidigare generering
+			 * öppen. Använda Open så de har möjlighet att redigera eller istället
+			 * print som öppnar, skriver ut filen och sedan släpper den? 
+			 */
+			Desktop.getDesktop().open(file);
+			
+		} else {
+			result.putField("status", "fail");
+			result.putField("message", "JobId or AppId is null, or a document wasn't selected.");
+			JsonResponse.sendJsonResponse(result.toJson(), null, writer);
+			return;
+		}
+		result.putField("status", "success");
+		result.putField("message", "Genererade det önskade dokumentet för ansökan med ID: " + appId.intValue());
+		JsonResponse.sendJsonResponse(result.toJson(), null, writer);
+	}
+	
+	private File generateDocumentFromSelectValue(String value, MunicipalityJob job, MunicipalityJobApplication app,
+			int salary, String placeForInfo, AccountingEntry accounting, ContactPerson contact) throws IOException, Exception {
+		
+		File file = null;
+		
+		switch (value) {
+		case "ALL":
+			file = PDFGenerator.generateEmployeeDocuments(job, app, salary, placeForInfo, accounting, contact);
+			break;
+
+		case "kallelse":
+			file = PDFGenerator.generateCallDocument(job, app, placeForInfo);
+			break;
+			
+		case "bekraftelse":
+			file = PDFGenerator.generateConfirmationDocument(job, app, salary, accounting);
+			break;
+			
+		case "anstallningsbevis":
+			file = PDFGenerator.generateProofOfEmployment(job, app, app.getPersonalMentor(), salary);
+			break;
+			
+		case "tjanstgoringsrapport":
+			file = PDFGenerator.generateTimeReport(job, app, accounting);
+			break;
+			
+		case "bank":
+			file = PDFGenerator.generateBankDocument(app, contact);
+			break;
+			
+		case "skattebefrielse":
+			file = PDFGenerator.generateTaxDocument(app);
+			break;
+			
+		case "belastningsregister":
+			file = PDFGenerator.generatePoliceDocument(app);
+			break;
+			
+		default:
+			break;
+		}
+		
+		return file;
+	}
+	
+	private boolean isOverEighteenDuringJob(Date birthDate, Date jobEndDate) {
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(birthDate);					
+		cal.set(Calendar.YEAR, cal.get(Calendar.YEAR) + 18);
+		Date eighteenthBirthday = cal.getTime();
+		
+		int value = eighteenthBirthday.compareTo(jobEndDate);
+		return value <= 0;
 	}
 }
 
