@@ -23,7 +23,8 @@ public class FormUtils {
 				
 				String uuid = splitted[1];
 				if (splitted.length == 3) {
-					uuid += "_" + s.split("_")[2];
+//					uuid += "_" + s.split("_")[2];
+					uuid += "_" + splitted[2];
 				}
 				
 				result.add(uuid);

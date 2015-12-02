@@ -5,12 +5,13 @@
 
 
 	<xsl:template match="Document">
+		<xsl:variable name="isAdmin" select="IsAdmin"/>
 		 
 		<script>
 			var url = '<xsl:value-of select="requestinfo/uri"/>';
+			var isAdmin = '<xsl:value-of select="IsAdmin"/>'
 		</script>
-		<xsl:variable name="isAdmin" select="IsAdmin"/>
-		<xsl:apply-templates select="MunicipalityJobForm"/>
+		<xsl:apply-templates select="MunicipalityJobForm" />
 	</xsl:template>
 	
 	<xsl:template match="MunicipalityJobForm">
@@ -162,8 +163,8 @@
 				  	</div>
 				  	<div class="form-group">
 					    <label for="work-description">Arbetsbeskrivning*</label>				    
-					    <textarea class="form-control" rows="5" id="work-description" name="work-description" required="required"><xsl:value-of select="MunicipalityJob/workDescription"></xsl:value-of></textarea>							    
-					    <p class="help-block with-errors">Beskriv vad arbetsuppgifterna kommer vara</p>
+					    <textarea class="form-control" maxlength="255" rows="3" id="work-description" name="work-description" required="required"><xsl:value-of select="MunicipalityJob/workDescription"></xsl:value-of></textarea>							    
+					    <p class="help-block with-errors">Beskriv vad arbetsuppgifterna kommer vara. Max 255 tecken.</p>
 				  	</div>				  	
 				  	
 				  	<div id="periods-group" class="form-group">
@@ -208,28 +209,30 @@
 							  			<div style="margin-bottom: 8px" class="add-mentor-div hidden">
 							  				<label>Ange handledare</label>
 							  				<div id="mentors-wrapper">
-									  			<xsl:for-each select="mentors/MunicipalityMentor">
-													<div class="row collapse in" style="margin-bottom: 8px;">
-														<input style="display: none;" id="mentor-id-{id}" name="mentor-id-{id}" type="text" value="{id}"/>
-														<div class="form-group col-md-3">
-															<label for="mentor-firstname">Förnamn</label><input type="text" class="form-control" id="mentor-firstname" name="mentor-firstname_{id}" placeholder="" value="{firstname}"/>
+							  					<xsl:if test="selected = 'true'">
+										  			<xsl:for-each select="mentors/MunicipalityMentor">
+														<div class="row collapse in" style="margin-bottom: 8px;">
+															<input style="display: none;" id="mentor-id-{id}" name="mentor-id-{id}" type="text" value="{id}"/>
+															<div class="form-group col-md-3">
+																<label for="mentor-firstname">Förnamn</label><input type="text" class="form-control" id="mentor-firstname" name="mentor-firstname_{id}" placeholder="" value="{firstname}"/>
+															</div>
+															<div class="form-group col-md-3">
+																<label for="mentor-lastname">Efternamn</label><input type="text" class="form-control" id="mentor-lastname" name="mentor-lastname_{id}" placeholder="" value="{lastname}"/>
+															</div>
+															<div class="form-group col-md-2">
+																<label for="mentor-phone">Telefonnummer</label><input type="text" class="numberValidation form-control" id="mentor-phone" name="mentor-phone_{id}" placeholder="" value="{mobilePhone}"/>
+																<p class="help-block">Endast siffror</p>
+															</div>
+															<div class="form-group col-md-3">
+																<label for="mentor-email">E-post</label><input type="email" class="col-md-3 form-control" id="mentor-email" name="mentor-email_{id}" placeholder="" value="{email}"/>
+															</div>
+															<div class="remove-mentor form-group col-md-1">
+																<label>Ta bort</label>
+																<div class="mgn-top8px glyphicon glyphicon-remove" aria-hidden="true"></div>
+															</div>
 														</div>
-														<div class="form-group col-md-3">
-															<label for="mentor-lastname">Efternamn</label><input type="text" class="form-control" id="mentor-lastname" name="mentor-lastname_{id}" placeholder="" value="{lastname}"/>
-														</div>
-														<div class="form-group col-md-2">
-															<label for="mentor-phone">Telefonnummer</label><input type="text" class="numberValidation form-control" id="mentor-phone" name="mentor-phone_{id}" placeholder="" value="{mobilePhone}"/>
-															<p class="help-block">Endast siffror</p>
-														</div>
-														<div class="form-group col-md-3">
-															<label for="mentor-email">E-post</label><input type="email" class="col-md-3 form-control" id="mentor-email" name="mentor-email_{id}" placeholder="" value="{email}"/>
-														</div>
-														<div class="remove-mentor form-group col-md-1">
-															<label>Ta bort</label>
-															<div class="mgn-top8px glyphicon glyphicon-remove" aria-hidden="true"></div>
-														</div>
-													</div>
-												</xsl:for-each>
+													</xsl:for-each>
+												</xsl:if>
 									    	</div>
 							  				<a href="#" class="add-municipality-mentor-btn"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Lägg till handledare</a>
 							  			</div>
@@ -257,6 +260,24 @@
 							  			</div>
 						  			</div>
 						  		</xsl:for-each>
+					  			<div class="period-div" id="periodunique_1337">
+						  			<div style="margin-bottom: 0px" class="row form-group">
+										<div class="col-md-1"><input class="period-checkbox" type="checkbox" name="period_unique_checkbox" /></div>
+								  		<div class="col-md-2"><input disabled="disabled" placeholder="Periodnamn" class="form-control" type="text" name="unique-period-name"></input></div>
+								  		<div class="col-md-2"><input disabled="disabled" placeholder="Startdatum" class="form-control" type="text" name="unique-period-startdate"></input></div>
+								  		<div class="col-md-2"><input disabled="disabled" placeholder="Slutdatum" class="form-control" type="text" name="unique-period-enddate"></input></div>
+								  		<div class="col-md-3">
+								  			<input class="form-control numberOfWorkersField" disabled="disabled" type="number" min="1" max="99" name="unique_numberOfWorkersNeeded" id="unique_numberOfWorkersNeeded"/>
+		 									<p class="help-block">Skriv ett heltal mellan 1 och 99</p>
+								  		</div>
+						  			</div>
+						  			<div style="margin-bottom: 8px" class="add-mentor-div hidden">
+						  				<label>Ange handledare</label>
+						  				<div id="mentors-wrapper">
+								    	</div>
+						  				<a href="#" class="add-municipality-mentor-btn"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Lägg till handledare</a>
+						  			</div>
+					  			</div>
 				  			</xsl:otherwise>
 				  		</xsl:choose>
 				  	</div>

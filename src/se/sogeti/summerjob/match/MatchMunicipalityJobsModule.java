@@ -446,10 +446,11 @@ public class MatchMunicipalityJobsModule extends AnnotatedRESTModule{
 		
 		if (jobId != null) {
 			MunicipalityJob job = municipalityJobDAO.getByIdWithApplications(jobId);
+			ContactPerson contact = contactDAO.getAll().get(0);
 			
 			File file = null;
 			try {
-				file = DocxGenerator.generateAllDocuments(job);
+				file = DocxGenerator.generateWorkplaceDocuments(job, contact);
 			} catch (Exception e) {
 				log.error("Could not generate the desired document.", e);
 				e.printStackTrace();
@@ -535,7 +536,7 @@ public class MatchMunicipalityJobsModule extends AnnotatedRESTModule{
 			break;
 
 		case "kallelse":
-			file = PDFGenerator.generateCallDocument(job, app, placeForInfo);
+			file = PDFGenerator.generateCallDocument(job, app, placeForInfo, contact);
 			break;
 			
 		case "bekraftelse":

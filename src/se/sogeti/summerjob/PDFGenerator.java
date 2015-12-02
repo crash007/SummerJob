@@ -18,6 +18,7 @@ import se.sogeti.jobapplications.beans.municipality.MunicipalityManager;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityMentor;
 import se.sogeti.periodsadmin.beans.AccountingEntry;
 import se.sogeti.periodsadmin.beans.ContactPerson;
+import se.unlogic.standardutils.string.StringUtils;
 
 import com.itextpdf.text.pdf.AcroFields;
 import com.itextpdf.text.pdf.PdfReader;
@@ -30,7 +31,7 @@ public class PDFGenerator {
 	
 	public static File generateEmployeeDocuments(MunicipalityJob job, MunicipalityJobApplication app, 
 			int salary, String placeForInfo, AccountingEntry accounting, ContactPerson contact) throws IOException, Exception {
-		File call = generateCallDocument(job, app, placeForInfo);
+		File call = generateCallDocument(job, app, placeForInfo, contact);
 		File confirmation = generateConfirmationDocument(job, app, salary, accounting);
 		File proofOfEmployment = generateProofOfEmployment(job, app, app.getPersonalMentor(), salary);
 		File time = generateTimeReport(job, app, accounting);
@@ -112,7 +113,12 @@ public class PDFGenerator {
 		setFieldValue(pdfDocument, "anstallning-salary", salary + "");
 		setFieldValue(pdfDocument, "anstallning-fromdate", job.getPeriod().getStartDate().toString());
 		setFieldValue(pdfDocument, "anstallning-todate", job.getPeriod().getEndDate().toString());
-		setFieldValue(pdfDocument, "anstallning-specificinfo", job.getDescriptionForEmploymentPapers());
+		
+		if (!StringUtils.isEmpty(job.getDescriptionForEmploymentPapers())) {
+			setFieldValue(pdfDocument, "anstallning-specificinfo", job.getDescriptionForEmploymentPapers());
+		} else {
+			setFieldValue(pdfDocument, "anstallning-specificinfo", job.getWorkDescription());
+		}
 		
 		File savedFile = saveDocument(pdfDocument, socialSecurityNumber + "_" + "information_anstallningsbevis.pdf");
 		pdfDocument.close();
@@ -162,7 +168,7 @@ public class PDFGenerator {
 		return file;
 	}
 	
-	public static File generateCallDocument(MunicipalityJob job, MunicipalityJobApplication app, String placeForInfo) throws IOException {
+	public static File generateCallDocument(MunicipalityJob job, MunicipalityJobApplication app, String placeForInfo, ContactPerson contact) throws IOException {
 		File file = new File(templateFilePath + "kallelse.pdf");
 		PDDocument pdfDocument = PDDocument.load(file);
 		
@@ -172,6 +178,7 @@ public class PDFGenerator {
 		setFieldValue(pdfDocument, "kallelse-specificinfo", job.getDescriptionForCallPapers());
 		setFieldValue(pdfDocument, "kallelse-timeforinfo", app.getTimeForInformation());
 		setFieldValue(pdfDocument, "kallelse-placeforinfo", placeForInfo);
+		setFieldValue(pdfDocument, "kallelse-kontaktperson", contact.getName() + " - " + contact.getPhoneNumber());
 		
 		File savedFile = saveDocument(pdfDocument, app.getSocialSecurityNumber() + "_" + "kallelse.pdf");
 		pdfDocument.close();

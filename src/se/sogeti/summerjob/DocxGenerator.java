@@ -14,6 +14,8 @@ import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 
 import org.docx4j.XmlUtils;
+import org.docx4j.model.fields.merge.DataFieldName;
+import org.docx4j.model.fields.merge.MailMerger.OutputField;
 import org.docx4j.openpackaging.exceptions.Docx4JException;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
 import org.docx4j.wml.ContentAccessor;
@@ -23,13 +25,14 @@ import org.docx4j.wml.Tr;
 
 import se.sogeti.jobapplications.beans.municipality.MunicipalityJob;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityJobApplication;
+import se.sogeti.periodsadmin.beans.ContactPerson;
 
 public class DocxGenerator {
 	
 	private static final String templateFilePath = "C:\\Users\\pettejoh\\Desktop\\Sommarjobb\\Dokument\\Omgjorda\\";
 	private static final String newFilePath = "C:\\Users\\pettejoh\\Desktop\\Sommarjobb\\Dokument\\Omgjorda\\Testpopulering\\";
 
-	public static File generateAllDocuments(MunicipalityJob job) throws Docx4JException, JAXBException, IOException {
+	public static File generateWorkplaceDocuments(MunicipalityJob job, ContactPerson contact) throws Docx4JException, JAXBException, IOException {
 		
 		WordprocessingMLPackage template = getTemplate("tilldelning-arbetsmiljoansvar");
 		String environmentPlaceholders[] = { "{ARB_NAMN}", "{ARB_PNR}", "{ARB_TELEFON}" };
@@ -37,6 +40,16 @@ public class DocxGenerator {
 		
 		List<MunicipalityJobApplication> applications = job.getApplications();
 		
+		Map<DataFieldName, String> addressItem = new HashMap<DataFieldName, String>();
+		addressItem.put(new DataFieldName("till_location"), job.getLocation());
+		addressItem.put(new DataFieldName("till_gatuadress"), job.getStreetAddress());
+		addressItem.put(new DataFieldName("till_pstnr_stad"), job.getCity());
+		
+		org.docx4j.model.fields.merge.MailMerger.setMERGEFIELDInOutput(OutputField.KEEP_MERGEFIELD);
+		org.docx4j.model.fields.merge.MailMerger.performMerge(template, addressItem, true);
+		
+		replacePlaceholder(template, contact.getName(), "{TILL_KONTAKTPERSON}");
+		replacePlaceholder(template, contact.getPhoneNumber(), "{TILL_KONTAKTNR}");
 		
 		String periodString = job.getPeriod().getName() 
 				+ " (" + job.getPeriod().getStartDate() + " - " + job.getPeriod().getEndDate() + ")";
@@ -54,6 +67,14 @@ public class DocxGenerator {
 		
 		replaceTable(allocationPlaceholders, textToAdd, template);
 		textToAdd.clear();
+//		addressItem.clear();
+		
+//		addressItem.put(new DataFieldName("arb_location"), job.getLocation());
+//		addressItem.put(new DataFieldName("arb_gatuadress"), job.getStreetAddress());
+//		addressItem.put(new DataFieldName("arb_pstnr_stad"), job.getCity());
+//		org.docx4j.model.fields.merge.MailMerger.setMERGEFIELDInOutput(OutputField.KEEP_MERGEFIELD);
+//		org.docx4j.model.fields.merge.MailMerger.performMerge(template, addressItem, true);
+		
 		
 		for (MunicipalityJobApplication app : applications) {
 			Map<String, String> repl = new HashMap<String, String>();
@@ -69,51 +90,51 @@ public class DocxGenerator {
 		return file;
 	}
 	
-	public static File generateEnvironmentDocument(MunicipalityJob job,
-			List<MunicipalityJobApplication> applications) throws Docx4JException, JAXBException, IOException {
-		WordprocessingMLPackage template = getTemplate("arbetsmiljoansvar-test");
-		String placeholders[] = { "{ARB_NAMN}", "{ARB_PNR}", "{ARB_TELEFON}" };
-		List<Map<String, String>> textToAdd = new ArrayList<Map<String, String>>();
-		
-		for (MunicipalityJobApplication app : applications) {
-			Map<String, String> repl = new HashMap<String, String>();
-			repl.put("{ARB_NAMN}", app.getFirstname() + " " + app.getLastname());
-			repl.put("{ARB_PNR}", FormUtils.getSSNMunicipalityFormatting(app.getSocialSecurityNumber()));
-			repl.put("{ARB_TELEFON}", app.getPhoneNumber());
-			textToAdd.add(repl);
-		}
-		
-		replaceTable(placeholders, textToAdd, template);
-		File file = writeDocxToStream(template, "arbetsmiljoansvar-test");
-		
-		return file;
-	}
+//	public static File generateEnvironmentDocument(MunicipalityJob job,
+//			List<MunicipalityJobApplication> applications) throws Docx4JException, JAXBException, IOException {
+//		WordprocessingMLPackage template = getTemplate("arbetsmiljoansvar-test");
+//		String placeholders[] = { "{ARB_NAMN}", "{ARB_PNR}", "{ARB_TELEFON}" };
+//		List<Map<String, String>> textToAdd = new ArrayList<Map<String, String>>();
+//		
+//		for (MunicipalityJobApplication app : applications) {
+//			Map<String, String> repl = new HashMap<String, String>();
+//			repl.put("{ARB_NAMN}", app.getFirstname() + " " + app.getLastname());
+//			repl.put("{ARB_PNR}", FormUtils.getSSNMunicipalityFormatting(app.getSocialSecurityNumber()));
+//			repl.put("{ARB_TELEFON}", app.getPhoneNumber());
+//			textToAdd.add(repl);
+//		}
+//		
+//		replaceTable(placeholders, textToAdd, template);
+//		File file = writeDocxToStream(template, "arbetsmiljoansvar-test");
+//		
+//		return file;
+//	}
 	
-	public static File generateAllocationDocument(MunicipalityJob job,
-			List<MunicipalityJobApplication> applications) throws Docx4JException, JAXBException, IOException {
-		
-		WordprocessingMLPackage template = getTemplate("tilldelning");
-		
-		String periodString = job.getPeriod().getName() 
-				+ " (" + job.getPeriod().getStartDate() + " - " + job.getPeriod().getEndDate() + ")";
-		replacePlaceholder(template, periodString, "TILLDELNING_PERIOD");
-		
-		String placeholders[] = { "{TILL_NAMN}", "{TILL_PNR}", "{TILL_TELEFON}" };
-		List<Map<String, String>> textToAdd = new ArrayList<Map<String, String>>();
-		
-		for (MunicipalityJobApplication app : applications) {
-			Map<String, String> repl = new HashMap<String, String>();
-			repl.put("{TILL_NAMN}", app.getFirstname() + " " + app.getLastname());
-			repl.put("{TILL_PNR}", FormUtils.getSSNMunicipalityFormatting(app.getSocialSecurityNumber()));
-			repl.put("{TILL_TELEFON}", app.getPhoneNumber());
-			textToAdd.add(repl);
-		}
-		
-		replaceTable(placeholders, textToAdd, template);
-		File file = writeDocxToStream(template, "tilldelning-test");
-		
-		return file;
-	}
+//	public static File generateAllocationDocument(MunicipalityJob job,
+//			List<MunicipalityJobApplication> applications) throws Docx4JException, JAXBException, IOException {
+//		
+//		WordprocessingMLPackage template = getTemplate("tilldelning");
+//		
+//		String periodString = job.getPeriod().getName() 
+//				+ " (" + job.getPeriod().getStartDate() + " - " + job.getPeriod().getEndDate() + ")";
+//		replacePlaceholder(template, periodString, "TILLDELNING_PERIOD");
+//		
+//		String placeholders[] = { "{TILL_NAMN}", "{TILL_PNR}", "{TILL_TELEFON}" };
+//		List<Map<String, String>> textToAdd = new ArrayList<Map<String, String>>();
+//		
+//		for (MunicipalityJobApplication app : applications) {
+//			Map<String, String> repl = new HashMap<String, String>();
+//			repl.put("{TILL_NAMN}", app.getFirstname() + " " + app.getLastname());
+//			repl.put("{TILL_PNR}", FormUtils.getSSNMunicipalityFormatting(app.getSocialSecurityNumber()));
+//			repl.put("{TILL_TELEFON}", app.getPhoneNumber());
+//			textToAdd.add(repl);
+//		}
+//		
+//		replaceTable(placeholders, textToAdd, template);
+//		File file = writeDocxToStream(template, "tilldelning-test");
+//		
+//		return file;
+//	}
 	
 	private static WordprocessingMLPackage getTemplate(String name) throws Docx4JException, FileNotFoundException {
 		WordprocessingMLPackage template = WordprocessingMLPackage.load(new FileInputStream(new File(templateFilePath + name + ".docx")));

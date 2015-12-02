@@ -26,9 +26,9 @@ public class ContactDetailsDAO<T extends ContactDetails> extends AnnotatedDAO<T>
 		this.addOrUpdate(bean, null);
 	}
 	
-	public ContactDetails getManagerById(Integer managerId) throws SQLException {
+	public ContactDetails getById(Integer id) throws SQLException {
 		HighLevelQuery<T> query = new HighLevelQuery<T>();
-		query.addParameter(this.getParamFactory("id", Integer.class).getParameter(managerId));
+		query.addParameter(this.getParamFactory("id", Integer.class).getParameter(id));
 		return this.get(query);
 	}
 	

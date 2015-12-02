@@ -40,10 +40,16 @@ public class PeriodDAO extends AnnotatedDAO<Period> {
 		return periods.get(periods.size() - 1);
 	}
 	
-	public List<Period> getPeriodsOrderedByDate() throws SQLException {
+	public List<Period> getPeriodsOrderedByDateAndIsUnique(boolean isUnique) throws SQLException {
 		HighLevelQuery<Period> query = new HighLevelQuery<Period>();
-		query.addParameter(this.getParamFactory("isUnique", Boolean.class).getParameter(false));
+		query.addParameter(this.getParamFactory("isUnique", Boolean.class).getParameter(isUnique));
 		query.addOrderByCriteria(this.getOrderByCriteria("startDate", Order.ASC));
+		return this.getAll(query);
+	}
+	
+	public List<Period> getPeriodsByIsUnique(boolean isUnique) throws SQLException {
+		HighLevelQuery<Period> query = new HighLevelQuery<Period>();
+		query.addParameter(this.getParamFactory("isUnique", Boolean.class).getParameter(isUnique));
 		return this.getAll(query);
 	}
 }

@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
-import org.datacontract.schemas._2004._07.sundsvall_meta_smex.MentorData;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -40,6 +39,7 @@ import se.unlogic.hierarchy.core.utils.HierarchyAnnotatedDAOFactory;
 import se.unlogic.hierarchy.foregroundmodules.rest.AnnotatedRESTModule;
 import se.unlogic.hierarchy.foregroundmodules.rest.RESTMethod;
 import se.unlogic.standardutils.numbers.NumberUtils;
+import se.unlogic.standardutils.string.StringUtils;
 import se.unlogic.standardutils.xml.XMLUtils;
 import se.unlogic.webutils.http.RequestUtils;
 import se.unlogic.webutils.http.URIParser;
@@ -86,6 +86,10 @@ public class AddMunicipalitySummerJobModule extends AnnotatedRESTModule{
 		Element jobForm = doc.createElement("MunicipalityJobForm");
 		doc.getFirstChild().appendChild(jobForm);
 		
+		if (user != null) {
+			XMLUtils.appendNewElement(doc, element, "IsAdmin", user.isAdmin());
+		}
+		
 		Integer jobId = NumberUtils.toInt(req.getParameter("jobId"));
 		MunicipalityJob job = null;
 		if (jobId != null && user.isAdmin()) {
@@ -131,10 +135,14 @@ public class AddMunicipalitySummerJobModule extends AnnotatedRESTModule{
 		
 		jobForm.appendChild(geoAreaElement);
 		
-		List<Period> periods = periodDAO.getAll();
+		List<Period> periods = periodDAO.getPeriodsByIsUnique(false);
 		List<MunicipalityMentor> mentors = null;
 		if (job != null) {
 			mentors = job.getMentors();
+			
+			if (job.getPeriod().getIsUnique()) {
+				periods.add(job.getPeriod());
+			}
 		}
 		Element periodsElement = doc.createElement("Periods");
 		for (Period p : periods) {
@@ -250,7 +258,6 @@ public class AddMunicipalitySummerJobModule extends AnnotatedRESTModule{
 		
 		boolean hasDriversLicense = req.getParameter("hasDriversLicense") != null ? true : false;
 		
-		
 		if (hasDriversLicense) {
 			Integer typeId = NumberUtils.toInt(req.getParameter("driversLicenseType"));
         	
@@ -342,6 +349,7 @@ public class AddMunicipalitySummerJobModule extends AnnotatedRESTModule{
 		}
 		job.setGeoArea(geoArea);
 		
+		
 		List<Period> periods = periodDAO.getAll();
 		try {
 			if (jobId != null) {
@@ -353,9 +361,12 @@ public class AddMunicipalitySummerJobModule extends AnnotatedRESTModule{
 				}
 				job.setNumberOfWorkersNeeded(numberOfWorkers);
 				
+				System.out.println("NumberOfWorkers: " + numberOfWorkers);
+				
 				List<MunicipalityMentor> mentors = new ArrayList<MunicipalityMentor>();
 		        List<String> mentorUuids = FormUtils.getMentorUuids(req.getParameterNames());
 				for(String s : mentorUuids){
+					System.out.println("mentorUuid: " + s);
 					 MunicipalityMentor mentor = new MunicipalityMentor();
 					 Integer mentorId = NumberUtils.toInt(req.getParameter("mentor-id-" + s));
 					 
@@ -363,7 +374,12 @@ public class AddMunicipalitySummerJobModule extends AnnotatedRESTModule{
 					 String mentorLastname = req.getParameter("mentor-lastname_" + s);
 					 String mentorPhone = req.getParameter("mentor-phone_" + s);
 					 
+					 System.out.println("mentor-firstname_ " + s + ": " + mentorFirstname);
+					 System.out.println("mentor-lastname_" + s + ": " + mentorLastname);
+					 System.out.println("mentor-phone_" + s + ": " + mentorPhone);
+					 
 					 if (mentorId != null) {
+						 
 						 mentor.setId(mentorId);
 						 
 						 if ((mentorFirstname == null && mentorLastname == null && mentorPhone == null)
@@ -433,6 +449,56 @@ public class AddMunicipalitySummerJobModule extends AnnotatedRESTModule{
 							}
 						}
 					}
+				}
+				/**
+				 * För unika perioden
+				 */
+				if (req.getParameter("period_unique_checkbox") != null) {
+					log.info("Unika checkboxen är checkad");
+					String uniquePeriodName = req.getParameter("unique-period-name");
+					String uniquePeriodStart = req.getParameter("unique-period-startdate");
+					String uniquePeriodEnd = req.getParameter("unique-period-enddate");
+					
+					if (StringUtils.isEmpty(uniquePeriodName) || StringUtils.isEmpty(uniquePeriodStart) 
+							|| StringUtils.isEmpty(uniquePeriodEnd)) {
+						JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Alla fält för den unika perioden måste fyllas i.\"}", callback, writer);
+						return;
+					}
+					
+					Period uniquePeriod = new Period();
+					uniquePeriod.setName(uniquePeriodName);
+					uniquePeriod.setStartDate(java.sql.Date.valueOf(uniquePeriodStart));
+					uniquePeriod.setEndDate(java.sql.Date.valueOf(uniquePeriodEnd));
+					uniquePeriod.setIsUnique(true);
+					job.setPeriod(uniquePeriod);
+					
+					Integer numberOfWorkers = NumberUtils.toInt(req.getParameter("unique_numberOfWorkersNeeded"));
+					job.setNumberOfWorkersNeeded(numberOfWorkers);
+					
+					List<MunicipalityMentor> mentors = new ArrayList<MunicipalityMentor>();
+					List<String> mentorUuids = FormUtils.getMentorUuids(req.getParameterNames());
+					for(String s : mentorUuids){
+						if (NumberUtils.toInt(s.split("_")[1]).intValue() == 1337) {
+							MunicipalityMentor mentor = new MunicipalityMentor();
+							String mentorFirstname = req.getParameter("mentor-firstname_" + s);
+							String mentorLastname = req.getParameter("mentor-lastname_" + s);
+							String mentorPhone = req.getParameter("mentor-phone_" + s);
+
+							if (mentorFirstname == null || mentorLastname == null || mentorPhone == null
+									|| mentorFirstname.isEmpty() || mentorLastname.isEmpty() || mentorPhone.isEmpty()) {
+								continue;
+							}
+
+							mentor.setFirstname(mentorFirstname);
+							mentor.setLastname(mentorLastname);
+							mentor.setEmail(req.getParameter("mentor-email_" + s));
+							mentor.setMobilePhone(mentorPhone);
+							mentors.add(mentor);
+						}
+						job.setMentors(mentors);
+					}
+					
+					municipalityJobDAO.save(job);
 				}
 			}
 			
