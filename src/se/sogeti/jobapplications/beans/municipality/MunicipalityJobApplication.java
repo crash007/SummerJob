@@ -23,9 +23,9 @@ public class MunicipalityJobApplication extends JobApplication{
 	@ManyToOne(remoteKeyField="id",autoGet=false,autoAdd=false,autoUpdate=false)
 	private MunicipalityJob job;
 	
-	@DAOManaged(columnName="personalMentorId")
-	@ManyToOne(remoteKeyField="id", autoGet = true, autoAdd = true, autoUpdate = true)
-	private MunicipalityMentor personalMentor;
+//	@DAOManaged(columnName="personalMentorId")
+//	@ManyToOne(remoteKeyField="id", autoGet = true, autoAdd = true, autoUpdate = true)
+//	private MunicipalityMentor personalMentor;
 	
 	@DAOManaged
 	@XMLElement
@@ -149,13 +149,13 @@ public class MunicipalityJobApplication extends JobApplication{
 		this.noPreferedArea = noPreferedArea;
 	}
 
-	public MunicipalityMentor getPersonalMentor() {
-		return personalMentor;
-	}
-
-	public void setPersonalMentor(MunicipalityMentor personalMentor) {
-		this.personalMentor = personalMentor;
-	}
+//	public MunicipalityMentor getPersonalMentor() {
+//		return personalMentor;
+//	}
+//
+//	public void setPersonalMentor(MunicipalityMentor personalMentor) {
+//		this.personalMentor = personalMentor;
+//	}
 
 	public Integer getPersonalMentorId() {
 		return personalMentorId;
@@ -164,5 +164,4 @@ public class MunicipalityJobApplication extends JobApplication{
 	public void setPersonalMentorId(Integer personalMentorId) {
 		this.personalMentorId = personalMentorId;
 	}
-
 }

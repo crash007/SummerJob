@@ -1,7 +1,6 @@
 package se.sogeti.summerjob.addsummerjobapplication;
 
 
-import java.awt.Desktop;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -14,7 +13,7 @@ import javax.sql.DataSource;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import se.sogeti.jobapplications.beans.ApplicationStatus;
+import se.sogeti.jobapplications.beans.ApplicationType;
 import se.sogeti.jobapplications.beans.DriversLicenseType;
 import se.sogeti.jobapplications.beans.GeoArea;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityJobApplication;
@@ -90,6 +89,12 @@ public class AddMunicipalitySummerJobApplicationModule extends AnnotatedRESTModu
 		doc.appendChild(element);
 		Element form = doc.createElement("MunicipalityJobApplicationForm");
 		doc.getFirstChild().appendChild(form);
+		
+		if (user == null) {
+			XMLUtils.appendNewElement(doc, form, "IsAdmin", false);
+		} else {
+			XMLUtils.appendNewElement(doc, form, "IsAdmin", user.isAdmin());
+		}
 		
 		XMLUtils.appendNewElement(doc, form, "manageAppURL", manageApplicationURL);
 		
@@ -169,11 +174,13 @@ public class AddMunicipalitySummerJobApplicationModule extends AnnotatedRESTModu
 		JsonResponse.initJsonResponse(res, writer, callback);
 
 		MunicipalityJobApplication exisitingApplication = jobApplicationDAO.getbySocialSecurityNumber(req.getParameter("socialSecurityNumber"));
-
-		if(exisitingApplication != null && !user.isAdmin()){
-			log.warn("Municipality application already exists for this user " + exisitingApplication.applicationBasicsToString());
-			JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"" + applicationExistsErrorMessage + "\"}", callback, writer);
-			return;
+		
+		if(exisitingApplication != null) {
+			if (user != null && !user.isAdmin()){
+				log.warn("Municipality application already exists for this user " + exisitingApplication.applicationBasicsToString());
+				JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"" + applicationExistsErrorMessage + "\"}", callback, writer);
+				return;
+			}
 		}
 
 		Integer appId = NumberUtils.toInt(req.getParameter("appId"));
@@ -191,12 +198,19 @@ public class AddMunicipalitySummerJobApplicationModule extends AnnotatedRESTModu
 			JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Personnumret måste bestå av 12 tecken (ÅÅÅÅMMDDxxxx).\"}", callback, writer);
 			return;
 		}
+		
+		try {
+			java.sql.Date.valueOf(socialSecurityNumber.substring(0, 4) + "-" + socialSecurityNumber.substring(4, 6) + "-" + socialSecurityNumber.substring(6, 8));
+		} catch (IllegalArgumentException e) {
+			JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Personnumret innehåller ej ett giltigt datum.\"}", callback, writer);
+			return;
+		}
 
 		try {
 			person = smexServiceHandler.getCitizen(socialSecurityNumber);	
 		} catch(SmexServiceException e) {
 			log.error(e);
-		}catch(Exception e){
+		} catch(Exception e) {
 			log.error(e);
 		}
 
@@ -277,6 +291,23 @@ public class AddMunicipalitySummerJobApplicationModule extends AnnotatedRESTModu
 			if (user != null && user.getUsername() != null) {
 				app.setAddedByUser(user.getUsername());
 			}
+		}
+		
+		if (user != null && user.isAdmin()) {
+			String applicationType = req.getParameter("applicationType");
+			ApplicationType type;
+			
+			if (applicationType.equals(ApplicationType.REGULAR.name())) {
+				type = ApplicationType.REGULAR;
+			} else if (applicationType.equals(ApplicationType.REGULAR_ADMIN.name())) {
+				type = ApplicationType.REGULAR_ADMIN;
+			} else if (applicationType.equals(ApplicationType.PRIO.name())) {
+				type = ApplicationType.PRIO;
+			} else {
+				JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Som administratör måste du välja ett alternativ från 'Typ av ansökan'.\"}", callback, writer);
+				return;
+			}
+			app.setApplicationType(type);
 		}
 		
 		try {

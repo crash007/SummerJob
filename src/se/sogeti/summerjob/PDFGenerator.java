@@ -32,11 +32,11 @@ public class PDFGenerator {
 	private static String newFilePath = "C:\\Users\\pettejoh\\Desktop\\Sommarjobb\\Dokument\\Omgjorda\\Testpopulering\\";
 	private static String templateFilePath = "C:\\Users\\pettejoh\\Desktop\\Sommarjobb\\Dokument\\Omgjorda\\";
 	
-	public static File generateEmployeeDocuments(MunicipalityJob job, MunicipalityJobApplication app, 
+	public static File generateEmployeeDocuments(MunicipalityJob job, MunicipalityJobApplication app, MunicipalityMentor mentor, 
 			int salary, String placeForInfo, AccountingEntry accounting, ContactPerson contact) throws IOException, Exception {
 		File call = generateCallDocument(job, app, placeForInfo, contact);
 		File confirmation = generateConfirmationDocument(job, app, salary, accounting);
-		File proofOfEmployment = generateProofOfEmployment(job, app, app.getPersonalMentor(), salary);
+		File proofOfEmployment = generateProofOfEmployment(job, app, mentor, salary);
 		File time = generateTimeReport(job, app, accounting);
 		File bank = generateBankDocument(app, contact);
 		File taxDocument = generateTaxDocument(app);

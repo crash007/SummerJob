@@ -286,7 +286,7 @@
 													<div class="col-md-9 name"><xsl:value-of select="email"/></div>						
 													</div>
 													<div class="mgn-top8px row">
-														<div class="col-xs-4 col-md-2 bold">Mentor</div>
+														<div class="col-xs-4 col-md-2 bold">Handledare</div>
 														<div class="col-md-5 col-xs-8 mentor-select-div">
 															<select id="personal-mentor_{id}" class="form-control personal-mentor">
 																<xsl:variable name="personalMentorId" select="personalMentorId"></xsl:variable>

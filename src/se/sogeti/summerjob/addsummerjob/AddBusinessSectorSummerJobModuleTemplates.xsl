@@ -135,7 +135,7 @@
 						    </div>
 						    <div class="form-group col-md-3">
 							    <label for="postalcode">Postnummer*</label>				    
-							    <input type="number" data-error="Ett postnummer måste ha fem siffror." class="form-control" id="postalcode" name="postalcode" placeholder="" required="required" data-minlength="5" value="{BusinessSectorJob/zipCode}"/>
+							    <input type="text" data-error="Ett postnummer måste ha fem siffror." class="numberValidation form-control" id="postalcode" name="postalcode" placeholder="" required="required" data-minlength="5" maxlength="5" value="{BusinessSectorJob/zipCode}"/>
 							    <div class="help-block with-errors"></div>
 						    </div>
 						    <div class="form-group col-md-4">

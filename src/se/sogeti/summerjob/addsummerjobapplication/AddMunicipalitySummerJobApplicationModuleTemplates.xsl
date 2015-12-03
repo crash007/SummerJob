@@ -8,8 +8,9 @@
 		 <h1>Ansök om sommarjobb hos Sundsvalls kommun</h1>
 		<script>
 			var url = '<xsl:value-of select="requestinfo/uri"/>';
+			var isAdmin = '<xsl:value-of select="MunicipalityJobApplicationForm/IsAdmin" />';
 		</script>
-		<xsl:variable name="isAdmin" select="IsAdmin"/>
+<!-- 		<xsl:variable name="isAdmin" select="IsAdmin"/> -->
 		<xsl:apply-templates select="MunicipalityJobApplicationForm"/>
 	</xsl:template>
 	
@@ -64,7 +65,7 @@
 					    </div>
 					    <div class="form-group col-md-3">
 						    <label for="postalcode">Postnummer*</label>				    
-						    <input type="text" value="{MunicipalityJobApplication/zipCode}" class="form-control" id="postalcode" name="postalcode" placeholder="" required="required" />
+						    <input type="text" value="{MunicipalityJobApplication/zipCode}" data-error="Ett postnummer måste ha fem siffror." class="numberValidation form-control" data-minlength="5" maxlength="5" id="postalcode" name="postalcode" placeholder="" required="required" />
 						    <p class="help-block with-errors"></p>
 					    </div>
 					    <div class="form-group col-md-4">
@@ -269,9 +270,7 @@
 				
 				<div class="panel panel-default">
 			  		<div class="panel-heading">
-			  			<h3 class="panel-title">
-			  				Skicka in ansökan
-			  			</h3>
+			  			<h3 class="panel-title">Skicka in ansökan</h3>
 			  		</div>  
 			  		<div class="panel-body">
 						<div id="save-failed" class="alert alert-danger" role="alert">
@@ -284,6 +283,41 @@
 							<span class="sr-only">Success:</span>
 							<span class="message"></span>
 						</div>
+						
+						<xsl:if test="IsAdmin = 'true'">
+							<div class="row">
+								<div class="form-group col-md-5">
+									<label>Typ av ansökan</label><br/>
+									<xsl:choose>
+										<xsl:when test="MunicipalityJobApplication/applicationType = 'REGULAR'">
+											<label class="radio-inline"><input type="radio" checked="checked" required="required" name="applicationType" value="REGULAR" />Vanlig</label>
+										</xsl:when>
+										<xsl:otherwise>
+											<label class="radio-inline"><input type="radio" required="required" name="applicationType" value="REGULAR" />Vanlig</label>
+										</xsl:otherwise>
+									</xsl:choose>
+									<xsl:choose>
+										<xsl:when test="MunicipalityJobApplication/applicationType = 'REGULAR_ADMIN'">
+											<label class="radio-inline"><input type="radio" checked="checked" required="required" name="applicationType" value="REGULAR_ADMIN" />Vanlig (inlagd av admin)</label>
+										</xsl:when>
+										<xsl:otherwise>
+											<label class="radio-inline"><input type="radio" required="required" name="applicationType" value="REGULAR_ADMIN" />Vanlig (inlagd av admin)</label>
+										</xsl:otherwise>
+									</xsl:choose>
+									<xsl:choose>
+										<xsl:when test="MunicipalityJobApplication/applicationType = 'PRIO'">
+											<label class="radio-inline"><input type="radio" checked="checked" required="required" name="applicationType" value="PRIO" />Prioriterad</label>
+										</xsl:when>
+										<xsl:otherwise>
+											<label class="radio-inline"><input type="radio" required="required" name="applicationType" value="PRIO" />Prioriterad</label>
+										</xsl:otherwise>
+									</xsl:choose>
+<!-- 									<label class="radio-inline"><input type="radio" required="required" name="applicationType" value="REGULAR_ADMIN" />Vanlig</label> -->
+<!-- 									<label class="radio-inline"><input type="radio" required="required" name="applicationType" value="PRIO" />Prioriterad</label> -->
+									<p class="help-block with-errors"></p>
+								</div>
+							</div>
+						</xsl:if>
 						
 			  			<button style="margin-top: 4px;" id="submit-municipality-job-application" type="submit" class="float-rgt mgn-lft8px btn btn-success questions-submit">
 			  				<xsl:choose>

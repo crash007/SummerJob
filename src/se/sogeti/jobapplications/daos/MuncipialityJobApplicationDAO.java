@@ -30,7 +30,7 @@ public class MuncipialityJobApplicationDAO extends JobApplicationDAO<Municipalit
 	private static final Field APPLICATION_PREFERED_GEO_AREA3_RELATION = ReflectionUtils.getField(MunicipalityJobApplication.class, "preferedGeoArea3");
 	private static final Field APPLICATION_DRIVERS_LICENSE_TYPE_RELATION = ReflectionUtils.getField(MunicipalityJobApplication.class, "driversLicenseType");
 	
-	private static final Field APPLICATION_MENTOR_RELATION = ReflectionUtils.getField(MunicipalityJobApplication.class, "personalMentor");
+//	private static final Field APPLICATION_MENTOR_RELATION = ReflectionUtils.getField(MunicipalityJobApplication.class, "personalMentor");
 	
 	public MuncipialityJobApplicationDAO(DataSource dataSource, Class<MunicipalityJobApplication> beanClass,
 			AnnotatedDAOFactory daoFactory) {
@@ -141,7 +141,7 @@ public class MuncipialityJobApplicationDAO extends JobApplicationDAO<Municipalit
 		query.addRelation(APPLICATION_DRIVERS_LICENSE_TYPE_RELATION);
 		query.addRelation(APPLICATION_JOB_RELATION);
 		
-		query.addRelation(APPLICATION_MENTOR_RELATION);
+//		query.addRelation(APPLICATION_MENTOR_RELATION);
 
 		query.disableAutoRelations(true);
         

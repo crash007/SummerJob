@@ -25,6 +25,7 @@ import se.sogeti.jobapplications.beans.CallStatus;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityJob;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityJobApplication;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityMentor;
+import se.sogeti.jobapplications.daos.ContactDetailsDAO;
 import se.sogeti.jobapplications.daos.JobDAO;
 import se.sogeti.jobapplications.daos.MuncipialityJobApplicationDAO;
 import se.sogeti.periodsadmin.beans.AccountingEntry;
@@ -61,6 +62,7 @@ public class MatchMunicipalityJobsModule extends AnnotatedRESTModule{
 	private PlaceForInformationDAO placeForInformationDAO;
 	private AccountingEntryDAO accountingDAO;
 	private ContactPersonDAO contactDAO;
+	private ContactDetailsDAO<MunicipalityMentor> mentorDAO;
 	
 	@Override
 	protected void createDAOs(DataSource dataSource) throws Exception {
@@ -73,6 +75,7 @@ public class MatchMunicipalityJobsModule extends AnnotatedRESTModule{
 		placeForInformationDAO = new PlaceForInformationDAO(dataSource, PlaceForInformation.class, daoFactory);
 		accountingDAO = new AccountingEntryDAO(dataSource, AccountingEntry.class, daoFactory);
 		contactDAO = new ContactPersonDAO(dataSource, ContactPerson.class, daoFactory);
+		mentorDAO = new ContactDetailsDAO<MunicipalityMentor>(dataSource, MunicipalityMentor.class, daoFactory);
 	}
 
 	@Override
@@ -214,7 +217,7 @@ public class MatchMunicipalityJobsModule extends AnnotatedRESTModule{
 					if(jobApplication!=null){
 						jobApplication.setJob(null);
 						jobApplication.setStatus(ApplicationStatus.NONE);
-						jobApplication.setPersonalMentor(null);
+//						jobApplication.setPersonalMentor(null);
 						jobApplication.setPersonalMentorId(null);
 						jobApplication.setCallStatus(CallStatus.NONE);
 						jobApplication.setTimeForInformation(null);
@@ -264,7 +267,7 @@ public class MatchMunicipalityJobsModule extends AnnotatedRESTModule{
 					if(job!=null){
 						jobApplication.setStatus(ApplicationStatus.MATCHED);
 						jobApplication.setJob(job);
-						jobApplication.setPersonalMentor(null);
+//						jobApplication.setPersonalMentor(null);
 						jobApplication.setPersonalMentorId(null);
 						jobApplication.setCallStatus(CallStatus.NONE);
 						jobApplication.setTimeForInformation(null);
@@ -323,6 +326,7 @@ public class MatchMunicipalityJobsModule extends AnnotatedRESTModule{
 					if(jobApplication!=null){
 						log.info(jobApplication.getJob());
 						jobApplication.setStatus(ApplicationStatus.DENIED);
+						jobApplication.setPersonalMentorId(null);
 						municipalityJobApplicationDAO.save(jobApplication);
 					}else{
 						log.warn("No application with id: "+id);
@@ -398,14 +402,14 @@ public class MatchMunicipalityJobsModule extends AnnotatedRESTModule{
 								for (MunicipalityMentor mentor : mentors) {
 									if (mentor.getId().intValue() == mentorId.intValue()) {
 										mentor.setJob(job);
-										jobApplication.setPersonalMentor(mentor);
+//										jobApplication.setPersonalMentor(mentor);
 										jobApplication.setPersonalMentorId(mentor.getId());
 										break;
 									}
 								}
 							}
 						} else {
-							jobApplication.setPersonalMentor(null);
+//							jobApplication.setPersonalMentor(null);
 							jobApplication.setPersonalMentorId(null);
 						}
 						
@@ -530,7 +534,8 @@ public class MatchMunicipalityJobsModule extends AnnotatedRESTModule{
 		
 		switch (value) {
 		case "ALL":
-			file = PDFGenerator.generateEmployeeDocuments(job, app, salary, placeForInfo, accounting, contact);
+			MunicipalityMentor mentor = (MunicipalityMentor) mentorDAO.getById(app.getPersonalMentorId());
+			file = PDFGenerator.generateEmployeeDocuments(job, app, mentor, salary, placeForInfo, accounting, contact);
 			break;
 
 		case "kallelse":
@@ -542,7 +547,8 @@ public class MatchMunicipalityJobsModule extends AnnotatedRESTModule{
 			break;
 			
 		case "anstallningsbevis":
-			file = PDFGenerator.generateProofOfEmployment(job, app, app.getPersonalMentor(), salary);
+			MunicipalityMentor mentor1 = (MunicipalityMentor) mentorDAO.getById(app.getPersonalMentorId());
+			file = PDFGenerator.generateProofOfEmployment(job, app, mentor1, salary);
 			break;
 			
 		case "tjanstgoringsrapport":

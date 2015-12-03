@@ -21,9 +21,9 @@ public class MunicipalityMentor extends ContactDetails{
 	@ManyToOne
 	private MunicipalityJob job;
 	
-	@DAOManaged
-	@OneToMany
-	private List<MunicipalityJobApplication> jobApplications;
+//	@DAOManaged
+//	@OneToMany
+//	private List<MunicipalityJobApplication> jobApplications;
 	
 	public MunicipalityJob getJob() {
 		return job;
@@ -39,11 +39,11 @@ public class MunicipalityMentor extends ContactDetails{
 		return XMLGenerator.toXML(this, doc);
 	}
 
-	public List<MunicipalityJobApplication> getJobApplications() {
-		return jobApplications;
-	}
-
-	public void setJobApplications(List<MunicipalityJobApplication> jobApplications) {
-		this.jobApplications = jobApplications;
-	}
+//	public List<MunicipalityJobApplication> getJobApplications() {
+//		return jobApplications;
+//	}
+//
+//	public void setJobApplications(List<MunicipalityJobApplication> jobApplications) {
+//		this.jobApplications = jobApplications;
+//	}
 }

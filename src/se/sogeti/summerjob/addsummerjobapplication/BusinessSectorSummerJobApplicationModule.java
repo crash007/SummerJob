@@ -179,6 +179,14 @@ public class BusinessSectorSummerJobApplicationModule extends AnnotatedRESTModul
 					JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Personnumret måste bestå av 12 tecken (ÅÅÅÅMMDDxxxx).\"}", callback, writer);
 					return;
 				}
+				
+				try {
+					java.sql.Date.valueOf(socialSecurityNumber.substring(0, 4) + "-" + socialSecurityNumber.substring(4, 6) + "-" + socialSecurityNumber.substring(6, 8));
+				} catch (IllegalArgumentException e) {
+					log.error(e);
+					JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Personnumret innehåller ej ett giltigt datum.\"}", callback, writer);
+					return;
+				}
 
 				try {
 					person = smexServiceHandler.getCitizen(socialSecurityNumber);
