@@ -14,18 +14,32 @@
 		<div class="well">
 			<div class="panel panel-default">
 				<div class="panel-heading">
-					<h3 class="panel-title">Ansökningar efter personnummer</h3>
+					<h3 class="panel-title">Ansökningar enligt kriterier</h3>
 				</div>
 				<div class="panel-body">
 					<form method="POST" role="form" id="search-applications-form" data-toggle="validator">
-						<div class="row">
-							<div class="form-group">
+							<div class="form-group" style="margin-bottom: 0px">
+							<div class="row">
 								<div class="col-md-3">
+									<label>Personnummer</label>
 									<input type="text" name="socialSecurityNumber" value="" placeholder="" class="numberValidation form-control" data-error="ÅÅÅÅMMDDxxxx" maxlength="12" />
 									<p class="help-block with-errors">ÅÅÅÅMMDDxxxx</p>
 								</div>
-								<div style="padding-left: 0px" class="col-md-2">
+								<div class="col-md-3">
+									<label>Förnamn</label>
+									<input type="text" name="firstname" value="" placeholder="" class="form-control" data-error="Förnamn" maxlength="12" />
+								</div>
+								<div class="col-md-3">
+									<label>Efternamn</label>
+									<input type="text" name="lastname" value="" placeholder="" class="form-control" data-error="Efternamn" maxlength="12" />
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-1">
 									<button type="submit" class="btn btn-primary">Skicka</button>
+								</div>
+								<div class="col-md-1">
+									<button type="submit" id="clear-search-button" class="btn btn-warning">Nollställ</button>
 								</div>
 							</div>
 						</div>
@@ -139,7 +153,7 @@
 				<div style="margin: 8px; padding: 8px" class="well">
 					<div class="row">
 						<div class="col-xs-2 bold">Företag</div>
-						<div class="col-xs-3"><xsl:value-of select="BusinessSectorJob/company"></xsl:value-of></div>
+						<div class="col-xs-6"><xsl:value-of select="BusinessSectorJob/company"></xsl:value-of></div>
 					</div>
 					<div class="row">
 						<div class="col-xs-2 bold">Yrkestitel</div>

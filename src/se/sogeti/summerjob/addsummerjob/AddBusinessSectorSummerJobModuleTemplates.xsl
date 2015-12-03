@@ -17,6 +17,7 @@
 	</xsl:template>
 	
 	<xsl:template match="BusinessSectorJobForm">
+		<h1>Lägg till sommarjobb inom näringslivet</h1>
 		<form class="well" role="form" method="POST" id="business-sector-add-job-form" data-toggle="validator">
 		
 				<input name="jobId" style="display: none" class="form-control" type="text" value="{BusinessSectorJob/id}"/>

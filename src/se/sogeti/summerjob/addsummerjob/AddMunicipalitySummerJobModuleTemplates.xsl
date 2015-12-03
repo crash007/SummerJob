@@ -15,7 +15,9 @@
 	</xsl:template>
 	
 	<xsl:template match="MunicipalityJobForm">
-		<form role="form" method="POST" id="municipality-job-form" data-toggle="validator">
+		<h1>Lägg till sommarjobb inom kommunal verksamhet</h1>
+<!-- 		<div class="well"> -->
+		<form class="well" role="form" method="POST" id="municipality-job-form" data-toggle="validator">
 			 
 			 <input name="jobId" style="display: none" class="form-control" type="text" value="{MunicipalityJob/id}"/>
 			 
@@ -507,6 +509,7 @@
 			  	</div> 					  	
 		  		
 			</form>
+<!-- 			</div> -->
 			
 			<div id="mentor-template" >
 	    		<div class="row collapse">

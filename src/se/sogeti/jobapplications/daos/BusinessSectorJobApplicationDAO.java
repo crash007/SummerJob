@@ -15,8 +15,11 @@ import se.sogeti.jobapplications.beans.business.BusinessSectorJobApplication;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityJobApplication;
 import se.unlogic.standardutils.dao.AnnotatedDAOFactory;
 import se.unlogic.standardutils.dao.HighLevelQuery;
+import se.unlogic.standardutils.dao.OrderByCriteria;
 import se.unlogic.standardutils.dao.QueryOperators;
+import se.unlogic.standardutils.enums.Order;
 import se.unlogic.standardutils.reflection.ReflectionUtils;
+import se.unlogic.standardutils.string.StringUtils;
 
 public class BusinessSectorJobApplicationDAO extends JobApplicationDAO<BusinessSectorJobApplication>{
 	
@@ -78,5 +81,59 @@ public class BusinessSectorJobApplicationDAO extends JobApplicationDAO<BusinessS
 		 }
 		 
 		 return this.getAll(query);
+	}
+	
+	public BusinessSectorJobApplication getWithJob() throws SQLException {
+        HighLevelQuery<BusinessSectorJobApplication> query = new HighLevelQuery<BusinessSectorJobApplication>();
+			
+		query.addRelation(APPLICATION_DRIVERS_LICENSE_TYPE_RELATION);
+		query.addRelation(APPLICATION_JOB_RELATION);
+		query.disableAutoRelations(true);
+        return this.get(query);
+	}
+	
+	/**
+	 * socialSecurityNumber, firstname and lastname is used in a LIKE search.
+	 * socialSecurityNumber, firstname and lastname is optional.
+	 * @param socialSecurityNumber
+	 * @param firstname
+	 * @param lastname
+	 * @param approved
+	 * @param orderByDescending
+	 * @return
+	 * @throws SQLException
+	 */
+	public List<BusinessSectorJobApplication> getAllByApprovedWithJobByDescendingOrder(String socialSecurityNumber, String firstname, String lastname, boolean approved, boolean orderByDescending) throws SQLException {
+		HighLevelQuery<BusinessSectorJobApplication> query = new HighLevelQuery<BusinessSectorJobApplication>();
+		
+		if (!StringUtils.isEmpty(socialSecurityNumber)) {
+			query.addParameter(this.getParamFactory("socialSecurityNumber", String.class).getParameter(socialSecurityNumber + "%", QueryOperators.LIKE));
+		}
+		
+		if (!StringUtils.isEmpty(firstname)) {
+			query.addParameter(this.getParamFactory("firstname", String.class).getParameter(firstname + "%", QueryOperators.LIKE));
+		}
+		
+		if (!StringUtils.isEmpty(lastname)) {
+			query.addParameter(this.getParamFactory("lastname", String.class).getParameter(lastname + "%", QueryOperators.LIKE));
+		}
+		
+		query.addParameter(this.getParamFactory("approved", Boolean.class).getParameter(approved));
+		Order order = null;
+		if (orderByDescending) {
+			order = Order.DESC;
+		} else {
+			order = Order.ASC;
+		}
+		
+		OrderByCriteria<BusinessSectorJobApplication> orderByRanking = this.getOrderByCriteria("ranking", Order.ASC);
+		OrderByCriteria<BusinessSectorJobApplication> orderByCreated = this.getOrderByCriteria("created", order);
+		query.addOrderByCriteria(orderByRanking);
+		query.addOrderByCriteria(orderByCreated);
+		
+		query.addRelation(APPLICATION_DRIVERS_LICENSE_TYPE_RELATION);
+		query.addRelation(APPLICATION_JOB_RELATION);
+		query.disableAutoRelations(true);
+		return this.getAll(query);
 	}
 }

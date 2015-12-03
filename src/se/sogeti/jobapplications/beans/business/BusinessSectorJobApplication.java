@@ -16,6 +16,7 @@ public class BusinessSectorJobApplication extends JobApplication{
 	
 	public BusinessSectorJobApplication() {
 		super();
+		this.assigned = false;
 	}
 	
 	@DAOManaged(columnName="jobId")

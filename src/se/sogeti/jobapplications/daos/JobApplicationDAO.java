@@ -16,6 +16,7 @@ import se.unlogic.standardutils.dao.OrderByCriteria;
 import se.unlogic.standardutils.dao.QueryOperators;
 import se.unlogic.standardutils.enums.Order;
 import se.unlogic.standardutils.reflection.ReflectionUtils;
+import se.unlogic.standardutils.string.StringUtils;
 
 public class JobApplicationDAO<T extends JobApplication> extends SummerJobCommonDAO<T> {
 
@@ -89,11 +90,30 @@ public class JobApplicationDAO<T extends JobApplication> extends SummerJobCommon
 		return this.get(query);
 	}
 	
-	public List<T> getAllByApprovedAndDescendingOrder(String socialSecurityNumber, boolean approved, boolean orderByDescending) throws SQLException {
+	/**
+	 * socialSecurityNumber, firstname and lastname is used in a LIKE search.
+	 * socialSecurityNumber, firstname and lastname is optional.
+	 * @param socialSecurityNumber
+	 * @param firstname
+	 * @param lastname
+	 * @param approved
+	 * @param orderByDescending
+	 * @return
+	 * @throws SQLException
+	 */
+	public List<T> getAllByApprovedByDescendingOrder(String socialSecurityNumber, String firstname, String lastname, boolean approved, boolean orderByDescending) throws SQLException {
 		HighLevelQuery<T> query = new HighLevelQuery<T>();
 		
-		if (socialSecurityNumber != null) {			
-			query.addParameter(this.getParamFactory("socialSecurityNumber", String.class).getParameter(socialSecurityNumber, QueryOperators.LIKE));
+		if (!StringUtils.isEmpty(socialSecurityNumber)) {
+			query.addParameter(this.getParamFactory("socialSecurityNumber", String.class).getParameter(socialSecurityNumber + "%", QueryOperators.LIKE));
+		}
+		
+		if (!StringUtils.isEmpty(firstname)) {
+			query.addParameter(this.getParamFactory("firstname", String.class).getParameter(firstname + "%", QueryOperators.LIKE));
+		}
+		
+		if (!StringUtils.isEmpty(lastname)) {
+			query.addParameter(this.getParamFactory("lastname", String.class).getParameter(lastname + "%", QueryOperators.LIKE));
 		}
 		
 		query.addParameter(this.getParamFactory("approved", Boolean.class).getParameter(approved));
@@ -111,6 +131,6 @@ public class JobApplicationDAO<T extends JobApplication> extends SummerJobCommon
 		return this.getAll(query);
 	}
 	
-
+	
 
 }

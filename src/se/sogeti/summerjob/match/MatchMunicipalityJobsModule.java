@@ -3,7 +3,9 @@ package se.sogeti.summerjob.match;
 
 import java.awt.Desktop;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.Calendar;
@@ -43,6 +45,7 @@ import se.unlogic.hierarchy.core.interfaces.ForegroundModuleResponse;
 import se.unlogic.hierarchy.core.utils.HierarchyAnnotatedDAOFactory;
 import se.unlogic.hierarchy.foregroundmodules.rest.AnnotatedRESTModule;
 import se.unlogic.hierarchy.foregroundmodules.rest.RESTMethod;
+import se.unlogic.standardutils.bool.BooleanUtils;
 import se.unlogic.standardutils.json.JsonObject;
 import se.unlogic.standardutils.numbers.NumberUtils;
 import se.unlogic.standardutils.string.StringUtils;
@@ -84,11 +87,18 @@ public class MatchMunicipalityJobsModule extends AnnotatedRESTModule{
 		doc.appendChild(element);
 		
 		Integer jobId = NumberUtils.toInt(req.getParameter("jobId"));
+		Integer appId = NumberUtils.toInt(req.getParameter("appId"));
+		String selectValue = req.getParameter("selectValue");
+		Boolean generateWorkplaceDocuments = BooleanUtils.toBoolean(req.getParameter("generateWorkDocument"));
 		
-//		if(req.getParameter("jobId")!=null){
-//			jobId = NumberUtils.toInt(req.getParameter("jobId"));
-//		}
-	
+		if (jobId != null && appId != null && !StringUtils.isEmpty(selectValue)) {
+			generateEmployeeDocument(res, jobId, appId, selectValue);
+		}
+		
+		if (jobId != null && generateWorkplaceDocuments) {
+			generateWorkplaceDocuments(res, jobId);
+		}
+		
 		if(jobId != null){
 			MunicipalityJob job = municipalityJobDAO.getById(jobId);
 			if(job != null){
@@ -151,15 +161,15 @@ public class MatchMunicipalityJobsModule extends AnnotatedRESTModule{
 				//Third hand pick				
 				List<MunicipalityJobApplication> area3AndGeoArea1 = municipalityJobApplicationDAO.getCandidatesByPreferedArea3AndPreferedGeoArea1(job.getArea(), job.getGeoArea(), bornBefore, job.getDriversLicenseType());				
 				XMLUtils.append(doc, matchMunicipalityJobElement, "Area3AndGeoArea1Candidates", area3AndGeoArea1);
-				printCandidates(job.getId(), area3AndGeoArea1,"Area2AndGeoArea1");
+				printCandidates(job.getId(), area3AndGeoArea1,"Area3AndGeoArea1");
 				
 				List<MunicipalityJobApplication> area3AndGeoArea2 = municipalityJobApplicationDAO.getCandidatesByPreferedArea3AndPreferedGeoArea2(job.getArea(), job.getGeoArea(), bornBefore, job.getDriversLicenseType());				
 				XMLUtils.append(doc, matchMunicipalityJobElement, "Area3AndGeoArea2Candidates", area3AndGeoArea2);
-				printCandidates(job.getId(), area3AndGeoArea2,"Area2AndGeoArea2");
+				printCandidates(job.getId(), area3AndGeoArea2,"Area3AndGeoArea2");
 				
 				List<MunicipalityJobApplication> area3AndGeoArea3 = municipalityJobApplicationDAO.getCandidatesByPreferedArea3AndPreferedGeoArea3(job.getArea(), job.getGeoArea(), bornBefore, job.getDriversLicenseType());				
 				XMLUtils.append(doc, matchMunicipalityJobElement, "Area3AndGeoArea3Candidates", area3AndGeoArea3);
-				printCandidates(job.getId(), area3AndGeoArea3, "Area2AndGeoArea2");
+				printCandidates(job.getId(), area3AndGeoArea3, "Area3AndGeoArea3");
 				
 				
 				
@@ -434,95 +444,83 @@ public class MatchMunicipalityJobsModule extends AnnotatedRESTModule{
 		}
 	}
 	
-	@RESTMethod(alias="generateworkplacedocuments.json", method="post")
-	public void generateWorkplaceDocuments(HttpServletRequest req, HttpServletResponse res, User user, URIParser uriParser) throws IOException, SQLException {
-		log.info("Request for generateworkplacedocument.json");
+	public void generateWorkplaceDocuments(HttpServletResponse res, int jobId) throws IOException, SQLException {
+		MunicipalityJob job = municipalityJobDAO.getByIdWithApplications(jobId);
+		ContactPerson contact = contactDAO.getAll().get(0);
 		
-		PrintWriter writer = res.getWriter();
-		JsonObject result = new JsonObject();
-		JsonResponse.initJsonResponse(res, writer, null);
-		
-		Integer jobId = NumberUtils.toInt(req.getParameter("jobId"));
-		
-		if (jobId != null) {
-			MunicipalityJob job = municipalityJobDAO.getByIdWithApplications(jobId);
-			ContactPerson contact = contactDAO.getAll().get(0);
-			
-			File file = null;
-			try {
-				file = DocxGenerator.generateWorkplaceDocuments(job, contact);
-			} catch (Exception e) {
-				log.error("Could not generate the desired document.", e);
-				e.printStackTrace();
-				result.putField("status", "fail");
-				result.putField("message", "Kunde inte generera det önskade dokumentet.");
-				JsonResponse.sendJsonResponse(result.toJson(), null, writer);
-				return;
-			}
-			
-			Desktop.getDesktop().open(file);
-			
-		} else {
-			result.putField("status", "fail");
-			result.putField("message", "JobId is null");
-			JsonResponse.sendJsonResponse(result.toJson(), null, writer);
+		File file = null;
+		try {
+			file = DocxGenerator.generateWorkplaceDocuments(job, contact);
+		} catch (Exception e) {
+			log.error("Could not generate the desired document.", e);
+			e.printStackTrace();
 			return;
 		}
-		result.putField("status", "success");
-		result.putField("message", "Genererade det önskade dokumentet för annonsen med ID: " + jobId.intValue());
-		JsonResponse.sendJsonResponse(result.toJson(), null, writer);
+		
+		FileInputStream inStream = new FileInputStream(file);
+		
+		String mimeType = "application/docx";
+		res.setContentType(mimeType);
+		res.setContentLength((int) file.length());
+		
+		String headerKey = "Content-Disposition";
+		String headerValue = String.format("attachment; filename=\"%s\"", file.getName());
+		res.setHeader(headerKey, headerValue);
+		
+		OutputStream outStream = res.getOutputStream();
+		
+		byte[] buffer = new byte[4096];
+		int bytesRead = -1;
+		
+		while ((bytesRead = inStream.read(buffer)) != -1) {
+			outStream.write(buffer, 0, bytesRead);
+		}
+		
+		inStream.close();
+		outStream.close();
 	}
 	
-	@RESTMethod(alias="generateemployeedocument.json", method="post")
-	public void generateEmployeeDocument(HttpServletRequest req, HttpServletResponse res, User user, URIParser uriParser) throws IOException, SQLException {
-		log.info("Request for generateemployeedocument.json");
+	public void generateEmployeeDocument(HttpServletResponse res, int jobId, int appId, String selectValue) throws IOException, SQLException {
+		MunicipalityJob job = municipalityJobDAO.getById(jobId);
+		MunicipalityJobApplication app = municipalityJobApplicationDAO.getById(appId);
+		Salary salary = !isOverEighteenDuringJob(app.getBirthDate(), job.getPeriod().getEndDate()) 
+				? salaryDAO.getById(1) : salaryDAO.getById(2);
 		
-		PrintWriter writer = res.getWriter();
-		JsonObject result = new JsonObject();
-		JsonResponse.initJsonResponse(res, writer, null);
+		PlaceForInformation place = placeForInformationDAO.getAll().get(0);
+		AccountingEntry accounting = app.getApplicationType() == ApplicationType.PRIO ? accountingDAO.getById(1) : accountingDAO.getById(2);
+		ContactPerson contact = contactDAO.getAll().get(0);
 		
-		Integer jobId = NumberUtils.toInt(req.getParameter("jobId"));
-		Integer appId = NumberUtils.toInt(req.getParameter("appId"));
-		String selectValue = req.getParameter("selectedDocument");
-		
-		if (jobId != null && appId != null && !StringUtils.isEmpty(selectValue)) {
-			MunicipalityJob job = municipalityJobDAO.getById(jobId);
-			MunicipalityJobApplication app = municipalityJobApplicationDAO.getById(appId);
-			Salary salary = !isOverEighteenDuringJob(app.getBirthDate(), job.getPeriod().getEndDate()) 
-					? salaryDAO.getById(1) : salaryDAO.getById(2);
-			
-			PlaceForInformation place = placeForInformationDAO.getAll().get(0);
-			AccountingEntry accounting = app.getApplicationType() == ApplicationType.PRIO ? accountingDAO.getById(1) : accountingDAO.getById(2);
-			ContactPerson contact = contactDAO.getAll().get(0);
-			
-			File file = null;
-			try {
-				file = generateDocumentFromSelectValue(selectValue, job, app, salary.getAmountInSEK(),
-						place.getName(), accounting, contact);
-			} catch (Exception e) {
-				log.error("Could not generate the desired document.", e);
-				e.printStackTrace();
-				result.putField("status", "fail");
-				result.putField("message", "Kunde inte generera det önskade dokumentet.");
-				JsonResponse.sendJsonResponse(result.toJson(), null, writer);
-				return;
-			}
-			/**
-			 * TODO Open fungerar endast om ingen annan också har samma/en tidigare generering
-			 * öppen. Använda Open så de har möjlighet att redigera eller istället
-			 * print som öppnar, skriver ut filen och sedan släpper den? 
-			 */
-			Desktop.getDesktop().open(file);
-			
-		} else {
-			result.putField("status", "fail");
-			result.putField("message", "JobId or AppId is null, or a document wasn't selected.");
-			JsonResponse.sendJsonResponse(result.toJson(), null, writer);
+		File file = null;
+		try {
+			file = generateDocumentFromSelectValue(selectValue, job, app, salary.getAmountInSEK(),
+					place.getName(), accounting, contact);
+		} catch (Exception e) {
+			log.error("Could not generate the desired document.", e);
+			e.printStackTrace();
 			return;
 		}
-		result.putField("status", "success");
-		result.putField("message", "Genererade det önskade dokumentet för ansökan med ID: " + appId.intValue());
-		JsonResponse.sendJsonResponse(result.toJson(), null, writer);
+		
+		FileInputStream inStream = new FileInputStream(file);
+		
+		String mimeType = "application/pdf";
+		res.setContentType(mimeType);
+		res.setContentLength((int) file.length());
+		
+		String headerKey = "Content-Disposition";
+		String headerValue = String.format("attachment; filename=\"%s\"", file.getName());
+		res.setHeader(headerKey, headerValue);
+		
+		OutputStream outStream = res.getOutputStream();
+		
+		byte[] buffer = new byte[4096];
+		int bytesRead = -1;
+		
+		while ((bytesRead = inStream.read(buffer)) != -1) {
+			outStream.write(buffer, 0, bytesRead);
+		}
+		
+		inStream.close();
+		outStream.close();
 	}
 	
 	private File generateDocumentFromSelectValue(String value, MunicipalityJob job, MunicipalityJobApplication app,

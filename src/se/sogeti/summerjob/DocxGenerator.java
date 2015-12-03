@@ -29,8 +29,11 @@ import se.sogeti.periodsadmin.beans.ContactPerson;
 
 public class DocxGenerator {
 	
-	private static final String templateFilePath = "C:\\Users\\pettejoh\\Desktop\\Sommarjobb\\Dokument\\Omgjorda\\";
-	private static final String newFilePath = "C:\\Users\\pettejoh\\Desktop\\Sommarjobb\\Dokument\\Omgjorda\\Testpopulering\\";
+//	private static String newFilePath = "C:\\Users\\Sogeti\\Desktop\\Sommarjobb\\Populerade\\";
+//	private static String templateFilePath = "C:\\Users\\Sogeti\\Desktop\\Sommarjobb\\";
+	
+	private static String newFilePath = "C:\\Users\\pettejoh\\Desktop\\Sommarjobb\\Dokument\\Omgjorda\\Testpopulering\\";
+	private static String templateFilePath = "C:\\Users\\pettejoh\\Desktop\\Sommarjobb\\Dokument\\Omgjorda\\";
 
 	public static File generateWorkplaceDocuments(MunicipalityJob job, ContactPerson contact) throws Docx4JException, JAXBException, IOException {
 		

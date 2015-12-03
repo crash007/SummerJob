@@ -16,6 +16,7 @@ import se.sogeti.jobapplications.beans.business.BusinessSectorJob;
 import se.sogeti.jobapplications.beans.business.BusinessSectorJobApplication;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityJob;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityJobApplication;
+import se.sogeti.jobapplications.daos.BusinessSectorJobApplicationDAO;
 import se.sogeti.jobapplications.daos.GeoAreaDAO;
 import se.sogeti.jobapplications.daos.JobApplicationDAO;
 import se.sogeti.jobapplications.daos.JobDAO;
@@ -36,6 +37,7 @@ public class ListApplicationsAdminModule extends AnnotatedForegroundModule {
 	
 	JobApplicationDAO<MunicipalityJobApplication> municipalityJobApplicationDAO;
 	JobApplicationDAO<BusinessSectorJobApplication> businessSectorJobApplicationDAO;
+	BusinessSectorJobApplicationDAO businessApplicationDAO;
 	
 	@ModuleSetting
 	@TextFieldSettingDescriptor(description="Relativ url till att hantera kommunala ansökningar",name="ManageMunicipalityApplication")
@@ -52,6 +54,7 @@ public class ListApplicationsAdminModule extends AnnotatedForegroundModule {
 		HierarchyAnnotatedDAOFactory daoFactory = new HierarchyAnnotatedDAOFactory(dataSource, systemInterface);
 		municipalityJobApplicationDAO = new JobApplicationDAO<MunicipalityJobApplication>(dataSource, MunicipalityJobApplication.class, daoFactory);
 		businessSectorJobApplicationDAO = new JobApplicationDAO<BusinessSectorJobApplication>(dataSource, BusinessSectorJobApplication.class, daoFactory);
+		businessApplicationDAO = new BusinessSectorJobApplicationDAO(dataSource, BusinessSectorJobApplication.class, daoFactory);
 	}
 
 	@Override
@@ -71,12 +74,12 @@ public class ListApplicationsAdminModule extends AnnotatedForegroundModule {
 		Element approvedBusinessElement = doc.createElement("ApprovedBusiness");
 		Element disapprovedBusinessElement = doc.createElement("DisapprovedBusiness");
 		
-		String socialSecurityNumber = req.getParameter("socialSecurityNumber"); // If this is null, we get all applications.
-		if (socialSecurityNumber != null) {
-			socialSecurityNumber = socialSecurityNumber.isEmpty() ? null : socialSecurityNumber;
-		}
+		// Dessa används för att filtrera ansökningar. Annars får vi alla ansökningar
+		String socialSecurityNumber = req.getParameter("socialSecurityNumber");
+		String firstname = req.getParameter("firstname");
+		String lastname = req.getParameter("lastname");
 
-		List<MunicipalityJobApplication> approvedMunicipalityApplications = municipalityJobApplicationDAO.getAllByApprovedAndDescendingOrder(socialSecurityNumber, true, true);
+		List<MunicipalityJobApplication> approvedMunicipalityApplications = municipalityJobApplicationDAO.getAllByApprovedByDescendingOrder(socialSecurityNumber, firstname, lastname, true, true);
 		if (approvedMunicipalityApplications != null) {
 			for (MunicipalityJobApplication app : approvedMunicipalityApplications) {
 				Element municipalityElement = doc.createElement("MunicipalityJobApplication");
@@ -88,7 +91,7 @@ public class ListApplicationsAdminModule extends AnnotatedForegroundModule {
 			}
 		}
 		
-		List<MunicipalityJobApplication> disapprovedMunicipalityApplications = municipalityJobApplicationDAO.getAllByApprovedAndDescendingOrder(socialSecurityNumber, false, true);
+		List<MunicipalityJobApplication> disapprovedMunicipalityApplications = municipalityJobApplicationDAO.getAllByApprovedByDescendingOrder(socialSecurityNumber, firstname, lastname, false, true);
 		if (disapprovedMunicipalityApplications != null) { 
 			for (MunicipalityJobApplication app : disapprovedMunicipalityApplications) {
 				Element municipalityElement = doc.createElement("MunicipalityJobApplication");
@@ -100,7 +103,8 @@ public class ListApplicationsAdminModule extends AnnotatedForegroundModule {
 			}
 		}
 		
-		List<BusinessSectorJobApplication> approvedBusinessApplications = businessSectorJobApplicationDAO.getAllByApprovedAndDescendingOrder(socialSecurityNumber, true, true);
+//		List<BusinessSectorJobApplication> approvedBusinessApplications = businessSectorJobApplicationDAO.getAllByApprovedAndDescendingOrder(socialSecurityNumber, true, true);
+		List<BusinessSectorJobApplication> approvedBusinessApplications = businessApplicationDAO.getAllByApprovedWithJobByDescendingOrder(socialSecurityNumber, firstname, lastname, true, true);
 		if (approvedBusinessApplications != null) {
 			for (BusinessSectorJobApplication app : approvedBusinessApplications) {
 				Element businessElement = doc.createElement("BusinessSectorJobApplication");
@@ -113,7 +117,8 @@ public class ListApplicationsAdminModule extends AnnotatedForegroundModule {
 			}
 		}
 		
-		List<BusinessSectorJobApplication> disapprovedBusinessApplications = businessSectorJobApplicationDAO.getAllByApprovedAndDescendingOrder(socialSecurityNumber, false, true);
+		List<BusinessSectorJobApplication> disapprovedBusinessApplications = businessApplicationDAO.getAllByApprovedWithJobByDescendingOrder(socialSecurityNumber, firstname, lastname, false, true);
+//		List<BusinessSectorJobApplication> disapprovedBusinessApplications = businessSectorJobApplicationDAO.getAllByApprovedAndDescendingOrder(socialSecurityNumber, false, true);
 		if (disapprovedBusinessApplications != null) {
 			for (BusinessSectorJobApplication app : disapprovedBusinessApplications) {
 				Element businessElement = doc.createElement("BusinessSectorJobApplication");

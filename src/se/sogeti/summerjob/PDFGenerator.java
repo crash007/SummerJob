@@ -26,6 +26,9 @@ import com.itextpdf.text.pdf.PdfStamper;
 
 public class PDFGenerator {
 	
+//	private static String newFilePath = "C:\\Users\\Sogeti\\Desktop\\Sommarjobb\\Populerade\\";
+//	private static String templateFilePath = "C:\\Users\\Sogeti\\Desktop\\Sommarjobb\\";
+	
 	private static String newFilePath = "C:\\Users\\pettejoh\\Desktop\\Sommarjobb\\Dokument\\Omgjorda\\Testpopulering\\";
 	private static String templateFilePath = "C:\\Users\\pettejoh\\Desktop\\Sommarjobb\\Dokument\\Omgjorda\\";
 	
