@@ -86,6 +86,7 @@ public class ListApplicationsAdminModule extends AnnotatedForegroundModule {
 				XMLUtils.appendNewElement(doc, municipalityElement, "ranking", app.getRanking());
 				XMLUtils.appendNewElement(doc, municipalityElement, "socialSecurityNumber", app.getSocialSecurityNumber());
 				XMLUtils.appendNewElement(doc, municipalityElement, "name", app.getFirstname() + " " + app.getLastname());
+				XMLUtils.appendNewElement(doc, municipalityElement, "applicationType", app.getApplicationType());
 				XMLUtils.appendNewElement(doc, municipalityElement, "url", manageMunicipalityUrl + "?appId=" + app.getId());
 				approvedMunicipalityElement.appendChild(municipalityElement);
 			}
@@ -98,6 +99,7 @@ public class ListApplicationsAdminModule extends AnnotatedForegroundModule {
 				XMLUtils.appendNewElement(doc, municipalityElement, "ranking", app.getRanking());
 				XMLUtils.appendNewElement(doc, municipalityElement, "socialSecurityNumber", app.getSocialSecurityNumber());
 				XMLUtils.appendNewElement(doc, municipalityElement, "name", app.getFirstname() + " " + app.getLastname());
+				XMLUtils.appendNewElement(doc, municipalityElement, "applicationType", app.getApplicationType());
 				XMLUtils.appendNewElement(doc, municipalityElement, "url", manageMunicipalityUrl + "?appId=" + app.getId());
 				disapprovedMunicipalityElement.appendChild(municipalityElement);
 			}

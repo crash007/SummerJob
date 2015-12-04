@@ -269,6 +269,18 @@
 										<xsl:for-each select="applications/MunicipalityJobApplication">
 											<xsl:if test="status ='MATCHED'">
 												<div style="margin-top: 8px" class="matched-application">
+													<xsl:if test="applicationType = 'REGULAR_ADMIN'">
+														<div class="row">
+															<div class="col-xs-4 col-md-3 bold">Typ</div> 
+															<div class="col-xs-6 bold">Inlagd av admin</div>
+														</div>
+													</xsl:if>
+													<xsl:if test="applicationType = 'PRIO'">
+														<div class="row">
+															<div class="col-xs-4 col-md-3 bold">Typ</div> 
+															<div class="col-xs-4 bold prio">Prioriterad</div>
+														</div>
+													</xsl:if>
 													<div class="row">
 														<div class="col-xs-4 col-md-3 bold">Namn</div>						
 														<div class="col-md-9 name"><xsl:value-of select="firstname"/><xsl:text> </xsl:text><xsl:value-of select="lastname"/></div>						

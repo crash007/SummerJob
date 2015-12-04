@@ -74,7 +74,7 @@
 			<div class="panel-body">
 				<div class="row">
 					<div class="col-xs-1 bold">Prio</div>
-					<div class="col-xs-4 bold">Personnummer</div>
+					<div class="col-xs-3 bold">Personnummer</div>
 					<div class="col-xs-3 bold">Namn</div>
 				</div>
 				<xsl:apply-templates select="MunicipalityJobApplication"></xsl:apply-templates>
@@ -90,7 +90,7 @@
 			<div class="panel-body">
 				<div class="row">
 					<div class="col-xs-1 bold">Prio</div>
-					<div class="col-xs-4 bold">Personnummer</div>
+					<div class="col-xs-3 bold">Personnummer</div>
 					<div class="col-xs-3 bold">Namn</div>
 				</div>
 				<xsl:apply-templates select="MunicipalityJobApplication"></xsl:apply-templates>
@@ -106,7 +106,7 @@
 			<div class="panel-body">
 				<div class="row">
 					<div class="col-xs-1 bold">Prio</div>
-					<div class="col-xs-4 bold">Personnummer</div>
+					<div class="col-xs-3 bold">Personnummer</div>
 					<div class="col-xs-3 bold">Namn</div>
 				</div>
 				<xsl:apply-templates select="BusinessSectorJobApplication"></xsl:apply-templates>
@@ -122,7 +122,7 @@
 			<div class="panel-body">
 				<div class="row">
 					<div class="col-xs-1 bold">Prio</div>
-					<div class="col-xs-4 bold">Personnummer</div>
+					<div class="col-xs-3 bold">Personnummer</div>
 					<div class="col-xs-3 bold">Namn</div>
 				</div>
 				<xsl:apply-templates select="BusinessSectorJobApplication"></xsl:apply-templates>
@@ -135,8 +135,16 @@
 			<div class='row application-row municipality-application-row'>
 				<input class="applicationURL" type="hidden" value="{url}" ></input>
 				<div class="col-xs-1"><xsl:value-of select="ranking" /></div>
-				<div class="col-xs-4"><xsl:value-of select="socialSecurityNumber" /></div>
+				<div class="col-xs-3"><xsl:value-of select="socialSecurityNumber" /></div>
 				<div class="col-xs-6"><xsl:value-of select="name" /></div>
+				<div class="col-xs-1 float-rgt">
+					<xsl:if test="applicationType = 'REGULAR_ADMIN'">
+						<span class="bold">*</span>
+					</xsl:if>
+					<xsl:if test="applicationType = 'PRIO'">
+						<span class="bold prio">*</span>
+					</xsl:if>
+				</div>
 			</div>
 		</div>
 	</xsl:template>
@@ -145,9 +153,9 @@
 		<div>
 			<div class='row application-row business-application-row'>
 				<div class="col-xs-1"><xsl:value-of select="ranking" /></div>
-				<div class="col-xs-4"><xsl:value-of select="socialSecurityNumber" /></div>
+				<div class="col-xs-3"><xsl:value-of select="socialSecurityNumber" /></div>
 				<div class="col-xs-6"><xsl:value-of select="name" /></div>
-				<div class="col-xs-1 more-information-arrow"><span class="arrow-down glyphicon glyphicon-chevron-down"></span><span class="arrow-up glyphicon glyphicon-chevron-up hidden"></span></div>
+				<div class="col-xs-1 more-information-arrow float-rgt"><span class="arrow-down glyphicon glyphicon-chevron-down"></span><span class="arrow-up glyphicon glyphicon-chevron-up hidden"></span></div>
 			</div>
 			<div class="row hidden more-information">
 				<div style="margin: 8px; padding: 8px" class="well">

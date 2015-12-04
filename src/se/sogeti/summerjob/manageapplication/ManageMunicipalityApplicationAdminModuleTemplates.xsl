@@ -162,6 +162,24 @@
 					<span class="message"></span>
 				</div>
 				
+				<xsl:if test="MunicipalityJobApplication/applicationType = 'REGULAR_ADMIN'">
+					<div class="row mgn-btm8px">
+						<div class="col-md-2">
+							<label>Typ</label>
+							<div class="bold">Inlagd av admin</div>
+						</div>
+					</div>
+				</xsl:if>
+				
+				<xsl:if test="MunicipalityJobApplication/applicationType = 'PRIO'">
+					<div class="row mgn-btm8px">
+						<div class="col-md-2">
+							<label>Typ</label>
+							<div class="bold prio">Prioriterad</div>
+						</div>
+					</div>
+				</xsl:if>
+				
 				<div class="row form-group">
 					<div class="col-md-2">
 						<label>Ranking</label><br/>
