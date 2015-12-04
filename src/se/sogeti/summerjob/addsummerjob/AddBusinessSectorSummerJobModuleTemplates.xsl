@@ -17,7 +17,7 @@
 	</xsl:template>
 	
 	<xsl:template match="BusinessSectorJobForm">
-		<h1>Lägg till sommarjobb inom näringslivet</h1>
+		<h1 class="createJobHeadline">Lägg till sommarjobb inom näringslivet</h1>
 		<form class="well" role="form" method="POST" id="business-sector-add-job-form" data-toggle="validator">
 		
 				<input name="jobId" style="display: none" class="form-control" type="text" value="{BusinessSectorJob/id}"/>
@@ -190,10 +190,10 @@
 						    <label>
 						    	<xsl:choose>
 						    		<xsl:when test="BusinessSectorJob/isOverEighteen ='true'">
-						    			<input type="checkbox" name="isOverEighteen" checked="checked">Måste vara över 18 år</input>
+						    			<input type="checkbox" id="isOverEighteen" name="isOverEighteen" checked="checked">Måste vara över 18 år</input>
 						    		</xsl:when>
 						    		<xsl:otherwise>
-						    			<input type="checkbox" name="isOverEighteen">Måste vara över 18 år</input>
+						    			<input type="checkbox" id="isOverEighteen" name="isOverEighteen">Måste vara över 18 år</input>
 						    		</xsl:otherwise>
 						    	</xsl:choose>
 						    </label>
@@ -202,10 +202,10 @@
 						    <label>
 						    	<xsl:choose>
 						    		<xsl:when test="BusinessSectorJob/hasDriversLicense = 'true'">
-						    			<input type="checkbox" name="hasDriversLicense" checked="checked">Måste ha körkort</input>
+						    			<input type="checkbox" id="hasDriversLicense" name="hasDriversLicense" checked="checked">Måste ha körkort</input>
 						    		</xsl:when>
 						    		<xsl:otherwise>
-						    			<input type="checkbox" name="hasDriversLicense">Måste ha körkort</input>
+						    			<input type="checkbox" id="hasDriversLicense" name="hasDriversLicense">Måste ha körkort</input>
 						    		</xsl:otherwise>
 						    	</xsl:choose>
 						    </label>
@@ -243,30 +243,35 @@
 			  	<div class="panel panel-default">
 			  		<div class="panel-heading">
 			  			<h3 class="panel-title">
-							<xsl:choose>
-								<xsl:when test="BusinessSectorJob">Spara ändringar i annons</xsl:when>
-								<xsl:otherwise>Skicka in annons</xsl:otherwise>
-							</xsl:choose>			  			
+			  				Förhandsgranska annons
+<!-- 							<xsl:choose> -->
+<!-- 								<xsl:when test="BusinessSectorJob">Spara ändringar i annons</xsl:when> -->
+<!-- 								<xsl:otherwise>Skicka in annons</xsl:otherwise> -->
+<!-- 							</xsl:choose>			  			 -->
 			  			</h3>
 			  		</div>  
 			  		<div class="panel-body">
-						<div id="save-failed" class="alert alert-danger" role="alert">
-							<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-							<span class="sr-only">Error:</span>
-							<span class="message"></span>
-						</div>
-						<div id="save-succeeded" class="alert alert-success" role="alert">
-							<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-							<span class="sr-only">Success:</span>
-							<span class="message"></span>
-						</div>
+<!-- 						<div id="save-failed" class="alert alert-danger" role="alert"> -->
+<!-- 							<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> -->
+<!-- 							<span class="sr-only">Error:</span> -->
+<!-- 							<span class="message"></span> -->
+<!-- 						</div> -->
+<!-- 						<div id="save-succeeded" class="alert alert-success" role="alert"> -->
+<!-- 							<span class="glyphicon glyphicon-ok" aria-hidden="true"></span> -->
+<!-- 							<span class="sr-only">Success:</span> -->
+<!-- 							<span class="message"></span> -->
+<!-- 						</div> -->
 						
-			  			<button style="margin-top: 4px;" id="submit-business-sector-job" type="submit" class="float-rgt mgn-lft8px btn btn-success questions-submit">
-			  				<xsl:choose>
-			  					<xsl:when test="BusinessSectorJob">Spara</xsl:when>
-			  					<xsl:otherwise>Skicka</xsl:otherwise>
-			  				</xsl:choose>
+						<button style="margin-top: 4px;" id="preview-business-sector-job" type="submit" class="float-rgt mgn-lft8px btn btn-success questions-submit">
+							Förhandsgranska
 			  			</button>
+						
+<!-- 			  			<button style="margin-top: 4px;" id="submit-business-sector-job" type="submit" class="float-rgt mgn-lft8px btn btn-success questions-submit"> -->
+<!-- 			  				<xsl:choose> -->
+<!-- 			  					<xsl:when test="BusinessSectorJob">Spara</xsl:when> -->
+<!-- 			  					<xsl:otherwise>Skicka</xsl:otherwise> -->
+<!-- 			  				</xsl:choose> -->
+<!-- 			  			</button> -->
 			  			
 			  			<xsl:if test="BusinessSectorJob">
 			  				<a href="{manageJobURL}?jobId={BusinessSectorJob/id}" style="margin-top: 4px;" class="float-rgt btn btn-primary">Tillbaka</a>
@@ -276,6 +281,194 @@
 			  	</div>
 			</form>
 			
+			<div id="preview-template">
+				<h1>Förhandsgranska sommarjobb</h1>
+				<div class="well">
+				  	<div class="panel panel-default">
+							  	<div class="panel-heading">
+							  		<h3 class="panel-title">Arbete</h3>
+							  	</div>
+							  	<div class="panel-body">
+								  	<div class="row">
+								  		<div class="col-md-5">
+											<label>Yrkestitel</label>
+											<p id="preview-worktitle"></p>
+										</div>
+								  	</div>
+								  	<div class="mgn-top8px row">
+								  		<div class="col-md-12">
+											<label>Arbetsbeskrivning</label>
+											<p id="preview-workdescription"></p>
+										</div>
+								  	</div>
+								  	
+								  	<div class="mgn-top8px row">
+								  		<div class="col-md-3">
+											<label>Antal platser</label>
+											<span class="mgn-lft8px" id="preview-numberNeeded"></span>
+										</div>
+									</div>
+								  	
+								  	<div class="mgn-top8px row">
+										<div class="col-md-3">
+											<label for="startDate">Startdatum</label>
+											<span class="mgn-lft8px" id="preview-startDate"></span>
+										</div>
+										<div class="col-md-3">
+											<label for="endDate">Slutdatum</label>
+											<span class="mgn-lft8px" id="preview-endDate"></span>
+										</div>
+										<div class="col-md-4">
+											<label for="lastApplicationDay">Sista ansökningsdag</label>
+											<span class="mgn-lft8px" id="preview-lastApplicationDay"></span>
+										</div>
+								  	</div>
+								  	<div class="mgn-top8px row">
+								  		<div class="col-md-12 preview-mentors-list">
+									  		<label>Handledare</label>
+									  		<table class="table">
+												<thead>
+													<tr>
+														<th class="overview">Förnamn</th>
+														<th class="overview">Efternamn</th>							
+														<th class="overview">Telefonnummer</th>
+														<th class="overview">E-postadress</th>
+													</tr>
+												</thead>
+												<tbody id="preview-mentor-body">
+													<tr style="display: none" id="preview-mentor-row">
+											  			<td id="preview-mentor-firstname"></td>
+											  			<td id="preview-mentor-lastname"></td>
+											  			<td id="preview-mentor-phonenumber"></td>
+											  			<td id="preview-mentor-email"></td>
+											  		</tr>
+												</tbody>
+											</table>
+										</div>
+								  	</div>
+							  	</div>
+							</div>
+							<div class="panel panel-default">
+								<div class="panel-heading">
+									<h3 class="panel-title">Uppgifter om arbetsplatsen</h3>
+								</div>
+								<div class="panel-body">
+									<div class="row">
+										<div class="col-md-3">
+											<label>Organisationsnummer</label>
+											<div id="preview-corporate-number"></div>
+										</div>
+										<div class="col-md-5">
+											<label>Företag</label>
+											<p id="preview-company"></p>
+										</div>
+									</div>
+									<div class="mgn-top8px row">
+										<div class="col-md-3">
+											<label>Gatuadress</label>
+											<p id="preview-streetAddress"></p>
+										</div>
+										<div class="col-md-2">
+											<label>Postnummer</label>
+											<p id="preview-zipcode"></p>
+										</div>
+										<div class="col-md-2">
+											<label>Postort</label>
+											<p id="preview-city"></p>
+										</div>
+									</div>
+									<div class="mgn-top8px">
+										<label class="mgn-top8px">Ansvarig på arbetsplatsen</label>
+										<div class="row">
+											<div class="col-md-2">
+												<label>Förnamn</label>
+												<p id="preview-manager-firstname"></p>
+											</div>
+											<div class="col-md-2">
+												<label>Efternamn</label>
+												<p id="preview-manager-lastname"></p>
+											</div>
+											<div class="col-md-2">
+												<label>Telefonnummer</label>
+												<p id="preview-manager-phonenumber"></p>
+											</div>
+											<div class="col-md-3">
+												<label>E-postadress</label>
+												<p id="preview-manager-email"></p>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="panel panel-default">
+						<div class="panel-heading">
+							<h3 class="panel-title">Krav</h3>
+						</div>
+						<div class="panel-body">
+							<div class="row">
+								<div class="col-md-5">
+									<label>Körkort</label>
+									<input type="hidden" id="driversLicenseNeededText" value="Ja, tjänsten kräver körkort av typ " />
+									<input type="hidden" id="driversLicenseNotNeededText" value="Nej, tjänsten kräver EJ körkort" />
+									<p id="preview-driverslicense"></p>
+								</div>
+							</div>
+							<div class="mgn-top8px row">
+								<div class="col-md-4">
+									<label>Ålder</label>
+									<input type="hidden" id="overEighteenNeededText" value="Tjänsten kräver att sökande är över 18 år" />
+									<input type="hidden" id="overEighteenNotNeededText" value="Tjänsten kräver EJ att sökande är över 18 år" />
+									<p id="preview-age"></p>
+								</div>
+							</div>
+							<div class="mgn-top8px row">
+								<div class="col-md-12">
+									<label>Övriga krav och önskemål</label>
+									<p id="preview-otherrequirements"></p>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					<div class="panel panel-default">
+				  		<div class="panel-heading">
+				  			<h3 class="panel-title">
+								<xsl:choose>
+									<xsl:when test="BusinessSectorJob">Spara ändringar i annons</xsl:when>
+									<xsl:otherwise>Skicka in annons</xsl:otherwise>
+								</xsl:choose>			  			
+				  			</h3>
+				  		</div>  
+				  		<div class="panel-body">
+							<div id="save-failed" class="alert alert-danger" role="alert">
+								<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+								<span class="sr-only">Error:</span>
+								<span class="message"></span>
+							</div>
+							<div id="save-succeeded" class="alert alert-success" role="alert">
+								<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+								<span class="sr-only">Success:</span>
+								<span class="message"></span>
+							</div>
+							
+				  			<button style="margin-top: 4px;" id="submit-business-sector-job" class="float-rgt mgn-lft8px btn btn-success questions-submit">
+				  				<xsl:choose>
+				  					<xsl:when test="BusinessSectorJob">Spara</xsl:when>
+				  					<xsl:otherwise>Skicka</xsl:otherwise>
+				  				</xsl:choose>
+				  			</button>
+				  			
+				  			<button style="margin-top: 4px;" id="cancel-preview-business-sector-job" class="mgn-lft8px btn btn-warning questions-submit">Redigera</button>
+				  			
+<!-- 				  			<xsl:if test="BusinessSectorJob"> -->
+<!-- 				  				<a href="{manageJobURL}?jobId={BusinessSectorJob/id}" style="margin-top: 4px;" class="float-rgt btn btn-primary">Tillbaka</a> -->
+<!-- 				  			</xsl:if> -->
+							<span class="glyphicon glyphicon-ok collapse" aria-hidden="true"></span><span class="glyphicon glyphicon-remove collapse" aria-hidden="true"></span>
+						</div>
+				  	</div>
+					
+				</div>
+			</div>
 			
 			<div id="mentor-template">
 				<div class="row collapse" style="margin-bottom: 8px;">
@@ -295,7 +488,7 @@
 			
 					<div class="form-group col-md-2">
 						<label for="mentor-phone">Telefonnummer</label>
-						<input type="number" class="numberValidation form-control" id="mentor-phone" name="mentor-phone"
+						<input type="text" class="numberValidation form-control" id="mentor-phone" name="mentor-phone"
 							placeholder="" />
 						<p class="help-block">Endast siffror</p>
 					</div>
