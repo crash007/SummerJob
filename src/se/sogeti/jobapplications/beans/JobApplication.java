@@ -50,7 +50,7 @@ public abstract class JobApplication implements Elementable{
 	
 	@DAOManaged
 	@XMLElement
-	private String cvLocation;
+	private String cvFilename;
 	
 	@DAOManaged
 	@XMLElement
@@ -180,15 +180,6 @@ public abstract class JobApplication implements Elementable{
 	public void setPersonalLetter(String personalLetter) {
 		this.personalLetter = personalLetter;
 	}
-
-	public String getCvLocation() {
-		return cvLocation;
-	}
-
-	public void setCvLocation(String cvLocation) {
-		this.cvLocation = cvLocation;
-	}
-
 
 	public Date getApprovedDate() {
 		return controlledDate;
@@ -337,13 +328,15 @@ public abstract class JobApplication implements Elementable{
 	@Override
 	public String toString() {
 		return "JobApplication [id=" + id + ", ranking=" + ranking + ", created=" + created + ", driversLicenseType="
-				+ driversLicenseType + ", personalLetter=" + personalLetter + ", cvLocation=" + cvLocation
+				+ driversLicenseType + ", personalLetter=" + personalLetter + ", cvFilename=" + cvFilename
 				+ ", approved=" + approved + ", controlled=" + controlled + ", controlledByUser=" + controlledByUser
 				+ ", controlledDate=" + controlledDate + ", socialSecurityNumber=" + socialSecurityNumber
 				+ ", firstname=" + firstname + ", lastname=" + lastname + ", streetAddress=" + streetAddress
 				+ ", zipCode=" + zipCode + ", city=" + city + ", email=" + email + ", phoneNumber=" + phoneNumber
 				+ ", schoolName=" + schoolName + ", schoolType=" + schoolType + ", skvCity=" + skvCity + ", adminNotes="
-				+ adminNotes + ", addedByUser=" + addedByUser + ", birthDate=" + birthDate + ", status=" + status + "]";
+				+ adminNotes + ", addedByUser=" + addedByUser + ", birthDate=" + birthDate + ", status=" + status
+				+ ", callStatus=" + callStatus + ", timeForInformation=" + timeForInformation + ", applicationType="
+				+ applicationType + "]";
 	}
 
 	public String getAddedByUser() {
@@ -404,6 +397,14 @@ public abstract class JobApplication implements Elementable{
 
 	public void setApplicationType(ApplicationType applicationType) {
 		this.applicationType = applicationType;
+	}
+
+	public String getCvFilename() {
+		return cvFilename;
+	}
+
+	public void setCvFilename(String cvFilename) {
+		this.cvFilename = cvFilename;
 	}
 
 }

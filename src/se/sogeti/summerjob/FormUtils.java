@@ -52,7 +52,7 @@ public class FormUtils {
 	
 	public static  <T extends JobApplication> void createJobApplication(T app, HttpServletRequest req, Citizen person){
 		
-		app.setCvLocation(req.getParameter("cvFile"));		
+		
 		app.setCity(req.getParameter("postalarea"));
 		app.setEmail(req.getParameter("email"));
 		app.setFirstname(req.getParameter("firstname"));
