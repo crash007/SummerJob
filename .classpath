@@ -10,11 +10,14 @@
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
 	<classpathentry kind="lib" path="lib/gson-2.3.1.jar"/>
+	<classpathentry kind="src" path="/OpenETown-Smex"/>
+	<classpathentry kind="lib" path="lib/pdfbox-2.0.0-RC1.jar"/>
+	<classpathentry kind="lib" path="lib/itextpdf-5.4.2.jar"/>
+	<classpathentry kind="lib" path="lib/docx4j-3.2.2.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/java-7-oracle">
 		<attributes>
 			<attribute name="owner.project.facets" value="java"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="src" path="/OpenETown-Smex"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

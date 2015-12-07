@@ -15,7 +15,7 @@
 	</xsl:template>
 	
 	<xsl:template match="MunicipalityJobApplicationForm">
-		<form method="POST" role="form" id="municipality-job-application-form" data-toggle="validator">
+		<form method="POST" role="form" id="municipality-job-application-form" enctype="multipart/form-data" data-toggle="validator">
 			<input type="hidden" name="appId" value="{MunicipalityJobApplication/id}" />
 			<div class="well">
 				<div class="panel panel-default">

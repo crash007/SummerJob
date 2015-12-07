@@ -248,16 +248,18 @@ public class BusinessSectorSummerJobApplicationModule extends AnnotatedRESTModul
 				}
 
 				try {
-					log.info("Ska påbörja sparning");
+					log.info("Påbörjar sparning av näringslivsansökan");
 					if (app.getId() == null) {
-						log.info("Det är en ny ansökan");
+						log.debug("Det är en ny ansökan");
 						jobDAO.save(job);
+						
 						JsonResponse.sendJsonResponse("{\"status\":\"success\", \"message\":\"Din ansökan har nu sparats.\"}", callback, writer);
 					} else {
-						log.info("Vi redigerar en befintlig");
+						log.debug("Vi redigerar en befintlig");
 						jobApplicationDAO.save(app);
 						JsonResponse.sendJsonResponse("{\"status\":\"success\", \"message\":\"Ändringarna har nu sparats.\"}", callback, writer);
 					}
+					log.info("Ansökan har sparats");
 				} catch (SQLException e) {
 					log.error(e);
 					JsonResponse.sendJsonResponse("{\"status\":\"error\", \"message\":\"Databasfel. Ansökan kunde inte sparas.\"}", callback, writer);
