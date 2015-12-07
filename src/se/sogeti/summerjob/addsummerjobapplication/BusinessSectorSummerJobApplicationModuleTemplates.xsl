@@ -265,7 +265,7 @@
 	</xsl:template>
 	
 	<xsl:template match="JobApplicationForm">
-		<form method="POST" role="form" id="business-job-application-form" data-toggle="validator">
+		<form method="POST" role="form" id="business-job-application-form" enctype="multipart/form-data" data-toggle="validator">
 			<div class="well">
 				<input type="hidden" name="jobId" value="{jobId}"/>
 				<input type="hidden" name="appId" value="{BusinessSectorJobApplication/id}"/>
