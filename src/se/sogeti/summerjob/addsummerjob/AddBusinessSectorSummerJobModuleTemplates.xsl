@@ -244,35 +244,13 @@
 			  		<div class="panel-heading">
 			  			<h3 class="panel-title">
 			  				Förhandsgranska annons
-<!-- 							<xsl:choose> -->
-<!-- 								<xsl:when test="BusinessSectorJob">Spara ändringar i annons</xsl:when> -->
-<!-- 								<xsl:otherwise>Skicka in annons</xsl:otherwise> -->
-<!-- 							</xsl:choose>			  			 -->
 			  			</h3>
 			  		</div>  
 			  		<div class="panel-body">
-<!-- 						<div id="save-failed" class="alert alert-danger" role="alert"> -->
-<!-- 							<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> -->
-<!-- 							<span class="sr-only">Error:</span> -->
-<!-- 							<span class="message"></span> -->
-<!-- 						</div> -->
-<!-- 						<div id="save-succeeded" class="alert alert-success" role="alert"> -->
-<!-- 							<span class="glyphicon glyphicon-ok" aria-hidden="true"></span> -->
-<!-- 							<span class="sr-only">Success:</span> -->
-<!-- 							<span class="message"></span> -->
-<!-- 						</div> -->
-						
 						<button style="margin-top: 4px;" id="preview-business-sector-job" type="submit" class="float-rgt mgn-lft8px btn btn-success questions-submit">
 							Förhandsgranska
 			  			</button>
 						
-<!-- 			  			<button style="margin-top: 4px;" id="submit-business-sector-job" type="submit" class="float-rgt mgn-lft8px btn btn-success questions-submit"> -->
-<!-- 			  				<xsl:choose> -->
-<!-- 			  					<xsl:when test="BusinessSectorJob">Spara</xsl:when> -->
-<!-- 			  					<xsl:otherwise>Skicka</xsl:otherwise> -->
-<!-- 			  				</xsl:choose> -->
-<!-- 			  			</button> -->
-			  			
 			  			<xsl:if test="BusinessSectorJob">
 			  				<a href="{manageJobURL}?jobId={BusinessSectorJob/id}" style="margin-top: 4px;" class="float-rgt btn btn-primary">Tillbaka</a>
 			  			</xsl:if>
