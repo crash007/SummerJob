@@ -66,8 +66,7 @@ public class AddMunicipalitySummerJobApplicationModule extends AddSummerJobAppli
 	@TextFieldSettingDescriptor(description="Relativ URL till den plats där ansökan hanteras", name="ManageApplicationURL")
 	String manageApplicationURL = "manage-municipality-app";
 	
-	@InstanceManagerDependency(required = true)
-	private SmexServiceHandler smexServiceHandler;
+
 	
 	@Override
 	protected void createDAOs(DataSource dataSource) throws Exception {
@@ -153,23 +152,12 @@ public class AddMunicipalitySummerJobApplicationModule extends AddSummerJobAppli
 		}
 		form.appendChild(geoAreasElement);
 		
-		Element driversLicenseElement = doc.createElement("DriversLicenseTypes");
-		List<DriversLicenseType> licenseTypes = driversLicenseTypeDAO.getAll();
-		for (DriversLicenseType type : licenseTypes) {
-			Element typeElement = doc.createElement("DriversLicenseType");
-			XMLUtils.appendNewElement(doc, typeElement, "id", type.getId());
-			XMLUtils.appendNewElement(doc, typeElement, "name", type.getName());
-			XMLUtils.appendNewElement(doc, typeElement, "description", type.getDescription());
-			if (app != null && app.getDriversLicenseType() != null) {
-				XMLUtils.appendNewElement(doc, typeElement, "selected", 
-						app.getDriversLicenseType().getId().intValue() == type.getId().intValue());
-			}
-			driversLicenseElement.appendChild(typeElement);
-		}
-		form.appendChild(driversLicenseElement);
+		populateDriversLicenseTypesElement(doc, form, app, driversLicenseTypeDAO.getAll());
 		
 		return new SimpleForegroundModuleResponse(doc);
 	}
+
+	
 	
 	@RESTMethod(alias="save/municipalityapplication.json", method="post")
 	public void saveApplication(HttpServletRequest req, HttpServletResponse res, User user, URIParser uriParser) throws IOException, SQLException {
@@ -178,13 +166,10 @@ public class AddMunicipalitySummerJobApplicationModule extends AddSummerJobAppli
 		MultipartRequest requestWrapper = null;
 		try {
 			requestWrapper = new MultipartRequest(1024 * BinarySizes.KiloByte, 100 * BinarySizes.MegaByte, req);
-			
 
 			PrintWriter writer = res.getWriter();
 			String callback = requestWrapper.getParameter("callback"); 
 			JsonResponse.initJsonResponse(res, writer, callback);
-			
-			
 	
 			MunicipalityJobApplication exisitingApplication = jobApplicationDAO.getbySocialSecurityNumber(requestWrapper.getParameter("socialSecurityNumber"));
 			
@@ -198,37 +183,14 @@ public class AddMunicipalitySummerJobApplicationModule extends AddSummerJobAppli
 	
 			Integer appId = NumberUtils.toInt(requestWrapper.getParameter("appId"));
 			MunicipalityJobApplication app = appId != null ? jobApplicationDAO.getById(appId) : new MunicipalityJobApplication();
-	
-			Citizen person = null;
 
-			
-			
-	
 			String socialSecurityNumber = requestWrapper.getParameter("socialSecurityNumber");
-			if (socialSecurityNumber == null || socialSecurityNumber.isEmpty()) {
-				JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Du måste ange ett personnummer i din ansökan.\"}", callback, writer);
-				return;
-			}
 			
-			if (socialSecurityNumber.length() != 12) {
-				JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Personnumret måste bestå av 12 tecken (ÅÅÅÅMMDDxxxx).\"}", callback, writer);
-				return;
-			}
-			
-			try {
-				java.sql.Date.valueOf(socialSecurityNumber.substring(0, 4) + "-" + socialSecurityNumber.substring(4, 6) + "-" + socialSecurityNumber.substring(6, 8));
-			} catch (IllegalArgumentException e) {
-				JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Personnumret innehåller ej ett giltigt datum.\"}", callback, writer);
+			if(!validateSocialSecurityNumber(writer, callback, socialSecurityNumber)){
 				return;
 			}
 	
-			try {
-				person = smexServiceHandler.getCitizen(socialSecurityNumber);	
-			} catch(SmexServiceException e) {
-				log.error(e);
-			} catch(Exception e) {
-				log.error(e);
-			}
+			Citizen person = getCitizen(socialSecurityNumber);
 	
 			FormUtils.createJobApplication(app, requestWrapper, person);
 			FileItem fileItem = requestWrapper.getFile(0);			
@@ -283,17 +245,11 @@ public class AddMunicipalitySummerJobApplicationModule extends AddSummerJobAppli
 				app.setDriversLicenseType(null); // If the application is being updated
 			}
 			
-			if (app.getFirstname() == null || app.getFirstname().isEmpty() || app.getCity() == null || app.getCity().isEmpty() ||
-					app.getLastname() == null || app.getLastname().isEmpty() || app.getPhoneNumber() == null || app.getPhoneNumber().isEmpty() ||
-					app.getSocialSecurityNumber() == null || app.getSocialSecurityNumber().isEmpty() ||
-					app.getStreetAddress() == null || app.getStreetAddress().isEmpty() || 
-					app.getZipCode() == null || app.getZipCode().isEmpty() || app.getEmail() == null || app.getEmail().isEmpty()) {
-				JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Fälten för personuppgifter kan inte lämnas tomma. Det enda som inte krävs är en e-postadress.\"}", callback, writer);
+			if(!validatePersonalInformation(writer, callback, app)){
 				return;
 			}
 			
-			if (app.getPersonalLetter() == null || app.getPersonalLetter().isEmpty()) {
-				JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Du måste ge ett kort personligt brev i din ansökan.\"}", callback, writer);
+			if(!validatePersonalLetter(writer, callback, app)){
 				return;
 			}
 			
@@ -302,7 +258,7 @@ public class AddMunicipalitySummerJobApplicationModule extends AddSummerJobAppli
 				return;
 			}
 	
-			log.info(app);
+			log.debug(app);
 			
 			// A new application
 			if (appId == null) {
@@ -346,5 +302,8 @@ public class AddMunicipalitySummerJobApplicationModule extends AddSummerJobAppli
 		}
 	}
 
+	
+
+	
 	
 }

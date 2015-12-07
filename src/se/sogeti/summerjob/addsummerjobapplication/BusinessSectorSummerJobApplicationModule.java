@@ -24,11 +24,8 @@ import se.sogeti.jobapplications.daos.BusinessSectorJobDAO;
 import se.sogeti.jobapplications.daos.DriversLicenseTypeDAO;
 import se.sogeti.summerjob.FormUtils;
 import se.sogeti.summerjob.JsonResponse;
-import se.sundsvall.openetown.smex.SmexServiceHandler;
-import se.sundsvall.openetown.smex.service.SmexServiceException;
 import se.sundsvall.openetown.smex.vo.Citizen;
 import se.unlogic.fileuploadutils.MultipartRequest;
-import se.unlogic.hierarchy.core.annotations.InstanceManagerDependency;
 import se.unlogic.hierarchy.core.annotations.ModuleSetting;
 import se.unlogic.hierarchy.core.annotations.TextFieldSettingDescriptor;
 import se.unlogic.hierarchy.core.beans.SimpleForegroundModuleResponse;
@@ -53,9 +50,6 @@ public class BusinessSectorSummerJobApplicationModule extends AddSummerJobApplic
 	@TextFieldSettingDescriptor(description="Relativ URL till den plats där ansökan hanteras", name="ManageApplicationURL")
 	String manageApplicationURL = "manage-business-app";
 
-	
-	@InstanceManagerDependency(required = true)
-	private SmexServiceHandler smexServiceHandler;
 	
 	@Override
 	protected void createDAOs(DataSource dataSource) throws Exception {
@@ -84,7 +78,7 @@ public class BusinessSectorSummerJobApplicationModule extends AddSummerJobApplic
 		
 		if(jobId!=null){
 			BusinessSectorJob job = jobDAO.getById(jobId);
-			log.info(job);
+			log.debug(job);
 			Element jobInfo = doc.createElement("JobInfo");
 			XMLUtils.append(doc, jobInfo, job);
 			doc.getFirstChild().appendChild(jobInfo);
@@ -98,22 +92,9 @@ public class BusinessSectorSummerJobApplicationModule extends AddSummerJobApplic
 				XMLUtils.append(doc, jobApplication, app);
 			}
 			
-			Element driversLicenseElement = doc.createElement("DriversLicenseTypes");
-			jobApplication.appendChild(driversLicenseElement);
-			List<DriversLicenseType> driverslicenseTypes = driversLicenseTypeDAO.getAll();
-			for (DriversLicenseType type : driverslicenseTypes) {
-				Element typeElement = doc.createElement("DriversLicenseType");
-				XMLUtils.appendNewElement(doc, typeElement, "id", type.getId());
-				XMLUtils.appendNewElement(doc, typeElement, "name", type.getName());
-				XMLUtils.appendNewElement(doc, typeElement, "description", type.getDescription());
-				
-				if (app != null && app.getDriversLicenseType() != null) {
-					XMLUtils.appendNewElement(doc, typeElement, "selected",
-							app.getDriversLicenseType().getId().intValue() == type.getId().intValue());
-				}
-				driversLicenseElement.appendChild(typeElement);
-			}
+			populateDriversLicenseTypesElement(doc, jobApplication, app, driversLicenseTypeDAO.getAll());
 			
+		
 			doc.getFirstChild().appendChild(jobApplication);
 			
 		} else {
@@ -171,40 +152,19 @@ public class BusinessSectorSummerJobApplicationModule extends AddSummerJobApplic
 					app = new BusinessSectorJobApplication();
 				}
 
-				Citizen person = null;
-
 				String socialSecurityNumber = requestWrapper.getParameter("socialSecurityNumber");
-				if (socialSecurityNumber == null || socialSecurityNumber.isEmpty()) {
-					JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Du måste ange ett personnummer i din ansökan.\"}", callback, writer);
+				
+				if(!validateSocialSecurityNumber(writer, callback, socialSecurityNumber)){
 					return;
 				}
 
-
-				if (socialSecurityNumber.length() != 12) {
-					JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Personnumret måste bestå av 12 tecken (ÅÅÅÅMMDDxxxx).\"}", callback, writer);
-					return;
-				}
-
-				try {
-					java.sql.Date.valueOf(socialSecurityNumber.substring(0, 4) + "-" + socialSecurityNumber.substring(4, 6) + "-" + socialSecurityNumber.substring(6, 8));
-				} catch (IllegalArgumentException e) {
-					log.error(e);
-					JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Personnumret innehåller ej ett giltigt datum.\"}", callback, writer);
-					return;
-				}
-
-				try {
-					person = smexServiceHandler.getCitizen(socialSecurityNumber);
-				} catch (SmexServiceException e){
-					log.error(e);
-				} catch (Exception e) {
-					log.error(e);
-				}
+				Citizen person = getCitizen(socialSecurityNumber);
 
 				FormUtils.createJobApplication(app, requestWrapper, person);
 				
 
 				boolean hasDriversLicense = requestWrapper.getParameter("hasDriversLicense") != null ? true : false;
+				
 				if (hasDriversLicense) {
 					Integer typeId = NumberUtils.toInt(requestWrapper.getParameter("driversLicenseType"));
 					if (typeId == null) {
@@ -224,17 +184,11 @@ public class BusinessSectorSummerJobApplicationModule extends AddSummerJobApplic
 					app.setDriversLicenseType(null);
 				}
 
-				if (app.getFirstname() == null || app.getFirstname().isEmpty() || app.getCity() == null || app.getCity().isEmpty() ||
-						app.getLastname() == null || app.getLastname().isEmpty() || app.getPhoneNumber() == null || app.getPhoneNumber().isEmpty() ||
-						app.getSocialSecurityNumber() == null || app.getSocialSecurityNumber().isEmpty() ||
-						app.getStreetAddress() == null || app.getStreetAddress().isEmpty() || 
-						app.getZipCode() == null || app.getZipCode().isEmpty() || app.getEmail() == null || app.getEmail().isEmpty()) {
-					JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Fälten för personuppgifter kan inte lämnas tomma. Det enda som inte krävs är en e-postadress.\"}", callback, writer);
+				if(!validatePersonalInformation(writer, callback, app)){
 					return;
 				}
 
-				if (app.getPersonalLetter() == null || app.getPersonalLetter().isEmpty()) {
-					JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Du måste ge ett kort personligt brev i din ansökan.\"}", callback, writer);
+				if(!validatePersonalLetter(writer, callback, app)){
 					return;
 				}
 
@@ -281,6 +235,10 @@ public class BusinessSectorSummerJobApplicationModule extends AddSummerJobApplic
 			e2.printStackTrace();
 		}
 	}
+
+	
+
+	
 	
 //	private BusinessSectorJobApplication getApplicationFromJob(List<BusinessSectorJobApplication> applications, Integer applicationId) {
 //		if (applicationId == null || applications == null) {
