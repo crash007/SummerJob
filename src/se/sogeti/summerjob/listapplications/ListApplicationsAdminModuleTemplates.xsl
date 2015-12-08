@@ -170,7 +170,7 @@
 					<div class="row">
 						<div class="col-xs-2 bold">Cv</div>
 						 <xsl:if test="hasCv='true'">
-							<div class="col-xs-6"><a href="{/Document/requestinfo/contextpath}/{/Document/CvBusinessApplicationUrl}?id={id}">Ladda ner</a></div>
+							<div class="col-xs-6"><a target="_blank" href="{/Document/requestinfo/contextpath}/{/Document/CvBusinessApplicationUrl}?id={id}">Ladda ner</a></div>
 						</xsl:if>
 						 <xsl:if test="hasCv='false'">
 						 	<div class="col-xs-6">Cv saknas</div>

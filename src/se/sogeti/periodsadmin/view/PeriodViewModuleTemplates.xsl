@@ -140,13 +140,20 @@
 							<fieldset>
 								<table id="contact-person-table">
 									<thead>
+										<th>Typ</th>
 										<th>Namn</th>
 										<th>Telefonnummer</th>
 									</thead>
 									<tbody>
 										<tr>
-											<td><input class="form-control" name="contact-name" type="text" value="{ContactPerson/name}" /></td>
-											<td><input class="numberValidation form-control" name="contact-phone" type="text" value="{ContactPerson/phoneNumber}" /></td>
+											<td>Kommun</td>
+											<td><input class="form-control" name="municipality-contact-name" type="text" value="{MunicipalityContactPerson/name}" /></td>
+											<td><input class="numberValidation form-control" name="municipality-contact-phone" type="text" value="{MunicipalityContactPerson/phoneNumber}" /></td>
+										</tr>
+										<tr>
+											<td>Näringsliv</td>
+											<td><input class="form-control" name="business-contact-name" type="text" value="{BusinessContactPerson/name}" /></td>
+											<td><input class="numberValidation form-control" name="business-contact-phone" type="text" value="{BusinessContactPerson/phoneNumber}" /></td>
 										</tr>
 									</tbody>
 								</table>
