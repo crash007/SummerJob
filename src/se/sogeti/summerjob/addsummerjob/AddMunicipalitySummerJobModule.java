@@ -136,6 +136,7 @@ public class AddMunicipalitySummerJobModule extends AnnotatedRESTModule{
 		jobForm.appendChild(geoAreaElement);
 		
 		List<Period> periods = periodDAO.getPeriodsByIsUnique(false);
+		
 		List<MunicipalityMentor> mentors = null;
 		if (job != null) {
 			mentors = job.getMentors();
@@ -144,28 +145,31 @@ public class AddMunicipalitySummerJobModule extends AnnotatedRESTModule{
 				periods.add(job.getPeriod());
 			}
 		}
-		Element periodsElement = doc.createElement("Periods");
-		for (Period p : periods) {
-			Element periodElement = doc.createElement("Period");
-			XMLUtils.appendNewElement(doc, periodElement, "id", p.getId());
-			XMLUtils.appendNewElement(doc, periodElement, "name", p.getName());
-			XMLUtils.appendNewElement(doc, periodElement, "startDate", p.getStartDate());
-			XMLUtils.appendNewElement(doc, periodElement, "endDate", p.getEndDate());
-			
-			if (job != null && job.getPeriod() != null) {
-				XMLUtils.appendNewElement(doc, periodElement, "selected", 
-						job.getPeriod().getId().intValue() == p.getId().intValue());
+		if(periods!=null){
+			Element periodsElement = doc.createElement("Periods");
+			for (Period p : periods) {
+				Element periodElement = doc.createElement("Period");
+				XMLUtils.appendNewElement(doc, periodElement, "id", p.getId());
+				XMLUtils.appendNewElement(doc, periodElement, "name", p.getName());
+				XMLUtils.appendNewElement(doc, periodElement, "startDate", p.getStartDate());
+				XMLUtils.appendNewElement(doc, periodElement, "endDate", p.getEndDate());
 				
-				Element mentorsElement = doc.createElement("mentors");
-				XMLUtils.append(doc, mentorsElement, mentors);
-				periodElement.appendChild(mentorsElement);
+				if (job != null && job.getPeriod() != null) {
+					XMLUtils.appendNewElement(doc, periodElement, "selected", 
+							job.getPeriod().getId().intValue() == p.getId().intValue());
+					
+					Element mentorsElement = doc.createElement("mentors");
+					XMLUtils.append(doc, mentorsElement, mentors);
+					periodElement.appendChild(mentorsElement);
+				}
+				
+				periodsElement.appendChild(periodElement);
 			}
 			
-			periodsElement.appendChild(periodElement);
+			jobForm.appendChild(periodsElement);
+		}else{
+			log.warn("No periods found");
 		}
-		
-		jobForm.appendChild(periodsElement);
-		
 		Element driversLicenseElement = doc.createElement("DriversLicenseTypes");
 		List<DriversLicenseType> driverslicenseTypes = driversLicenseTypeDAO.getAll();
 		for (DriversLicenseType type : driverslicenseTypes) {

@@ -92,99 +92,116 @@
 					    <input type="file" class="form-control" id="cvInputFile" name="cvFile"/>
 					    <p class="help-block">Om du har ett cv kan du ladda upp det.</p>
 				 	</div>
-				 	<div class="form-group">
-				 		<div class="row">
-							<div class="col-md-5">
-						  		<div class="checkbox">
-								  <label for="noPreferedArea">
-								  	<xsl:choose>
-								  		<xsl:when test="MunicipalityJobApplication">
-								  			<xsl:choose>
-										  		<xsl:when test="MunicipalityJobApplication/preferedArea1 != '' and MunicipalityJobApplication/preferedArea2 != '' and MunicipalityJobApplication/preferedArea3 != ''">
-										  			<input type="checkbox" value="true" name="noPreferedArea" id="noPreferedArea">
-										    			Jag kan tänka mig jobba med vad som helst
-										    		</input>
-										  		</xsl:when>
-										  		<xsl:otherwise>
-										  			<input type="checkbox" value="true" name="noPreferedArea" id="noPreferedArea" checked="checked">
-										    			Jag kan tänka mig jobba med vad som helst
-										    		</input>
-										  		</xsl:otherwise>
-									  		</xsl:choose>
-								  		</xsl:when>
-								  		<xsl:otherwise>
-								  			<input type="checkbox" value="true" name="noPreferedArea" id="noPreferedArea">
-										    			Jag kan tänka mig jobba med vad som helst
-										    </input>
-								  		</xsl:otherwise>
-								  	</xsl:choose>
-								  </label>
+				 	
+				 	<div class="row">
+					 	<div class="col-md-8 col-md-push-4 form-horizontal text-left">
+					  		<h3>Beskrivning arbetsområden</h3>
+					  		<xsl:for-each select="Areas/Area">
+					  			<xsl:if test="canBeChosenInApplication ='true'">
+							  		<div class="form-group">
+								    	<label class="col-sm-2"><xsl:value-of select="name"/></label>
+									    <div class="col-sm-10">
+									      <p class=""><xsl:value-of select="description"/></p>
+									    </div>
+								  	</div>
+						  		</xsl:if>
+						  	</xsl:for-each>
+					  	</div>
+					 	<div class="col-md-4 col-md-pull-8">
+					 		<div class="row">
+								<div class="col-md-12">
+							  		<div class="checkbox">
+									  <label for="noPreferedArea">
+									  	<xsl:choose>
+									  		<xsl:when test="MunicipalityJobApplication">
+									  			<xsl:choose>
+											  		<xsl:when test="MunicipalityJobApplication/preferedArea1 != '' and MunicipalityJobApplication/preferedArea2 != '' and MunicipalityJobApplication/preferedArea3 != ''">
+											  			<input type="checkbox" value="true" name="noPreferedArea" id="noPreferedArea">
+											    			Jag kan tänka mig jobba med vad som helst
+											    		</input>
+											  		</xsl:when>
+											  		<xsl:otherwise>
+											  			<input type="checkbox" value="true" name="noPreferedArea" id="noPreferedArea" checked="checked">
+											    			Jag kan tänka mig jobba med vad som helst
+											    		</input>
+											  		</xsl:otherwise>
+										  		</xsl:choose>
+									  		</xsl:when>
+									  		<xsl:otherwise>
+									  			<input type="checkbox" value="true" name="noPreferedArea" id="noPreferedArea">
+											    			Jag kan tänka mig jobba med vad som helst
+											    </input>
+									  		</xsl:otherwise>
+									  	</xsl:choose>
+									  </label>
+									</div>
 								</div>
 							</div>
-						</div>
-				 	
-				  		<div class="row">
-				  			<div class="col-md-4 form-group">
-							    <label for="preferedArea1">Önskat arbetsområde - prio 1*</label>				    
-							    <select class="form-control" name="preferedArea1" id="preferedArea1" required="required">
-									<option value=""/>
-									<xsl:for-each select="Areas/Area">
-							  			<xsl:if test="canBeChosenInApplication = 'true'">
-							  				<xsl:choose>
-							  					<xsl:when test="selectedArea1 = 'true'">
-							  						<option value="{id}" selected="selected"><xsl:value-of select="name"/> </option>
-							  					</xsl:when>
-							  					<xsl:otherwise>
-											  		<option value="{id}"><xsl:value-of select="name"/> </option>									  			
-							  					</xsl:otherwise>
-							  				</xsl:choose>
-								  		</xsl:if>
-						  			</xsl:for-each>
-								</select>
-								<p class="help-block with-errors"></p>
+					 	
+					  		<div class="row">
+					  			<div class="col-md-12 form-group">
+								    <label for="preferedArea1">Önskat arbetsområde - prio 1*</label>				    
+								    <select class="form-control" name="preferedArea1" id="preferedArea1" required="required">
+										<option value=""/>
+										<xsl:for-each select="Areas/Area">
+								  			<xsl:if test="canBeChosenInApplication = 'true'">
+								  				<xsl:choose>
+								  					<xsl:when test="selectedArea1 = 'true'">
+								  						<option value="{id}" selected="selected"><xsl:value-of select="name"/> </option>
+								  					</xsl:when>
+								  					<xsl:otherwise>
+												  		<option value="{id}"><xsl:value-of select="name"/> </option>									  			
+								  					</xsl:otherwise>
+								  				</xsl:choose>
+									  		</xsl:if>
+							  			</xsl:for-each>
+									</select>
+									<p class="help-block with-errors"></p>
+								</div>
+								
+								<div class="col-md-12 form-group">
+								    <label for="preferedArea2">Önskat arbetsområde - prio 2*</label>				    
+								    <select class="form-control" name="preferedArea2" id="preferedArea2" required="required">
+								    	<option value=""/>
+									  	<xsl:for-each select="Areas/Area">
+								  			<xsl:if test="canBeChosenInApplication = 'true'">
+										  		<xsl:choose>
+								  					<xsl:when test="selectedArea2 = 'true'">
+								  						<option value="{id}" selected="selected"><xsl:value-of select="name"/> </option>
+								  					</xsl:when>
+								  					<xsl:otherwise>
+												  		<option value="{id}"><xsl:value-of select="name"/> </option>									  			
+								  					</xsl:otherwise>
+								  				</xsl:choose>									  			
+									  		</xsl:if>
+								  		</xsl:for-each>									  
+									</select>
+									<p class="help-block with-errors"></p>
+								</div>
+								<div class="col-md-12 form-group">
+								    <label for="preferedArea3">Önskat arbetsområde - prio 3*</label>				    
+								    <select class="form-control" name="preferedArea3" id="preferedArea3" required="required">
+								    	<option value=""/>
+									 	<xsl:for-each select="Areas/Area">
+								  			<xsl:if test="canBeChosenInApplication = 'true'">
+										  		<xsl:choose>
+								  					<xsl:when test="selectedArea3 = 'true'">
+								  						<option value="{id}" selected="selected"><xsl:value-of select="name"/> </option>
+								  					</xsl:when>
+								  					<xsl:otherwise>
+												  		<option value="{id}"><xsl:value-of select="name"/> </option>									  			
+								  					</xsl:otherwise>
+								  				</xsl:choose>									  			
+									  		</xsl:if>
+							  			</xsl:for-each>									  
+									</select>
+									<p class="help-block with-errors"></p>
+								</div>
 							</div>
-							
-							<div class="col-md-4 form-group">
-							    <label for="preferedArea2">Önskat arbetsområde - prio 2*</label>				    
-							    <select class="form-control" name="preferedArea2" id="preferedArea2" required="required">
-							    	<option value=""/>
-								  	<xsl:for-each select="Areas/Area">
-							  			<xsl:if test="canBeChosenInApplication = 'true'">
-									  		<xsl:choose>
-							  					<xsl:when test="selectedArea2 = 'true'">
-							  						<option value="{id}" selected="selected"><xsl:value-of select="name"/> </option>
-							  					</xsl:when>
-							  					<xsl:otherwise>
-											  		<option value="{id}"><xsl:value-of select="name"/> </option>									  			
-							  					</xsl:otherwise>
-							  				</xsl:choose>									  			
-								  		</xsl:if>
-							  		</xsl:for-each>									  
-								</select>
-								<p class="help-block with-errors"></p>
-							</div>
-							<div class="col-md-4 form-group">
-							    <label for="preferedArea3">Önskat arbetsområde - prio 3*</label>				    
-							    <select class="form-control" name="preferedArea3" id="preferedArea3" required="required">
-							    	<option value=""/>
-								 	<xsl:for-each select="Areas/Area">
-							  			<xsl:if test="canBeChosenInApplication = 'true'">
-									  		<xsl:choose>
-							  					<xsl:when test="selectedArea3 = 'true'">
-							  						<option value="{id}" selected="selected"><xsl:value-of select="name"/> </option>
-							  					</xsl:when>
-							  					<xsl:otherwise>
-											  		<option value="{id}"><xsl:value-of select="name"/> </option>									  			
-							  					</xsl:otherwise>
-							  				</xsl:choose>									  			
-								  		</xsl:if>
-						  			</xsl:for-each>									  
-								</select>
-								<p class="help-block with-errors"></p>
-							</div>
-						</div>
+					  	</div>
+					  	
+					  	
 				  	</div>
-				  	
 				  	<div>
 				  		<div class="row">
 				  			<div class="form-group col-md-4">

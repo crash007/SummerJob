@@ -116,7 +116,8 @@ public class AddMunicipalitySummerJobApplicationModule extends AddSummerJobAppli
 			XMLUtils.appendNewElement(doc, areaElement, "id", area.getId());
 			XMLUtils.appendNewElement(doc, areaElement, "name", area.getName());
 			XMLUtils.appendNewElement(doc, areaElement, "canBeChosenInApplication", area.isCanBeChosenInApplication());
-
+			XMLUtils.appendNewElement(doc, areaElement, "description", area.getDescription());
+			
 			if (app != null && app.getPreferedArea1() != null 
 					&& app.getPreferedArea1().getId().intValue() == area.getId().intValue()) {
 				XMLUtils.appendNewElement(doc, areaElement, "selectedArea1", true);
