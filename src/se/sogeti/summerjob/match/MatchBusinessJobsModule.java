@@ -78,10 +78,10 @@ public class MatchBusinessJobsModule extends AnnotatedRESTModule{
 				doc.getFirstChild().appendChild(matchBusinessJobElement);
 				
 				if(job.getApplications()!=null){
-					
-					job.setMatchedApplications(FormUtils.countApplications(job.getApplications(), ApplicationStatus.MATCHED));
+					Integer matchedApplications = FormUtils.countApplications(job.getApplications(), ApplicationStatus.MATCHED);
+					job.setMatchedApplications(matchedApplications);
 					//job.setAssignedApplications(FormUtils.countApplications(job.getApplications(), ApplicationStatus.ASSIGNED));
-					job.setOpenApplications(job.getNumberOfWorkersNeeded()-FormUtils.countApplications(job.getApplications(), ApplicationStatus.MATCHED));
+					job.setOpenApplications(job.getNumberOfWorkersNeeded() - matchedApplications);
 					//XMLUtils.append(doc, doc.createElement("AppointedApplications"), job.getApplications());
 					
 				}else{
@@ -275,5 +275,37 @@ public class MatchBusinessJobsModule extends AnnotatedRESTModule{
 		
 	}
 	
+	
+	@RESTMethod(alias="save/applicationranking.json", method="post")
+	public void saveApplicationRanking(HttpServletRequest req, HttpServletResponse res, User user, URIParser uriParser) throws IOException, SQLException{
+		PrintWriter writer = res.getWriter();
+		JsonObject result = new JsonObject();
+		JsonResponse.initJsonResponse(res, writer, null);
+		
+		Integer appId = NumberUtils.toInt(req.getParameter("appId"));
+		Integer ranking = NumberUtils.toInt(req.getParameter("ranking"));
+		
+		if (appId != null) {
+			BusinessSectorJobApplication app = businessJobApplicationDAO.getByIdWithJob(appId);
+			if (ranking != null) {
+				if (ranking.intValue() > 10) { ranking = 10; }
+				else if (ranking.intValue() < 1) { ranking = 1; }
+				app.setRanking(ranking);
+				
+				try {
+					businessJobApplicationDAO.save(app);
+				} catch (SQLException e) {
+					log.error(e);
+					result.putField("status", "fail");
+					result.putField("message", "Could not update the ranking");
+					JsonResponse.sendJsonResponse(result.toJson(), null, writer);
+					return;
+				}
+				result.putField("status", "success");
+				result.putField("message", "Updated the ranking");
+				JsonResponse.sendJsonResponse(result.toJson(), null, writer);
+			}
+		}
+	}
 }
 

@@ -120,7 +120,6 @@
 				<div class="col-xs-4 col-md-2 bold">Körkort</div>
 				<div class="col-md-4">
 					<xsl:value-of select="DriversLicenseType/name"/>
-		   			
 	   			</div>
 				
 				<div class="col-xs-4 col-md-2 bold">Skola</div>
