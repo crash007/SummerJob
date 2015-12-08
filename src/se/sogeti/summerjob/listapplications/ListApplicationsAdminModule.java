@@ -12,6 +12,7 @@ import javax.sql.DataSource;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import se.sogeti.jobapplications.beans.JobApplication;
 import se.sogeti.jobapplications.beans.business.BusinessSectorJobApplication;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityJobApplication;
 import se.sogeti.jobapplications.daos.BusinessSectorJobApplicationDAO;
@@ -103,32 +104,35 @@ public class ListApplicationsAdminModule extends AnnotatedForegroundModule {
 	@WebPublic
 	public ForegroundModuleResponse getBusinessApplicationCv(HttpServletRequest req,
 			HttpServletResponse res, User user, URIParser uriParser)
-			throws Throwable {
-		
+					throws Throwable {
+
 		Integer appId = NumberUtils.toInt(req.getParameter("id"));
 		if(appId!=null){			
 			BusinessSectorJobApplication application = businessApplicationDAO.getById(appId);
 			if(application!=null){
-				FileInputStream in = null;
-				OutputStream out = null;
-				
-				File cv = new File(application.getCvFilename());
-				in = new FileInputStream(cv);
+				if(application.getCvFilename()!=null){
+					FileInputStream in = null;
+					OutputStream out = null;
 
-				HTTPUtils.setContentLength(cv.length(), res);
+					File cv = new File(application.getCvFilename());
+					in = new FileInputStream(cv);
 
-				res.setContentType(MimeUtils.getMimeType(cv));
+					HTTPUtils.setContentLength(cv.length(), res);
 
-				res.setHeader("Content-Disposition", "inline; filename=\"" + FileUtils.toValidHttpFilename("cv") + "\"");
+					res.setContentType(MimeUtils.getMimeType(cv));
 
-				out = res.getOutputStream();
+					res.setHeader("Content-Disposition", "inline; filename=\"" + FileUtils.toValidHttpFilename("cv") + "\"");
 
-				StreamUtils.transfer(in, out);
-				 
+					out = res.getOutputStream();
+
+					StreamUtils.transfer(in, out);
+				}else{
+					log.warn("No cv in business application, id="+appId);
+				}
 			}else{
 				log.warn("No application with id="+appId);
 			}
-			 
+
 		}else{
 			log.warn("No app id found");
 		}
@@ -142,13 +146,9 @@ public class ListApplicationsAdminModule extends AnnotatedForegroundModule {
 		if (applications != null) {
 			
 			for (MunicipalityJobApplication app : applications) {
-				Element businessElement = doc.createElement("MunicipalityJobApplication");
-				XMLUtils.appendNewElement(doc, businessElement, "ranking", app.getRanking());
-				XMLUtils.appendNewElement(doc, businessElement, "socialSecurityNumber", app.getSocialSecurityNumber());
-				XMLUtils.appendNewElement(doc, businessElement, "name", app.getFirstname() + " " + app.getLastname());
-				XMLUtils.appendNewElement(doc, businessElement, "id", app.getId());
-				XMLUtils.appendNewElement(doc, businessElement, "url", manageMunicipalityUrl + "?appId=" + app.getId());
-				applicationElementList.appendChild(businessElement);
+				Element appElement = doc.createElement("MunicipalityJobApplication");
+				appendCommonElements(doc, app, appElement);
+				applicationElementList.appendChild(appElement);
 			}
 		}
 	}
@@ -158,21 +158,31 @@ public class ListApplicationsAdminModule extends AnnotatedForegroundModule {
 		if (applications != null) {
 			
 			for (BusinessSectorJobApplication app : applications) {
-				Element businessElement = doc.createElement("BusinessSectorJobApplication");
-				XMLUtils.appendNewElement(doc, businessElement, "ranking", app.getRanking());
-				XMLUtils.appendNewElement(doc, businessElement, "socialSecurityNumber", app.getSocialSecurityNumber());
-				XMLUtils.appendNewElement(doc, businessElement, "name", app.getFirstname() + " " + app.getLastname());
-				XMLUtils.appendNewElement(doc, businessElement, "id", app.getId());
+				Element appElement = doc.createElement("BusinessSectorJobApplication");
+				
+				appendCommonElements(doc, app, appElement);
+				
 				if(app.getJob()!=null){
-					XMLUtils.appendNewElement(doc, businessElement, "WorkTitle", app.getJob().getWorkTitle());
-					XMLUtils.appendNewElement(doc, businessElement, "Company", app.getJob().getCompany());
+					XMLUtils.appendNewElement(doc, appElement, "WorkTitle", app.getJob().getWorkTitle());
+					XMLUtils.appendNewElement(doc, appElement, "Company", app.getJob().getCompany());
 				}
 				
-				XMLUtils.appendNewElement(doc, businessElement, "url", manageBusinessUrl + "?appId=" + app.getId());
-				
-				applicationElementList.appendChild(businessElement);
+				applicationElementList.appendChild(appElement);
 			}
 		}
 	}
 	
+	protected <T extends JobApplication> void appendCommonElements(Document doc, T app, Element appElement) {
+		XMLUtils.appendNewElement(doc, appElement, "ranking", app.getRanking());
+		XMLUtils.appendNewElement(doc, appElement, "socialSecurityNumber", app.getSocialSecurityNumber());
+		XMLUtils.appendNewElement(doc, appElement, "name", app.getFirstname() + " " + app.getLastname());
+		XMLUtils.appendNewElement(doc, appElement, "id", app.getId());
+		XMLUtils.appendNewElement(doc, appElement, "url", manageMunicipalityUrl + "?appId=" + app.getId());
+		
+		if(app.getCvFilename()!=null){
+			XMLUtils.appendNewElement(doc, appElement, "hasCv", "true");
+		}else{
+			XMLUtils.appendNewElement(doc, appElement, "hasCv", "false");
+		}
+	}
 }

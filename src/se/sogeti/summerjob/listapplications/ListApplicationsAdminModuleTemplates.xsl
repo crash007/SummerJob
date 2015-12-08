@@ -169,7 +169,12 @@
 					</div>
 					<div class="row">
 						<div class="col-xs-2 bold">Cv</div>
-						<div class="col-xs-6"><a href="{/Document/requestinfo/url}/getBusinessApplicationCv?id={id}">Ladda ner</a></div>
+						 <xsl:if test="hasCv='true'">
+							<div class="col-xs-6"><a href="{/Document/requestinfo/url}/getBusinessApplicationCv?id={id}">Ladda ner</a></div>
+						</xsl:if>
+						 <xsl:if test="hasCv='false'">
+						 	<div class="col-xs-6">Cv saknas</div>
+						 </xsl:if>
 					</div>
 					<div class="row">
 						<div class="col-xs-5">
