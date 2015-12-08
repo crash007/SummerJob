@@ -34,10 +34,6 @@ public abstract class JobApplication implements Elementable{
 		this.controlled=false;
 		this.applicationType = ApplicationType.REGULAR;
 	}
-
-//	@DAOManaged
-//	@XMLElement
-//	private Boolean hasDriversLicense;
 		
 	@DAOManaged(columnName="driversLicenseTypeId")
 	@ManyToOne(remoteKeyField="id", autoGet = true, autoAdd = true, autoUpdate = true)
@@ -156,14 +152,6 @@ public abstract class JobApplication implements Elementable{
 	public void setRanking(Integer ranking) {
 		this.ranking = ranking;
 	}
-
-//	public Boolean isHasDriversLicense() {
-//		return hasDriversLicense;
-//	}
-//
-//	public void setHasDriversLicense(Boolean hasDriversLicense) {
-//		this.hasDriversLicense = hasDriversLicense;
-//	}
 
 	public DriversLicenseType getDriversLicenseType() {
 		return driversLicenseType;

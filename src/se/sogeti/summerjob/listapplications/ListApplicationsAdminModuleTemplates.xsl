@@ -161,11 +161,15 @@
 				<div style="margin: 8px; padding: 8px" class="well">
 					<div class="row">
 						<div class="col-xs-2 bold">Företag</div>
-						<div class="col-xs-6"><xsl:value-of select="BusinessSectorJob/company"></xsl:value-of></div>
+						<div class="col-xs-6"><xsl:value-of select="Company"></xsl:value-of></div>
 					</div>
 					<div class="row">
 						<div class="col-xs-2 bold">Yrkestitel</div>
-						<div class="col-xs-6"><xsl:value-of select="BusinessSectorJob/workTitle"></xsl:value-of></div>
+						<div class="col-xs-6"><xsl:value-of select="WorkTitle"></xsl:value-of></div>
+					</div>
+					<div class="row">
+						<div class="col-xs-2 bold">Cv</div>
+						<div class="col-xs-6"><a href="{/Document/requestinfo/url}/getBusinessApplicationCv?id={id}">Ladda ner</a></div>
 					</div>
 					<div class="row">
 						<div class="col-xs-5">
