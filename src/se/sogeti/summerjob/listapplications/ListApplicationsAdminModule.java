@@ -1,8 +1,5 @@
 package se.sogeti.summerjob.listapplications;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.OutputStream;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,22 +12,18 @@ import org.w3c.dom.Element;
 import se.sogeti.jobapplications.beans.JobApplication;
 import se.sogeti.jobapplications.beans.business.BusinessSectorJobApplication;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityJobApplication;
+import se.sogeti.jobapplications.cv.CvServiceHander;
 import se.sogeti.jobapplications.daos.BusinessSectorJobApplicationDAO;
 import se.sogeti.jobapplications.daos.JobApplicationDAO;
+import se.unlogic.hierarchy.core.annotations.InstanceManagerDependency;
 import se.unlogic.hierarchy.core.annotations.ModuleSetting;
 import se.unlogic.hierarchy.core.annotations.TextFieldSettingDescriptor;
-import se.unlogic.hierarchy.core.annotations.WebPublic;
 import se.unlogic.hierarchy.core.beans.SimpleForegroundModuleResponse;
 import se.unlogic.hierarchy.core.beans.User;
 import se.unlogic.hierarchy.core.interfaces.ForegroundModuleResponse;
 import se.unlogic.hierarchy.core.utils.HierarchyAnnotatedDAOFactory;
 import se.unlogic.hierarchy.foregroundmodules.AnnotatedForegroundModule;
-import se.unlogic.standardutils.io.FileUtils;
-import se.unlogic.standardutils.mime.MimeUtils;
-import se.unlogic.standardutils.numbers.NumberUtils;
-import se.unlogic.standardutils.streams.StreamUtils;
 import se.unlogic.standardutils.xml.XMLUtils;
-import se.unlogic.webutils.http.HTTPUtils;
 import se.unlogic.webutils.http.RequestUtils;
 import se.unlogic.webutils.http.URIParser;
 
@@ -47,6 +40,9 @@ public class ListApplicationsAdminModule extends AnnotatedForegroundModule {
 	@ModuleSetting
 	@TextFieldSettingDescriptor(description="Relativ url till att hantera näringslivsansökningar",name="ManageBusinessApplication")
 	private String manageBusinessUrl="manage-business-app";
+	
+	@InstanceManagerDependency(required = true)
+	private CvServiceHander cvServiceHandler;
 	
 	@Override
 	protected void createDAOs(DataSource dataSource) throws Exception {
@@ -69,6 +65,8 @@ public class ListApplicationsAdminModule extends AnnotatedForegroundModule {
 		element.appendChild(this.sectionInterface.getSectionDescriptor().toXML(doc));
 		element.appendChild(this.moduleDescriptor.toXML(doc));
 		doc.appendChild(element);
+		
+		XMLUtils.appendNewElement(doc, element, "CvBusinessApplicationUrl", cvServiceHandler.getBusinessApplicationCvUrl());
 		
 		Element approvedMunicipalityElement = doc.createElement("ApprovedMunicipality");
 		Element disapprovedMunicipalityElement = doc.createElement("DisapprovedMunicipality");
@@ -101,45 +99,7 @@ public class ListApplicationsAdminModule extends AnnotatedForegroundModule {
 		return new SimpleForegroundModuleResponse(doc);
 	}
 	
-	@WebPublic
-	public ForegroundModuleResponse getBusinessApplicationCv(HttpServletRequest req,
-			HttpServletResponse res, User user, URIParser uriParser)
-					throws Throwable {
-
-		Integer appId = NumberUtils.toInt(req.getParameter("id"));
-		if(appId!=null){			
-			BusinessSectorJobApplication application = businessApplicationDAO.getById(appId);
-			if(application!=null){
-				if(application.getCvFilename()!=null){
-					FileInputStream in = null;
-					OutputStream out = null;
-
-					File cv = new File(application.getCvFilename());
-					in = new FileInputStream(cv);
-
-					HTTPUtils.setContentLength(cv.length(), res);
-
-					res.setContentType(MimeUtils.getMimeType(cv));
-
-					res.setHeader("Content-Disposition", "inline; filename=\"" + FileUtils.toValidHttpFilename("cv") + "\"");
-
-					out = res.getOutputStream();
-
-					StreamUtils.transfer(in, out);
-				}else{
-					log.warn("No cv in business application, id="+appId);
-				}
-			}else{
-				log.warn("No application with id="+appId);
-			}
-
-		}else{
-			log.warn("No app id found");
-		}
-		
-		return null;
-		
-	}
+	
 
 	protected void createMunicipalityApplicationElements(Document doc, Element applicationElementList,
 			List<MunicipalityJobApplication> applications) {

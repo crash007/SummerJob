@@ -77,6 +77,19 @@
 				<div class="col-md-4">
 					<xsl:value-of select="schoolType"/>
 	   			</div>
+	   			
+	   			<div class="col-xs-4 col-md-2 bold">Cv</div>
+				<div class="col-md-4 cv">
+				<xsl:choose>
+				    <xsl:when test="cvFilename !=''">				       
+				       <a href="{/Document/requestinfo/contextpath}/{/Document/CvBusinessApplicationUrl}?id={id}">Ladda ner</a>
+				    </xsl:when>
+				    <xsl:otherwise>
+				        CV saknas
+				    </xsl:otherwise>
+				</xsl:choose>
+				
+				</div>
 	   		</div>
 	   		
 			<div class="row collapse">

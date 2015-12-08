@@ -1,7 +1,6 @@
 package se.sogeti.summerjob.match;
 
 
-import java.awt.Desktop;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -25,6 +24,7 @@ import se.sogeti.jobapplications.beans.CallStatus;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityJob;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityJobApplication;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityMentor;
+import se.sogeti.jobapplications.cv.CvServiceHander;
 import se.sogeti.jobapplications.daos.ContactDetailsDAO;
 import se.sogeti.jobapplications.daos.JobDAO;
 import se.sogeti.jobapplications.daos.MuncipialityJobApplicationDAO;
@@ -40,6 +40,7 @@ import se.sogeti.summerjob.DocxGenerator;
 import se.sogeti.summerjob.FormUtils;
 import se.sogeti.summerjob.JsonResponse;
 import se.sogeti.summerjob.PDFGenerator;
+import se.unlogic.hierarchy.core.annotations.InstanceManagerDependency;
 import se.unlogic.hierarchy.core.beans.SimpleForegroundModuleResponse;
 import se.unlogic.hierarchy.core.beans.User;
 import se.unlogic.hierarchy.core.interfaces.ForegroundModuleResponse;
@@ -63,6 +64,9 @@ public class MatchMunicipalityJobsModule extends AnnotatedRESTModule{
 	private AccountingEntryDAO accountingDAO;
 	private ContactPersonDAO contactDAO;
 	private ContactDetailsDAO<MunicipalityMentor> mentorDAO;
+	
+	@InstanceManagerDependency(required=true)
+	private CvServiceHander cvServiceHandler;
 	
 	@Override
 	protected void createDAOs(DataSource dataSource) throws Exception {
