@@ -343,9 +343,9 @@
 							    <p class="help-block with-errors">Skriv lite information om vem du är, vad du är intresserad av och vad du är duktig på</p>
 						  	</div>
 							<div class="form-group">
-							    <label for="cvInputFile">Ladda upp ditt cv</label>
-							    <input type="file" id="cvInputFile" name="cvFile"/>
-							    <p class="help-block">Om du har ett cv kan du ladda upp det.</p>
+							    <label for="cvInputFile">Ladda upp ditt cv*</label>
+							    <input type="file" class="form-control" id="cvInputFile" name="cvFile" required="required"/>
+							    <p class="help-block with-errors"></p>
 							</div>
 							
 							<div class="form-group">						

@@ -148,6 +148,7 @@ public class ListApplicationsAdminModule extends AnnotatedForegroundModule {
 				XMLUtils.appendNewElement(doc, businessElement, "name", app.getFirstname() + " " + app.getLastname());
 				XMLUtils.appendNewElement(doc, businessElement, "id", app.getId());
 				XMLUtils.appendNewElement(doc, businessElement, "url", manageMunicipalityUrl + "?appId=" + app.getId());
+				XMLUtils.appendNewElement(doc, businessElement, "applicationType", app.getApplicationType());
 				applicationElementList.appendChild(businessElement);
 			}
 		}

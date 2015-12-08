@@ -89,7 +89,7 @@
 				  	</div>
 			  		<div class="form-group">
 					    <label for="cvInputFile">Ladda upp ditt cv</label>
-					    <input type="file" id="cvInputFile" name="cvFile"/>
+					    <input type="file" class="form-control" id="cvInputFile" name="cvFile"/>
 					    <p class="help-block">Om du har ett cv kan du ladda upp det.</p>
 				 	</div>
 				 	<div class="form-group">

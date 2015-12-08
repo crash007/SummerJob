@@ -139,10 +139,10 @@
 				<div class="col-xs-6"><xsl:value-of select="name" /></div>
 				<div class="col-xs-1 float-rgt">
 					<xsl:if test="applicationType = 'REGULAR_ADMIN'">
-						<span class="bold">*</span>
+						<span style="font-size: medium" class="bold">*</span>
 					</xsl:if>
 					<xsl:if test="applicationType = 'PRIO'">
-						<span class="bold prio">*</span>
+						<span style="font-size: medium" class="bold prio">*</span>
 					</xsl:if>
 				</div>
 			</div>
