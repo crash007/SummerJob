@@ -1,12 +1,10 @@
 package se.sogeti.jobapplications.daos;
 
 import java.sql.SQLException;
-import java.util.List;
 
 import javax.sql.DataSource;
 
 import se.sogeti.jobapplications.beans.GeoArea;
-import se.sogeti.jobapplications.beans.municipality.MunicipalityJobArea;
 import se.unlogic.standardutils.dao.AnnotatedDAO;
 import se.unlogic.standardutils.dao.AnnotatedDAOFactory;
 import se.unlogic.standardutils.dao.HighLevelQuery;

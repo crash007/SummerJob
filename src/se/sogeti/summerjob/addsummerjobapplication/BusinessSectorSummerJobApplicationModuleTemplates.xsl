@@ -16,6 +16,7 @@
 	
 	
 	<xsl:template match="JobInfo/BusinessSectorJob">
+	<h1 class="createJobHeadline">Ansök till sommarjobb inom näringslivet</h1>
 	<div class="well">
 		  	<div class="panel panel-default">
 					  	<div class="panel-heading">
@@ -278,8 +279,8 @@
 				    	 	<div class="row">
 						    	<div class="col-md-3">
 							    	<div class="form-group">
-									    <label for="street">Personnummer*</label>				    
-									    <input type="text" value="{BusinessSectorJobApplication/socialSecurityNumber}" data-error="ÅÅÅÅDDMMxxxx" data-minlength="12" maxlength="12" class="form-control" id="street" name="socialSecurityNumber" placeholder="" required="required"/>
+									    <label>Personnummer*</label>				    
+									    <input type="text" value="{BusinessSectorJobApplication/socialSecurityNumber}" data-error="ÅÅÅÅDDMMxxxx" data-minlength="12" maxlength="12" class="numberValidation form-control" id="socialSecurityNumber" name="socialSecurityNumber" placeholder="" required="required"/>
 									    <p class="help-block with-errors">ÅÅÅÅDDMMxxxx</p>				    
 								  	</div>
 								</div>
@@ -342,9 +343,9 @@
 							    <p class="help-block with-errors">Skriv lite information om vem du är, vad du är intresserad av och vad du är duktig på</p>
 						  	</div>
 							<div class="form-group">
-							    <label for="cvInputFile">Ladda upp ditt cv</label>
-							    <input type="file" id="cvInputFile" name="cvFile"/>
-							    <p class="help-block">Om du har ett cv kan du ladda upp det.</p>
+							    <label for="cvInputFile">Ladda upp ditt cv*</label>
+							    <input type="file" class="form-control" id="cvInputFile" name="cvFile" required="required"/>
+							    <p class="help-block with-errors"></p>
 							</div>
 							
 							<div class="form-group">						
@@ -385,31 +386,36 @@
 					
 					<div class="panel panel-default">
 				  		<div class="panel-heading">
-				  			<h3 class="panel-title">Skicka in ansökan</h3>
+				  			<h3 class="panel-title">Förhandsgranska ansökan</h3>
 				  		</div>  
 				  		<div class="panel-body">
-							<div id="save-failed" class="alert alert-danger" role="alert">
-								<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-								<span class="sr-only">Error:</span>
-								<span class="message"></span>
-							</div>
-							<div id="save-succeeded" class="alert alert-success" role="alert">
-								<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-								<span class="sr-only">Success:</span>
-								<span class="message"></span>
-							</div>
-							<xsl:choose>
-								<xsl:when test="BusinessSectorJobApplication">
-									<button style="margin-top: 4px;" id="submit-business-job-application" type="submit" class="float-rgt mgn-lft8px btn btn-success questions-submit">
-				  						Spara
-				  					</button>
-								</xsl:when>
-								<xsl:otherwise>
-									<button style="margin-top: 4px;" id="submit-business-job-application" type="submit" class="float-rgt mgn-lft8px btn btn-success questions-submit">
-				  						Skicka
-				  					</button>
-								</xsl:otherwise>
-							</xsl:choose>
+<!-- 							<div id="save-failed" class="alert alert-danger" role="alert"> -->
+<!-- 								<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> -->
+<!-- 								<span class="sr-only">Error:</span> -->
+<!-- 								<span class="message"></span> -->
+<!-- 							</div> -->
+<!-- 							<div id="save-succeeded" class="alert alert-success" role="alert"> -->
+<!-- 								<span class="glyphicon glyphicon-ok" aria-hidden="true"></span> -->
+<!-- 								<span class="sr-only">Success:</span> -->
+<!-- 								<span class="message"></span> -->
+<!-- 							</div> -->
+							
+							<button style="margin-top: 4px;" id="preview-business-job-application" type="submit" class="float-rgt mgn-lft8px btn btn-success questions-submit">
+				  				Förhandsgranska
+				  			</button>
+							
+<!-- 							<xsl:choose> -->
+<!-- 								<xsl:when test="BusinessSectorJobApplication"> -->
+<!-- 									<button style="margin-top: 4px;" id="submit-business-job-application" type="submit" class="float-rgt mgn-lft8px btn btn-success questions-submit"> -->
+<!-- 				  						Spara -->
+<!-- 				  					</button> -->
+<!-- 								</xsl:when> -->
+<!-- 								<xsl:otherwise> -->
+<!-- 									<button style="margin-top: 4px;" id="submit-business-job-application" type="submit" class="float-rgt mgn-lft8px btn btn-success questions-submit"> -->
+<!-- 				  						Skicka -->
+<!-- 				  					</button> -->
+<!-- 								</xsl:otherwise> -->
+<!-- 							</xsl:choose> -->
 							<xsl:if test="BusinessSectorJobApplication">
 			  					<a href="{manageAppURL}?appId={BusinessSectorJobApplication/id}" style="margin-top: 4px;" class="float-rgt btn btn-primary">Tillbaka</a>
 			  				</xsl:if>
@@ -418,7 +424,122 @@
 				  	</div> 	
 				</div>
 			</form>
-	    	
+			
+			<div id="preview-template">
+				<h1>Förhandsgranska ansökan</h1>
+				<div class="well">
+				  	<div class="panel panel-default">
+					  	<div class="panel-heading">
+					  		<h3 class="panel-title">Personuppgifter</h3>
+					  	</div>
+					  	<div class="panel-body">
+					  		<div class="row">
+					  			<div class="col-md-3">
+					  				<label>Personnummer</label>
+					  				<p id="preview-socialsecuritynumber"></p>
+					  			</div>
+					  		</div>
+						  	<div class="mgn-top8px row">
+				  				<div class="col-md-3">
+								    <label>Förnamn</label>				    
+								   	<p id="preview-firstname"></p>
+						    	</div>
+						    	<div class="col-md-3">
+								    <label>Efternamn</label>				    
+								    <p id="preview-lastname"></p>
+						    	</div>
+				  				<div class="col-md-3">
+								    <label>Telefonnummer</label>				    
+								    <p id="preview-phonenumber"></p>
+						    	</div>
+				  				<div class="col-md-3">
+								    <label>E-post</label>				    
+								    <p id="preview-email"></p>
+						    	</div>
+			    			</div>
+			    			<div class="mgn-top8px row">
+				  				<div class="col-md-3">
+								    <label>Gatuadress</label>				    
+								    <p id="preview-streetaddress"></p>
+						    	</div>
+						    	<div class="col-md-3">
+								    <label>Postnummer</label>				    
+								    <p id="preview-zipcode"></p>
+						    	</div>
+				  				<div class="col-md-3">
+								    <label>Postort</label>				    
+								    <p id="preview-city"></p>
+						    	</div>
+			    			</div>
+					  	</div>
+					</div>
+					
+					<div class="panel panel-default">
+					 	<div class="panel-heading">
+					   		<h3 class="panel-title">Ansökan</h3>
+					 	</div>
+					  <div class="panel-body">
+					  	<div class="row">
+					  		<div class="col-md-12">
+								<label>Personligt brev</label>				    
+						  		<p id="preview-personalletter"></p>
+						  	</div>
+					  	</div>
+					  	<div class="row">
+					  		<div class="col-md-4">
+								<label>CV</label>				    
+						  		<p id="preview-cv"></p>
+						  	</div>
+					  	</div>
+					  	<div class="mgn-top8px row">
+					  		<div class="col-md-5">
+					  			<label>Körkort</label>
+					  			<input type="hidden" id="hasDriversLicenseText" value="Ja, jag har körkort av typ " />
+								<input type="hidden" id="noDriversLicenseText" value="Nej, jag har inget körkort" />
+								<p id="preview-driverslicense"></p>
+					  		</div>						
+						</div>
+			  		</div>
+			  	</div>
+			  	
+		  		<div class="panel panel-default">
+			  		<div class="panel-heading">
+			  			<h3 class="panel-title">Skicka in ansökan</h3>
+			  		</div>  
+			  		<div class="panel-body">
+						<div id="save-failed" class="alert alert-danger" role="alert">
+							<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+							<span class="sr-only">Error:</span>
+							<span class="message"></span>
+						</div>
+						<div id="save-succeeded" class="alert alert-success" role="alert">
+							<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+							<span class="sr-only">Success:</span>
+							<span class="message"></span>
+						</div>
+						<xsl:choose>
+							<xsl:when test="BusinessSectorJobApplication">
+								<button style="margin-top: 4px;" id="submit-business-job-application" type="submit" class="float-rgt mgn-lft8px btn btn-success questions-submit">
+			  						Spara
+			  					</button>
+							</xsl:when>
+							<xsl:otherwise>
+								<button style="margin-top: 4px;" id="submit-business-job-application" type="submit" class="float-rgt mgn-lft8px btn btn-success questions-submit">
+			  						Skicka
+			  					</button>
+							</xsl:otherwise>
+						</xsl:choose>
+						
+						<button style="margin-top: 4px;" id="cancel-preview-business-sector-application" class="mgn-lft8px btn btn-warning questions-submit">Redigera</button>
+<!-- 						<xsl:if test="BusinessSectorJobApplication"> -->
+<!-- 		  					<a href="{manageAppURL}?appId={BusinessSectorJobApplication/id}" style="margin-top: 4px;" class="float-rgt btn btn-primary">Tillbaka</a> -->
+<!-- 		  				</xsl:if> -->
+						<span class="glyphicon glyphicon-ok collapse" aria-hidden="true"></span><span class="glyphicon glyphicon-remove collapse" aria-hidden="true"></span>
+					</div>
+			  	</div> 	
+			  	
+			</div>
+		</div>
+			
 	</xsl:template>
-	
 </xsl:stylesheet>					

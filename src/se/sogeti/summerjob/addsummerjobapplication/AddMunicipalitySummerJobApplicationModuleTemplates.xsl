@@ -5,7 +5,6 @@
 
 
 	<xsl:template match="Document">
-		 <h1>Ansök om sommarjobb hos Sundsvalls kommun</h1>
 		<script>
 			var url = '<xsl:value-of select="requestinfo/uri"/>';
 			var isAdmin = '<xsl:value-of select="MunicipalityJobApplicationForm/IsAdmin" />';
@@ -15,6 +14,7 @@
 	</xsl:template>
 	
 	<xsl:template match="MunicipalityJobApplicationForm">
+		<h1 class="createJobHeadline">Ansök om sommarjobb hos Sundsvalls kommun</h1>
 		<form method="POST" role="form" id="municipality-job-application-form" enctype="multipart/form-data" data-toggle="validator">
 			<input type="hidden" name="appId" value="{MunicipalityJobApplication/id}" />
 			<div class="well">
@@ -27,8 +27,8 @@
 				  	<div class="row">
 				    	<div class="col-md-3">
 					    	<div class="form-group">
-							    <label for="street">Personnummer*</label>				    
-							    <input type="text" value="{MunicipalityJobApplication/socialSecurityNumber}" data-error="ÅÅÅÅMMDDxxxx" data-minlength="12" maxlength="12" class="form-control numberValidation" id="street" name="socialSecurityNumber" placeholder="" required="required"/>
+							    <label>Personnummer*</label>				    
+							    <input type="text" value="{MunicipalityJobApplication/socialSecurityNumber}" data-error="ÅÅÅÅMMDDxxxx" data-minlength="12" maxlength="12" class="form-control numberValidation" id="socialSecurityNumber" name="socialSecurityNumber" placeholder="" required="required"/>
 							    <p class="help-block with-errors">ÅÅÅÅMMDDxxxx</p>				    
 						  	</div>
 						</div>
@@ -89,7 +89,7 @@
 				  	</div>
 			  		<div class="form-group">
 					    <label for="cvInputFile">Ladda upp ditt cv</label>
-					    <input type="file" id="cvInputFile" name="cvFile"/>
+					    <input type="file" class="form-control" id="cvInputFile" name="cvFile"/>
 					    <p class="help-block">Om du har ett cv kan du ladda upp det.</p>
 				 	</div>
 				 	<div class="form-group">
@@ -98,17 +98,25 @@
 						  		<div class="checkbox">
 								  <label for="noPreferedArea">
 								  	<xsl:choose>
-								  		<xsl:when test="MunicipalityJobApplication/preferedArea1 != '' and MunicipalityJobApplication/preferedArea2 != '' and MunicipalityJobApplication/preferedArea3 != ''">
-								  			<input type="checkbox" value="true" name="noPreferedArea" id="noPreferedArea">
-								    			Jag kan tänka mig jobba med vad som helst
-								    		</input>
+								  		<xsl:when test="MunicipalityJobApplication">
+								  			<xsl:choose>
+										  		<xsl:when test="MunicipalityJobApplication/preferedArea1 != '' and MunicipalityJobApplication/preferedArea2 != '' and MunicipalityJobApplication/preferedArea3 != ''">
+										  			<input type="checkbox" value="true" name="noPreferedArea" id="noPreferedArea">
+										    			Jag kan tänka mig jobba med vad som helst
+										    		</input>
+										  		</xsl:when>
+										  		<xsl:otherwise>
+										  			<input type="checkbox" value="true" name="noPreferedArea" id="noPreferedArea" checked="checked">
+										    			Jag kan tänka mig jobba med vad som helst
+										    		</input>
+										  		</xsl:otherwise>
+									  		</xsl:choose>
 								  		</xsl:when>
 								  		<xsl:otherwise>
-								  			<input type="checkbox" value="true" name="noPreferedArea" id="noPreferedArea" checked="checked">
-								    			Jag kan tänka mig jobba med vad som helst
-								    		</input>
+								  			<input type="checkbox" value="true" name="noPreferedArea" id="noPreferedArea">
+										    			Jag kan tänka mig jobba med vad som helst
+										    </input>
 								  		</xsl:otherwise>
-								  	
 								  	</xsl:choose>
 								  </label>
 								</div>
@@ -312,18 +320,13 @@
 											<label class="radio-inline"><input type="radio" required="required" name="applicationType" value="PRIO" />Prioriterad</label>
 										</xsl:otherwise>
 									</xsl:choose>
-<!-- 									<label class="radio-inline"><input type="radio" required="required" name="applicationType" value="REGULAR_ADMIN" />Vanlig</label> -->
-<!-- 									<label class="radio-inline"><input type="radio" required="required" name="applicationType" value="PRIO" />Prioriterad</label> -->
 									<p class="help-block with-errors"></p>
 								</div>
 							</div>
 						</xsl:if>
 						
-			  			<button style="margin-top: 4px;" id="submit-municipality-job-application" type="submit" class="float-rgt mgn-lft8px btn btn-success questions-submit">
-			  				<xsl:choose>
-			  					<xsl:when test="MunicipalityJobApplication">Spara</xsl:when>
-			  					<xsl:otherwise>Skicka</xsl:otherwise>
-			  				</xsl:choose>
+			  			<button style="margin-top: 4px;" id="preview-municipality-job-application" type="submit" class="float-rgt mgn-lft8px btn btn-success questions-submit">
+			  				Förhandsgranska
 			  			</button>
 			  			<xsl:if test="MunicipalityJobApplication">
 			  					<a href="{manageAppURL}?appId={MunicipalityJobApplication/id}" style="margin-top: 4px;" class="float-rgt btn btn-primary">Tillbaka</a>
@@ -334,6 +337,151 @@
 			</div>
 		</form>
 	    	
+	    
+	    <div id="preview-template">
+				<h1>Förhandsgranska ansökan</h1>
+				<div class="well">
+				  	<div class="panel panel-default">
+					  	<div class="panel-heading">
+					  		<h3 class="panel-title">Personuppgifter</h3>
+					  	</div>
+					  	<div class="panel-body">
+					  		<div class="row">
+					  			<div class="col-md-3">
+					  				<label>Personnummer</label>
+					  				<p id="preview-socialsecuritynumber"></p>
+					  			</div>
+					  		</div>
+						  	<div class="mgn-top8px row">
+				  				<div class="col-md-3">
+								    <label>Förnamn</label>				    
+								   	<p id="preview-firstname"></p>
+						    	</div>
+						    	<div class="col-md-3">
+								    <label>Efternamn</label>				    
+								    <p id="preview-lastname"></p>
+						    	</div>
+				  				<div class="col-md-3">
+								    <label>Telefonnummer</label>				    
+								    <p id="preview-phonenumber"></p>
+						    	</div>
+				  				<div class="col-md-3">
+								    <label>E-post</label>				    
+								    <p id="preview-email"></p>
+						    	</div>
+			    			</div>
+			    			<div class="mgn-top8px row">
+				  				<div class="col-md-3">
+								    <label>Gatuadress</label>				    
+								    <p id="preview-streetaddress"></p>
+						    	</div>
+						    	<div class="col-md-3">
+								    <label>Postnummer</label>				    
+								    <p id="preview-zipcode"></p>
+						    	</div>
+				  				<div class="col-md-3">
+								    <label>Postort</label>				    
+								    <p id="preview-city"></p>
+						    	</div>
+			    			</div>
+					  	</div>
+					</div>
+					
+					<div class="panel panel-default">
+					 	<div class="panel-heading">
+					   		<h3 class="panel-title">Ansökan</h3>
+					 	</div>
+					  <div class="panel-body">
+					  	<div class="row">
+					  		<div class="col-md-12">
+								<label>Personligt brev</label>				    
+						  		<p id="preview-personalletter"></p>
+						  	</div>
+					  	</div>
+					  	<div class="row">
+					  		<div class="col-md-6">
+								<label>CV</label>				    
+						  		<p id="preview-cv"></p>
+						  	</div>
+					  	</div>
+					  	
+					  	
+					  	<div class="row">
+					  		<div id="preview-nopreferedarea" class="col-md-4">
+					  			<label>Önskat arbetsområde</label>
+					  			<p>Jag kan tänka mig jobba med vad som helst</p>
+					  		</div>
+							<div class="col-md-4 preview-preferedarea">
+								<label>Önskat arbetsområde - prio 1</label>
+								<p id="preview-preferedarea1"></p>
+							</div>
+							<div class="col-md-4 preview-preferedarea">
+								<label>Önskat arbetsområde - prio 2</label>
+								<p id="preview-preferedarea2"></p>
+							</div>
+							<div class="col-md-4 preview-preferedarea">
+								<label>Önskat arbetsområde - prio 3</label>
+								<p id="preview-preferedarea3"></p>
+							</div>
+					  	</div>
+					  	
+					  	<div class="row">
+					  		<div class="col-md-4">
+					  			<label>Önskat geografiskt område 1</label>
+					  			<p id="preview-geoarea1"></p>
+					  		</div>
+					  		<div class="col-md-4">
+					  			<label>Önskat geografiskt område 2</label>
+					  			<p id="preview-geoarea2"></p>
+					  		</div>
+					  		<div class="col-md-4">
+					  			<label>Önskat geografiskt område 3</label>
+					  			<p id="preview-geoarea3"></p>
+					  		</div>
+					  	</div>
+					  	
+					  	<div class="mgn-top8px row">
+					  		<div class="col-md-5">
+					  			<label>Körkort</label>
+					  			<input type="hidden" id="hasDriversLicenseText" value="Ja, jag har körkort av typ " />
+								<input type="hidden" id="noDriversLicenseText" value="Nej, jag har inget körkort" />
+								<p id="preview-driverslicense"></p>
+					  		</div>						
+						</div>
+			  		</div>
+			  	</div>
+			  	
+			  		<div class="panel panel-default">
+			  		<div class="panel-heading">
+			  			<h3 class="panel-title">Skicka in ansökan</h3>
+			  		</div>  
+			  		<div class="panel-body">
+						<div id="save-failed" class="alert alert-danger" role="alert">
+							<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+							<span class="sr-only">Error:</span>
+							<span class="message"></span>
+						</div>
+						<div id="save-succeeded" class="alert alert-success" role="alert">
+							<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+							<span class="sr-only">Success:</span>
+							<span class="message"></span>
+						</div>
+						
+			  			<button style="margin-top: 4px;" id="submit-municipality-job-application" type="submit" class="float-rgt mgn-lft8px btn btn-success questions-submit">
+			  				<xsl:choose>
+			  					<xsl:when test="MunicipalityJobApplication">Spara</xsl:when>
+			  					<xsl:otherwise>Skicka</xsl:otherwise>
+			  				</xsl:choose>
+			  			</button>
+			  			
+			  			<button style="margin-top: 4px;" id="cancel-preview-municipality-application" class="mgn-lft8px btn btn-warning questions-submit">Redigera</button>
+						<span class="glyphicon glyphicon-ok collapse" aria-hidden="true"></span><span class="glyphicon glyphicon-remove collapse" aria-hidden="true"></span>
+					</div>
+			  	</div> 
+			  	
+			</div>
+		</div>
+	    
 	    	
 	</xsl:template>
 	

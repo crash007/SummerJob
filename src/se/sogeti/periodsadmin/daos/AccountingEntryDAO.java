@@ -5,7 +5,6 @@ import java.sql.SQLException;
 import javax.sql.DataSource;
 
 import se.sogeti.periodsadmin.beans.AccountingEntry;
-import se.sogeti.periodsadmin.beans.Salary;
 import se.unlogic.standardutils.dao.AnnotatedDAO;
 import se.unlogic.standardutils.dao.AnnotatedDAOFactory;
 import se.unlogic.standardutils.dao.HighLevelQuery;

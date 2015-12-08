@@ -439,7 +439,7 @@
 				  			<button style="margin-top: 4px;" id="cancel-preview-business-sector-job" class="mgn-lft8px btn btn-warning questions-submit">Redigera</button>
 				  			
 <!-- 				  			<xsl:if test="BusinessSectorJob"> -->
-<!-- 				  				<a href="{manageJobURL}?jobId={BusinessSectorJob/id}" style="margin-top: 4px;" class="float-rgt btn btn-primary">Tillbaka</a> -->
+<!-- 				  				<a href="{manageJobURL}?jobId={BusinessSectorJob/id}" style="margin-top: 4px;" class="float-rgt btn btn-primary">Hantera annons</a> -->
 <!-- 				  			</xsl:if> -->
 							<span class="glyphicon glyphicon-ok collapse" aria-hidden="true"></span><span class="glyphicon glyphicon-remove collapse" aria-hidden="true"></span>
 						</div>
