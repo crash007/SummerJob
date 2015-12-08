@@ -50,37 +50,6 @@ public class FormUtils {
 		return result;
 	}
 	
-	public static  <T extends JobApplication> void createJobApplication(T app, HttpServletRequest req, Citizen person){
-		
-		
-		app.setCity(req.getParameter("postalarea"));
-		app.setEmail(req.getParameter("email"));
-		app.setFirstname(req.getParameter("firstname"));
-		app.setLastname(req.getParameter("lastname"));
-		app.setPhoneNumber(req.getParameter("phone"));
-		app.setSocialSecurityNumber(req.getParameter("socialSecurityNumber"));
-		app.setStreetAddress(req.getParameter("street"));
-		app.setZipCode(req.getParameter("postalcode"));
-		app.setBirthdate(FormUtils.getDateOfBirth(req.getParameter("socialSecurityNumber")));
-				
-		app.setPersonalLetter(req.getParameter("personal-letter"));
-
-		app.setCreated(new Date(new java.util.Date().getTime()));
-		
-		//Citizen person = smexServiceHandler.getCitizen(app.getSocialSecurityNumber());
-		if(person!=null){
-			app.setSchoolName(person.getSchoolName());
-			app.setSchoolType(person.getTypeOfSchool());
-			app.setSkvCity(person.getCity());
-		}
-		
-		//If gymnasium och sundsvall set approved och controlled till true
-		if(app.getSchoolType()!=null && app.getSchoolType().equals("GY")){
-			app.setApproved(true);
-			app.setControlled(true);
-			app.setControlledByUser("System");
-		}
-	}
 	
 	public static Date getDateOfBirth(String socialSecurityNumber) {
 		String ssn = socialSecurityNumber.substring(0, 8);

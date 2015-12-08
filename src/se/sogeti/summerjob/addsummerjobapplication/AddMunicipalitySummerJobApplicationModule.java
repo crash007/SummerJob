@@ -191,8 +191,10 @@ public class AddMunicipalitySummerJobApplicationModule extends AddSummerJobAppli
 			}
 	
 			Citizen person = getCitizen(socialSecurityNumber);
-	
-			FormUtils.createJobApplication(app, requestWrapper, person);
+				
+			createJobApplication(app, requestWrapper, person);
+			automaticControllAndApprove(app);
+			
 			FileItem fileItem = requestWrapper.getFile(0);			
 			saveCv(app,fileItem,app.getSocialSecurityNumber()+"_"+fileItem.getName(),writer, callback);
 			

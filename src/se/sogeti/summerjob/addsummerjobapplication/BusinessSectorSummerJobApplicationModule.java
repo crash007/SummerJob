@@ -160,8 +160,8 @@ public class BusinessSectorSummerJobApplicationModule extends AddSummerJobApplic
 
 				Citizen person = getCitizen(socialSecurityNumber);
 
-				FormUtils.createJobApplication(app, requestWrapper, person);
-				
+				createJobApplication(app, requestWrapper, person);
+				automaticControllAndApprove(app);
 
 				boolean hasDriversLicense = requestWrapper.getParameter("hasDriversLicense") != null ? true : false;
 				

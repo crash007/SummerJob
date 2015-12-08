@@ -2,8 +2,11 @@ package se.sogeti.summerjob.addsummerjobapplication;
 
 import java.io.File;
 import java.io.PrintWriter;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.fileupload.FileItem;
 import org.w3c.dom.Document;
@@ -13,12 +16,14 @@ import se.sogeti.jobapplications.beans.DriversLicenseType;
 import se.sogeti.jobapplications.beans.JobApplication;
 import se.sogeti.jobapplications.beans.business.BusinessSectorJobApplication;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityJobApplication;
+import se.sogeti.summerjob.FormUtils;
 import se.sogeti.summerjob.JsonResponse;
 import se.sundsvall.openetown.smex.SmexServiceHandler;
 import se.sundsvall.openetown.smex.service.SmexServiceException;
 import se.sundsvall.openetown.smex.vo.Citizen;
 import se.unlogic.hierarchy.core.annotations.InstanceManagerDependency;
 import se.unlogic.hierarchy.core.annotations.ModuleSetting;
+import se.unlogic.hierarchy.core.annotations.TextAreaSettingDescriptor;
 import se.unlogic.hierarchy.core.annotations.TextFieldSettingDescriptor;
 import se.unlogic.hierarchy.foregroundmodules.rest.AnnotatedRESTModule;
 import se.unlogic.standardutils.xml.XMLUtils;
@@ -31,6 +36,10 @@ public abstract class AddSummerJobApplication<T extends JobApplication> extends 
 	
 	@InstanceManagerDependency(required = true)
 	private SmexServiceHandler smexServiceHandler;
+	
+	@ModuleSetting
+	@TextAreaSettingDescriptor(name = "Allowed cities", description = "postorter som ingår i Sundsvalls kommun")
+	private List<String> cities;
 	
 	protected void saveCv(T application, FileItem fileItem, String fileName,PrintWriter writer, String callback) {
 		String fullPath = filePath + fileName;
@@ -115,6 +124,40 @@ public abstract class AddSummerJobApplication<T extends JobApplication> extends 
 			return false;
 		}else
 			return true;
+	}
+	
+	protected void automaticControllAndApprove(T app){
+		//If gymnasium och sundsvall set approved och controlled to true
+		if(app.getSchoolType()!=null && app.getSchoolType().equals("GY") && app.getSkvCity()!=null && cities!=null && cities.contains(app.getSkvCity())){
+			app.setApproved(true);
+			app.setControlled(true);
+			app.setControlledByUser("System");
+		}		
+	}
+	
+	protected void createJobApplication(T app, HttpServletRequest req, Citizen person){
+		
+		
+		app.setCity(req.getParameter("postalarea"));
+		app.setEmail(req.getParameter("email"));
+		app.setFirstname(req.getParameter("firstname"));
+		app.setLastname(req.getParameter("lastname"));
+		app.setPhoneNumber(req.getParameter("phone"));
+		app.setSocialSecurityNumber(req.getParameter("socialSecurityNumber"));
+		app.setStreetAddress(req.getParameter("street"));
+		app.setZipCode(req.getParameter("postalcode"));
+		app.setBirthdate(FormUtils.getDateOfBirth(req.getParameter("socialSecurityNumber")));
+				
+		app.setPersonalLetter(req.getParameter("personal-letter"));
+
+		app.setCreated(new Date(new java.util.Date().getTime()));
+		
+		//Citizen person = smexServiceHandler.getCitizen(app.getSocialSecurityNumber());
+		if(person!=null){
+			app.setSchoolName(person.getSchoolName());
+			app.setSchoolType(person.getTypeOfSchool());
+			app.setSkvCity(person.getCity());
+		}
 	}
 
 }
