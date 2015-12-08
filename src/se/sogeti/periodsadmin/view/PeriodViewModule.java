@@ -73,8 +73,15 @@ public class PeriodViewModule extends AnnotatedRESTModule {
 		PlaceForInformation place = placeDAO.getById(1);
 		XMLUtils.append(doc, element, place);
 		
-		ContactPerson contact = contactDAO.getAll().get(0);
-		XMLUtils.append(doc, element, contact);
+		List<ContactPerson> contacts = contactDAO.getAll();
+		Element municipalityContact = doc.createElement("MunicipalityContactPerson");
+		XMLUtils.appendNewElement(doc, municipalityContact, "name", contacts.get(0).getName());
+		XMLUtils.appendNewElement(doc, municipalityContact, "phoneNumber", contacts.get(0).getPhoneNumber());
+		doc.getFirstChild().appendChild(municipalityContact);
+		Element businessContact = doc.createElement("BusinessContactPerson");
+		XMLUtils.appendNewElement(doc, businessContact, "name", contacts.get(1).getName());
+		XMLUtils.appendNewElement(doc, businessContact, "phoneNumber", contacts.get(1).getPhoneNumber());
+		doc.getFirstChild().appendChild(businessContact);
 		
 		Element periodsElement = doc.createElement("Periods");
 		List<Period> periodList = periodDAO.getPeriodsOrderedByDateAndIsUnique(false);
@@ -260,23 +267,39 @@ public class PeriodViewModule extends AnnotatedRESTModule {
         String callback = req.getParameter("callback"); 
         JsonResponse.initJsonResponse(res, writer, callback);
         
-        String contactName = req.getParameter("contact-name");
-        String contactPhone = req.getParameter("contact-phone");
-        ContactPerson person = contactDAO.getAll().get(0);
+        List<ContactPerson> contactPersons = contactDAO.getAll();
         
-        if (StringUtils.isEmpty(contactName) || StringUtils.isEmpty(contactPhone)) {
+        if (contactPersons == null) {
+        	JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Databasfel. Kunde inte hämta kontaktpersonerna.\"}", callback, writer);
+			return;
+        }
+        
+        String municipalityContactName = req.getParameter("municipality-contact-name");
+        String municipalityContactPhone = req.getParameter("municipality-contact-phone");
+        ContactPerson municipalityPerson = contactPersons.get(0);
+        
+        String businessContactname = req.getParameter("business-contact-name");
+        String businessContactPhone = req.getParameter("business-contact-phone");
+        ContactPerson businessPerson = contactPersons.get(1);
+        
+        if (StringUtils.isEmpty(municipalityContactName) || StringUtils.isEmpty(municipalityContactPhone)
+        		|| StringUtils.isEmpty(businessContactname) || StringUtils.isEmpty(businessContactPhone)) {
         	JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Fälten kan inte lämnas tomma.\"}", callback, writer);
 			return;
         }
         
-        person.setName(contactName);
-        person.setPhoneNumber(contactPhone);
+        municipalityPerson.setName(municipalityContactName);
+        municipalityPerson.setPhoneNumber(municipalityContactPhone);
+        
+        businessPerson.setName(businessContactname);
+        businessPerson.setPhoneNumber(businessContactPhone);
         
         try {
-        	contactDAO.save(person);
+        	contactDAO.save(municipalityPerson);
+        	contactDAO.save(businessPerson);
         } catch (SQLException e) {
-          	log.error("Exception when trying to update the contact person: ", e);
-        	JsonResponse.sendJsonResponse("{\"status\":\"error\", \"message\":\"Databasfel. Kunde inte uppdatera kontaktpersonen.\"}", callback, writer);
+          	log.error("Exception when trying to update the contact persons: ", e);
+        	JsonResponse.sendJsonResponse("{\"status\":\"error\", \"message\":\"Databasfel. Kunde inte uppdatera kontaktpersonerna.\"}", callback, writer);
 			return;
         }
         JsonResponse.sendJsonResponse("{\"status\":\"success\", \"message\":\"Uppdatering genomförd.\"}", callback, writer);
