@@ -30,7 +30,6 @@ import se.unlogic.webutils.http.URIParser;
 public class ListApplicationsAdminModule extends AnnotatedForegroundModule {
 	
 	JobApplicationDAO<MunicipalityJobApplication> municipalityJobApplicationDAO;
-	JobApplicationDAO<BusinessSectorJobApplication> businessSectorJobApplicationDAO;
 	BusinessSectorJobApplicationDAO businessApplicationDAO;
 	
 	@ModuleSetting
@@ -50,7 +49,6 @@ public class ListApplicationsAdminModule extends AnnotatedForegroundModule {
 		
 		HierarchyAnnotatedDAOFactory daoFactory = new HierarchyAnnotatedDAOFactory(dataSource, systemInterface);
 		municipalityJobApplicationDAO = new JobApplicationDAO<MunicipalityJobApplication>(dataSource, MunicipalityJobApplication.class, daoFactory);
-		businessSectorJobApplicationDAO = new JobApplicationDAO<BusinessSectorJobApplication>(dataSource, BusinessSectorJobApplication.class, daoFactory);
 		businessApplicationDAO = new BusinessSectorJobApplicationDAO(dataSource, BusinessSectorJobApplication.class, daoFactory);
 	}
 

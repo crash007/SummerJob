@@ -93,6 +93,8 @@ public class MatchMunicipalityJobsModule extends AnnotatedRESTModule{
 		element.appendChild(this.moduleDescriptor.toXML(doc));
 		doc.appendChild(element);
 		
+		XMLUtils.appendNewElement(doc, element, "CvMunicipalityApplicationUrl", cvServiceHandler.getMunicipalityApplicationCvUrl());
+		
 		Integer jobId = NumberUtils.toInt(req.getParameter("jobId"));
 		Integer appId = NumberUtils.toInt(req.getParameter("appId"));
 		String selectValue = req.getParameter("selectValue");

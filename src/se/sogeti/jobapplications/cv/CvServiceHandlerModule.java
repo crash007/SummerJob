@@ -11,9 +11,11 @@ import javax.sql.DataSource;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import se.sogeti.jobapplications.beans.JobApplication;
 import se.sogeti.jobapplications.beans.business.BusinessSectorJobApplication;
+import se.sogeti.jobapplications.beans.municipality.MunicipalityJobApplication;
 import se.sogeti.jobapplications.daos.BusinessSectorJobApplicationDAO;
-import se.sundsvall.openetown.smex.SmexServiceHandler;
+import se.sogeti.jobapplications.daos.JobApplicationDAO;
 import se.unlogic.hierarchy.core.annotations.WebPublic;
 import se.unlogic.hierarchy.core.beans.SimpleForegroundModuleResponse;
 import se.unlogic.hierarchy.core.beans.User;
@@ -35,6 +37,7 @@ public class CvServiceHandlerModule extends AnnotatedForegroundModule implements
 	
 
 	BusinessSectorJobApplicationDAO businessApplicationDAO;
+	JobApplicationDAO<MunicipalityJobApplication> municipalityApplicationDAO;
 	
 	@Override
 	protected void createDAOs(DataSource dataSource) throws Exception {
@@ -42,6 +45,7 @@ public class CvServiceHandlerModule extends AnnotatedForegroundModule implements
 		
 		HierarchyAnnotatedDAOFactory daoFactory = new HierarchyAnnotatedDAOFactory(dataSource, systemInterface);
 		businessApplicationDAO = new BusinessSectorJobApplicationDAO(dataSource, BusinessSectorJobApplication.class, daoFactory);
+		municipalityApplicationDAO = new JobApplicationDAO<>(dataSource, MunicipalityJobApplication.class, daoFactory);
 	}
 
 	@Override
@@ -59,14 +63,15 @@ public class CvServiceHandlerModule extends AnnotatedForegroundModule implements
 		return new SimpleForegroundModuleResponse(doc);
 	}
 	
-	@WebPublic
-	public ForegroundModuleResponse getBusinessApplicationCv(HttpServletRequest req,
+	
+	
+	public <T extends JobApplicationDAO<?>> ForegroundModuleResponse getCv(T dao, HttpServletRequest req,
 			HttpServletResponse res, User user, URIParser uriParser)
 					throws Throwable {
 
 		Integer appId = NumberUtils.toInt(req.getParameter("id"));
 		if(appId!=null){			
-			BusinessSectorJobApplication application = businessApplicationDAO.getById(appId);
+		JobApplication application = (JobApplication) dao.getById(appId);
 			if(application!=null){
 				if(application.getCvFilename()!=null){
 					FileInputStream in = null;
@@ -98,18 +103,35 @@ public class CvServiceHandlerModule extends AnnotatedForegroundModule implements
 		return null;
 		
 	}
+	
+	@WebPublic
+	public ForegroundModuleResponse getBusinessApplicationCv(HttpServletRequest req,
+			HttpServletResponse res, User user, URIParser uriParser)
+					throws Throwable {
+		
+		return getCv(businessApplicationDAO, req, res, user, uriParser);
+		
+	}
+	
+	@WebPublic
+	public ForegroundModuleResponse getMunicipalityApplicationCv(HttpServletRequest req,
+			HttpServletResponse res, User user, URIParser uriParser)
+					throws Throwable {
+		
+		return getCv(municipalityApplicationDAO, req, res, user, uriParser);
+		
+	}
 
 	@Override
 	public String getBusinessApplicationCvUrl() {
-		// TODO Auto-generated method stub
+		
 		return this.getFullAlias()+"/getBusinessApplicationCv";
 		
 	}
 
 	@Override
 	public String getMunicipalityApplicationCvUrl() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.getFullAlias()+"/getMunicipalityApplicationCv";
 	}
 
 	@Override
