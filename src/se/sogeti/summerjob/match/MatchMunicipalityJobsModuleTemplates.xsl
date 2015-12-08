@@ -104,9 +104,16 @@
 	   			</div>
 				
 				<div class="col-xs-4 col-md-2 bold">Personnummer</div>
-				<div class="col-md-4 social-number">
+				<div class="col-md-3 social-number">
 					<xsl:value-of select="socialSecurityNumber"/>	   		
 	   			</div>
+	   			
+	   			<xsl:if test="applicationType = 'REGULAR_ADMIN'">
+		   			<div style="text-align: right; font-size: larger" class="col-xs-1 bold">*</div>
+	   			</xsl:if>
+	   			<xsl:if test="applicationType = 'PRIO'">
+		   			<div style="text-align: right; font-size: larger" class="col-xs-1 bold prio">*</div>
+	   			</xsl:if>
 	   		</div>
 	   		
 	   		<div class="row">
