@@ -15,10 +15,12 @@ import org.w3c.dom.Element;
 
 import se.sogeti.jobapplications.beans.business.BusinessSectorJobApplication;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityJobApplication;
+import se.sogeti.jobapplications.cv.CvServiceHander;
 import se.sogeti.jobapplications.daos.BusinessSectorJobApplicationDAO;
 import se.sogeti.jobapplications.daos.JobApplicationDAO;
 import se.sogeti.jobapplications.daos.JobDAO;
 import se.sogeti.summerjob.JsonResponse;
+import se.unlogic.hierarchy.core.annotations.InstanceManagerDependency;
 import se.unlogic.hierarchy.core.annotations.ModuleSetting;
 import se.unlogic.hierarchy.core.annotations.TextFieldSettingDescriptor;
 import se.unlogic.hierarchy.core.beans.SimpleForegroundModuleResponse;
@@ -44,6 +46,9 @@ public class ManageBusinessApplicationAdminModule extends AnnotatedRESTModule {
 	@TextFieldSettingDescriptor(description="Relativ URL till sidan för att lista ansökningar", name="ListAppsURL")
 	String listJobApplicationsURL="list-applications";
 	
+	@InstanceManagerDependency(required = true)
+	private CvServiceHander cvServiceHandler;
+	
 	@Override
 	protected void createDAOs(DataSource dataSource) throws Exception {
 		super.createDAOs(dataSource);
@@ -63,6 +68,9 @@ public class ManageBusinessApplicationAdminModule extends AnnotatedRESTModule {
 		element.appendChild(this.moduleDescriptor.toXML(doc));
 		doc.appendChild(element);
 
+		
+		XMLUtils.appendNewElement(doc, element, "CvBusinessApplicationUrl", cvServiceHandler.getBusinessApplicationCvUrl());
+		
 		Integer appId = NumberUtils.toInt(req.getParameter("appId"));
 		
 		if(appId != null){

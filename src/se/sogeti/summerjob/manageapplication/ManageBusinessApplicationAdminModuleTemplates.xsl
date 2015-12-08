@@ -9,11 +9,11 @@
 			var url = '<xsl:value-of select="requestinfo/uri"/>';
 		</script>
 		
-		<xsl:apply-templates select="ApplicationInfo"/>
+		<xsl:apply-templates select="ApplicationInfo/BusinessSectorJobApplication"/>
 	</xsl:template>
 	
-	<xsl:template match="ApplicationInfo">
-		<div style="display: none" id="appIdDiv"><xsl:value-of select="BusinessSectorJobApplication/id"></xsl:value-of></div>
+	<xsl:template match="BusinessSectorJobApplication">
+		<div style="display: none" id="appIdDiv"><xsl:value-of select="id"></xsl:value-of></div>
 
 		<div class="well">
 		  	<div class="panel panel-default">
@@ -24,39 +24,39 @@
 			  		<div class="row">
 			  			<div class="col-md-3">
 			  				<label>Personnummer</label>
-			  				<div><xsl:value-of select="BusinessSectorJobApplication/socialSecurityNumber"></xsl:value-of></div>
+			  				<div><xsl:value-of select="socialSecurityNumber"></xsl:value-of></div>
 			  			</div>
 			  		</div>
 				  	<div class="mgn-top8px row">
 		  				<div class="col-md-3">
 						    <label>Förnamn</label>				    
-						    <div><xsl:value-of select="BusinessSectorJobApplication/firstname"></xsl:value-of></div>
+						    <div><xsl:value-of select="firstname"></xsl:value-of></div>
 				    	</div>
 				    	<div class="col-md-3">
 						    <label>Efternamn</label>				    
-						    <div><xsl:value-of select="BusinessSectorJobApplication/lastname"></xsl:value-of></div>
+						    <div><xsl:value-of select="lastname"></xsl:value-of></div>
 				    	</div>
 		  				<div class="col-md-3">
 						    <label>Telefonnummer</label>				    
-						    <div><xsl:value-of select="BusinessSectorJobApplication/phoneNumber"></xsl:value-of></div>
+						    <div><xsl:value-of select="phoneNumber"></xsl:value-of></div>
 				    	</div>
 		  				<div class="col-md-3">
 						    <label>E-post</label>				    
-						    <div><xsl:value-of select="BusinessSectorJobApplication/email"></xsl:value-of></div>
+						    <div><xsl:value-of select="email"></xsl:value-of></div>
 				    	</div>
 	    			</div>
 	    			<div class="mgn-top8px row">
 		  				<div class="col-md-3">
 						    <label>Gatuadress</label>				    
-						    <div><xsl:value-of select="BusinessSectorJobApplication/streetAddress"></xsl:value-of></div>
+						    <div><xsl:value-of select="streetAddress"></xsl:value-of></div>
 				    	</div>
 				    	<div class="col-md-3">
 						    <label>Postnummer</label>				    
-						    <div><xsl:value-of select="BusinessSectorJobApplication/zipCode"></xsl:value-of></div>
+						    <div><xsl:value-of select="zipCode"></xsl:value-of></div>
 				    	</div>
 		  				<div class="col-md-3">
 						    <label>Postort</label>				    
-						    <div><xsl:value-of select="BusinessSectorJobApplication/city"></xsl:value-of></div>
+						    <div><xsl:value-of select="city"></xsl:value-of></div>
 				    	</div>
 	    			</div>
 			  	</div>
@@ -70,15 +70,17 @@
 			  	<div class="row">
 			  		<div class="col-md-12">
 						<label>Personligt brev</label>				    
-				  		<div><xsl:value-of select="BusinessSectorJobApplication/personalLetter"></xsl:value-of></div>
+				  		<div><xsl:value-of select="personalLetter"></xsl:value-of></div>
 				  	</div>
 			  	</div>
 		  		<div class="mgn-top8px row">
 				    <div class="col-md-4">
 				    	<label>CV</label>
 				    	<xsl:choose>
-				    		<xsl:when test="BusinessSectorJobApplication/cvLocation != ''">
-						    	<div><a href="{BusinessSectorJobApplication/cvLocation}"></a></div>
+				    		<xsl:when test="cvFilename != ''">
+						    	<div>
+						    		<a href="{/Document/requestinfo/contextpath}/{/Document/CvBusinessApplicationUrl}?id={id}">Ladda ner</a>
+						    	</div>
 				    		</xsl:when>
 				    		<xsl:otherwise>
 				    			<div><i>Inget CV är bifogat</i></div>
@@ -90,8 +92,8 @@
 			  		<div class="col-md-3">
 			  			<label>Körkort</label>
 			  			<xsl:choose>
-			  				<xsl:when test="BusinessSectorJobApplication/hasDriversLicense = 'true'">
-			  					<div>Ja, jag har körkort av typ <xsl:value-of select="BusinessSectorJobApplication/DriversLicenseType/name"></xsl:value-of></div>
+			  				<xsl:when test="hasDriversLicense = 'true'">
+			  					<div>Ja, jag har körkort av typ <xsl:value-of select="DriversLicenseType/name"></xsl:value-of></div>
 			  				</xsl:when>
 			  				<xsl:otherwise>
 			  					<div>Nej, jag har inget körkort</div>
@@ -123,7 +125,7 @@
 					<div class="col-md-2">
 						<label>Ranking</label><br/>
 						<select class="form-control" name="ranking">
-							<xsl:for-each select="Rankings/Ranking">
+							<xsl:for-each select="/Document/ApplicationInfo/Rankings/Ranking">
 								<xsl:choose>
 									<xsl:when test="selected = 'true'">
 										<option selected="selected" value="{value}"><xsl:value-of select="value"></xsl:value-of></option>
@@ -139,12 +141,12 @@
 				
 				<div class="form-group">
 					<label for="admin-notes">Handläggarkommentar</label>
-					<textarea class="form-control" rows="5" id="admin-notes" name="admin-notes"><xsl:value-of select="BusinessSectorJobApplication/adminNotes"></xsl:value-of></textarea>
+					<textarea class="form-control" rows="5" id="admin-notes" name="admin-notes"><xsl:value-of select="adminNotes"></xsl:value-of></textarea>
 					<div class="help-block with-errors">Valfri. Skriv här anledningen till godkännande eller nekande av en ansökan.</div>
 				</div>
 				
 				<xsl:choose>
-					<xsl:when test="BusinessSectorJobApplication/controlledByUser != '' and BusinessSectorJobApplication/approved = 'true'">
+					<xsl:when test="controlledByUser != '' and approved = 'true'">
 						<button id="approve-application-button" type="button" class="btn btn-success" disabled="disabled">Godkänn</button>
 					</xsl:when>
 					<xsl:otherwise>
@@ -152,7 +154,7 @@
 					</xsl:otherwise>
 				</xsl:choose>
 				<xsl:choose>
-					<xsl:when test="BusinessSectorJobApplication/controlledByUser != '' and BusinessSectorJobApplication/approved = 'false'">
+					<xsl:when test="controlledByUser != '' and approved = 'false'">
 						<button id="disapprove-application-button" type="button" class="mgn-lft8px btn btn-danger" disabled="disabled">Neka</button>
 					</xsl:when>
 					<xsl:otherwise>
