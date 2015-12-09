@@ -348,8 +348,19 @@
 							    <p class="help-block with-errors">Skriv lite information om vem du är, vad du är intresserad av och vad du är duktig på</p>
 						  	</div>
 							<div class="form-group">
-							    <label for="cvInputFile">Ladda upp ditt cv*</label>
-							    <input type="file" class="form-control" id="cvInputFile" name="cvFile" required="required"/>
+<!-- 							    <label for="cvInputFile">Ladda upp ditt cv*</label> -->
+							    <xsl:choose>
+							    	<xsl:when test="BusinessSectorJobApplication/cvFilename">
+							    		<label for="cvInputFile">Ladda upp ditt cv</label>
+							    		<p><strong>Befintlig: </strong><i id="currentCV"><xsl:value-of select="BusinessSectorJobApplication/cvFilename"></xsl:value-of></i></p>
+							    		<input type="file" class="form-control" id="cvInputFile" name="cvFile"/>
+							    	</xsl:when>
+							    	<xsl:otherwise>
+							    		<label for="cvInputFile">Ladda upp ditt cv*</label>
+							    		<input type="file" class="form-control" id="cvInputFile" name="cvFile" required="required"/>
+							    	</xsl:otherwise>
+							    </xsl:choose>
+<!-- 							    <input type="file" class="form-control" id="cvInputFile" name="cvFile" required="required"/> -->
 							    <p class="help-block with-errors"></p>
 							</div>
 							
@@ -464,7 +475,7 @@
 						  	</div>
 					  	</div>
 					  	<div class="row">
-					  		<div class="col-md-4">
+					  		<div class="col-md-6">
 								<label>CV</label>				    
 						  		<p id="preview-cv"></p>
 						  	</div>

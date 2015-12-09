@@ -191,8 +191,8 @@
 							<label>Intervjuer</label>
 							<div>
 								<xsl:choose>
-									<xsl:when test="BusinessSectorJob/inChargeOfInterviews = 'true'">Jag låter kommunen sköta arbetet med intervjuer.</xsl:when>
-									<xsl:otherwise>Jag vill själv sköta arbetet med intervjuer</xsl:otherwise>
+									<xsl:when test="BusinessSectorJob/inChargeOfInterviews = 'true'"><span class="prio">Jag vill att kommunen tar hand om intervjuer.</span></xsl:when>
+									<xsl:otherwise>Jag vill själv ta hand om intervjuer.</xsl:otherwise>
 								</xsl:choose>
 							</div>
 						</div>

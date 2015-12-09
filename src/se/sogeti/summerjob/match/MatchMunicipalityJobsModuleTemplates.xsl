@@ -190,7 +190,7 @@
 			
 			<div class="row collapse">
 				<div class="col-xs-4 col-md-2 bold">Personligt brev</div>
-				<div class="col-md-4 social-number"><xsl:value-of select="personalLetter"/></div>
+				<div class="col-md-8 col-xs-8 social-number"><xsl:value-of select="personalLetter"/></div>
 			</div>
 	   		
 		   		<div class="row">
@@ -224,14 +224,28 @@
 								</div>
 							</div>
 						</xsl:if>
+						
+						<div class="row">
+					
+							<div class="col-xs-4 col-md-3 bold">Organisation</div>
+							<div class="col-md-3"><xsl:value-of select="organization"/></div>
+							<div class="col-xs-4 col-md-3 bold">Förvaltning</div>
+							<div class="col-md-3"><xsl:value-of select="administration"/></div>
+							
+						</div>
+						
+						<div class="row">
+					
+							<div class="col-xs-4 col-md-3 bold">Plats</div>
+							<div class="col-md-3"><xsl:value-of select="location"/></div>
+							<div class="col-xs-4 col-md-3 bold">Geografisk plats</div>
+							<div class="col-md-3"><xsl:value-of select="GeoArea/name"/></div>
+						</div>
 					
 						<div class="row">
 					
 							<div class="col-xs-4 col-md-3 bold">Rubrik</div>
 							<div class="col-md-3"><xsl:value-of select="workTitle"/></div>
-							<div class="col-xs-4 col-md-3 bold">Geografisk plats</div>
-							<div class="col-md-3"><xsl:value-of select="GeoArea/name"/></div>
-							
 						</div>	  	
 			 			
 			 			<div class="row">
@@ -264,23 +278,41 @@
 						<div class="row">
 					
 							<div class="col-xs-4 col-md-3 bold">Tillsatta platser</div>
-							<div class="col-md-3"><xsl:value-of select="appointedApplications"/></div>
+							<div class="col-md-3"><xsl:value-of select="matchedApplications"/></div>
 							<div class="col-xs-4 col-md-3 bold">Lediga platser</div>
 							<div class="col-md-3" id="availableSlotsToMatch"><xsl:value-of select="openApplications"/></div>
 							
 						</div>
 						<div class="row">
 					
-							<div class="col-xs-4 col-md-3 bold">Address</div>
+							<div class="col-xs-4 col-md-3 bold">Adress</div>
 							<div class="col-md-3"><xsl:value-of select="streetAddress"/></div>
 							<div class="col-xs-4 col-md-3 bold">Period</div>
 							<div class="col-md-3"><xsl:value-of select="Period/name"/></div>
 							
 						</div>	
 					
-						<div class="row">
+						<div class="row mgn-top8px">
 							<div class="col-xs-4 col-md-3 bold">Beskrivning</div>
 							<div class="col-md-9 col-xs-12"><xsl:value-of select="workDescription"/></div>
+						</div>
+						
+						<div id="jobinfo-contact">
+							<div class="row mgn-top8px">
+								<div class="col-xs-4 col-md-3 bold">Kontaktuppgifter</div>
+								<br/>
+								<div style="font-size: 80%" class="col-xs-4 col-md-3 bold">Förnamn</div>
+								<div class="col-md-3"><xsl:value-of select="MunicipalityManager/firstname"/></div>
+								<div style="font-size: 80%" class="col-xs-4 col-md-3 bold">Efternamn</div>
+								<div class="col-md-3"><xsl:value-of select="MunicipalityManager/lastname"/></div>
+							</div>
+							
+							<div class="row">
+								<div style="font-size: 80%" class="col-xs-4 col-md-3 bold">Telefonnummer</div>
+								<div class="col-md-3"><xsl:value-of select="MunicipalityManager/mobilePhone"/></div>
+								<div style="font-size: 80%" class="col-xs-4 col-md-3 bold">E-postadress</div>
+								<div class="col-md-3"><xsl:value-of select="MunicipalityManager/email"/></div>
+							</div>
 						</div>
 						
 						<div class="mgn-top16px row">

@@ -89,6 +89,9 @@
 				  	</div>
 			  		<div class="form-group">
 					    <label for="cvInputFile">Ladda upp ditt cv</label>
+					    <xsl:if test="MunicipalityJobApplication/cvFilename != ''">
+					    	<p><strong>Befintlig: </strong><i id="currentCV"><xsl:value-of select="MunicipalityJobApplication/cvFilename"></xsl:value-of></i></p>
+					    </xsl:if>
 					    <input type="file" class="form-control" id="cvInputFile" name="cvFile"/>
 					    <p class="help-block">Om du har ett cv kan du ladda upp det.</p>
 				 	</div>
