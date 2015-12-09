@@ -107,6 +107,7 @@
 						  		</xsl:if>
 						  	</xsl:for-each>
 					  	</div>
+					 	
 					 	<div class="col-md-4 col-md-pull-8">
 					 		<div class="row">
 								<div class="col-md-12">
@@ -202,9 +203,25 @@
 					  	
 					  	
 				  	</div>
-				  	<div>
+				  	
+				  	<div class="row">
+				  		<div class="col-md-8 col-md-push-4 form-horizontal text-left">
+					  		<h3>Beskrivning geografiska områden</h3>
+					  		<xsl:for-each select="GeoAreas/GeoArea">
+					  			
+						  		<div class="form-group">
+							    	<label class="col-sm-2"><xsl:value-of select="name"/></label>
+								    <div class="col-sm-10">
+								      <p class=""><xsl:value-of select="description"/></p>
+								    </div>
+							  	</div>
+					  		
+						  	</xsl:for-each>
+					  	</div>
+				  	
+				  	<div class="col-md-4 col-md-pull-8">
 				  		<div class="row">
-				  			<div class="form-group col-md-4">
+				  			<div class="form-group col-md-12">
 							    <label for="geoArea1">Önskat geografiskt område 1*</label>				    
 							    <select class="form-control" name="geoArea1" id="geoArea1" required="required">
 									<option value=""/>
@@ -222,7 +239,7 @@
 								<p class="help-block with-errors"></p>
 							</div>
 							
-							<div class="form-group col-md-4">
+							<div class="form-group col-md-12">
 							    <label for="geoArea2">Önskat geografiskt område 2*</label>				    
 							    <select class="form-control" name="geoArea2" id="geoArea2" required="required">
 									<option value=""/>
@@ -239,7 +256,7 @@
 								</select>
 								<p class="help-block with-errors"></p>
 							</div>
-							<div class="col-md-4">
+							<div class="col-md-12">
 							    <label for="geoArea3">Önskat geografiskt område 3</label>				    
 							    <select class="form-control" name="geoArea3" id="geoArea3">
 									<option value=""/>
@@ -256,6 +273,7 @@
 								</select>
 							</div>
 						</div>
+				  	</div>
 				  	</div>
 				  	<div class="form-group">							
 						<div class="checkbox">

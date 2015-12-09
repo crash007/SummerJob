@@ -138,6 +138,7 @@ public class AddMunicipalitySummerJobApplicationModule extends AddSummerJobAppli
 			Element geoElement = doc.createElement("GeoArea");
 			XMLUtils.appendNewElement(doc, geoElement, "id", geoArea.getId());
 			XMLUtils.appendNewElement(doc, geoElement, "name", geoArea.getName());
+			XMLUtils.appendNewElement(doc, geoElement, "description", geoArea.getDescription());
 
 			if (app != null && app.getPreferedGeoArea1() != null 
 					&& app.getPreferedGeoArea1().getId().intValue() == geoArea.getId().intValue()) {
