@@ -188,6 +188,7 @@
 				  <div class="panel-body">
 					  	<div class="checkbox">
 						    <label>
+
 					    		<input type="checkbox" id="mustBeOverEighteen" name="mustBeOverEighteen">
 						    		<xsl:if test="BusinessSectorJob/mustBeOverEighteen ='true'">
 						    			<xsl:attribute name="checked">checked</xsl:attribute>							    			
