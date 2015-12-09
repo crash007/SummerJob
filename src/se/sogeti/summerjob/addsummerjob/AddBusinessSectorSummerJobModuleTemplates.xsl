@@ -188,26 +188,22 @@
 				  <div class="panel-body">
 					  	<div class="checkbox">
 						    <label>
-						    	<xsl:choose>
-						    		<xsl:when test="BusinessSectorJob/mustBeOverEighteen ='true'">
-						    			<input type="checkbox" id="mustBeOverEighteen" name="mustBeOverEighteen" checked="checked">Måste vara över 18 år</input>
-						    		</xsl:when>
-						    		<xsl:otherwise>
-						    			<input type="checkbox" id="mustBeOverEighteen" name="mustBeOverEighteen">Måste vara över 18 år</input>
-						    		</xsl:otherwise>
-						    	</xsl:choose>
+					    		<input type="checkbox" id="mustBeOverEighteen" name="mustBeOverEighteen">
+						    		<xsl:if test="BusinessSectorJob/mustBeOverEighteen ='true'">
+						    			<xsl:attribute name="checked">checked</xsl:attribute>							    			
+						    		</xsl:if>
+						    		Måste vara över 18 år
+					    		</input>						    	
 						    </label>
 					  	</div>
 						<div class="checkbox">
 						    <label>
-						    	<xsl:choose>
-						    		<xsl:when test="BusinessSectorJob/hasDriversLicense = 'true'">
-						    			<input type="checkbox" id="hasDriversLicense" name="hasDriversLicense" checked="checked">Måste ha körkort</input>
-						    		</xsl:when>
-						    		<xsl:otherwise>
-						    			<input type="checkbox" id="hasDriversLicense" name="hasDriversLicense">Måste ha körkort</input>
-						    		</xsl:otherwise>
-						    	</xsl:choose>
+							    <input type="checkbox" id="hasDriversLicense" name="hasDriversLicense">
+						    		<xsl:if test="BusinessSectorJob/DriversLicenseType !=''">
+						    			<xsl:attribute name="checked">checked</xsl:attribute>							    			
+						    		</xsl:if>
+						    		Måste ha körkort
+						    	</input>						    									
 						    </label>
 					  	</div>
 					  	
@@ -217,16 +213,14 @@
 							    <select class="form-control" name="driversLicenseType" id="driversLicenseType">
 							    	<option value="" />
 									<xsl:for-each select="DriversLicenseTypes/DriversLicenseType">
-										<xsl:choose>
-											<xsl:when test="selected = 'true'">
-												<option value="{id}" selected="selected"><xsl:value-of select="name" /> - <xsl:value-of select="description"/></option>
-											</xsl:when>
-											<xsl:otherwise>
-												<option value="{id}"><xsl:value-of select="name" /> - <xsl:value-of select="description" /></option>
-											</xsl:otherwise>
-										</xsl:choose>
+										<option value="{id}">
+											<xsl:if test="/Document/BusinessSectorJobForm/BusinessSectorJob/DriversLicenseType/id = id">
+								    			<xsl:attribute name="selected">selected</xsl:attribute>															    			
+								    		</xsl:if>		
+								    		<xsl:value-of select="name" /> - <xsl:value-of select="description"/>																		
+										</option>																		
 									</xsl:for-each>
-								</select>
+								</select>								
 								<p class="help-block with-errors"></p>
 							</div>
 						</div>

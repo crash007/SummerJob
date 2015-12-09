@@ -164,9 +164,13 @@
 							<label>Körkort</label>
 							<div>
 								<xsl:choose>
-									<xsl:when test="BusinessSectorJob/hasDriversLicense = 'true'">Tjänsten kräver att sökande har körkort av typ <xsl:value-of select="DriversLicenseType/name"></xsl:value-of>.</xsl:when>
-									<xsl:otherwise>Tjänsten kräver <i>ej</i> körkort</xsl:otherwise>
-								</xsl:choose>
+					  				<xsl:when test="BusinessSectorJob/DriversLicenseType != ''">
+					  					Tjänsten kräver att sökande har körkort av typ <xsl:value-of select="BusinessSectorJob/DriversLicenseType/name"></xsl:value-of>.
+					  				</xsl:when>
+					  				<xsl:otherwise>
+					  					Tjänsten kräver <i>ej</i> körkort
+					  				</xsl:otherwise>
+					  			</xsl:choose>								
 							</div>
 						</div>
 					</div>

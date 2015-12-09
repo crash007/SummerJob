@@ -170,23 +170,9 @@ public class AddMunicipalitySummerJobModule extends AnnotatedRESTModule{
 		}else{
 			log.warn("No periods found");
 		}
-		Element driversLicenseElement = doc.createElement("DriversLicenseTypes");
+		
 		List<DriversLicenseType> driverslicenseTypes = driversLicenseTypeDAO.getAll();
-		for (DriversLicenseType type : driverslicenseTypes) {
-			Element licenseType = doc.createElement("DriversLicenseType");
-			XMLUtils.appendNewElement(doc, licenseType, "id", type.getId());
-			XMLUtils.appendNewElement(doc, licenseType, "name", type.getName());
-			XMLUtils.appendNewElement(doc, licenseType, "description", type.getDescription());
-			
-			if (job != null && job.getDriversLicenseType() != null) {
-				XMLUtils.appendNewElement(doc, licenseType, "selected", 
-						job.getDriversLicenseType().getId().intValue() == type.getId().intValue());
-			}
-			
-			driversLicenseElement.appendChild(licenseType);
-		}
-			
-		jobForm.appendChild(driversLicenseElement);
+		XMLUtils.append(doc, jobForm, "DriversLicenseTypes",driverslicenseTypes);
 		
 		return new SimpleForegroundModuleResponse(doc);
 	}
