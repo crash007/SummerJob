@@ -98,42 +98,10 @@ public class AddMunicipalitySummerJobModule extends AnnotatedRESTModule{
 			XMLUtils.appendNewElement(doc, jobForm, "manageJobURL", manageJobURL);
 		} 
 		
-		Element areasElement = doc.createElement("Areas");
-		List<MunicipalityJobArea> areas = areaDAO.getAll();
-		for (MunicipalityJobArea area : areas) {
-			Element jobArea = doc.createElement("MunicipalityJobArea");
-			XMLUtils.appendNewElement(doc, jobArea, "id", area.getId());
-			XMLUtils.appendNewElement(doc, jobArea, "name", area.getName());
-			XMLUtils.appendNewElement(doc, jobArea, "description", area.getDescription());
-			XMLUtils.appendNewElement(doc, jobArea, "canBeChosenInApplication", area.isCanBeChosenInApplication());
-			
-			if (job != null && job.getArea() != null) {
-				XMLUtils.appendNewElement(doc, jobArea, "selected", 
-						job.getArea().getId().intValue() == area.getId().intValue());
-			}
-			
-			areasElement.appendChild(jobArea);
-		}
 		
-		jobForm.appendChild(areasElement);
+		XMLUtils.append(doc, jobForm, "Areas",areaDAO.getAll());
+		XMLUtils.append(doc, jobForm, "GeoAreas",geoAreaDAO.getAll());
 		
-		Element geoAreaElement = doc.createElement("GeoAreas");
-		List<GeoArea> geoAreas = geoAreaDAO.getAll();
-		for (GeoArea geoArea : geoAreas) {
-			Element geoElement = doc.createElement("GeoArea");
-			XMLUtils.appendNewElement(doc, geoElement, "id", geoArea.getId());
-			XMLUtils.appendNewElement(doc, geoElement, "name", geoArea.getName());
-			XMLUtils.appendNewElement(doc, geoElement, "description", geoArea.getDescription());
-
-			if (job != null && job.getGeoArea() != null) {
-				XMLUtils.appendNewElement(doc, geoElement, "selected", 
-						job.getGeoArea().getId().intValue() == geoArea.getId().intValue());
-			}
-			
-			geoAreaElement.appendChild(geoElement);
-		}
-		
-		jobForm.appendChild(geoAreaElement);
 		
 		List<Period> periods = periodDAO.getPeriodsByIsUnique(false);
 		

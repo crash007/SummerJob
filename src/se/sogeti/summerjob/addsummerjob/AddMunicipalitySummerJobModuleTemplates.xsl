@@ -61,14 +61,12 @@
 							   			<option value="" />
 								   		<xsl:for-each select="Areas/MunicipalityJobArea">
 								   			<xsl:if test="canBeChosenInApplication = 'true'">
-												<xsl:choose>
-													<xsl:when test="selected = 'true'">
-														<option value="{id}" selected="selected"><xsl:value-of select="name"></xsl:value-of></option>
-													</xsl:when>
-													<xsl:otherwise>
-														<option value="{id}"><xsl:value-of select="name"></xsl:value-of></option>
-													</xsl:otherwise>									
-												</xsl:choose>				   			
+												<option value="{id}" >
+													<xsl:if test="/Document/MunicipalityJobForm/MunicipalityJob/MunicipalityJobArea/id = id">
+										    			<xsl:attribute name="selected">selected</xsl:attribute>															    			
+										    		</xsl:if>
+													<xsl:value-of select="name"></xsl:value-of>
+												</option>	   			
 								   			</xsl:if>
 								   		</xsl:for-each>
 							  		 </select>
@@ -116,14 +114,12 @@
 						    <select class="form-control" data-error="Det geografiska område arbetsplatsen tillhör." name="geoArea" id="geoArea" required="required">
 						    	<option value=""/>
 								<xsl:for-each select="GeoAreas/GeoArea">
-									<xsl:choose>
-										<xsl:when test="selected = 'true'">
-											<option selected="selected" value="{id}"><xsl:value-of select="name"/></option>
-										</xsl:when>
-										<xsl:otherwise>
-											<option value="{id}"><xsl:value-of select="name" /></option>
-										</xsl:otherwise>
-									</xsl:choose>
+									<option value="{id}" >
+										<xsl:if test="/Document/MunicipalityJobForm/MunicipalityJob/GeoArea/id = id">
+							    			<xsl:attribute name="selected">selected</xsl:attribute>															    			
+							    		</xsl:if>
+										<xsl:value-of select="name"></xsl:value-of>
+									</option>	   		
 								</xsl:for-each>
 							</select>
 							<p class="help-block with-errors">Det geografiska område arbetsplatsen tillhör.</p>
@@ -131,7 +127,7 @@
 						<div class="col-md-6">
 							<label>Området omfattar</label>
 							<xsl:for-each select="GeoAreas/GeoArea">
-								<div class="mgn-top8px" style="display: none;" id="geoarea-description_{id}"><xsl:value-of select="description"></xsl:value-of></div>
+								<div class="mgn-top8px" style="display: none;" id="geoarea-description_{id}"><xsl:value-of select="description"/></div>
 							</xsl:for-each>
 						</div>
 					</div>
