@@ -170,7 +170,7 @@ public class AddMunicipalitySummerJobApplicationModule extends AddSummerJobAppli
 		MultipartRequest requestWrapper = null;
 		try {
 			requestWrapper = new MultipartRequest(1024 * BinarySizes.KiloByte, 100 * BinarySizes.MegaByte, req);
-
+			
 			PrintWriter writer = res.getWriter();
 			String callback = requestWrapper.getParameter("callback"); 
 			JsonResponse.initJsonResponse(res, writer, callback);
