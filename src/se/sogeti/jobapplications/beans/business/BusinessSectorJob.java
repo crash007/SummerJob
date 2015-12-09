@@ -18,6 +18,11 @@ import se.unlogic.standardutils.xml.XMLGenerator;
 @XMLElement
 public class BusinessSectorJob extends Job{
 	
+	public BusinessSectorJob() {
+		super();
+		this.setInChargeOfInterviews(false);
+	}
+	
 	@DAOManaged(columnName="manager_id")
 	@XMLElement
 	@ManyToOne(autoGet=true,autoAdd=true, autoUpdate=true, remoteKeyField="id")
@@ -46,9 +51,12 @@ public class BusinessSectorJob extends Job{
 	
 	@DAOManaged
 	@XMLElement
+	private Boolean inChargeOfInterviews;
+	
+	@DAOManaged
+	@XMLElement
 	@OneToMany(autoGet=false,autoAdd=true, autoUpdate=true)
 	private List<BusinessSectorJobApplication> applications;
-	
 	
 	@DAOManaged
 	@XMLElement
@@ -129,5 +137,13 @@ public class BusinessSectorJob extends Job{
 
 	public void setCorporateNumber(String corporateNumber) {
 		this.corporateNumber = corporateNumber;
+	}
+
+	public Boolean getInChargeOfInterviews() {
+		return inChargeOfInterviews;
+	}
+
+	public void setInChargeOfInterviews(Boolean inChargeOfInterviews) {
+		this.inChargeOfInterviews = inChargeOfInterviews;
 	}
 }

@@ -264,6 +264,9 @@ public class AddBusinessSectorSummerJobModule extends AnnotatedRESTModule{
         	job.setCreated(new Date(Calendar.getInstance().getTimeInMillis()));
         }
         
+        boolean inChargeOfInterviews = req.getParameter("inChargeOfInterviews") != null ? true : false;
+        job.setInChargeOfInterviews(inChargeOfInterviews);
+        
 		try {
 			businessSectorJobDAO.save(job);
 			if (jobId != null) {

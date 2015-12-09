@@ -82,7 +82,7 @@ public class ManageMunicipalityApplicationAdminModule extends AnnotatedRESTModul
 		
 		MunicipalityJobApplication app = appDAO.getById(appId);
 		XMLUtils.append(doc, appElement, app);
-		XMLUtils.appendNewElement(doc, appElement, "editAppURL", editApplicationURL);
+		XMLUtils.appendNewElement(doc, appElement, "editAppURL", editApplicationURL + "?appId=" + app.getId());
 		XMLUtils.appendNewElement(doc, appElement, "listJobApplicationsURL", listJobApplicationsURL);
 		
 		Element rankingsElement = doc.createElement("Rankings");

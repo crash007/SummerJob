@@ -355,11 +355,11 @@
 			  			<h3 class="panel-title">Förhandsgranska annons</h3>
 			  		</div>  
 			  		<div class="panel-body">
-						<div id="save-failed" class="alert alert-danger" role="alert">
-							<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-							<span class="sr-only">Error:</span>
-							<span class="message"></span>
-						</div>
+<!-- 						<div id="save-failed" class="alert alert-danger" role="alert"> -->
+<!-- 							<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> -->
+<!-- 							<span class="sr-only">Error:</span> -->
+<!-- 							<span class="message"></span> -->
+<!-- 						</div> -->
 						<div id="save-succeeded" class="alert alert-success" role="alert">
 							<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
 							<span class="sr-only">Success:</span>
@@ -603,11 +603,11 @@
 								<span class="sr-only">Error:</span>
 								<span class="message"></span>
 							</div>
-							<div id="save-succeeded" class="alert alert-success" role="alert">
-								<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-								<span class="sr-only">Success:</span>
-								<span class="message"></span>
-							</div>
+<!-- 							<div id="save-succeeded" class="alert alert-success" role="alert"> -->
+<!-- 								<span class="glyphicon glyphicon-ok" aria-hidden="true"></span> -->
+<!-- 								<span class="sr-only">Success:</span> -->
+<!-- 								<span class="message"></span> -->
+<!-- 							</div> -->
 							
 				  			<button style="margin-top: 4px;" id="submit-municipality-job" class="float-rgt mgn-lft8px btn btn-success questions-submit">
 				  				<xsl:choose>

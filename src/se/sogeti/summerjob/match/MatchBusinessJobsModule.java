@@ -28,8 +28,10 @@ import se.unlogic.hierarchy.core.interfaces.ForegroundModuleResponse;
 import se.unlogic.hierarchy.core.utils.HierarchyAnnotatedDAOFactory;
 import se.unlogic.hierarchy.foregroundmodules.rest.AnnotatedRESTModule;
 import se.unlogic.hierarchy.foregroundmodules.rest.RESTMethod;
+import se.unlogic.standardutils.bool.BooleanUtils;
 import se.unlogic.standardutils.json.JsonObject;
 import se.unlogic.standardutils.numbers.NumberUtils;
+import se.unlogic.standardutils.string.StringUtils;
 import se.unlogic.standardutils.xml.XMLUtils;
 import se.unlogic.webutils.http.RequestUtils;
 import se.unlogic.webutils.http.URIParser;
@@ -305,6 +307,36 @@ public class MatchBusinessJobsModule extends AnnotatedRESTModule{
 				result.putField("message", "Updated the ranking");
 				JsonResponse.sendJsonResponse(result.toJson(), null, writer);
 			}
+		}
+	}
+	
+	@RESTMethod(alias="adjustjobstatus.json", method="post")
+	public void adjustJobStatus(HttpServletRequest req, HttpServletResponse res, User user, URIParser uriParser) throws IOException, SQLException{
+		PrintWriter writer = res.getWriter();
+		JsonObject result = new JsonObject();
+		JsonResponse.initJsonResponse(res, writer, null);
+		
+		Integer jobId = NumberUtils.toInt(req.getParameter("jobId"));
+		String newStatusString = req.getParameter("newStatus");
+		
+		if (jobId != null && !StringUtils.isEmpty(newStatusString)) {
+			BusinessSectorJob job = businessJobDAO.getByIdWithApplications(jobId);
+			Boolean newStatus = BooleanUtils.toBoolean(newStatusString);
+			job.setIsOpen(newStatus);
+			
+			try {
+				businessJobDAO.save(job);
+			} catch (SQLException e){
+				log.error("Database error while trying to change status on this job.", e);
+				result.putField("status", "fail");
+				result.putField("message", "Database error while trying to close the work.");
+				JsonResponse.sendJsonResponse(result.toJson(), null, writer);
+				return;
+			}
+			
+			result.putField("status", "success");
+			result.putField("message", "Changed the status on this job");
+			JsonResponse.sendJsonResponse(result.toJson(), null, writer);
 		}
 	}
 }

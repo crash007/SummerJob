@@ -21,6 +21,7 @@ import org.w3c.dom.Element;
 import se.sogeti.jobapplications.beans.ApplicationStatus;
 import se.sogeti.jobapplications.beans.ApplicationType;
 import se.sogeti.jobapplications.beans.CallStatus;
+import se.sogeti.jobapplications.beans.business.BusinessSectorJob;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityJob;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityJobApplication;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityMentor;
@@ -588,6 +589,36 @@ public class MatchMunicipalityJobsModule extends AnnotatedRESTModule{
 		
 		int value = eighteenthBirthday.compareTo(jobEndDate);
 		return value <= 0;
+	}
+	
+	@RESTMethod(alias="adjustjobstatus.json", method="post")
+	public void adjustJobStatus(HttpServletRequest req, HttpServletResponse res, User user, URIParser uriParser) throws IOException, SQLException{
+		PrintWriter writer = res.getWriter();
+		JsonObject result = new JsonObject();
+		JsonResponse.initJsonResponse(res, writer, null);
+		
+		Integer jobId = NumberUtils.toInt(req.getParameter("jobId"));
+		String newStatusString = req.getParameter("newStatus");
+		
+		if (jobId != null && !StringUtils.isEmpty(newStatusString)) {
+			MunicipalityJob job = municipalityJobDAO.getById(jobId);
+			Boolean newStatus = BooleanUtils.toBoolean(newStatusString);
+			job.setIsOpen(newStatus);
+			
+			try {
+				municipalityJobDAO.save(job);
+			} catch (SQLException e){
+				log.error("Database error while trying to change status on this job.", e);
+				result.putField("status", "fail");
+				result.putField("message", "Database error while trying to close the work.");
+				JsonResponse.sendJsonResponse(result.toJson(), null, writer);
+				return;
+			}
+			
+			result.putField("status", "success");
+			result.putField("message", "Changed the status on this job");
+			JsonResponse.sendJsonResponse(result.toJson(), null, writer);
+		}
 	}
 }
 

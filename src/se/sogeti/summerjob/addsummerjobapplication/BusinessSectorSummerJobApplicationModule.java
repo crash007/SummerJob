@@ -35,6 +35,7 @@ import se.unlogic.hierarchy.core.utils.HierarchyAnnotatedDAOFactory;
 import se.unlogic.hierarchy.foregroundmodules.rest.RESTMethod;
 import se.unlogic.standardutils.io.BinarySizes;
 import se.unlogic.standardutils.numbers.NumberUtils;
+import se.unlogic.standardutils.string.StringUtils;
 import se.unlogic.standardutils.xml.XMLUtils;
 import se.unlogic.webutils.http.RequestUtils;
 import se.unlogic.webutils.http.URIParser;
@@ -207,8 +208,10 @@ public class BusinessSectorSummerJobApplicationModule extends AddSummerJobApplic
 					}
 				}
 
-				FileItem fileItem = requestWrapper.getFile(0);			
-				saveCv(app,fileItem,job.getId()+"_"+app.getSocialSecurityNumber()+"_"+fileItem.getName(),writer, callback);
+				FileItem fileItem = requestWrapper.getFile(0);
+				if (!StringUtils.isEmpty(fileItem.getName())) {
+					saveCv(app,fileItem,job.getId()+"_"+app.getSocialSecurityNumber()+"_"+fileItem.getName(),writer, callback);
+				} 
 
 				try {
 					log.info("Påbörjar sparning av näringslivsansökan");

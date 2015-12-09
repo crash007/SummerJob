@@ -223,8 +223,8 @@
 					</xsl:otherwise>
 				</xsl:choose>
 				
-				<a href="{listJobApplicationsURL}" type="button" class="float-rgt mgn-lft8px btn btn-info">Gå tillbaka</a>
-				<a href="{editAppURL}?appId={id}" id="edit-job-button" type="button" class="float-rgt mgn-lft8px btn btn-warning">Redigera</a>
+				<a href="{/Document/ApplicationInfo/listJobApplicationsURL}" type="button" class="float-rgt mgn-lft8px btn btn-info">Gå tillbaka</a>
+				<a href="{/Document/ApplicationInfo/editAppURL}" id="edit-job-button" type="button" class="float-rgt mgn-lft8px btn btn-warning">Redigera</a>
 			</div>
 		</div>
 	</xsl:template>
