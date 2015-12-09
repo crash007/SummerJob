@@ -351,14 +351,12 @@
 							<div class="form-group">						
 								<div class="checkbox">
 								    <label>
-								    	<xsl:choose>
-								    		<xsl:when test="BusinessSectorJobApplication/hasDriversLicense = 'true'">
-										    	<input type="checkbox" name="hasDriversLicense" checked="checked">Har du körkort?</input>	
-								    		</xsl:when>
-								    		<xsl:otherwise>
-										      <input type="checkbox" name="hasDriversLicense">Har du körkort?</input>
-								    		</xsl:otherwise>
-								    	</xsl:choose>
+								    	<input type="checkbox"  name="hasDriversLicense">
+								    		<xsl:if test="BusinessSectorJobApplication/DriversLicenseType != ''">
+								    			<xsl:attribute name="checked">checked</xsl:attribute>	   
+								    		</xsl:if>
+								    		Har du körkort?
+							    		</input>
 								    </label>
 							  	</div>
 							  	<div id="driverslicense_select" class="row">
@@ -367,16 +365,14 @@
 									    <select class="form-control" name="driversLicenseType" id="driversLicenseType">
 									    	<option value="" />
 											<xsl:for-each select="DriversLicenseTypes/DriversLicenseType">
-												<xsl:choose>
-													<xsl:when test="selected = 'true'">
-														<option selected="selected" value="{id}"><xsl:value-of select="name" /> - <xsl:value-of select="description" /></option>
-													</xsl:when>
-													<xsl:otherwise>
-														<option value="{id}"><xsl:value-of select="name" /> - <xsl:value-of select="description" /></option>
-													</xsl:otherwise>
-												</xsl:choose>
+												<option value="{id}">
+													<xsl:if test="/Document/JobApplicationForm/BusinessSectorJobApplication/DriversLicenseType/id = id">
+										    			<xsl:attribute name="selected">selected</xsl:attribute>															    			
+										    		</xsl:if>		
+										    		<xsl:value-of select="name" /> - <xsl:value-of select="description"/>																		
+												</option>																		
 											</xsl:for-each>
-										</select>
+										</select>			
 										<p class="help-block with-errors"></p>
 									</div>
 								</div>
