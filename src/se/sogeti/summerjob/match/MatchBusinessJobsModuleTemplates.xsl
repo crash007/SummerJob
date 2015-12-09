@@ -6,6 +6,7 @@
 	<xsl:template match="Document">
 		<script>
 			var url = '<xsl:value-of select="requestinfo/uri"/>';
+			var isOpen = '<xsl:value-of select="MatchBusinessJob/BusinessSectorJob/isOpen"/>';
 		</script>
 
 		<xsl:apply-templates select="MatchBusinessJob"/>
@@ -115,7 +116,7 @@
 				<div class="col-md-4 bold">
 					<form name="match-worker">
 						<input type="hidden" name="application-id" value="{id}"/>
-						<button type="submit" class="btn btn-primary set-matched-btn">Matcha</button>
+						<button type="submit" class="btn btn-primary set-matched-btn common-button">Matcha</button>
 					</form>
 				</div>
 				
@@ -135,6 +136,15 @@
 				<div class="row">
 					<input type="hidden" id="job-id" value="{id}"/>			
 					<div class="col-md-12">	
+						<input type="hidden" id="jobIsOpenStatus" value="{isOpen}"></input>
+						<xsl:if test="isOpen = 'false'">
+							<div class="row">
+								<div class="col-xs-8 col-md-4">						
+									<h2 style="margin-bottom: 20px; padding-bottom: 15px;" class="prio">Annonsen är stängd</h2>
+								</div>
+							</div>
+						</xsl:if>
+					
 						<div class="row">
 					
 							<div class="col-xs-4 col-md-3 bold">Rubrik</div>
@@ -253,10 +263,10 @@
 									<div class="mgn-top8px row">
 <!-- 										<div class="col-md-3"></div>											 -->
 										<div class="col-md-2">
-											<button type="submit" class="btn btn-danger remove-workers-btn">Ta bort</button>
+											<button type="submit" class="btn btn-danger remove-workers-btn common-button">Ta bort</button>
 										</div>
 										<div class="col-md-2">
-											<button type="submit" class="btn btn-warning deny-btn">Neka</button>
+											<button type="submit" class="btn btn-warning deny-btn common-button">Neka</button>
 										</div>
 									</div>
 								</form>
@@ -287,13 +297,11 @@
 												</div>
 											</xsl:if>
 										</xsl:for-each>
-										
 									</div>
 									
-									<div class="row">
-										<div class="col-md-3"></div>												
+									<div class="row mgn-top8px">
 										<div class="col-md-9">
-											<button type="submit" class="btn btn-primary from-denied-to-matched-btn">Ändra till matchad</button>
+											<button type="submit" class="btn btn-primary from-denied-to-matched-btn common-button">Ändra till matchad</button>
 										</div>
 									</div>
 								</form>

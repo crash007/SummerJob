@@ -11,7 +11,6 @@
 			var url = '<xsl:value-of select="requestinfo/uri"/>';
 		</script>
 		
-		
 		<xsl:variable name="isAdmin" select="IsAdmin"/>
 		<xsl:apply-templates select="BusinessSectorJobForm"/>
 	</xsl:template>
@@ -97,14 +96,17 @@
 										<div class="remove-mentor mgn-top8px glyphicon glyphicon-remove" aria-hidden="true"></div>
 									</div>
 								</div>
-
 							</xsl:for-each>
 				    	</div>
 				    	<a href="#" class="add-business-mentor-btn"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Lägg till ny handledare</a>
 				  	</div>
-				  	
-				  </div>
+<!-- 				  	<div class="row mgn-top16px form-group"> -->
+<!-- 				  		<div class="col-md-4"> -->
+<!-- 					  		<input type="checkbox" id="inChargeOfInterviews" name="inChargeOfInterviews"> Jag vill överlåta intervjuarbetet till kommunen</input> -->
+<!-- 						</div>					  	 -->
+<!-- 				  	</div> -->
 		  		</div>
+		  	</div>
 				
 				<div class="panel panel-default">
 				  <div class="panel-heading">
@@ -183,7 +185,7 @@
 			  	
 			  	<div class="panel panel-default">
 				  <div class="panel-heading">
-				    <h3 class="panel-title">Krav</h3>
+				    <h3 class="panel-title">Krav och önskemål</h3>
 				  </div>
 				  <div class="panel-body">
 					  	<div class="checkbox">
@@ -201,7 +203,7 @@
 						<div class="checkbox">
 						    <label>
 						    	<xsl:choose>
-						    		<xsl:when test="BusinessSectorJob/hasDriversLicense = 'true'">
+						    		<xsl:when test="BusinessSectorJob/DriversLicenseType != ''">
 						    			<input type="checkbox" id="hasDriversLicense" name="hasDriversLicense" checked="checked">Måste ha körkort</input>
 						    		</xsl:when>
 						    		<xsl:otherwise>
@@ -230,13 +232,23 @@
 								<p class="help-block with-errors"></p>
 							</div>
 						</div>
-					  	
+						
+						<div class="checkbox">
+						    <label>
+						    	<input type="checkbox" id="inChargeOfInterviews" name="inChargeOfInterviews">
+					  					<xsl:if test="BusinessSectorJob/inChargeOfInterviews = 'true'">
+   											<xsl:attribute name="checked">checked</xsl:attribute>	   	
+   										</xsl:if>
+					  				Jag vill överlåta intervjuarbetet till kommunen
+					  			</input>
+						    </label>
+					  	</div>
+				  		
 						<div class="form-group">
 						    <label for="work-description">Övriga önskemål och krav</label>				    
 						    <textarea class="form-control" rows="3" id="other-requirements" name="other-requirements"><xsl:value-of select="BusinessSectorJob/freeTextRequirements"></xsl:value-of></textarea>							    
 						    <p class="help-block">Övriga önskemål</p>
 					  	</div>    	
-				  	
 				  </div>
 			  	</div>
 			  	
@@ -247,6 +259,13 @@
 			  			</h3>
 			  		</div>  
 			  		<div class="panel-body">
+			  		
+			  			<div id="save-succeeded" class="alert alert-success" role="alert">
+							<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+							<span class="sr-only">Success:</span>
+							<span class="message"></span>
+						</div>
+			  		
 						<button style="margin-top: 4px;" id="preview-business-sector-job" type="submit" class="float-rgt mgn-lft8px btn btn-success questions-submit">
 							Förhandsgranska
 			  			</button>
@@ -379,34 +398,42 @@
 								</div>
 							</div>
 							<div class="panel panel-default">
-						<div class="panel-heading">
-							<h3 class="panel-title">Krav</h3>
-						</div>
-						<div class="panel-body">
-							<div class="row">
-								<div class="col-md-5">
-									<label>Körkort</label>
-									<input type="hidden" id="driversLicenseNeededText" value="Ja, tjänsten kräver körkort av typ " />
-									<input type="hidden" id="driversLicenseNotNeededText" value="Nej, tjänsten kräver EJ körkort" />
-									<p id="preview-driverslicense"></p>
+								<div class="panel-heading">
+									<h3 class="panel-title">Krav</h3>
+								</div>
+								<div class="panel-body">
+									<div class="row">
+										<div class="col-md-5">
+											<label>Körkort</label>
+											<input type="hidden" id="driversLicenseNeededText" value="Ja, tjänsten kräver körkort av typ " />
+											<input type="hidden" id="driversLicenseNotNeededText" value="Nej, tjänsten kräver EJ körkort" />
+											<p id="preview-driverslicense"></p>
+										</div>
+									</div>
+									<div class="mgn-top8px row">
+										<div class="col-md-4">
+											<label>Ålder</label>
+											<input type="hidden" id="overEighteenNeededText" value="Tjänsten kräver att sökande är över 18 år" />
+											<input type="hidden" id="overEighteenNotNeededText" value="Tjänsten kräver EJ att sökande är över 18 år" />
+											<p id="preview-age"></p>
+										</div>
+									</div>
+									<div class="mgn-top8px row">
+										<div class="col-md-12">
+											<label>Intervjuer</label>
+											<input type="hidden" id="inChargeOfInterviewsText" value="Jag låter kommunen sköta arbetet med intervjuer" />
+											<input type="hidden" id="notInChargeOfInterviewsText" value="Jag vill själv sköta arbetet med intervjuer" />
+											<p id="preview-inChargeOfInterviews"></p>
+										</div>
+									</div>
+									<div class="mgn-top8px row">
+										<div class="col-md-12">
+											<label>Övriga krav och önskemål</label>
+											<p id="preview-otherrequirements"></p>
+										</div>
+									</div>
 								</div>
 							</div>
-							<div class="mgn-top8px row">
-								<div class="col-md-4">
-									<label>Ålder</label>
-									<input type="hidden" id="overEighteenNeededText" value="Tjänsten kräver att sökande är över 18 år" />
-									<input type="hidden" id="overEighteenNotNeededText" value="Tjänsten kräver EJ att sökande är över 18 år" />
-									<p id="preview-age"></p>
-								</div>
-							</div>
-							<div class="mgn-top8px row">
-								<div class="col-md-12">
-									<label>Övriga krav och önskemål</label>
-									<p id="preview-otherrequirements"></p>
-								</div>
-							</div>
-						</div>
-					</div>
 					
 					<div class="panel panel-default">
 				  		<div class="panel-heading">
@@ -423,11 +450,11 @@
 								<span class="sr-only">Error:</span>
 								<span class="message"></span>
 							</div>
-							<div id="save-succeeded" class="alert alert-success" role="alert">
-								<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-								<span class="sr-only">Success:</span>
-								<span class="message"></span>
-							</div>
+<!-- 							<div id="save-succeeded" class="alert alert-success" role="alert"> -->
+<!-- 								<span class="glyphicon glyphicon-ok" aria-hidden="true"></span> -->
+<!-- 								<span class="sr-only">Success:</span> -->
+<!-- 								<span class="message"></span> -->
+<!-- 							</div> -->
 							
 				  			<button style="margin-top: 4px;" id="submit-business-sector-job" class="float-rgt mgn-lft8px btn btn-success questions-submit">
 				  				<xsl:choose>

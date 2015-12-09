@@ -156,7 +156,7 @@
 					</div>
 					<div class="panel panel-default">
 				<div class="panel-heading">
-					<h3 class="panel-title">Krav</h3>
+					<h3 class="panel-title">Krav och önskemål</h3>
 				</div>
 				<div class="panel-body">
 					<div class="row">
@@ -181,6 +181,19 @@
 							</div>
 						</div>
 					</div>
+					
+					<div class="mgn-top8px row">
+						<div class="col-md-6">
+							<label>Intervjuer</label>
+							<div>
+								<xsl:choose>
+									<xsl:when test="BusinessSectorJob/inChargeOfInterviews = 'true'">Jag låter kommunen sköta arbetet med intervjuer.</xsl:when>
+									<xsl:otherwise>Jag vill själv sköta arbetet med intervjuer</xsl:otherwise>
+								</xsl:choose>
+							</div>
+						</div>
+					</div>
+					
 					<div class="mgn-top8px row">
 						<div class="col-md-12">
 							<label>Övriga krav och önskemål</label>

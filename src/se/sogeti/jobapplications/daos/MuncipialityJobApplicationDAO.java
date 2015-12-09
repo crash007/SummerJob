@@ -16,6 +16,7 @@ import se.unlogic.standardutils.dao.AnnotatedDAOFactory;
 import se.unlogic.standardutils.dao.HighLevelQuery;
 import se.unlogic.standardutils.dao.QueryOperators;
 import se.unlogic.standardutils.dao.QueryParameter;
+import se.unlogic.standardutils.enums.Order;
 import se.unlogic.standardutils.reflection.ReflectionUtils;
 
 public class MuncipialityJobApplicationDAO extends JobApplicationDAO<MunicipalityJobApplication>{
@@ -125,6 +126,8 @@ public class MuncipialityJobApplicationDAO extends JobApplicationDAO<Municipalit
 		
 		
 		query.disableAutoRelations(true);
+		
+		query.addOrderByCriteria(this.getOrderByCriteria("ranking", Order.ASC));
 		return this.getAll(query);
 	}
 	

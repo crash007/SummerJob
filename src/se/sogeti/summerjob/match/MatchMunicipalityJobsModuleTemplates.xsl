@@ -6,7 +6,7 @@
 	<xsl:template match="Document">
 		<script>
 			var url = '<xsl:value-of select="requestinfo/uri"/>';
-			var freeSlots = '<xsl:value-of select="FreeSlots"/>';
+			var isOpen = '<xsl:value-of select="MatchMunicipalityJob/MunicipalityJob/isOpen"/>';
 		</script>
 		
 		<xsl:apply-templates select="MatchMunicipalityJob"/>
@@ -17,7 +17,7 @@
 	<xsl:template match="MatchMunicipalityJob">
 		<div class="well">
 			<xsl:apply-templates select="MunicipalityJob"/>		
-			<xsl:apply-templates select="Area1AndGeoArea1Candidates"/>		
+			<xsl:apply-templates select="Area1AndGeoArea1Candidates" />	
 			<xsl:apply-templates select="Area1AndGeoArea2Candidates"/>		
 			<xsl:apply-templates select="Area1AndGeoArea3Candidates"/>
 			<xsl:apply-templates select="AnyAreaAndGeoArea1Candidates"/>
@@ -38,7 +38,7 @@
 						  	 <h3 class="panel-title" style="margin-top: 0px"><xsl:value-of select="$header"></xsl:value-of></h3>			
 			 			</div>
 			 			<div class="panel-body">
-		 				  <xsl:apply-templates select="MunicipalityJobApplication"/>				  
+		 				  <xsl:apply-templates select="MunicipalityJobApplication" />			  
 			 			</div>
 			 		</div>
 				  </div>
@@ -95,6 +95,23 @@
 	
 	<xsl:template match="MunicipalityJobApplication">
 		<div style="margin-bottom: 8px" class="candidate">
+		
+			<div class="row">
+				<div class="col-xs-4 col-md-2 bold">Ranking</div>
+				<div class="col-md-4">
+					<xsl:value-of select="ranking"/>	   		
+	   			</div>
+	   			
+	   			<xsl:if test="applicationType = 'REGULAR_ADMIN'">
+	   				<div class="col-xs-4 col-md-2 bold">Typ</div>
+		   			<div style="font-size: larger" class="col-md-4 bold">Inlagd av admin</div>
+	   			</xsl:if>
+	   			<xsl:if test="applicationType = 'PRIO'">
+	   				<div class="col-xs-4 col-md-2 bold">Typ</div>
+		   			<div style="font-size: larger" class="col-md-4 prio bold">Prio</div>
+	   			</xsl:if>
+			</div>
+		
 			<div class="row">
 				<div class="col-xs-4 col-md-2 bold">Namn</div>
 				<div class="col-md-4 name">
@@ -104,16 +121,9 @@
 	   			</div>
 				
 				<div class="col-xs-4 col-md-2 bold">Personnummer</div>
-				<div class="col-md-3 social-number">
+				<div class="col-md-2 social-number">
 					<xsl:value-of select="socialSecurityNumber"/>	   		
 	   			</div>
-	   			
-	   			<xsl:if test="applicationType = 'REGULAR_ADMIN'">
-		   			<div style="text-align: right; font-size: larger" class="col-xs-1 bold">*</div>
-	   			</xsl:if>
-	   			<xsl:if test="applicationType = 'PRIO'">
-		   			<div style="text-align: right; font-size: larger" class="col-xs-1 bold prio">*</div>
-	   			</xsl:if>
 	   		</div>
 	   		
 	   		<div class="row">
@@ -191,7 +201,7 @@
 				<div class="col-md-4 bold">
 					<form name="match-worker">
 						<input type="hidden" name="application-id" value="{id}"/>
-							<button type="submit" class="btn btn-primary set-matched-btn">Matcha</button>
+						<button type="submit" class="btn btn-primary set-matched-btn common-button">Matcha</button>
 					</form>
 				</div>
 			</div>
@@ -206,6 +216,15 @@
 				<div class="row">
 					<input type="hidden" id="job-id" value="{id}"/>			
 					<div class="col-md-12">	
+						<input type="hidden" id="jobIsOpenStatus" value="{isOpen}"></input>
+						<xsl:if test="isOpen = 'false'">
+							<div class="row">
+								<div class="col-xs-8 col-md-4">						
+									<h2 style="margin-bottom: 20px; padding-bottom: 15px;" class="prio">Annonsen är stängd</h2>
+								</div>
+							</div>
+						</xsl:if>
+					
 						<div class="row">
 					
 							<div class="col-xs-4 col-md-3 bold">Rubrik</div>
@@ -407,10 +426,10 @@
 									</div>
 									<div class="mgn-top8px row">
 										<div class="col-md-2">
-											<button type="submit" class="btn btn-danger remove-workers-btn">Ta bort</button>
+											<button type="submit" class="btn btn-danger remove-workers-btn common-button">Ta bort</button>
 										</div>
 										<div class="col-md-2">
-											<button type="submit" class="btn btn-warning deny-btn">Tackat nej</button>
+											<button type="submit" class="btn btn-warning deny-btn common-button">Tackat nej</button>
 										</div>
 									</div>
 								</form>
@@ -441,13 +460,11 @@
 												</div>
 											</xsl:if>
 										</xsl:for-each>
-										
 									</div>
 									
-									<div class="row">
-<!-- 										<div class="col-md-3"></div>												 -->
+									<div class="row mgn-top8px">
 										<div class="col-md-9">
-											<button type="submit" class="btn btn-primary from-denied-to-matched-btn">Ändra till matchad</button>
+											<button type="submit" class="btn btn-primary from-denied-to-matched-btn common-button">Ändra till matchad</button>
 										</div>
 									</div>
 								</form>

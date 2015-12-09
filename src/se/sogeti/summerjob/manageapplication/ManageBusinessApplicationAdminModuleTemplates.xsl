@@ -79,7 +79,7 @@
 				    	<xsl:choose>
 				    		<xsl:when test="cvFilename != ''">
 						    	<div>
-						    		<a href="{/Document/requestinfo/contextpath}/{/Document/CvBusinessApplicationUrl}?id={id}">Ladda ner</a>
+						    		<a target="_blank" href="{/Document/requestinfo/contextpath}/{/Document/CvBusinessApplicationUrl}?id={id}">Ladda ner</a>
 						    	</div>
 				    		</xsl:when>
 				    		<xsl:otherwise>
@@ -92,7 +92,7 @@
 			  		<div class="col-md-3">
 			  			<label>Körkort</label>
 			  			<xsl:choose>
-			  				<xsl:when test="hasDriversLicense = 'true'">
+			  				<xsl:when test="DriversLicenseType">
 			  					<div>Ja, jag har körkort av typ <xsl:value-of select="DriversLicenseType/name"></xsl:value-of></div>
 			  				</xsl:when>
 			  				<xsl:otherwise>
@@ -162,8 +162,8 @@
 					</xsl:otherwise>
 				</xsl:choose>
 				
-				<a href="{listJobApplicationsURL}" type="button" class="float-rgt mgn-lft8px btn btn-info">Gå tillbaka</a>
-				<a href="{editBusinessAppURL}" id="edit-job-button" type="button" class="float-rgt mgn-lft8px btn btn-warning">Redigera</a>
+				<a href="{/Document/ApplicationInfo/listJobApplicationsURL}" type="button" class="float-rgt mgn-lft8px btn btn-info">Gå tillbaka</a>
+				<a href="{/Document/ApplicationInfo/editBusinessAppURL}" id="edit-job-button" type="button" class="float-rgt mgn-lft8px btn btn-warning">Redigera</a>
 			</div>
 		</div>
 	</xsl:template>
