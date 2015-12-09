@@ -154,7 +154,8 @@ public class AddMunicipalitySummerJobApplicationModule extends AddSummerJobAppli
 		}
 		form.appendChild(geoAreasElement);
 		
-		populateDriversLicenseTypesElement(doc, form, app, driversLicenseTypeDAO.getAll());
+		XMLUtils.append(doc, form, "DriversLicenseTypes",driversLicenseTypeDAO.getAll());
+		
 		
 		return new SimpleForegroundModuleResponse(doc);
 	}

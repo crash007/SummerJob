@@ -92,8 +92,8 @@ public class BusinessSectorSummerJobApplicationModule extends AddSummerJobApplic
 				XMLUtils.append(doc, jobApplication, app);
 			}
 			
-			populateDriversLicenseTypesElement(doc, jobApplication, app, driversLicenseTypeDAO.getAll());
-			
+
+			XMLUtils.append(doc, jobApplication, "DriversLicenseTypes",driversLicenseTypeDAO.getAll());
 		
 			doc.getFirstChild().appendChild(jobApplication);
 			
