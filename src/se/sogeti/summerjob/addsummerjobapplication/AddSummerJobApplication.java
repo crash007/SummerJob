@@ -2,6 +2,7 @@ package se.sogeti.summerjob.addsummerjobapplication;
 
 import java.io.File;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.List;
@@ -122,17 +123,44 @@ public abstract class AddSummerJobApplication<T extends JobApplication> extends 
 	protected void createJobApplication(T app, HttpServletRequest req, Citizen person){
 		
 		
-		app.setCity(req.getParameter("postalarea"));
+		try {
+			
+			if(req.getParameter("postalarea")!=null){
+				String postal = new String(req.getParameter("postalarea").getBytes("iso-8859-1"),"UTF-8");
+				app.setCity(postal);
+			}
+			if(req.getParameter("firstname")!=null){
+				String firstname = new String(req.getParameter("firstname").getBytes("iso-8859-1"),"UTF-8");
+				app.setFirstname(firstname);
+			}
+			
+			if(req.getParameter("lastname")!=null){
+				String lastname = new String(req.getParameter("lastname").getBytes("iso-8859-1"),"UTF-8");
+				app.setLastname(lastname);	
+			}
+			
+			if(req.getParameter("street")!=null){
+				String street = new String(req.getParameter("street").getBytes("iso-8859-1"),"UTF-8");
+				app.setStreetAddress(street);	
+			}
+			
+			if(req.getParameter("personal-letter")!=null){
+				String letter = new String(req.getParameter("personal-letter").getBytes("iso-8859-1"),"UTF-8");
+				app.setPersonalLetter(letter);;	
+			}
+			
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		app.setEmail(req.getParameter("email"));
-		app.setFirstname(req.getParameter("firstname"));
-		app.setLastname(req.getParameter("lastname"));
+		
 		app.setPhoneNumber(req.getParameter("phone"));
 		app.setSocialSecurityNumber(req.getParameter("socialSecurityNumber"));
-		app.setStreetAddress(req.getParameter("street"));
+		
 		app.setZipCode(req.getParameter("postalcode"));
 		app.setBirthdate(FormUtils.getDateOfBirth(req.getParameter("socialSecurityNumber")));
-				
-		app.setPersonalLetter(req.getParameter("personal-letter"));
 
 		app.setCreated(new Date(new java.util.Date().getTime()));
 		
