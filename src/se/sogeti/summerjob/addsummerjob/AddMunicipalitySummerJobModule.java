@@ -254,10 +254,10 @@ public class AddMunicipalitySummerJobModule extends AnnotatedRESTModule{
 			job.setCreated(new java.sql.Date(new Date().getTime()));
 		}
 		
-		if(req.getParameter("isOverEighteen")!=null){
-			job.setIsOverEighteen(true);
+		if(req.getParameter("mustBeOverEighteen")!=null){
+			job.setBeMustOverEighteen(true);
 		}else{
-			job.setIsOverEighteen(false);
+			job.setBeMustOverEighteen(false);
 		}
 		
 		boolean hasDriversLicense = req.getParameter("hasDriversLicense") != null ? true : false;
