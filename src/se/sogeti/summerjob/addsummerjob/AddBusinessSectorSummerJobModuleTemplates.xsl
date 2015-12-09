@@ -189,11 +189,11 @@
 					  	<div class="checkbox">
 						    <label>
 						    	<xsl:choose>
-						    		<xsl:when test="BusinessSectorJob/isOverEighteen ='true'">
-						    			<input type="checkbox" id="isOverEighteen" name="isOverEighteen" checked="checked">Måste vara över 18 år</input>
+						    		<xsl:when test="BusinessSectorJob/mustBeOverEighteen ='true'">
+						    			<input type="checkbox" id="mustBeOverEighteen" name="mustBeOverEighteen" checked="checked">Måste vara över 18 år</input>
 						    		</xsl:when>
 						    		<xsl:otherwise>
-						    			<input type="checkbox" id="isOverEighteen" name="isOverEighteen">Måste vara över 18 år</input>
+						    			<input type="checkbox" id="mustBeOverEighteen" name="mustBeOverEighteen">Måste vara över 18 år</input>
 						    		</xsl:otherwise>
 						    	</xsl:choose>
 						    </label>

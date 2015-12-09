@@ -175,7 +175,7 @@
 							<label>Ålder</label>
 							<div>
 								<xsl:choose>
-									<xsl:when test="BusinessSectorJob/isOverEighteen = 'true'">Tjänsten kräver att sökande är över 18 år.</xsl:when>
+									<xsl:when test="BusinessSectorJob/mustBeOverEighteen = 'true'">Tjänsten kräver att sökande är över 18 år.</xsl:when>
 									<xsl:otherwise>Tjänsten kräver <i>ej</i> att sökande är över 18 år.</xsl:otherwise>
 								</xsl:choose>
 							</div>

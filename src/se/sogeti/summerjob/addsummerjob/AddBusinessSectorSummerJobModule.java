@@ -253,8 +253,8 @@ public class AddBusinessSectorSummerJobModule extends AnnotatedRESTModule{
         	job.setInitiatedByUser(user.getUsername());
         }
         
-        job.setIsOverEighteen(req.getParameter("isOverEighteen") != null ? true : false);
-        log.info("isOverEighteen: " + req.getParameter("isOverEighteen"));
+        job.setMustBeOverEighteen(req.getParameter("mustBeOverEighteen") != null ? true : false);
+        log.debug("MustBeOverEighteen: " + req.getParameter("mustBeOverEighteen"));
         boolean hasDriversLicense = req.getParameter("hasDriversLicense") != null ? true : false;
         
         log.info("hasDriversLicense: " + hasDriversLicense);

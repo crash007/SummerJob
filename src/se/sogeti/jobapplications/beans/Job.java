@@ -208,17 +208,9 @@ public abstract class Job implements Requirements, Elementable{
 		this.freeTextRequirements = freeTextRequirements;
 	}
 
-	public void setIsOverEighteen(Boolean isOverEighteen) {
-		this.mustBeOverEighteen = isOverEighteen;
+	public void setBeMustOverEighteen(Boolean mustBeOverEighteen) {
+		this.mustBeOverEighteen = mustBeOverEighteen;
 	}
-
-//	public Boolean getHasDriversLicense() {
-//		return hasDriversLicense;
-//	}
-//
-//	public void setHasDriversLicense(Boolean hasDriversLicense) {
-//		this.hasDriversLicense = hasDriversLicense;
-//	}
 
 	public DriversLicenseType getDriversLicenseType() {
 		return driversLicenseType;
