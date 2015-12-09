@@ -163,7 +163,7 @@ public class MatchMunicipalityJobsModule extends AnnotatedRESTModule{
 				// TODO Lägg in dessa nya kandidater på sidan
 				List<MunicipalityJobApplication> area2AndGeoArea3 = municipalityJobApplicationDAO.getCandidatesByPreferedArea2AndPreferedGeoArea3(job.getArea(), job.getGeoArea(), bornBefore, job.getDriversLicenseType());				
 				XMLUtils.append(doc, matchMunicipalityJobElement, "Area2AndGeoArea3Candidates", area2AndGeoArea3);
-				printCandidates(job.getId(), area2AndGeoArea3,"Area2AndGeoArea2");
+				printCandidates(job.getId(), area2AndGeoArea3,"Area2AndGeoArea3");
 				
 				
 				
@@ -183,7 +183,7 @@ public class MatchMunicipalityJobsModule extends AnnotatedRESTModule{
 				
 				
 				
-				//Third hand pick
+				//Any area
 				List<MunicipalityJobApplication> anyAreaAndGeoArea1Candidates = municipalityJobApplicationDAO.getCandidatesByNoPreferedAreaAndPreferedGeoArea1(job.getGeoArea(), bornBefore, job.getDriversLicenseType());				
 				XMLUtils.append(doc, matchMunicipalityJobElement, "AnyAreaAndGeoArea1Candidates", anyAreaAndGeoArea1Candidates);
 				printCandidates(job.getId(), anyAreaAndGeoArea1Candidates,"AnyAreaAndGeoArea1");
