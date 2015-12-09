@@ -117,7 +117,8 @@ public class AddMunicipalitySummerJobApplicationModule extends AddSummerJobAppli
 			XMLUtils.appendNewElement(doc, areaElement, "id", area.getId());
 			XMLUtils.appendNewElement(doc, areaElement, "name", area.getName());
 			XMLUtils.appendNewElement(doc, areaElement, "canBeChosenInApplication", area.isCanBeChosenInApplication());
-
+			XMLUtils.appendNewElement(doc, areaElement, "description", area.getDescription());
+			
 			if (app != null && app.getPreferedArea1() != null 
 					&& app.getPreferedArea1().getId().intValue() == area.getId().intValue()) {
 				XMLUtils.appendNewElement(doc, areaElement, "selectedArea1", true);
@@ -138,6 +139,7 @@ public class AddMunicipalitySummerJobApplicationModule extends AddSummerJobAppli
 			Element geoElement = doc.createElement("GeoArea");
 			XMLUtils.appendNewElement(doc, geoElement, "id", geoArea.getId());
 			XMLUtils.appendNewElement(doc, geoElement, "name", geoArea.getName());
+			XMLUtils.appendNewElement(doc, geoElement, "description", geoArea.getDescription());
 
 			if (app != null && app.getPreferedGeoArea1() != null 
 					&& app.getPreferedGeoArea1().getId().intValue() == geoArea.getId().intValue()) {
@@ -153,7 +155,8 @@ public class AddMunicipalitySummerJobApplicationModule extends AddSummerJobAppli
 		}
 		form.appendChild(geoAreasElement);
 		
-		populateDriversLicenseTypesElement(doc, form, app, driversLicenseTypeDAO.getAll());
+		XMLUtils.append(doc, form, "DriversLicenseTypes",driversLicenseTypeDAO.getAll());
+		
 		
 		return new SimpleForegroundModuleResponse(doc);
 	}

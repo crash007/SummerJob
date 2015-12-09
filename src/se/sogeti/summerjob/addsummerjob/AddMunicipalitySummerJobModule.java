@@ -98,44 +98,13 @@ public class AddMunicipalitySummerJobModule extends AnnotatedRESTModule{
 			XMLUtils.appendNewElement(doc, jobForm, "manageJobURL", manageJobURL);
 		} 
 		
-		Element areasElement = doc.createElement("Areas");
-		List<MunicipalityJobArea> areas = areaDAO.getAll();
-		for (MunicipalityJobArea area : areas) {
-			Element jobArea = doc.createElement("MunicipalityJobArea");
-			XMLUtils.appendNewElement(doc, jobArea, "id", area.getId());
-			XMLUtils.appendNewElement(doc, jobArea, "name", area.getName());
-			XMLUtils.appendNewElement(doc, jobArea, "description", area.getDescription());
-			XMLUtils.appendNewElement(doc, jobArea, "canBeChosenInApplication", area.isCanBeChosenInApplication());
-			
-			if (job != null && job.getArea() != null) {
-				XMLUtils.appendNewElement(doc, jobArea, "selected", 
-						job.getArea().getId().intValue() == area.getId().intValue());
-			}
-			
-			areasElement.appendChild(jobArea);
-		}
 		
-		jobForm.appendChild(areasElement);
+		XMLUtils.append(doc, jobForm, "Areas",areaDAO.getAll());
+		XMLUtils.append(doc, jobForm, "GeoAreas",geoAreaDAO.getAll());
 		
-		Element geoAreaElement = doc.createElement("GeoAreas");
-		List<GeoArea> geoAreas = geoAreaDAO.getAll();
-		for (GeoArea geoArea : geoAreas) {
-			Element geoElement = doc.createElement("GeoArea");
-			XMLUtils.appendNewElement(doc, geoElement, "id", geoArea.getId());
-			XMLUtils.appendNewElement(doc, geoElement, "name", geoArea.getName());
-			XMLUtils.appendNewElement(doc, geoElement, "description", geoArea.getDescription());
-
-			if (job != null && job.getGeoArea() != null) {
-				XMLUtils.appendNewElement(doc, geoElement, "selected", 
-						job.getGeoArea().getId().intValue() == geoArea.getId().intValue());
-			}
-			
-			geoAreaElement.appendChild(geoElement);
-		}
-		
-		jobForm.appendChild(geoAreaElement);
 		
 		List<Period> periods = periodDAO.getPeriodsByIsUnique(false);
+		
 		List<MunicipalityMentor> mentors = null;
 		if (job != null) {
 			mentors = job.getMentors();
@@ -144,45 +113,34 @@ public class AddMunicipalitySummerJobModule extends AnnotatedRESTModule{
 				periods.add(job.getPeriod());
 			}
 		}
-		Element periodsElement = doc.createElement("Periods");
-		for (Period p : periods) {
-			Element periodElement = doc.createElement("Period");
-			XMLUtils.appendNewElement(doc, periodElement, "id", p.getId());
-			XMLUtils.appendNewElement(doc, periodElement, "name", p.getName());
-			XMLUtils.appendNewElement(doc, periodElement, "startDate", p.getStartDate());
-			XMLUtils.appendNewElement(doc, periodElement, "endDate", p.getEndDate());
-			
-			if (job != null && job.getPeriod() != null) {
-				XMLUtils.appendNewElement(doc, periodElement, "selected", 
-						job.getPeriod().getId().intValue() == p.getId().intValue());
+		if(periods!=null){
+			Element periodsElement = doc.createElement("Periods");
+			for (Period p : periods) {
+				Element periodElement = doc.createElement("Period");
+				XMLUtils.appendNewElement(doc, periodElement, "id", p.getId());
+				XMLUtils.appendNewElement(doc, periodElement, "name", p.getName());
+				XMLUtils.appendNewElement(doc, periodElement, "startDate", p.getStartDate());
+				XMLUtils.appendNewElement(doc, periodElement, "endDate", p.getEndDate());
 				
-				Element mentorsElement = doc.createElement("mentors");
-				XMLUtils.append(doc, mentorsElement, mentors);
-				periodElement.appendChild(mentorsElement);
+				if (job != null && job.getPeriod() != null) {
+					XMLUtils.appendNewElement(doc, periodElement, "selected", 
+							job.getPeriod().getId().intValue() == p.getId().intValue());
+					
+					Element mentorsElement = doc.createElement("mentors");
+					XMLUtils.append(doc, mentorsElement, mentors);
+					periodElement.appendChild(mentorsElement);
+				}
+				
+				periodsElement.appendChild(periodElement);
 			}
 			
-			periodsElement.appendChild(periodElement);
+			jobForm.appendChild(periodsElement);
+		}else{
+			log.warn("No periods found");
 		}
 		
-		jobForm.appendChild(periodsElement);
-		
-		Element driversLicenseElement = doc.createElement("DriversLicenseTypes");
 		List<DriversLicenseType> driverslicenseTypes = driversLicenseTypeDAO.getAll();
-		for (DriversLicenseType type : driverslicenseTypes) {
-			Element licenseType = doc.createElement("DriversLicenseType");
-			XMLUtils.appendNewElement(doc, licenseType, "id", type.getId());
-			XMLUtils.appendNewElement(doc, licenseType, "name", type.getName());
-			XMLUtils.appendNewElement(doc, licenseType, "description", type.getDescription());
-			
-			if (job != null && job.getDriversLicenseType() != null) {
-				XMLUtils.appendNewElement(doc, licenseType, "selected", 
-						job.getDriversLicenseType().getId().intValue() == type.getId().intValue());
-			}
-			
-			driversLicenseElement.appendChild(licenseType);
-		}
-			
-		jobForm.appendChild(driversLicenseElement);
+		XMLUtils.append(doc, jobForm, "DriversLicenseTypes",driverslicenseTypes);
 		
 		return new SimpleForegroundModuleResponse(doc);
 	}
@@ -250,10 +208,10 @@ public class AddMunicipalitySummerJobModule extends AnnotatedRESTModule{
 			job.setCreated(new java.sql.Date(new Date().getTime()));
 		}
 		
-		if(req.getParameter("isOverEighteen")!=null){
-			job.setIsOverEighteen(true);
+		if(req.getParameter("mustBeOverEighteen")!=null){
+			job.setBeMustOverEighteen(true);
 		}else{
-			job.setIsOverEighteen(false);
+			job.setBeMustOverEighteen(false);
 		}
 		
 		boolean hasDriversLicense = req.getParameter("hasDriversLicense") != null ? true : false;

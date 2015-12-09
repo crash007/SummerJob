@@ -79,24 +79,10 @@ public class AddBusinessSectorSummerJobModule extends AnnotatedRESTModule{
 			XMLUtils.appendNewElement(doc, jobForm, "manageJobURL", manageJobURL);
 		} 
 		
-		Element driversLicenseElement = doc.createElement("DriversLicenseTypes");
 		List<DriversLicenseType> driverslicenseTypes = driversLicenseTypeDAO.getAll();
 		
-		for (DriversLicenseType type : driverslicenseTypes) {
-			Element licenseType = doc.createElement("DriversLicenseType");
-			XMLUtils.appendNewElement(doc, licenseType, "id", type.getId());
-			XMLUtils.appendNewElement(doc, licenseType, "name", type.getName());
-			XMLUtils.appendNewElement(doc, licenseType, "description", type.getDescription());
-			
-			if (job != null && job.getDriversLicenseType() != null) {
-				XMLUtils.appendNewElement(doc, licenseType, "selected", 
-						job.getDriversLicenseType().getId().intValue() == type.getId().intValue());
-			}
-			
-			driversLicenseElement.appendChild(licenseType);
-		}
-			
-		jobForm.appendChild(driversLicenseElement);
+		XMLUtils.append(doc, jobForm, "DriversLicenseTypes",driverslicenseTypes);
+		
 		
 		return new SimpleForegroundModuleResponse(doc);
 	}
@@ -253,8 +239,8 @@ public class AddBusinessSectorSummerJobModule extends AnnotatedRESTModule{
         	job.setInitiatedByUser(user.getUsername());
         }
         
-        job.setIsOverEighteen(req.getParameter("isOverEighteen") != null ? true : false);
-        log.info("isOverEighteen: " + req.getParameter("isOverEighteen"));
+        job.setMustBeOverEighteen(req.getParameter("mustBeOverEighteen") != null ? true : false);
+        log.debug("MustBeOverEighteen: " + req.getParameter("mustBeOverEighteen"));
         boolean hasDriversLicense = req.getParameter("hasDriversLicense") != null ? true : false;
         
         log.info("hasDriversLicense: " + hasDriversLicense);

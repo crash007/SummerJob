@@ -174,16 +174,20 @@
 							<label>Körkort</label>
 							<div>
 								<xsl:choose>
-									<xsl:when test="MunicipalityJob/hasDriversLicense = 'true'">Tjänsten kräver att sökande har körkort av typ <xsl:value-of select="DriversLicenseType/name"></xsl:value-of>.</xsl:when>
-									<xsl:otherwise>Tjänsten kräver <i>ej</i> körkort</xsl:otherwise>
-								</xsl:choose>
+					  				<xsl:when test="MunicipalityJob/DriversLicenseType != ''">
+					  					Tjänsten kräver att sökande har körkort av typ <xsl:value-of select="MunicipalityJob/DriversLicenseType/name"></xsl:value-of>.
+					  				</xsl:when>
+					  				<xsl:otherwise>
+					  					Tjänsten kräver <i>ej</i> körkort
+					  				</xsl:otherwise>
+					  			</xsl:choose>				
 							</div>
 						</div>
 						<div class="col-md-4">
 							<label>Ålder</label>
 							<div>
 								<xsl:choose>
-									<xsl:when test="MunicipalityJob/isOverEighteen = 'true'">Tjänsten kräver att sökande är över 18 år.</xsl:when>
+									<xsl:when test="MunicipalityJob/mustBeOverEighteen = 'true'">Tjänsten kräver att sökande är över 18 år.</xsl:when>
 									<xsl:otherwise>Tjänsten kräver <i>ej</i> att sökande är över 18 år.</xsl:otherwise>
 								</xsl:choose>
 							</div>

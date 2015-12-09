@@ -92,7 +92,7 @@
 			  		<div class="col-md-3">
 			  			<label>Körkort</label>
 			  			<xsl:choose>
-			  				<xsl:when test="DriversLicenseType">
+			  				<xsl:when test="DriversLicenseType != ''">
 			  					<div>Ja, jag har körkort av typ <xsl:value-of select="DriversLicenseType/name"></xsl:value-of></div>
 			  				</xsl:when>
 			  				<xsl:otherwise>

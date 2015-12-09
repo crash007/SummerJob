@@ -54,23 +54,7 @@ public abstract class AddSummerJobApplication<T extends JobApplication> extends 
 		}
 	}
 
-	protected void populateDriversLicenseTypesElement(Document doc, Element form, T app, List<DriversLicenseType> licenseTypes)
-			throws SQLException {
-		Element driversLicenseElement = doc.createElement("DriversLicenseTypes");
-		
-		for (DriversLicenseType type : licenseTypes) {
-			Element typeElement = doc.createElement("DriversLicenseType");
-			XMLUtils.appendNewElement(doc, typeElement, "id", type.getId());
-			XMLUtils.appendNewElement(doc, typeElement, "name", type.getName());
-			XMLUtils.appendNewElement(doc, typeElement, "description", type.getDescription());
-			if (app != null && app.getDriversLicenseType() != null) {
-				XMLUtils.appendNewElement(doc, typeElement, "selected", 
-						app.getDriversLicenseType().getId().intValue() == type.getId().intValue());
-			}
-			driversLicenseElement.appendChild(typeElement);
-		}
-		form.appendChild(driversLicenseElement);
-	}
+
 	
 	protected Boolean validateSocialSecurityNumber(PrintWriter writer, String callback, String socialSecurityNumber) {
 		
