@@ -56,7 +56,7 @@ import se.unlogic.standardutils.xml.XMLUtils;
 import se.unlogic.webutils.http.RequestUtils;
 import se.unlogic.webutils.http.URIParser;
 
-public class MatchMunicipalityJobsModule extends AnnotatedRESTModule{
+public class MatchMunicipalityJobsModule extends MatchCommon {
 	
 	private JobDAO<MunicipalityJob> municipalityJobDAO;
 	private MuncipialityJobApplicationDAO municipalityJobApplicationDAO;
@@ -461,7 +461,7 @@ public class MatchMunicipalityJobsModule extends AnnotatedRESTModule{
 		
 		File file = null;
 		try {
-			file = DocxGenerator.generateWorkplaceDocuments(job, contact);
+			file = DocxGenerator.generateWorkplaceDocuments(templateFilePath, newFilePath, job, contact);
 		} catch (Exception e) {
 			log.error("Could not generate the desired document.", e);
 			e.printStackTrace();
@@ -542,36 +542,36 @@ public class MatchMunicipalityJobsModule extends AnnotatedRESTModule{
 		switch (value) {
 		case "ALL":
 			MunicipalityMentor mentor = (MunicipalityMentor) mentorDAO.getById(app.getPersonalMentorId());
-			file = PDFGenerator.generateEmployeeDocuments(job, app, mentor, salary, placeForInfo, accounting, contact);
+			file = PDFGenerator.generateEmployeeDocuments(templateFilePath, newFilePath, job, app, mentor, salary, placeForInfo, accounting, contact);
 			break;
 
 		case "kallelse":
-			file = PDFGenerator.generateCallDocument(job, app, placeForInfo, contact);
+			file = PDFGenerator.generateCallDocument(templateFilePath, newFilePath, job, app, placeForInfo, contact);
 			break;
 			
 		case "bekraftelse":
-			file = PDFGenerator.generateConfirmationDocument(job, app, salary, accounting);
+			file = PDFGenerator.generateConfirmationDocument(templateFilePath, newFilePath, job, app, salary, accounting);
 			break;
 			
 		case "anstallningsbevis":
 			MunicipalityMentor mentor1 = (MunicipalityMentor) mentorDAO.getById(app.getPersonalMentorId());
-			file = PDFGenerator.generateProofOfEmployment(job, app, mentor1, salary);
+			file = PDFGenerator.generateProofOfEmployment(templateFilePath, newFilePath, job, app, mentor1, salary);
 			break;
 			
 		case "tjanstgoringsrapport":
-			file = PDFGenerator.generateTimeReport(job, app, accounting);
+			file = PDFGenerator.generateTimeReport(templateFilePath, newFilePath, job, app, accounting);
 			break;
 			
 		case "bank":
-			file = PDFGenerator.generateBankDocument(app, contact);
+			file = PDFGenerator.generateBankDocument(templateFilePath, newFilePath, app, contact);
 			break;
 			
 		case "skattebefrielse":
-			file = PDFGenerator.generateTaxDocument(app);
+			file = PDFGenerator.generateTaxDocument(templateFilePath, newFilePath, app);
 			break;
 			
 		case "belastningsregister":
-			file = PDFGenerator.generatePoliceDocument(app);
+			file = PDFGenerator.generatePoliceDocument(templateFilePath, newFilePath, app);
 			break;
 			
 		default:

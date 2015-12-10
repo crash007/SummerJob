@@ -32,12 +32,12 @@ public class DocxGenerator {
 //	private static String newFilePath = "C:\\Users\\Sogeti\\Desktop\\Sommarjobb\\Populerade\\";
 //	private static String templateFilePath = "C:\\Users\\Sogeti\\Desktop\\Sommarjobb\\";
 	
-	private static String newFilePath = "C:\\Users\\pettejoh\\Desktop\\Sommarjobb\\Dokument\\Omgjorda\\Testpopulering\\";
-	private static String templateFilePath = "C:\\Users\\pettejoh\\Desktop\\Sommarjobb\\Dokument\\Omgjorda\\";
+//	private static String newFilePath = "C:\\Users\\pettejoh\\Desktop\\Sommarjobb\\Dokument\\Omgjorda\\Testpopulering\\";
+//	private static String templateFilePath = "C:\\Users\\pettejoh\\Desktop\\Sommarjobb\\Dokument\\Omgjorda\\";
 
-	public static File generateWorkplaceDocuments(MunicipalityJob job, ContactPerson contact) throws Docx4JException, JAXBException, IOException {
+	public static File generateWorkplaceDocuments(String templatePath, String newFilePath, MunicipalityJob job, ContactPerson contact) throws Docx4JException, JAXBException, IOException {
 		
-		WordprocessingMLPackage template = getTemplate("tilldelning-arbetsmiljoansvar");
+		WordprocessingMLPackage template = getTemplate(templatePath, "tilldelning-arbetsmiljoansvar");
 		String environmentPlaceholders[] = { "{ARB_NAMN}", "{ARB_PNR}", "{ARB_TELEFON}" };
 		List<Map<String, String>> textToAdd = new ArrayList<Map<String, String>>();
 		
@@ -89,7 +89,7 @@ public class DocxGenerator {
 		
 		replaceTable(environmentPlaceholders, textToAdd, template);
 
-		File file = writeDocxToStream(template, job.getId() + "_tilldelning-arbetsmiljoansvar");
+		File file = writeDocxToStream(template, newFilePath, job.getId() + "_tilldelning-arbetsmiljoansvar");
 		return file;
 	}
 	
@@ -139,8 +139,8 @@ public class DocxGenerator {
 //		return file;
 //	}
 	
-	private static WordprocessingMLPackage getTemplate(String name) throws Docx4JException, FileNotFoundException {
-		WordprocessingMLPackage template = WordprocessingMLPackage.load(new FileInputStream(new File(templateFilePath + name + ".docx")));
+	private static WordprocessingMLPackage getTemplate(String templatePath, String name) throws Docx4JException, FileNotFoundException {
+		WordprocessingMLPackage template = WordprocessingMLPackage.load(new FileInputStream(new File(templatePath + name + ".docx")));
 		return template;
 	}
 	
@@ -223,7 +223,7 @@ public class DocxGenerator {
 		reviewtable.getContent().add(workingRow);
 	}
 	
-	private static File writeDocxToStream(WordprocessingMLPackage template, String name) throws IOException, Docx4JException {
+	private static File writeDocxToStream(WordprocessingMLPackage template, String newFilePath, String name) throws IOException, Docx4JException {
 		File file = new File(newFilePath + name + ".docx");
 		template.save(file);
 		return file;

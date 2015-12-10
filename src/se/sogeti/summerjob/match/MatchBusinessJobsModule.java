@@ -36,7 +36,7 @@ import se.unlogic.standardutils.xml.XMLUtils;
 import se.unlogic.webutils.http.RequestUtils;
 import se.unlogic.webutils.http.URIParser;
 
-public class MatchBusinessJobsModule extends AnnotatedRESTModule{
+public class MatchBusinessJobsModule extends MatchCommon {
 	
 
 	private BusinessSectorJobDAO businessJobDAO;
