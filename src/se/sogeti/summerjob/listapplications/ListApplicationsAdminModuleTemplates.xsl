@@ -22,16 +22,16 @@
 							<div class="row">
 								<div class="col-md-3">
 									<label>Personnummer</label>
-									<input type="text" name="socialSecurityNumber" value="" placeholder="" class="numberValidation form-control" data-error="≈≈≈≈MMDDxxxx" maxlength="12" />
+									<input type="text" name="socialSecurityNumber" value="{SocialSecurityNumber}" placeholder="" class="form-control" data-error="≈≈≈≈MMDDxxxx" maxlength="12" />
 									<p class="help-block with-errors">≈≈≈≈MMDDxxxx</p>
 								</div>
 								<div class="col-md-3">
 									<label>Fˆrnamn</label>
-									<input type="text" name="firstname" value="" placeholder="" class="form-control" data-error="Fˆrnamn" maxlength="12" />
+									<input type="text" name="firstname" value="{Firstname}" placeholder="" class="form-control" data-error="Fˆrnamn" maxlength="12" />									
 								</div>
 								<div class="col-md-3">
 									<label>Efternamn</label>
-									<input type="text" name="lastname" value="" placeholder="" class="form-control" data-error="Efternamn" maxlength="12" />
+									<input type="text" name="lastname" value="{Lastname}" placeholder="" class="form-control" data-error="Efternamn" maxlength="12" />
 								</div>
 							</div>
 							<div class="row">
