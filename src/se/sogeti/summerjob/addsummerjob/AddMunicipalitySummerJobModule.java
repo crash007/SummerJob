@@ -149,8 +149,6 @@ public class AddMunicipalitySummerJobModule extends AnnotatedRESTModule{
 	public void addSummerjob(HttpServletRequest req, HttpServletResponse res, User user, URIParser uriParser) throws IOException, SQLException {
 		log.info("POST");
 		
-//		GsonBuilder builder = new GsonBuilder();
-//        Gson gson = builder.setDateFormat("yyyy-MM-dd").create();
 		
 		PrintWriter writer = res.getWriter();
         String callback = req.getParameter("callback"); 
@@ -192,6 +190,10 @@ public class AddMunicipalitySummerJobModule extends AnnotatedRESTModule{
 		job.setZipCode(zipCode);
 		job.setCity(city);
 		job.setDepartment(req.getParameter("department"));			//Avdelning
+		
+		
+		job.setFreeTextRequirements(req.getParameter("other-requirements"));
+		job.setFreeText(req.getParameter("freetext"));
 		
 		MunicipalityJobArea area = null;
 		Integer areaId = NumberUtils.toInt(req.getParameter("area"));
@@ -319,22 +321,16 @@ public class AddMunicipalitySummerJobModule extends AnnotatedRESTModule{
 				}
 				job.setNumberOfWorkersNeeded(numberOfWorkers);
 				
-				System.out.println("NumberOfWorkers: " + numberOfWorkers);
-				
 				List<MunicipalityMentor> mentors = new ArrayList<MunicipalityMentor>();
 		        List<String> mentorUuids = FormUtils.getMentorUuids(req.getParameterNames());
 				for(String s : mentorUuids){
-					System.out.println("mentorUuid: " + s);
+				
 					 MunicipalityMentor mentor = new MunicipalityMentor();
 					 Integer mentorId = NumberUtils.toInt(req.getParameter("mentor-id-" + s));
 					 
 					 String mentorFirstname = req.getParameter("mentor-firstname_" + s);
 					 String mentorLastname = req.getParameter("mentor-lastname_" + s);
 					 String mentorPhone = req.getParameter("mentor-phone_" + s);
-					 
-					 System.out.println("mentor-firstname_ " + s + ": " + mentorFirstname);
-					 System.out.println("mentor-lastname_" + s + ": " + mentorLastname);
-					 System.out.println("mentor-phone_" + s + ": " + mentorPhone);
 					 
 					 if (mentorId != null) {
 						 
