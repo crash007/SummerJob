@@ -257,70 +257,90 @@ public class MatchMunicipalityJobsModule extends AnnotatedRESTModule{
 	@RESTMethod(alias="match-worker.json", method="post")
 	public void addApplicationToJob(HttpServletRequest req, HttpServletResponse res, User user, URIParser uriParser) throws IOException{
 		log.info("Request for add-worker.json");
-		
+
 		PrintWriter writer = res.getWriter();
 		JsonObject result = new JsonObject();
 		JsonResponse.initJsonResponse(res, writer, null);
-		Integer applicationId = NumberUtils.toInt(req.getParameter("application-id"));
+
 		Integer jobId = NumberUtils.toInt(req.getParameter("job-id"));
-		
-		if(applicationId!=null && jobId!=null){
-			try {
-				log.debug("Getting application with id: "+applicationId);
-				MunicipalityJobApplication jobApplication = municipalityJobApplicationDAO.getById(applicationId);
-				MunicipalityJob job = municipalityJobDAO.getById(jobId);
-				
-				if(jobApplication!=null){
-					if(job!=null){
-						jobApplication.setStatus(ApplicationStatus.MATCHED);
-						jobApplication.setJob(job);
-//						jobApplication.setPersonalMentor(null);
-						jobApplication.setPersonalMentorId(null);
-						jobApplication.setCallStatus(CallStatus.NONE);
-						jobApplication.setTimeForInformation(null);
-						municipalityJobApplicationDAO.save(jobApplication);
-						
-						result.putField("status", "success");
-						result.putField("message", "Added job id:"+jobId+" to job application "+applicationId);
-						JsonResponse.sendJsonResponse(result.toJson(), null, writer);
-					}else{
-						log.info("No job found with id "+jobId);
+
+
+		if(jobId!=null){
+			String[] applicationIds = req.getParameterValues("application-id");
+			if(applicationIds!=null){
+			for(String appIdString : applicationIds){
+				Integer applicationId = NumberUtils.toInt(appIdString);
+
+				if(applicationId!=null){
+					try {
+						log.debug("Getting application with id: "+applicationId);
+						MunicipalityJobApplication jobApplication = municipalityJobApplicationDAO.getById(applicationId);
+						MunicipalityJob job = municipalityJobDAO.getById(jobId);
+
+						if(jobApplication!=null){
+							if(job!=null){
+								jobApplication.setStatus(ApplicationStatus.MATCHED);
+								jobApplication.setJob(job);
+								//						jobApplication.setPersonalMentor(null);
+								jobApplication.setPersonalMentorId(null);
+								jobApplication.setCallStatus(CallStatus.NONE);
+								jobApplication.setTimeForInformation(null);
+								municipalityJobApplicationDAO.save(jobApplication);
+
+								result.putField("status", "success");
+								result.putField("message", "Added job id:"+jobId+" to job application "+applicationId);
+								JsonResponse.sendJsonResponse(result.toJson(), null, writer);
+							}else{
+								log.info("No job found with id "+jobId);
+								result.putField("status", "error");
+								result.putField("message", "No job found for id "+applicationId);
+								JsonResponse.sendJsonResponse(result.toJson(), null, writer);
+							}
+						}else{
+							log.info("No application found with id "+applicationId);
+							result.putField("status", "error");
+							result.putField("message", "No application found for id "+applicationId);
+							JsonResponse.sendJsonResponse(result.toJson(), null, writer);
+						}
+
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						log.error("Exception when getting application",e);
 						result.putField("status", "error");
-						result.putField("message", "No job found for id "+applicationId);
+						result.putField("message", "Error when calling db");
 						JsonResponse.sendJsonResponse(result.toJson(), null, writer);
 					}
 				}else{
-					log.info("No application found with id "+applicationId);
-					result.putField("status", "error");
-					result.putField("message", "No application found for id "+applicationId);
+					log.warn("application-id is null when setting matched worker, jobId:"+jobId);
+					result.putField("status", "fail");
+					result.putField("message", "application-id is missing");
 					JsonResponse.sendJsonResponse(result.toJson(), null, writer);
 				}
-				
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				log.error("Exception when getting application",e);
-				result.putField("status", "error");
-				result.putField("message", "Error when calling db");
+			}
+			}else{
+				log.warn("No application-id's found when setting matched worker, jobId:"+jobId);
+				result.putField("status", "fail");
+				result.putField("message", "application-id's is missing");
 				JsonResponse.sendJsonResponse(result.toJson(), null, writer);
 			}
 		}else{
-			log.info("Parameter id was null for job or application.");
+			log.info("job-id was null when setting matched worker.");
 			result.putField("status", "fail");
-			result.putField("message", "parameter id is missing for job or application");
+			result.putField("message", "job-id is missing");
 			JsonResponse.sendJsonResponse(result.toJson(), null, writer);
 		}
-		
+
 	}
-	
-	
+
+
 	@RESTMethod(alias="deny-workers.json", method="post")
 	public void denyWorker(HttpServletRequest req, HttpServletResponse res, User user, URIParser uriParser) throws IOException{
 		log.info("Request for assign-workers.json");
-		
+
 		PrintWriter writer = res.getWriter();
 		JsonObject result = new JsonObject();
 		JsonResponse.initJsonResponse(res, writer, null);
-		
+
 		String[] applicationIdStrings =req.getParameterValues("application-id");
 		
 		if(applicationIdStrings!=null){
