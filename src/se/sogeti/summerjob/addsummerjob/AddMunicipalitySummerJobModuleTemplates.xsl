@@ -150,8 +150,8 @@
 				  	</div>
 				  	<div class="form-group">
 					    <label for="work-description">Arbetsbeskrivning*</label>				    
-					    <textarea class="form-control" maxlength="255" data-error="Beskriv vad arbetsuppgifterna kommer vara. Max 255 tecken." rows="3" id="work-description" name="work-description" required="required"><xsl:value-of select="MunicipalityJob/workDescription"></xsl:value-of></textarea>							    
-					    <p class="help-block with-errors">Beskriv vad arbetsuppgifterna kommer vara. Max 255 tecken.</p>
+					    <textarea class="form-control" data-error="Beskriv vad arbetsuppgifterna kommer vara." rows="10" id="work-description" name="work-description" required="required"><xsl:value-of select="MunicipalityJob/workDescription"></xsl:value-of></textarea>							    
+					    <p class="help-block with-errors">Beskriv vad arbetsuppgifterna kommer vara.</p>
 				  	</div>				  	
 				  	
 				  	<div id="periods-group" class="form-group">
