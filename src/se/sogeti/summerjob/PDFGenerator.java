@@ -29,22 +29,23 @@ public class PDFGenerator {
 //	private static String newFilePath = "C:\\Users\\Sogeti\\Desktop\\Sommarjobb\\Populerade\\";
 //	private static String templateFilePath = "C:\\Users\\Sogeti\\Desktop\\Sommarjobb\\";
 	
-	private static String newFilePath = "C:\\Users\\pettejoh\\Desktop\\Sommarjobb\\Dokument\\Omgjorda\\Testpopulering\\";
-	private static String templateFilePath = "C:\\Users\\pettejoh\\Desktop\\Sommarjobb\\Dokument\\Omgjorda\\";
+//	private static String newFilePath = "C:\\Users\\pettejoh\\Desktop\\Sommarjobb\\Dokument\\Omgjorda\\Testpopulering\\";
+//	private static String templateFilePath = "C:\\Users\\pettejoh\\Desktop\\Sommarjobb\\Dokument\\Omgjorda\\";
 	
-	public static File generateEmployeeDocuments(MunicipalityJob job, MunicipalityJobApplication app, MunicipalityMentor mentor, 
-			int salary, String placeForInfo, AccountingEntry accounting, ContactPerson contact) throws IOException, Exception {
-		File call = generateCallDocument(job, app, placeForInfo, contact);
-		File confirmation = generateConfirmationDocument(job, app, salary, accounting);
-		File proofOfEmployment = generateProofOfEmployment(job, app, mentor, salary);
-		File time = generateTimeReport(job, app, accounting);
-		File bank = generateBankDocument(app, contact);
-		File taxDocument = generateTaxDocument(app);
+	public static File generateEmployeeDocuments(String templatePath, String newFilePath, MunicipalityJob job, 
+			MunicipalityJobApplication app, MunicipalityMentor mentor, int salary, 
+			String placeForInfo, AccountingEntry accounting, ContactPerson contact) throws IOException, Exception {
+		File call = generateCallDocument(templatePath, newFilePath, job, app, placeForInfo, contact);
+		File confirmation = generateConfirmationDocument(templatePath, newFilePath, job, app, salary, accounting);
+		File proofOfEmployment = generateProofOfEmployment(templatePath, newFilePath, job, app, mentor, salary);
+		File time = generateTimeReport(templatePath, newFilePath, job, app, accounting);
+		File bank = generateBankDocument(templatePath, newFilePath, app, contact);
+		File taxDocument = generateTaxDocument(templatePath, newFilePath, app);
 		
 		File policeDocument = null;
 		// Om jobbet är inom barnomsorgen
 		if (job.getArea().getId().intValue() == 1) {
-			policeDocument = generatePoliceDocument(app);
+			policeDocument = generatePoliceDocument(templatePath, newFilePath, app);
 		}
 		
 		PDFMergerUtility merger = new PDFMergerUtility();
@@ -66,7 +67,7 @@ public class PDFGenerator {
 		return allDocuments;
 	}
 	
-	public static File generateConfirmationDocument(MunicipalityJob job, MunicipalityJobApplication app, int salary, AccountingEntry accounting) throws IOException {
+	public static File generateConfirmationDocument(String templateFilePath, String newFilePath, MunicipalityJob job, MunicipalityJobApplication app, int salary, AccountingEntry accounting) throws IOException {
 		File file = new File(templateFilePath + "bekraftelse.pdf");
 		PDDocument pdfDocument = PDDocument.load(file);
 		
@@ -87,13 +88,13 @@ public class PDFGenerator {
 		setFieldValue(pdfDocument, "bekraftelse-workmanager", manager.getFirstname() + " " + manager.getLastname() + ", " + manager.getMobilePhone());
 		setFieldValue(pdfDocument, "bekraftelse-salary", "" + salary);
 		
-		File savedFile = saveDocument(pdfDocument, socialSecurityNumber + "_" + "bekraftelse.pdf");
+		File savedFile = saveDocument(newFilePath, pdfDocument, socialSecurityNumber + "_" + "bekraftelse.pdf");
 		pdfDocument.close();
 		
 		return savedFile;
 	}
 	
-	public static File generateProofOfEmployment(MunicipalityJob job, MunicipalityJobApplication app, MunicipalityMentor mentor, int salary) throws IOException {
+	public static File generateProofOfEmployment(String templateFilePath, String newFilePath, MunicipalityJob job, MunicipalityJobApplication app, MunicipalityMentor mentor, int salary) throws IOException {
 		File file = new File(templateFilePath + "information_anstallningsbevis.pdf");
 		PDDocument pdfDocument = PDDocument.load(file);
 		
@@ -123,13 +124,13 @@ public class PDFGenerator {
 			setFieldValue(pdfDocument, "anstallning-specificinfo", job.getWorkDescription());
 		}
 		
-		File savedFile = saveDocument(pdfDocument, socialSecurityNumber + "_" + "information_anstallningsbevis.pdf");
+		File savedFile = saveDocument(newFilePath, pdfDocument, socialSecurityNumber + "_" + "information_anstallningsbevis.pdf");
 		pdfDocument.close();
 		
 		return savedFile;
 	}
 	
-	public static File generateBankDocument(MunicipalityJobApplication app, ContactPerson contact) throws IOException {
+	public static File generateBankDocument(String templateFilePath, String newFilePath, MunicipalityJobApplication app, ContactPerson contact) throws IOException {
 		File file = new File(templateFilePath + "overforingsuppdrag.pdf");
 		PDDocument pdfDocument = PDDocument.load(file);
 
@@ -143,12 +144,12 @@ public class PDFGenerator {
 		setFieldValue(pdfDocument, "overforing-phone", app.getPhoneNumber());
 		setFieldValue(pdfDocument, "overforing-name", app.getFirstname() + " " + app.getLastname());
 
-		File savedFile = saveDocument(pdfDocument, app.getSocialSecurityNumber() + "_overforingsuppdrag.pdf");
+		File savedFile = saveDocument(newFilePath, pdfDocument, app.getSocialSecurityNumber() + "_overforingsuppdrag.pdf");
 		pdfDocument.close();
 		return savedFile;
 	}
 	
-	public static File generateTimeReport(MunicipalityJob job, MunicipalityJobApplication app, AccountingEntry accounting) throws IOException, Exception {
+	public static File generateTimeReport(String templateFilePath, String newFilePath, MunicipalityJob job, MunicipalityJobApplication app, AccountingEntry accounting) throws IOException, Exception {
 		PdfReader reader = new PdfReader(templateFilePath + "tjanstgoringsrapport.pdf");
 		OutputStream os = new FileOutputStream(newFilePath + app.getSocialSecurityNumber() + "_tjanstgoringsrapport.pdf");
 		PdfStamper stamper = new PdfStamper(reader, os);
@@ -171,7 +172,7 @@ public class PDFGenerator {
 		return file;
 	}
 	
-	public static File generateCallDocument(MunicipalityJob job, MunicipalityJobApplication app, String placeForInfo, ContactPerson contact) throws IOException {
+	public static File generateCallDocument(String templateFilePath, String newFilePath, MunicipalityJob job, MunicipalityJobApplication app, String placeForInfo, ContactPerson contact) throws IOException {
 		File file = new File(templateFilePath + "kallelse.pdf");
 		PDDocument pdfDocument = PDDocument.load(file);
 		
@@ -183,13 +184,13 @@ public class PDFGenerator {
 		setFieldValue(pdfDocument, "kallelse-placeforinfo", placeForInfo);
 		setFieldValue(pdfDocument, "kallelse-kontaktperson", contact.getName() + " - " + contact.getPhoneNumber());
 		
-		File savedFile = saveDocument(pdfDocument, app.getSocialSecurityNumber() + "_" + "kallelse.pdf");
+		File savedFile = saveDocument(newFilePath, pdfDocument, app.getSocialSecurityNumber() + "_" + "kallelse.pdf");
 		pdfDocument.close();
 		
 		return savedFile;
 	}
 	
-	public static File generateTaxDocument(MunicipalityJobApplication app) throws IOException {
+	public static File generateTaxDocument(String templateFilePath, String newFilePath, MunicipalityJobApplication app) throws IOException {
 		File file = new File(templateFilePath + "skattebefrielse.pdf");
 		PDDocument pdfDocument = PDDocument.load(file);
 		
@@ -199,13 +200,13 @@ public class PDFGenerator {
 		setFieldValue(pdfDocument, "tax-streetaddress", app.getStreetAddress());
 		setFieldValue(pdfDocument, "tax-zipandcity", app.getZipCode() + ", " + app.getCity());
 		
-		File taxDocument = saveDocument(pdfDocument, socialSecurityNumber + "_" + "Skattebefrielse-redigerad.pdf");
+		File taxDocument = saveDocument(newFilePath, pdfDocument, socialSecurityNumber + "_" + "Skattebefrielse-redigerad.pdf");
 		pdfDocument.close();
 		
 		return taxDocument;
 	}
 
-	public static File generatePoliceDocument(MunicipalityJobApplication app) throws IOException {
+	public static File generatePoliceDocument(String templateFilePath, String newFilePath, MunicipalityJobApplication app) throws IOException {
 		File file = new File(templateFilePath + "PM-442-5-forskoleverksamhet.pdf");;
 		PDDocument pdfDocument = PDDocument.load(file);
 		
@@ -233,7 +234,7 @@ public class PDFGenerator {
 		setFieldValue(pdfDocument, "polisen[0].frm_innehall[0].frm_personuppgifter[0].txt_ort[0]", app.getCity());
 		setFieldValue(pdfDocument, "polisen[0].frm_innehall[0].frm_underskrift[0].frm_underskriftDatumOrt[0].txt_ort[0]", app.getCity());
 		
-		File policeDocument = saveDocument(pdfDocument, socialSecurityNumber + "_" + "PM-442-5-forskoleverksamhet.pdf");
+		File policeDocument = saveDocument(newFilePath, pdfDocument, socialSecurityNumber + "_" + "PM-442-5-forskoleverksamhet.pdf");
 		pdfDocument.close();
 		
 		return policeDocument;
@@ -251,7 +252,7 @@ public class PDFGenerator {
 		}
 	}
 	
-	public static File saveDocument(PDDocument pdfDocument, String filename) throws IOException {
+	public static File saveDocument(String newFilePath, PDDocument pdfDocument, String filename) throws IOException {
 		File newFile = null;
 		newFile = new File(newFilePath + filename);
 		newFile.createNewFile();

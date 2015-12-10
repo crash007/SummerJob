@@ -17,6 +17,7 @@ public class MunicipalityJobApplication extends JobApplication{
 
 	public MunicipalityJobApplication() {
 		super();
+		this.setPreferedPeriod(PreferedPeriod.NONE);
 	}
 
 	@DAOManaged(columnName="jobId")
@@ -65,6 +66,9 @@ public class MunicipalityJobApplication extends JobApplication{
 	@XMLElement(name="preferedGeoArea3")
 	private GeoArea preferedGeoArea3;
 
+	@DAOManaged
+	@XMLElement
+	private PreferedPeriod preferedPeriod;
 	
 	public MunicipalityJobArea getPreferedArea1() {
 		return preferedArea1;
@@ -163,5 +167,13 @@ public class MunicipalityJobApplication extends JobApplication{
 
 	public void setPersonalMentorId(Integer personalMentorId) {
 		this.personalMentorId = personalMentorId;
+	}
+
+	public PreferedPeriod getPreferedPeriod() {
+		return preferedPeriod;
+	}
+
+	public void setPreferedPeriod(PreferedPeriod preferedPeriod) {
+		this.preferedPeriod = preferedPeriod;
 	}
 }
