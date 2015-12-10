@@ -108,7 +108,7 @@
 	   			</xsl:if>
 	   			<xsl:if test="applicationType = 'PRIO'">
 	   				<div class="col-xs-4 col-md-2 bold">Typ</div>
-		   			<div style="font-size: larger" class="col-md-4 prio bold">Prio</div>
+		   			<div style="font-size: larger" class="col-md-4 prio bold">Prioriterad</div>
 	   			</xsl:if>
 			</div>
 		
@@ -295,6 +295,11 @@
 						<div class="row mgn-top8px">
 							<div class="col-xs-4 col-md-3 bold">Beskrivning</div>
 							<div class="col-md-9 col-xs-12"><xsl:value-of select="workDescription"/></div>
+						</div>
+						
+						<div class="row mgn-top8px">
+							<div class="col-xs-4 col-md-3 bold">Övriga krav och önskemål</div>
+							<div class="col-md-9 col-xs-12"><xsl:value-of select="freeTextRequirements"/></div>
 						</div>
 						
 						<div id="jobinfo-contact">

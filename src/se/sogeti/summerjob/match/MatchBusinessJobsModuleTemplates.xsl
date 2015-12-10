@@ -211,6 +211,29 @@
 							</div>
 						</div>
 						
+						<div class="row mgn-top8px">
+							<div class="col-xs-4 col-md-3 bold">Övriga krav och önskemål</div>
+							<div class="col-md-9 col-xs-12"><xsl:value-of select="freeTextRequirements"/></div>
+						</div>
+						
+						<div id="jobinfo-contact">
+							<div class="row mgn-top8px">
+								<div class="col-xs-4 col-md-3 bold">Kontaktuppgifter</div>
+								<br/>
+								<div style="font-size: 80%" class="col-xs-4 col-md-3 bold">Förnamn</div>
+								<div class="col-md-3"><xsl:value-of select="BusinessSectorManager/firstname"/></div>
+								<div style="font-size: 80%" class="col-xs-4 col-md-3 bold">Efternamn</div>
+								<div class="col-md-3"><xsl:value-of select="BusinessSectorManager/lastname"/></div>
+							</div>
+							
+							<div class="row">
+								<div style="font-size: 80%" class="col-xs-4 col-md-3 bold">Telefonnummer</div>
+								<div class="col-md-3"><xsl:value-of select="BusinessSectorManager/mobilePhone"/></div>
+								<div style="font-size: 80%" class="col-xs-4 col-md-3 bold">E-postadress</div>
+								<div class="col-md-3"><xsl:value-of select="BusinessSectorManager/email"/></div>
+							</div>
+						</div>
+						
 						<div class="mgn-top16px row">
 							<div class="col-md-6 col-xs-12">
 								<h3>Administrera annonsen</h3>
