@@ -241,21 +241,15 @@ public class AddBusinessSectorSummerJobModule extends AnnotatedRESTModule{
         
         job.setMustBeOverEighteen(req.getParameter("mustBeOverEighteen") != null ? true : false);
         log.debug("MustBeOverEighteen: " + req.getParameter("mustBeOverEighteen"));
-        boolean hasDriversLicense = req.getParameter("hasDriversLicense") != null ? true : false;
-        
-        log.info("hasDriversLicense: " + hasDriversLicense);
-        
-        if (hasDriversLicense) {
-        	Integer typeId = NumberUtils.toInt(req.getParameter("driversLicenseType"));
-        	
-        	if (typeId == null) {
-        		JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Om du har körkort måste en körkortstyp väljas.\"}", callback, writer);
-            	return;
-        	}
-        	DriversLicenseType licenseType = driversLicenseTypeDAO.getTypeById(typeId);
-        	job.setDriversLicenseType(licenseType);
-        }
-        
+    	Integer typeId = NumberUtils.toInt(req.getParameter("driversLicenseType"));
+    	
+    	if (typeId == null) {
+    		JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Om du har körkort måste en körkortstyp väljas.\"}", callback, writer);
+        	return;
+    	}
+    	DriversLicenseType licenseType = driversLicenseTypeDAO.getTypeById(typeId);
+    	job.setDriversLicenseType(licenseType);
+    
         job.setFreeTextRequirements(req.getParameter("other-requirements"));
 		job.setFreeText(req.getParameter("freetext"));
         

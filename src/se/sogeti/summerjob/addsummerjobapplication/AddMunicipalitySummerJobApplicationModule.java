@@ -256,19 +256,15 @@ public class AddMunicipalitySummerJobApplicationModule extends AddSummerJobAppli
 			
 			//TODO
 			//Duplicate code in business
-			boolean hasDriversLicense = requestWrapper.getParameter("hasDriversLicense") !=null ? true:false;
-			if (hasDriversLicense) {
-				Integer typeId = NumberUtils.toInt(requestWrapper.getParameter("driversLicenseType"));
-				if (typeId == null) {
-					JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Om du har körkort måste du ange en körkortstyp\"}", callback, writer);
-					return;
-				}
-				DriversLicenseType type = driversLicenseTypeDAO.getTypeById(typeId);
-				app.setDriversLicenseType(type);
-			} else {
-				app.setDriversLicenseType(null); // If the application is being updated
+		
+			Integer driversLicenseId = NumberUtils.toInt(requestWrapper.getParameter("driversLicenseType"));
+			if (driversLicenseId == null) {
+				JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Om du har körkort måste du ange en körkortstyp\"}", callback, writer);
+				return;
 			}
-			
+			DriversLicenseType driversLicense = driversLicenseTypeDAO.getTypeById(driversLicenseId);
+			app.setDriversLicenseType(driversLicense);
+		
 			if(!validatePersonalInformation(writer, callback, app)){
 				return;
 			}

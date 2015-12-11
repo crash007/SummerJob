@@ -215,27 +215,23 @@ public class AddMunicipalitySummerJobModule extends AnnotatedRESTModule{
 		}else{
 			job.setBeMustOverEighteen(false);
 		}
-		
-		boolean hasDriversLicense = req.getParameter("hasDriversLicense") != null ? true : false;
-		
-		if (hasDriversLicense) {
-			Integer typeId = NumberUtils.toInt(req.getParameter("driversLicenseType"));
-        	
-        	if (typeId == null) {
-        		JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Om du har körkort måste en körkortstyp väljas.\"}", callback, writer);
-            	return;
-        	}
-        	DriversLicenseType licenseType = driversLicenseTypeDAO.getTypeById(typeId);
-        	job.setDriversLicenseType(licenseType);
-		} else {
-			job.setDriversLicenseType(null);
+
+
+		Integer typeId = NumberUtils.toInt(req.getParameter("driversLicenseType"));
+
+		if (typeId == null) {
+			JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Om du har körkort måste en körkortstyp väljas.\"}", callback, writer);
+			return;
 		}
-		
+		DriversLicenseType licenseType = driversLicenseTypeDAO.getTypeById(typeId);
+		job.setDriversLicenseType(licenseType);
+
+
 		String managerFirstname = req.getParameter("manager-firstname");
 		String managerLastname = req.getParameter("manager-lastname");
 		String managerPhone = req.getParameter("manager-phone");
 		String managerEmail = req.getParameter("manager-email");
-		
+
 		if (managerFirstname == null || managerLastname == null || managerPhone == null
 				|| managerFirstname.isEmpty() || managerLastname.isEmpty() || managerPhone.isEmpty()
 				|| managerEmail == null || managerEmail.isEmpty()) {

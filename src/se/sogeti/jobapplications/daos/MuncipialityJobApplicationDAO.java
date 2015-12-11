@@ -111,9 +111,9 @@ public class MuncipialityJobApplicationDAO extends JobApplicationDAO<Municipalit
 			query.addParameter(this.getParamFactory("birthDate", java.sql.Date.class).getParameter(bornBeforeSqlDate, QueryOperators.SMALLER_THAN_OR_EUALS));
 		}
 		
-		if(driversLicense!=null){
-			query.addParameter(this.getParamFactory("driversLicenseType", DriversLicenseType.class).getParameter(driversLicense, QueryOperators.BIGGER_THAN_OR_EUALS));
-		}
+		
+		query.addParameter(this.getParamFactory("driversLicenseType", DriversLicenseType.class).getParameter(driversLicense, QueryOperators.BIGGER_THAN_OR_EUALS));
+		
 		
 		query.addRelation(APPLICATION_PREFERED_AREA1_RELATION);
 		query.addRelation(APPLICATION_PREFERED_AREA2_RELATION);

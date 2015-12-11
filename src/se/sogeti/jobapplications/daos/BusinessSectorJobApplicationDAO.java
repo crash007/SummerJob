@@ -54,9 +54,9 @@ public class BusinessSectorJobApplicationDAO extends JobApplicationDAO<BusinessS
 				Date bornBefore = new Date(cal.getTime().getTime());
 			 query.addParameter(this.getParamFactory("birthDate", Date.class).getParameter(bornBefore,QueryOperators.SMALLER_THAN_OR_EUALS));
 		 }
-		 if(job.getDriversLicenseType()!=null){
-			 query.addParameter(this.getParamFactory("driversLicenseType", DriversLicenseType.class).getParameter(job.getDriversLicenseType(),QueryOperators.BIGGER_THAN_OR_EUALS));	 
-		 }
+		 
+		 query.addParameter(this.getParamFactory("driversLicenseType", DriversLicenseType.class).getParameter(job.getDriversLicenseType(),QueryOperators.BIGGER_THAN_OR_EUALS));	 
+		 
 		 
 		 query.addOrderByCriteria(this.getOrderByCriteria("ranking", Order.ASC));
 		 return this.getAll(query);
@@ -76,9 +76,9 @@ public class BusinessSectorJobApplicationDAO extends JobApplicationDAO<BusinessS
 				Date bornBefore = new Date(cal.getTime().getTime());
 			 query.addParameter(this.getParamFactory("birthDate", Date.class).getParameter(bornBefore,QueryOperators.BIGGER_THAN));
 		 }
-		 if(job.getDriversLicenseType()!=null){
-			 query.addParameter(this.getParamFactory("driversLicenseType", DriversLicenseType.class).getParameter(job.getDriversLicenseType(), QueryOperators.SMALLER_THAN));	 
-		 }
+		 
+		 query.addParameter(this.getParamFactory("driversLicenseType", DriversLicenseType.class).getParameter(job.getDriversLicenseType(), QueryOperators.SMALLER_THAN));	 
+		 
 		 
 		 query.addOrderByCriteria(this.getOrderByCriteria("ranking", Order.ASC));
 		 return this.getAll(query);

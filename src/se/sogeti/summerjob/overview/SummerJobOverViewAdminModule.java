@@ -212,9 +212,8 @@ public class SummerJobOverViewAdminModule extends AnnotatedForegroundModule{
 					
 					XMLUtils.appendNewElement(doc, municipalityApplication, "created", app.getCreated());
 					
-					if(app.getDriversLicenseType()!=null){
-						XMLUtils.appendNewElement(doc, municipalityApplication, "driversLicenseType", app.getDriversLicenseType().getName());
-					}
+					XMLUtils.appendNewElement(doc, municipalityApplication, "driversLicenseType", app.getDriversLicenseType().getName());
+					
 					MunicipalityApplicationsElem.appendChild(municipalityApplication);
 				}
 			}
