@@ -103,6 +103,25 @@
 				    	</xsl:choose>
 				    </div>
 			 	</div>
+			 	
+			 	<div class="mgn-top8px row">
+			 		<div class="col-md-5">
+			 			<label>Önskad arbetsperiod</label>
+			 			<xsl:if test="preferedPeriod = 'NONE'">
+			 				<div>Inget önskemål</div>
+			 			</xsl:if>
+			 			<xsl:if test="preferedPeriod = 'BEGINNING'">
+			 				<div>Början av sommaren</div>
+			 			</xsl:if>
+			 			<xsl:if test="preferedPeriod = 'MIDDLE'">
+			 				<div>Mitten av sommaren</div>
+			 			</xsl:if>
+			 			<xsl:if test="preferedPeriod = 'END'">
+			 				<div>Slutet av sommaren</div>
+			 			</xsl:if>
+			 		</div>
+			 	</div>
+			 	
 		  		<div class="mgn-top8px row">
 			  		<div class="mgn-top8px col-md-12"><label>Önskat arbetsområde</label></div>
 		  			<xsl:choose>

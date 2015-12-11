@@ -7,7 +7,7 @@
 	<xsl:template match="Document">
 		<script>
 			var url = '<xsl:value-of select="requestinfo/uri"/>';
-			var isAdmin = '<xsl:value-of select="MunicipalityJobApplicationForm/IsAdmin" />';
+			var isAdmin = '<xsl:value-of select="IsAdmin" />';
 		</script>
 <!-- 		<xsl:variable name="isAdmin" select="IsAdmin"/> -->
 		<xsl:apply-templates select="MunicipalityJobApplicationForm"/>
@@ -97,6 +97,40 @@
 				 	</div>
 				 	
 				 	<div class="row">
+				 		<div class="col-md-3 col-xs-12 form-group">
+				 			<label>Önskad arbetsperiod*</label>
+							<select class="form-control" required="required" name="preferedPeriod">
+								<option value=""></option>
+								<option value="NONE">
+									<xsl:if test="MunicipalityJobApplication/preferedPeriod = 'NONE'">
+										<xsl:attribute name="selected">selected</xsl:attribute>	   	
+									</xsl:if>
+									Inget önskemål
+								</option>
+								<option value="BEGINNING">
+									<xsl:if test="MunicipalityJobApplication/preferedPeriod = 'BEGINNING'">
+										<xsl:attribute name="selected">selected</xsl:attribute>	   	
+									</xsl:if>
+									Början av sommaren
+								</option>
+								<option value="MIDDLE">
+									<xsl:if test="MunicipalityJobApplication/preferedPeriod = 'MIDDLE'">
+										<xsl:attribute name="selected">selected</xsl:attribute>	   	
+									</xsl:if>
+									Mitten av sommaren
+								</option>
+								<option value="END">
+									<xsl:if test="MunicipalityJobApplication/preferedPeriod = 'END'">
+										<xsl:attribute name="selected">selected</xsl:attribute>	   	
+									</xsl:if>
+									Slutet av sommaren
+								</option>
+							</select>
+							<p class="help-block with-errors">Period du önskar arbeta</p> 		
+				 		</div>
+				 	</div>
+				 	
+				 	<div class="row">
 					 	<div class="col-md-8 col-md-push-4 form-horizontal text-left">
 					  		<h3>Beskrivning arbetsområden</h3>
 					  		<xsl:for-each select="Areas/Area">
@@ -110,7 +144,7 @@
 						  		</xsl:if>
 						  	</xsl:for-each>
 					  	</div>
-					 	
+					  	
 					 	<div class="col-md-4 col-md-pull-8">
 					 		<div class="row">
 								<div class="col-md-12">
@@ -300,7 +334,7 @@
 				
 				<div class="panel panel-default">
 			  		<div class="panel-heading">
-			  			<h3 class="panel-title">Skicka in ansökan</h3>
+			  			<h3 class="panel-title">Förhandsgranska ansökan</h3>
 			  		</div>  
 			  		<div class="panel-body">
 						<div id="save-failed" class="alert alert-danger" role="alert">
@@ -314,7 +348,7 @@
 							<span class="message"></span>
 						</div>
 						
-						<xsl:if test="IsAdmin = 'true'">
+						<xsl:if test="/Document/IsAdmin = 'true'">
 							<div class="row">
 								<div class="form-group col-md-5">
 									<label>Typ av ansökan</label><br/>
@@ -427,6 +461,12 @@
 						  	</div>
 					  	</div>
 					  	
+					  	<div class="row">
+							<div class="col-md-4">
+								<label>Önskad arbetsperiod</label>
+								<p id="preview-preferedPeriod"></p>
+							</div>					  	
+					  	</div>
 					  	
 					  	<div class="row">
 					  		<div id="preview-nopreferedarea" class="col-md-4">

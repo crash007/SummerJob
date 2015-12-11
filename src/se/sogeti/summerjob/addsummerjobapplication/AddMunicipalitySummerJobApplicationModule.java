@@ -20,6 +20,7 @@ import se.sogeti.jobapplications.beans.DriversLicenseType;
 import se.sogeti.jobapplications.beans.GeoArea;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityJobApplication;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityJobArea;
+import se.sogeti.jobapplications.beans.municipality.PreferedPeriod;
 import se.sogeti.jobapplications.daos.AreaDAO;
 import se.sogeti.jobapplications.daos.DriversLicenseTypeDAO;
 import se.sogeti.jobapplications.daos.GeoAreaDAO;
@@ -90,9 +91,9 @@ public class AddMunicipalitySummerJobApplicationModule extends AddSummerJobAppli
 		doc.getFirstChild().appendChild(form);
 		
 		if (user == null) {
-			XMLUtils.appendNewElement(doc, form, "IsAdmin", false);
+			XMLUtils.appendNewElement(doc, element, "IsAdmin", false);
 		} else {
-			XMLUtils.appendNewElement(doc, form, "IsAdmin", user.isAdmin());
+			XMLUtils.appendNewElement(doc, element, "IsAdmin", user.isAdmin());
 		}
 		
 		XMLUtils.appendNewElement(doc, form, "manageAppURL", manageApplicationURL);
@@ -197,6 +198,29 @@ public class AddMunicipalitySummerJobApplicationModule extends AddSummerJobAppli
 			if (!StringUtils.isEmpty(fileItem.getName())) {
 				saveCv(app,fileItem,app.getSocialSecurityNumber()+"_"+fileItem.getName(),writer, callback);
 			}
+			
+			String preferedPeriodString = requestWrapper.getParameter("preferedPeriod");
+			if (preferedPeriodString == null) {
+				JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Du måste ange en önskad arbetsperiod.\"}", callback, writer);
+				return;
+			}
+			
+			PreferedPeriod preferedPeriod;
+			
+			if (preferedPeriodString.equals(PreferedPeriod.NONE.name())) {
+				preferedPeriod = PreferedPeriod.NONE;
+			} else if (preferedPeriodString.equals(PreferedPeriod.BEGINNING.name())) {
+				preferedPeriod = PreferedPeriod.BEGINNING;
+			} else if (preferedPeriodString.equals(PreferedPeriod.MIDDLE.name())) {
+				preferedPeriod = PreferedPeriod.MIDDLE;
+			} else if (preferedPeriodString.equals(PreferedPeriod.END.name())) {
+				preferedPeriod = PreferedPeriod.END;
+			} else {
+				JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Du måste ange en önskad arbetsperiod. Ditt val finns inte.\"}", callback, writer);
+				return;
+			}
+			
+			app.setPreferedPeriod(preferedPeriod);
 			
 			boolean workWithAnything = requestWrapper.getParameter("noPreferedArea") != null ? true : false;
 			
