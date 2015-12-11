@@ -561,7 +561,7 @@ public class MatchMunicipalityJobsModule extends MatchCommon {
 		
 		switch (value) {
 		case "ALL":
-			MunicipalityMentor mentor = (MunicipalityMentor) mentorDAO.getById(app.getPersonalMentorId());
+			MunicipalityMentor mentor = mentorDAO.getById(app.getPersonalMentorId());
 			file = PDFGenerator.generateEmployeeDocuments(templateFilePath, newFilePath, job, app, mentor, salary, placeForInfo, accounting, contact);
 			break;
 
@@ -574,7 +574,7 @@ public class MatchMunicipalityJobsModule extends MatchCommon {
 			break;
 			
 		case "anstallningsbevis":
-			MunicipalityMentor mentor1 = (MunicipalityMentor) mentorDAO.getById(app.getPersonalMentorId());
+			MunicipalityMentor mentor1 = mentorDAO.getById(app.getPersonalMentorId());
 			file = PDFGenerator.generateProofOfEmployment(templateFilePath, newFilePath, job, app, mentor1, salary);
 			break;
 			
