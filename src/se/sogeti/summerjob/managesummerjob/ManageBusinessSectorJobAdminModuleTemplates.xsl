@@ -240,23 +240,28 @@
 				<textarea class="form-control" rows="5" id="admin-notes" name="admin-notes"><xsl:value-of select="BusinessSectorJob/adminNotes"></xsl:value-of></textarea>
 				<div class="help-block with-errors">Valfri. Skriv här anledningen till godkännande eller nekande av en annons.</div>
 			</div>
+		
+			<div class="row mgn-btm8px">
+				<div class="col-md-2 col-xs-6">
+					<label>Status på annons</label>
+					<select class="form-control" name="job-status-select">
+						<option value="true">
+							<xsl:if test="BusinessSectorJob/approved = 'true'">
+						   		<xsl:attribute name="selected">selected</xsl:attribute>	   	
+						   	</xsl:if>
+							Godkänd
+						</option>
+						<option value="false">
+							<xsl:if test="BusinessSectorJob/approved = 'false'">
+							   		<xsl:attribute name="selected">selected</xsl:attribute>	   	
+							</xsl:if>
+							Nekad
+						</option>
+					</select>
+				</div>
+			</div>
 			
-			<xsl:choose>
-				<xsl:when test="BusinessSectorJob/approvedByUser != '' and BusinessSectorJob/approved = 'true'">
-					<button id="approve-job-button" type="button" class="btn btn-success" disabled="disabled">Godkänn</button>
-				</xsl:when>
-				<xsl:otherwise>
-					<button id="approve-job-button" type="button" class="btn btn-success">Godkänn</button>
-				</xsl:otherwise>
-			</xsl:choose>
-			<xsl:choose>
-				<xsl:when test="BusinessSectorJob/approvedByUser != '' and BusinessSectorJob/approved = 'false'">
-					<button id="disapprove-job-button" type="button" class="mgn-lft8px btn btn-danger" disabled="disabled">Neka</button>
-				</xsl:when>
-				<xsl:otherwise>
-					<button id="disapprove-job-button" type="button" class="mgn-lft8px btn btn-danger">Neka</button>
-				</xsl:otherwise>
-			</xsl:choose>
+			<button id="save-job-options" type="button" class="btn btn-success">Spara</button>
 			
 			<a href="{listJobsURL}?showMunicipalityJobs=false" type="button" class="float-rgt mgn-lft8px btn btn-info">Gå tillbaka</a>
 			<button id="mark-job-as-initiated-button" type="button" class="float-rgt mgn-lft8px btn btn-primary">Markera som påbörjad</button>
