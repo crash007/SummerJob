@@ -25,6 +25,7 @@ import se.unlogic.hierarchy.core.utils.HierarchyAnnotatedDAOFactory;
 import se.unlogic.hierarchy.foregroundmodules.AnnotatedForegroundModule;
 import se.unlogic.hierarchy.foregroundmodules.rest.AnnotatedRESTModule;
 import se.unlogic.hierarchy.foregroundmodules.rest.RESTMethod;
+import se.unlogic.standardutils.bool.BooleanUtils;
 import se.unlogic.standardutils.numbers.NumberUtils;
 import se.unlogic.standardutils.xml.XMLUtils;
 import se.unlogic.webutils.http.RequestUtils;
@@ -77,8 +78,8 @@ public class ManageBusinessSectorJobAdminModule extends AnnotatedRESTModule {
 		return new SimpleForegroundModuleResponse(doc);
 	}
 	
-	@RESTMethod(alias="approvesummerjob.json", method="post")
-	public void approveSummerjob(HttpServletRequest req, HttpServletResponse res, User user, URIParser uriParser) throws IOException, SQLException {
+	@RESTMethod(alias="savejoboptions.json", method="post")
+	public void saveJobOptions(HttpServletRequest req, HttpServletResponse res, User user, URIParser uriParser) throws IOException, SQLException {
         PrintWriter writer = res.getWriter();
         String callback = req.getParameter("callback"); 
 		
@@ -88,18 +89,20 @@ public class ManageBusinessSectorJobAdminModule extends AnnotatedRESTModule {
         if (jobId == null) {
         	JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Kunde inte hämta det aktuella jobbet för att spara ändringarna.\"}", callback, writer);
         }
-        BusinessSectorJob job = businessSectorJobDAO.getById(jobId);
         
-        job.setApproved(true);
+        BusinessSectorJob job = businessSectorJobDAO.getById(jobId);
+        Boolean approveStatus = BooleanUtils.toBoolean(req.getParameter("statusApprove"));
+        
+        job.setApproved(approveStatus);
+        job.setIsOpen(approveStatus);
         job.setApprovedByUser(user.getUsername());
-        job.setApprovedDate(new Date(Calendar.getInstance().getTimeInMillis()));
         job.setControlled(true);
         job.setControlledDate(new Date(Calendar.getInstance().getTimeInMillis()));
         job.setAdminNotes(req.getParameter("adminNotes"));
         
 		try {
 			businessSectorJobDAO.save(job);
-			JsonResponse.sendJsonResponse("{\"status\":\"success\", \"message\":\"Annonsen är nu godkänd.\"}", callback, writer);
+			JsonResponse.sendJsonResponse("{\"status\":\"success\", \"message\":\"Ändringarna har nu sparats.\"}", callback, writer);
 			return;
 		} catch (SQLException e) {
 			log.error("SQL exception", e);
@@ -107,34 +110,64 @@ public class ManageBusinessSectorJobAdminModule extends AnnotatedRESTModule {
 		}				
 	}
 	
-	@RESTMethod(alias="disapprovesummerjob.json", method="post")
-	public void disapproveSummerjob(HttpServletRequest req, HttpServletResponse res, User user, URIParser uriParser) throws IOException, SQLException {
-        PrintWriter writer = res.getWriter();
-        String callback = req.getParameter("callback"); 
-		
-        JsonResponse.initJsonResponse(res, writer, callback);
-        
-        Integer jobId = NumberUtils.toInt(req.getParameter("jobId"));
-        if (jobId == null) {
-        	JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Kunde inte hämta det aktuella jobbet för att spara ändringarna.\"}", callback, writer);
-        }
-        BusinessSectorJob job = businessSectorJobDAO.getById(jobId);
-        
-        job.setApproved(false);
-        job.setApprovedByUser(user.getUsername());
-        job.setControlled(true);
-        job.setControlledDate(new Date(Calendar.getInstance().getTimeInMillis()));
-        job.setAdminNotes(req.getParameter("adminNotes"));
-        
-		try {
-			businessSectorJobDAO.save(job);
-			JsonResponse.sendJsonResponse("{\"status\":\"success\", \"message\":\"Annonsen har nu nekats.\"}", callback, writer);
-			return;
-		} catch (SQLException e) {
-			log.error("SQL exception", e);
-			JsonResponse.sendJsonResponse("{\"status\":\"error\", \"message\":\"Något gick fel när ändringarna skulle sparas.\"}", callback, writer);
-		}				
-	}
+//	@RESTMethod(alias="approvesummerjob.json", method="post")
+//	public void approveSummerjob(HttpServletRequest req, HttpServletResponse res, User user, URIParser uriParser) throws IOException, SQLException {
+//        PrintWriter writer = res.getWriter();
+//        String callback = req.getParameter("callback"); 
+//		
+//        JsonResponse.initJsonResponse(res, writer, callback);
+//        
+//        Integer jobId = NumberUtils.toInt(req.getParameter("jobId"));
+//        if (jobId == null) {
+//        	JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Kunde inte hämta det aktuella jobbet för att spara ändringarna.\"}", callback, writer);
+//        }
+//        BusinessSectorJob job = businessSectorJobDAO.getById(jobId);
+//        
+//        job.setApproved(true);
+//        job.setApprovedByUser(user.getUsername());
+//        job.setApprovedDate(new Date(Calendar.getInstance().getTimeInMillis()));
+//        job.setControlled(true);
+//        job.setControlledDate(new Date(Calendar.getInstance().getTimeInMillis()));
+//        job.setAdminNotes(req.getParameter("adminNotes"));
+//        
+//		try {
+//			businessSectorJobDAO.save(job);
+//			JsonResponse.sendJsonResponse("{\"status\":\"success\", \"message\":\"Annonsen är nu godkänd.\"}", callback, writer);
+//			return;
+//		} catch (SQLException e) {
+//			log.error("SQL exception", e);
+//			JsonResponse.sendJsonResponse("{\"status\":\"error\", \"message\":\"Något gick fel när ändringarna skulle sparas.\"}", callback, writer);
+//		}				
+//	}
+//	
+//	@RESTMethod(alias="disapprovesummerjob.json", method="post")
+//	public void disapproveSummerjob(HttpServletRequest req, HttpServletResponse res, User user, URIParser uriParser) throws IOException, SQLException {
+//        PrintWriter writer = res.getWriter();
+//        String callback = req.getParameter("callback"); 
+//		
+//        JsonResponse.initJsonResponse(res, writer, callback);
+//        
+//        Integer jobId = NumberUtils.toInt(req.getParameter("jobId"));
+//        if (jobId == null) {
+//        	JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Kunde inte hämta det aktuella jobbet för att spara ändringarna.\"}", callback, writer);
+//        }
+//        BusinessSectorJob job = businessSectorJobDAO.getById(jobId);
+//        
+//        job.setApproved(false);
+//        job.setApprovedByUser(user.getUsername());
+//        job.setControlled(true);
+//        job.setControlledDate(new Date(Calendar.getInstance().getTimeInMillis()));
+//        job.setAdminNotes(req.getParameter("adminNotes"));
+//        
+//		try {
+//			businessSectorJobDAO.save(job);
+//			JsonResponse.sendJsonResponse("{\"status\":\"success\", \"message\":\"Annonsen har nu nekats.\"}", callback, writer);
+//			return;
+//		} catch (SQLException e) {
+//			log.error("SQL exception", e);
+//			JsonResponse.sendJsonResponse("{\"status\":\"error\", \"message\":\"Något gick fel när ändringarna skulle sparas.\"}", callback, writer);
+//		}				
+//	}
 	
 	@RESTMethod(alias="initiatesummerjob.json", method="post")
 	public void initiateControl(HttpServletRequest req, HttpServletResponse res, User user, URIParser uriParser) throws IOException, SQLException {

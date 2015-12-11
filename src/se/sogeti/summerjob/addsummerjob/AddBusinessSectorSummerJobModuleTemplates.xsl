@@ -319,7 +319,7 @@
 								  	</div>
 								  	<div class="mgn-top8px row">
 								  		<div class="col-md-12 preview-mentors-list">
-									  		<label>Handledare</label>
+									  		<label>Handledare <span style="font-weight: normal; font-size: 90%;"><i>(Förnamn, efternamn och telefonnummer krävs för att en handledare ska sparas)</i></span></label>
 									  		<table class="table">
 												<thead>
 													<tr>
@@ -516,9 +516,9 @@
 							placeholder="" />
 					</div>
 					
-					<div class="form-group col-md-1">
+					<div class="form-group col-md-1 remove-mentor">
 						<label>Ta bort</label>
-						<div class="remove-mentor mgn-top8px glyphicon glyphicon-remove" aria-hidden="true"></div>
+						<div class="mgn-top8px glyphicon glyphicon-remove" aria-hidden="true"></div>
 					</div>
 				</div>
 			</div>	

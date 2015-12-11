@@ -168,14 +168,6 @@ public abstract class Job implements Requirements, Elementable{
 		this.approved = approved;
 	}
 
-	public Date getApprovedDate() {
-		return controlledDate;
-	}
-
-	public void setApprovedDate(Date approvedDate) {
-		this.controlledDate = approvedDate;
-	}
-
 	public String getApprovedByUser() {
 		return approvedByUser;
 	}
