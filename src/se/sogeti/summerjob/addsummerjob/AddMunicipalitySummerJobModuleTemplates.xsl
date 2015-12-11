@@ -60,14 +60,29 @@
 							   		<select class="form-control" name="area" id="area" required="required">
 							   			<option value="" />
 								   		<xsl:for-each select="Areas/MunicipalityJobArea">
-								   			<xsl:if test="canBeChosenInApplication = 'true'">
-												<option value="{id}" >
-													<xsl:if test="/Document/MunicipalityJobForm/MunicipalityJob/MunicipalityJobArea/id = id">
-										    			<xsl:attribute name="selected">selected</xsl:attribute>															    			
-										    		</xsl:if>
-													<xsl:value-of select="name"></xsl:value-of>
-												</option>	   			
-								   			</xsl:if>
+								   			<xsl:choose>
+								   				<xsl:when test="/Document/IsAdmin = 'true'">
+							   						<option value="{id}" >
+														<xsl:if test="/Document/MunicipalityJobForm/MunicipalityJob/MunicipalityJobArea/id = id">
+											    			<xsl:attribute name="selected">selected</xsl:attribute>															    			
+											    		</xsl:if>
+														<xsl:value-of select="name"></xsl:value-of>
+													</option>
+								   				</xsl:when>
+								   				<xsl:otherwise>
+								   					<xsl:if test="canBeChosenInApplication = 'true'">
+														<option value="{id}" >
+															<xsl:if test="/Document/MunicipalityJobForm/MunicipalityJob/MunicipalityJobArea/id = id">
+												    			<xsl:attribute name="selected">selected</xsl:attribute>															    			
+												    		</xsl:if>
+															<xsl:value-of select="name"></xsl:value-of>
+														</option>	   			
+								   					</xsl:if>
+								   				</xsl:otherwise>
+								   			
+								   			</xsl:choose>
+								   		
+								   		
 								   		</xsl:for-each>
 							  		 </select>
 							   		<p class="help-block with-errors"></p>

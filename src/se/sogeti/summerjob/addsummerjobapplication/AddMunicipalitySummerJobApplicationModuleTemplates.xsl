@@ -182,16 +182,30 @@
 								    <select class="form-control" name="preferedArea1" id="preferedArea1" required="required">
 										<option value=""/>
 										<xsl:for-each select="Areas/Area">
-								  			<xsl:if test="canBeChosenInApplication = 'true'">
-								  				<xsl:choose>
-								  					<xsl:when test="selectedArea1 = 'true'">
-								  						<option value="{id}" selected="selected"><xsl:value-of select="name"/> </option>
-								  					</xsl:when>
-								  					<xsl:otherwise>
-												  		<option value="{id}"><xsl:value-of select="name"/> </option>									  			
-								  					</xsl:otherwise>
-								  				</xsl:choose>
-									  		</xsl:if>
+											<xsl:choose>
+												<xsl:when test="/Document/IsAdmin = 'true'">
+													<xsl:choose>
+										  					<xsl:when test="selectedArea1 = 'true'">
+										  						<option value="{id}" selected="selected"><xsl:value-of select="name"/> </option>
+										  					</xsl:when>
+										  					<xsl:otherwise>
+														  		<option value="{id}"><xsl:value-of select="name"/> </option>									  			
+										  					</xsl:otherwise>
+										  				</xsl:choose>
+												</xsl:when>
+												<xsl:otherwise>
+													<xsl:if test="canBeChosenInApplication = 'true'">
+										  				<xsl:choose>
+										  					<xsl:when test="selectedArea1 = 'true'">
+										  						<option value="{id}" selected="selected"><xsl:value-of select="name"/> </option>
+										  					</xsl:when>
+										  					<xsl:otherwise>
+														  		<option value="{id}"><xsl:value-of select="name"/> </option>									  			
+										  					</xsl:otherwise>
+										  				</xsl:choose>
+											  		</xsl:if>
+												</xsl:otherwise>
+											</xsl:choose>
 							  			</xsl:for-each>
 									</select>
 									<p class="help-block with-errors"></p>
@@ -202,16 +216,30 @@
 								    <select class="form-control" name="preferedArea2" id="preferedArea2" required="required">
 								    	<option value=""/>
 									  	<xsl:for-each select="Areas/Area">
-								  			<xsl:if test="canBeChosenInApplication = 'true'">
-										  		<xsl:choose>
-								  					<xsl:when test="selectedArea2 = 'true'">
-								  						<option value="{id}" selected="selected"><xsl:value-of select="name"/> </option>
-								  					</xsl:when>
-								  					<xsl:otherwise>
-												  		<option value="{id}"><xsl:value-of select="name"/> </option>									  			
-								  					</xsl:otherwise>
-								  				</xsl:choose>									  			
-									  		</xsl:if>
+								  			<xsl:choose>
+												<xsl:when test="/Document/IsAdmin = 'true'">
+													<xsl:choose>
+										  					<xsl:when test="selectedArea2 = 'true'">
+										  						<option value="{id}" selected="selected"><xsl:value-of select="name"/> </option>
+										  					</xsl:when>
+										  					<xsl:otherwise>
+														  		<option value="{id}"><xsl:value-of select="name"/> </option>									  			
+										  					</xsl:otherwise>
+										  				</xsl:choose>
+												</xsl:when>
+												<xsl:otherwise>
+													<xsl:if test="canBeChosenInApplication = 'true'">
+										  				<xsl:choose>
+										  					<xsl:when test="selectedArea2 = 'true'">
+										  						<option value="{id}" selected="selected"><xsl:value-of select="name"/> </option>
+										  					</xsl:when>
+										  					<xsl:otherwise>
+														  		<option value="{id}"><xsl:value-of select="name"/> </option>									  			
+										  					</xsl:otherwise>
+										  				</xsl:choose>
+											  		</xsl:if>
+												</xsl:otherwise>
+											</xsl:choose>
 								  		</xsl:for-each>									  
 									</select>
 									<p class="help-block with-errors"></p>
@@ -221,16 +249,30 @@
 								    <select class="form-control" name="preferedArea3" id="preferedArea3" required="required">
 								    	<option value=""/>
 									 	<xsl:for-each select="Areas/Area">
-								  			<xsl:if test="canBeChosenInApplication = 'true'">
-										  		<xsl:choose>
-								  					<xsl:when test="selectedArea3 = 'true'">
-								  						<option value="{id}" selected="selected"><xsl:value-of select="name"/> </option>
-								  					</xsl:when>
-								  					<xsl:otherwise>
-												  		<option value="{id}"><xsl:value-of select="name"/> </option>									  			
-								  					</xsl:otherwise>
-								  				</xsl:choose>									  			
-									  		</xsl:if>
+								  			<xsl:choose>
+												<xsl:when test="/Document/IsAdmin = 'true'">
+													<xsl:choose>
+										  					<xsl:when test="selectedArea3 = 'true'">
+										  						<option value="{id}" selected="selected"><xsl:value-of select="name"/> </option>
+										  					</xsl:when>
+										  					<xsl:otherwise>
+														  		<option value="{id}"><xsl:value-of select="name"/> </option>									  			
+										  					</xsl:otherwise>
+										  				</xsl:choose>
+												</xsl:when>
+												<xsl:otherwise>
+													<xsl:if test="canBeChosenInApplication = 'true'">
+										  				<xsl:choose>
+										  					<xsl:when test="selectedArea3 = 'true'">
+										  						<option value="{id}" selected="selected"><xsl:value-of select="name"/> </option>
+										  					</xsl:when>
+										  					<xsl:otherwise>
+														  		<option value="{id}"><xsl:value-of select="name"/> </option>									  			
+										  					</xsl:otherwise>
+										  				</xsl:choose>
+											  		</xsl:if>
+												</xsl:otherwise>
+											</xsl:choose>
 							  			</xsl:for-each>									  
 									</select>
 									<p class="help-block with-errors"></p>
