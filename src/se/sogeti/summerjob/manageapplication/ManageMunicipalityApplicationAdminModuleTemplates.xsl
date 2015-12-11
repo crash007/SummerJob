@@ -147,14 +147,7 @@
 			  	<div class="mgn-top8px row">
 			  		<div class="col-md-3">
 			  			<label>Körkort</label>
-			  			<xsl:choose>
-			  				<xsl:when test="DriversLicenseType != ''">
-			  					<div>Ja, jag har körkort av typ <xsl:value-of select="DriversLicenseType/name"></xsl:value-of></div>
-			  				</xsl:when>
-			  				<xsl:otherwise>
-			  					<div>Nej, jag har inget körkort</div>
-			  				</xsl:otherwise>
-			  			</xsl:choose>
+		  					<div>jag har <xsl:value-of select="DriversLicenseType/name"/></div>	
 			  		</div>						
 				</div>
 	  		</div>

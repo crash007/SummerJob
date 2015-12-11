@@ -199,22 +199,11 @@
 					    		</input>						    	
 						    </label>
 					  	</div>
-						<div class="checkbox">
-						    <label>
-							    <input type="checkbox" id="hasDriversLicense" name="hasDriversLicense">
-						    		<xsl:if test="BusinessSectorJob/DriversLicenseType !=''">
-						    			<xsl:attribute name="checked">checked</xsl:attribute>							    			
-						    		</xsl:if>
-						    		Måste ha körkort
-						    	</input>						    									
-						    </label>
-					  	</div>
-					  	
+											  	
 					  	<div id="driverslicense_select" class="row">
 					  		<div class="form-group col-md-3">
 							    <label for="driversLicenseType">Välj körkortstyp*</label>				    
-							    <select class="form-control" name="driversLicenseType" id="driversLicenseType">
-							    	<option value="" />
+							    <select class="form-control" name="driversLicenseType" id="driversLicenseType">							    	
 									<xsl:for-each select="DriversLicenseTypes/DriversLicenseType">
 										<option value="{id}">
 											<xsl:if test="/Document/BusinessSectorJobForm/BusinessSectorJob/DriversLicenseType/id = id">

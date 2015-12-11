@@ -278,24 +278,11 @@
 						</div>
 				  	</div>
 				  	</div>
-				  	<div class="form-group">							
-						<div class="checkbox">
-						    <label>
-						    			
-						    	<input type="checkbox"  name="hasDriversLicense">
-						    		<xsl:if test="MunicipalityJobApplication/DriversLicenseType != ''">
-						    			<xsl:attribute name="checked">checked</xsl:attribute>	   
-						    		</xsl:if>
-						    		Har du körkort?
-					    		</input>
-						    </label>
-					  	</div>
-					</div>
+				  	
 					<div id="driverslicense_select" class="row">
 				  		<div class="form-group col-md-4">
 						    <label for="driversLicenseType">Välj körkortstyp*</label>				    
-						   		<select class="form-control" name="driversLicenseType" id="driversLicenseType">
-							    	<option value="" />
+						   		<select class="form-control" name="driversLicenseType" id="driversLicenseType">							    	
 									<xsl:for-each select="DriversLicenseTypes/DriversLicenseType">
 										<option value="{id}">
 											<xsl:if test="/Document/MunicipalityJobApplicationForm/MunicipalityJobApplication/DriversLicenseType/id = id">
@@ -477,9 +464,7 @@
 					  	
 					  	<div class="mgn-top8px row">
 					  		<div class="col-md-5">
-					  			<label>Körkort</label>
-					  			<input type="hidden" id="hasDriversLicenseText" value="Ja, jag har körkort av typ " />
-								<input type="hidden" id="noDriversLicenseText" value="Nej, jag har inget körkort" />
+					  			<label>Körkort</label>					  			
 								<p id="preview-driverslicense"></p>
 					  		</div>						
 						</div>

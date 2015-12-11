@@ -261,10 +261,7 @@
 					
 							<div class="col-xs-4 col-md-3 bold">Körkort</div>
 							<div class="col-md-3">
-								<xsl:choose>
-									<xsl:when test="DriversLicenseType">Ja, <xsl:value-of select="DriversLicenseType/name"/></xsl:when>
-									<xsl:otherwise>Nej</xsl:otherwise>
-								</xsl:choose>
+								<xsl:value-of select="DriversLicenseType/name"/>								
 							</div>
 							<div class="col-xs-4 col-md-3 bold">Över 18</div>
 							<div class="col-md-3">

@@ -151,15 +151,7 @@
 						<div class="col-md-4">
 							<label>Körkort</label>
 							<div>
-								<xsl:choose>
-								<xsl:when test="DriversLicenseType != ''">
-					  					Tjänsten kräver att sökande har körkort av typ <xsl:value-of select="DriversLicenseType/name"></xsl:value-of>.
-					  				</xsl:when>
-					  				<xsl:otherwise>
-					  					Tjänsten kräver <i>ej</i> körkort
-					  				</xsl:otherwise>
-								
-								</xsl:choose>
+								<xsl:value-of select="DriversLicenseType/name"/>								
 							</div>
 						</div>
 					</div>
@@ -364,22 +356,11 @@
 							    <p class="help-block with-errors"></p>
 							</div>
 							
-							<div class="form-group">						
-								<div class="checkbox">
-								    <label>
-								    	<input type="checkbox"  name="hasDriversLicense">
-								    		<xsl:if test="BusinessSectorJobApplication/DriversLicenseType != ''">
-								    			<xsl:attribute name="checked">checked</xsl:attribute>	   
-								    		</xsl:if>
-								    		Har du körkort?
-							    		</input>
-								    </label>
-							  	</div>
+							<div class="form-group">														
 							  	<div id="driverslicense_select" class="row">
 							  		<div class="form-group col-md-4">
 									    <label for="driversLicenseType">Välj körkortstyp*</label>				    
-									    <select class="form-control" name="driversLicenseType" id="driversLicenseType">
-									    	<option value="" />
+									    <select class="form-control" name="driversLicenseType" id="driversLicenseType">									    	
 											<xsl:for-each select="DriversLicenseTypes/DriversLicenseType">
 												<option value="{id}">
 													<xsl:if test="/Document/JobApplicationForm/BusinessSectorJobApplication/DriversLicenseType/id = id">
