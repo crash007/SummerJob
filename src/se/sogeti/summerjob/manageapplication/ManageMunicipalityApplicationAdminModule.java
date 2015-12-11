@@ -81,18 +81,20 @@ public class ManageMunicipalityApplicationAdminModule extends AnnotatedRESTModul
 		}
 		
 		MunicipalityJobApplication app = appDAO.getById(appId);
-		XMLUtils.append(doc, appElement, app);
-		XMLUtils.appendNewElement(doc, appElement, "editAppURL", editApplicationURL + "?appId=" + app.getId());
-		XMLUtils.appendNewElement(doc, appElement, "listJobApplicationsURL", listJobApplicationsURL);
-		
-		Element rankingsElement = doc.createElement("Rankings");
-		for (int i = 1; i < 11; i++) {
-			Element ranking = doc.createElement("Ranking");
-			XMLUtils.appendNewElement(doc, ranking, "value", i);
-			XMLUtils.appendNewElement(doc, ranking, "selected", app.getRanking().intValue() == i);
-			rankingsElement.appendChild(ranking);
+		if(app!=null){
+			XMLUtils.append(doc, appElement, app);
+			XMLUtils.appendNewElement(doc, appElement, "editAppURL", editApplicationURL + "?appId=" + app.getId());
+			XMLUtils.appendNewElement(doc, appElement, "listJobApplicationsURL", listJobApplicationsURL);
+			
+			Element rankingsElement = doc.createElement("Rankings");
+			for (int i = 1; i < 11; i++) {
+				Element ranking = doc.createElement("Ranking");
+				XMLUtils.appendNewElement(doc, ranking, "value", i);
+				XMLUtils.appendNewElement(doc, ranking, "selected", app.getRanking().intValue() == i);
+				rankingsElement.appendChild(ranking);
+			}
+			appElement.appendChild(rankingsElement);
 		}
-		appElement.appendChild(rankingsElement);
 		
 		return new SimpleForegroundModuleResponse(doc);
 	}

@@ -150,8 +150,8 @@
 				  	</div>
 				  	<div class="form-group">
 					    <label for="work-description">Arbetsbeskrivning*</label>				    
-					    <textarea class="form-control" maxlength="255" data-error="Beskriv vad arbetsuppgifterna kommer vara. Max 255 tecken." rows="3" id="work-description" name="work-description" required="required"><xsl:value-of select="MunicipalityJob/workDescription"></xsl:value-of></textarea>							    
-					    <p class="help-block with-errors">Beskriv vad arbetsuppgifterna kommer vara. Max 255 tecken.</p>
+					    <textarea class="form-control" data-error="Beskriv vad arbetsuppgifterna kommer vara." rows="10" id="work-description" name="work-description" required="required"><xsl:value-of select="MunicipalityJob/workDescription"></xsl:value-of></textarea>							    
+					    <p class="help-block with-errors">Beskriv vad arbetsuppgifterna kommer vara.</p>
 				  	</div>				  	
 				  	
 				  	<div id="periods-group" class="form-group">
@@ -349,6 +349,19 @@
 					  	</div>    	
 				  </div>
 			  	</div> 
+			  	
+			  	<div class="panel panel-default">
+				  <div class="panel-heading">
+				    <h3 class="panel-title">Övrigt</h3>
+				  </div>
+				  <div class="panel-body">
+				  	<div class="form-group">
+					    <label>Övrigt</label>				    
+					    <textarea class="form-control" rows="6" id="freetext" name="freetext"><xsl:value-of select="MunicipalityJob/freeText"></xsl:value-of></textarea>							    
+					    <p class="help-block">Övrigt</p>
+				  	</div> 
+				  </div>
+			  	</div>
 		  		
 		  		<div class="panel panel-default">
 			  		<div class="panel-heading">
@@ -489,19 +502,6 @@
 							</div>
 						</div>
 						
-						
-						<!-- Här ska vi fixa så alla valda perioder syns, hur många arbetare som krävs och dess handledare. -->
-<!-- 						<div class="row mgn-top8px"> -->
-<!-- 							<div class="col-md-3"> -->
-<!-- 								<label>Antal lediga platser</label> -->
-<!-- 								<p></p> -->
-<!-- 							</div> -->
-<!-- 							<div class="col-md-5"> -->
-<!-- 								<label>Period</label> -->
-<!-- 								<div><xsl:value-of select="MunicipalityJob/Period/name"></xsl:value-of><i> (<xsl:value-of select="MunicipalityJob/Period/startDate"></xsl:value-of> - <xsl:value-of select="MunicipalityJob/Period/endDate"></xsl:value-of>)</i></div> -->
-<!-- 							</div> -->
-<!-- 						</div> -->
-						
 						<div class="row mgn-top8px">
 							<div class="col-md-2">
 								<label>Perioder</label>
@@ -534,29 +534,6 @@
 								</div>
 							</div>
 						</div>
-							
-<!-- 						<div class="row mgn-top8px"> -->
-<!-- 							<div class="col-md-3 mgn-top8px"> -->
-<!-- 								<label>Handledare</label> -->
-<!-- 							</div> -->
-<!-- 							<div class="row"> -->
-<!-- 								<div class="col-md-12"> -->
-<!-- 									<table class="table"> -->
-<!-- 										<thead> -->
-<!-- 											<tr> -->
-<!-- 												<th>Förnamn</th> -->
-<!-- 												<th>Efternamn</th>							 -->
-<!-- 												<th>Telefonnummer</th> -->
-<!-- 												<th>E-postadress</th> -->
-<!-- 											</tr> -->
-<!-- 										</thead> -->
-<!-- 										<tbody> -->
-<!-- 											<xsl:apply-templates select="MunicipalityJob/mentors/MunicipalityMentor" /> -->
-<!-- 										</tbody> -->
-<!-- 									</table> -->
-<!-- 								</div> -->
-<!-- 							</div> -->
-<!-- 						</div> -->
 					</div>
 				</div>
 						
@@ -583,6 +560,22 @@
 							<div class="col-md-12">
 								<label>Övriga krav och önskemål</label>
 								<p id="preview-otherrequirements"></p>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h3 class="panel-title">Övrigt</h3>
+					</div>
+					<div class="panel-body">
+						
+						<div class="mgn-top8px row">
+							<div class="col-md-12">
+								<label>Övrigt</label>
+								<p id="preview-freetext"></p>
 							</div>
 						</div>
 					</div>

@@ -66,10 +66,6 @@ public abstract class Job implements Requirements, Elementable{
 	@XMLElement
 	private Boolean mustBeOverEighteen;
 	
-//	@DAOManaged
-//	@XMLElement
-//	private Boolean hasDriversLicense;
-	
 	@DAOManaged(columnName="driversLicenseTypeId")
 	@XMLElement
 	@ManyToOne(remoteKeyField="id", autoGet = true, autoAdd = true, autoUpdate = true)
@@ -78,6 +74,10 @@ public abstract class Job implements Requirements, Elementable{
 	@DAOManaged
 	@XMLElement
 	private String freeTextRequirements;
+	
+	@DAOManaged
+	@XMLElement
+	private String freeText;
 	
 	@DAOManaged
 	@XMLElement
@@ -318,6 +318,14 @@ public abstract class Job implements Requirements, Elementable{
 
 	public void setIsOpen(Boolean isOpen) {
 		this.isOpen = isOpen;
+	}
+
+	public String getFreeText() {
+		return freeText;
+	}
+
+	public void setFreeText(String freeText) {
+		this.freeText = freeText;
 	}
 
 }

@@ -60,6 +60,20 @@
 						    <div><xsl:value-of select="city"></xsl:value-of></div>
 				    	</div>
 	    			</div>
+	    			<div class="mgn-top8px row">
+		  				<div class="col-md-3">
+						    <label>Skola</label>				    
+						    <div><xsl:value-of select="schoolName"></xsl:value-of></div>
+				    	</div>
+				    	<div class="col-md-3">
+						    <label>Skoltyp</label>				    
+						    <div><xsl:value-of select="schoolType"></xsl:value-of></div>
+				    	</div>
+		  				<div class="col-md-3">
+						    <label>Ort från skatteverket</label>				    
+						    <div><xsl:value-of select="skvCity"></xsl:value-of></div>
+				    	</div>
+	    			</div>
 			  	</div>
 			</div>
 			

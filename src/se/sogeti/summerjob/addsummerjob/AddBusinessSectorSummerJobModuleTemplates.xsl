@@ -248,6 +248,19 @@
 			  	</div>
 			  	
 			  	<div class="panel panel-default">
+				  <div class="panel-heading">
+				    <h3 class="panel-title">Övrigt</h3>
+				  </div>
+				  <div class="panel-body">
+				  	<div class="form-group">
+					    <label>Övrigt</label>				    
+					    <textarea class="form-control" rows="6" id="freetext" name="freetext"><xsl:value-of select="BusinessSectorJob/freeText"></xsl:value-of></textarea>							    
+					    <p class="help-block">Övrigt</p>
+				  	</div> 
+				  </div>
+			  	</div>
+			  	
+			  	<div class="panel panel-default">
 			  		<div class="panel-heading">
 			  			<h3 class="panel-title">
 			  				Förhandsgranska annons
@@ -425,6 +438,21 @@
 										<div class="col-md-12">
 											<label>Övriga krav och önskemål</label>
 											<p id="preview-otherrequirements"></p>
+										</div>
+									</div>
+								</div>
+							</div>
+							
+							<div class="panel panel-default">
+								<div class="panel-heading">
+									<h3 class="panel-title">Övrigt</h3>
+								</div>
+								<div class="panel-body">
+									
+									<div class="mgn-top8px row">
+										<div class="col-md-12">
+											<label>Övrigt</label>
+											<p id="preview-freetext"></p>
 										</div>
 									</div>
 								</div>

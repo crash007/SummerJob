@@ -257,6 +257,7 @@ public class AddBusinessSectorSummerJobModule extends AnnotatedRESTModule{
         }
         
         job.setFreeTextRequirements(req.getParameter("other-requirements"));
+		job.setFreeText(req.getParameter("freetext"));
         
         if (jobId != null) {
         	job.setUpdated(new Date(Calendar.getInstance().getTimeInMillis()));

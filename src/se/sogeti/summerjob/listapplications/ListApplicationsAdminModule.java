@@ -75,7 +75,19 @@ public class ListApplicationsAdminModule extends AnnotatedForegroundModule {
 		String socialSecurityNumber = req.getParameter("socialSecurityNumber");
 		String firstname = req.getParameter("firstname");
 		String lastname = req.getParameter("lastname");
+		
+		if(socialSecurityNumber!=null){
+			XMLUtils.appendNewElement(doc, element, "SocialSecurityNumber", socialSecurityNumber);
+		}
+		
+		if(firstname!=null){
+			XMLUtils.appendNewElement(doc, element, "Firstname", firstname);			
+		}
 
+		if(lastname!=null){
+			XMLUtils.appendNewElement(doc, element, "Lastname", lastname);			
+		}
+		
 		List<MunicipalityJobApplication> approvedMunicipalityApplications = municipalityJobApplicationDAO.getAllByApprovedByDescendingOrder(socialSecurityNumber, firstname, lastname, true, true);
 		createMunicipalityApplicationElements(doc, approvedMunicipalityElement, approvedMunicipalityApplications);
 		

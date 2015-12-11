@@ -208,6 +208,21 @@
 					</div>
 				</div>
 			</div>
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">Övrigt</h3>
+				</div>
+				<div class="panel-body">					
+					<div class="mgn-top8px row">
+						<div class="col-md-12">
+							<label>Övrigt</label>
+							<div>
+								<xsl:value-of select="BusinessSectorJob/freeText"></xsl:value-of>
+							</div>
+						</div>
+					</div>				
+				</div>
+			</div>
 		</div>
 
 	<div class="panel panel-default">

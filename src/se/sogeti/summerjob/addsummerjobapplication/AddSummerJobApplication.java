@@ -150,8 +150,7 @@ public abstract class AddSummerJobApplication<T extends JobApplication> extends 
 			}
 			
 		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error("Exception",e);
 		}
 		
 		app.setEmail(req.getParameter("email"));
