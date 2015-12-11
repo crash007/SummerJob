@@ -139,10 +139,23 @@
 	   		</div>
 	   		
 	   		<div class="row">
-				<div class="col-xs-4 col-md-2 bold">Skoltyp</div>
-				<div class="col-md-4">
-					<xsl:value-of select="schoolType"/>
-	   			</div>
+	   			<div class="col-xs-4 col-md-2 bold">Önskad arbetsperiod</div>
+	   			<xsl:if test="preferedPeriod = 'NONE'">
+			 		<div class="col-md-4">Inget önskemål</div>
+			 	</xsl:if>
+			 	<xsl:if test="preferedPeriod = 'BEGINNING'">
+			 		<div class="col-md-4">Början av sommaren</div>
+			 	</xsl:if>
+			 	<xsl:if test="preferedPeriod = 'MIDDLE'">
+			 		<div class="col-md-4">Mitten av sommaren</div>
+			 	</xsl:if>
+			 	<xsl:if test="preferedPeriod = 'END'">
+			 		<div class="col-md-4">Slutet av sommaren</div>
+			 	</xsl:if>
+			 	<xsl:if test="not(preferedPeriod)">
+			 		<div class="col-md-4"></div>
+			 	</xsl:if>
+	   		
 	   			<div class="col-xs-4 col-md-2 bold">Cv</div>
 				<div class="col-md-4 cv">
 				<xsl:choose>
@@ -155,8 +168,14 @@
 				</xsl:choose>
 				
 				</div>
-	   			
 	   		</div>
+	   		
+			<div class="row collapse">
+				<div class="col-xs-4 col-md-2 bold">Skoltyp</div>
+				<div class="col-md-4">
+					<xsl:value-of select="schoolType"/>
+	   			</div>
+			</div>	   		
 	   		
 	   		<div class="row collapse">
 				<div class="col-xs-4 col-md-2 bold">Område 1</div>
