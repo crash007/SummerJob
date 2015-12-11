@@ -232,22 +232,27 @@
 					<div class="help-block with-errors">Valfri. Skriv här anledningen till godkännande eller nekande av en ansökan.</div>
 				</div>
 				
-				<xsl:choose>
-					<xsl:when test="controlledByUser != '' and approved = 'true'">
-						<button id="approve-application-button" type="button" class="btn btn-success" disabled="disabled">Godkänn</button>
-					</xsl:when>
-					<xsl:otherwise>
-						<button id="approve-application-button" type="button" class="btn btn-success">Godkänn</button>
-					</xsl:otherwise>
-				</xsl:choose>
-				<xsl:choose>
-					<xsl:when test="controlledByUser != '' and approved = 'false'">
-						<button id="disapprove-application-button" type="button" class="mgn-lft8px btn btn-danger" disabled="disabled">Neka</button>
-					</xsl:when>
-					<xsl:otherwise>
-						<button id="disapprove-application-button" type="button" class="mgn-lft8px btn btn-danger">Neka</button>
-					</xsl:otherwise>
-				</xsl:choose>
+				<div class="row mgn-btm8px">
+					<div class="col-md-2 col-xs-6">
+						<label>Status på ansökan</label>
+						<select class="form-control" name="application-status-select">
+							<option value="true">
+								<xsl:if test="approved = 'true'">
+							   		<xsl:attribute name="selected">selected</xsl:attribute>	   	
+							   	</xsl:if>
+								Godkänd
+							</option>
+							<option value="false">
+								<xsl:if test="approved = 'false'">
+								   		<xsl:attribute name="selected">selected</xsl:attribute>	   	
+								</xsl:if>
+								Nekad
+							</option>
+						</select>
+					</div>
+				</div>
+				
+				<button id="save-application-options" type="button" class="btn btn-success">Spara</button>
 				
 				<a href="{/Document/ApplicationInfo/listJobApplicationsURL}" type="button" class="float-rgt mgn-lft8px btn btn-info">Gå tillbaka</a>
 				<a href="{/Document/ApplicationInfo/editAppURL}" id="edit-job-button" type="button" class="float-rgt mgn-lft8px btn btn-warning">Redigera</a>

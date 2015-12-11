@@ -174,23 +174,6 @@
 				
 				<button id="save-application-options" type="button" class="btn btn-success">Spara</button>
 				
-<!-- 				<xsl:choose> -->
-<!-- 					<xsl:when test="controlledByUser != '' and approved = 'true'"> -->
-<!-- 						<button id="approve-application-button" type="button" class="btn btn-success" disabled="disabled">Godkänn</button> -->
-<!-- 					</xsl:when> -->
-<!-- 					<xsl:otherwise> -->
-<!-- 						<button id="approve-application-button" type="button" class="btn btn-success">Godkänn</button> -->
-<!-- 					</xsl:otherwise> -->
-<!-- 				</xsl:choose> -->
-<!-- 				<xsl:choose> -->
-<!-- 					<xsl:when test="controlledByUser != '' and approved = 'false'"> -->
-<!-- 						<button id="disapprove-application-button" type="button" class="mgn-lft8px btn btn-danger" disabled="disabled">Neka</button> -->
-<!-- 					</xsl:when> -->
-<!-- 					<xsl:otherwise> -->
-<!-- 						<button id="disapprove-application-button" type="button" class="mgn-lft8px btn btn-danger">Neka</button> -->
-<!-- 					</xsl:otherwise> -->
-<!-- 				</xsl:choose> -->
-				
 				<a href="{/Document/ApplicationInfo/listJobApplicationsURL}" type="button" class="float-rgt mgn-lft8px btn btn-info">Gå tillbaka</a>
 				<a href="{/Document/ApplicationInfo/editBusinessAppURL}" id="edit-job-button" type="button" class="float-rgt mgn-lft8px btn btn-warning">Redigera</a>
 			</div>
