@@ -209,7 +209,7 @@
 									  		</div>		  			
 							  			</div>
 							  			<div style="margin-bottom: 8px" class="add-mentor-div hidden">
-							  				<label>Ange handledare</label>
+							  				<label>Ange handledare <span style="font-weight: normal; font-size: 90%;"><i>(Förnamn, efternamn och telefonnummer krävs för att en handledare ska sparas)</i></span></label>
 							  				<div id="mentors-wrapper">
 							  					<xsl:if test="selected = 'true'">
 										  			<xsl:for-each select="mentors/MunicipalityMentor">
@@ -255,7 +255,7 @@
 									  		</div>		  			
 							  			</div>
 							  			<div style="margin-bottom: 8px" class="add-mentor-div hidden">
-							  				<label>Ange handledare</label>
+							  				<label>Ange handledare <span style="font-weight: normal; font-size: 90%;"><i>(Förnamn, efternamn och telefonnummer krävs för att en handledare ska sparas)</i></span></label>
 							  				<div id="mentors-wrapper">
 									    	</div>
 							  				<a href="#" class="add-municipality-mentor-btn"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Lägg till handledare</a>
@@ -274,7 +274,7 @@
 								  		</div>
 						  			</div>
 						  			<div style="margin-bottom: 8px" class="add-mentor-div hidden">
-						  				<label>Ange handledare</label>
+						  				<label>Ange handledare <span style="font-weight: normal; font-size: 90%;"><i>(Förnamn, efternamn och telefonnummer krävs för att en handledare ska sparas)</i></span></label>
 						  				<div id="mentors-wrapper">
 								    	</div>
 						  				<a href="#" class="add-municipality-mentor-btn"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Lägg till handledare</a>
@@ -632,7 +632,7 @@
 				<div class="col-md-3"><span class="bold">Antal arbetare: </span> <span id="preview-period-numberOfWorkers"></span></div>
 			</div>
 			<br/>
-			<label>Handledare under perioden</label>
+			<label>Handledare under perioden <span style="font-weight: normal; font-size: 90%;"><i>(Förnamn, efternamn och telefonnummer krävs för att en handledare ska sparas)</i></span></label>
 			<div id="preview-mentor-body">
 				<div class="row" style="display: none" id="preview-mentor-row">
 					<div class="col-md-2" id="preview-mentor-firstname"></div>

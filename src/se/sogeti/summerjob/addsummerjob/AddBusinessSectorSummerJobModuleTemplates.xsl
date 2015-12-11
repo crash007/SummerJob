@@ -319,7 +319,7 @@
 								  	</div>
 								  	<div class="mgn-top8px row">
 								  		<div class="col-md-12 preview-mentors-list">
-									  		<label>Handledare</label>
+									  		<label>Handledare <span style="font-weight: normal; font-size: 90%;"><i>(Förnamn, efternamn och telefonnummer krävs för att en handledare ska sparas)</i></span></label>
 									  		<table class="table">
 												<thead>
 													<tr>
