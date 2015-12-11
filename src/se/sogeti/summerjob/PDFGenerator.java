@@ -118,11 +118,18 @@ public class PDFGenerator {
 		setFieldValue(pdfDocument, "anstallning-fromdate", job.getPeriod().getStartDate().toString());
 		setFieldValue(pdfDocument, "anstallning-todate", job.getPeriod().getEndDate().toString());
 		
+//		if (!StringUtils.isEmpty(job.getDescriptionForEmploymentPapers())) {
+//			setFieldValue(pdfDocument, "anstallning-specificinfo", job.getDescriptionForEmploymentPapers());
+//		} else {
+//			setFieldValue(pdfDocument, "anstallning-specificinfo", job.getWorkDescription());
+//		}
+		
 		if (!StringUtils.isEmpty(job.getDescriptionForEmploymentPapers())) {
 			setFieldValue(pdfDocument, "anstallning-specificinfo", job.getDescriptionForEmploymentPapers());
 		} else {
-			setFieldValue(pdfDocument, "anstallning-specificinfo", job.getWorkDescription());
+			setFieldValue(pdfDocument, "anstallning-specificinfo", "");
 		}
+		
 		
 		File savedFile = saveDocument(newFilePath, pdfDocument, socialSecurityNumber + "_" + "information_anstallningsbevis.pdf");
 		pdfDocument.close();

@@ -356,9 +356,9 @@
 				  </div>
 				  <div class="panel-body">
 				  	<div class="form-group">
-					    <label>Övrigt</label>				    
+					    <label>Övriga kommentarer</label>				    
 					    <textarea class="form-control" rows="6" id="freetext" name="freetext"><xsl:value-of select="MunicipalityJob/freeText"></xsl:value-of></textarea>							    
-					    <p class="help-block">Övrigt</p>
+					    <p class="help-block">Övriga kommentarer du vill ge oss handläggare</p>
 				  	</div> 
 				  </div>
 			  	</div>
