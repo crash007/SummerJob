@@ -33,11 +33,11 @@ public class PDFGenerator {
 //	private static String templateFilePath = "C:\\Users\\pettejoh\\Desktop\\Sommarjobb\\Dokument\\Omgjorda\\";
 	
 	public static File generateEmployeeDocuments(String templatePath, String newFilePath, MunicipalityJob job, 
-			MunicipalityJobApplication app, MunicipalityMentor mentor, int salary, 
+			MunicipalityJobApplication app,  int salary, 
 			String placeForInfo, AccountingEntry accounting, ContactPerson contact) throws IOException, Exception {
 		File call = generateCallDocument(templatePath, newFilePath, job, app, placeForInfo, contact);
 		File confirmation = generateConfirmationDocument(templatePath, newFilePath, job, app, salary, accounting);
-		File proofOfEmployment = generateProofOfEmployment(templatePath, newFilePath, job, app, mentor, salary);
+		File proofOfEmployment = generateProofOfEmployment(templatePath, newFilePath, job, app, salary);
 		File time = generateTimeReport(templatePath, newFilePath, job, app, accounting);
 		File bank = generateBankDocument(templatePath, newFilePath, app, contact);
 		File taxDocument = generateTaxDocument(templatePath, newFilePath, app);
@@ -94,7 +94,7 @@ public class PDFGenerator {
 		return savedFile;
 	}
 	
-	public static File generateProofOfEmployment(String templateFilePath, String newFilePath, MunicipalityJob job, MunicipalityJobApplication app, MunicipalityMentor mentor, int salary) throws IOException {
+	public static File generateProofOfEmployment(String templateFilePath, String newFilePath, MunicipalityJob job, MunicipalityJobApplication app, int salary) throws IOException {
 		File file = new File(templateFilePath + "information_anstallningsbevis.pdf");
 		PDDocument pdfDocument = PDDocument.load(file);
 		
@@ -110,19 +110,13 @@ public class PDFGenerator {
 		MunicipalityManager manager = job.getManager();
 		setFieldValue(pdfDocument, "anstallning-workmanager", manager.getFirstname() + " " + manager.getLastname() + ", " + manager.getMobilePhone());
 		
-		if (mentor != null) {
-			setFieldValue(pdfDocument, "anstallning-workmentor", mentor.getFirstname() + " " + mentor.getLastname() + ", " + mentor.getMobilePhone());
+		if (app.getPersonalMentor() != null) {
+			setFieldValue(pdfDocument, "anstallning-workmentor", app.getPersonalMentor().getFirstname() + " " + app.getPersonalMentor().getLastname() + ", " + app.getPersonalMentor().getMobilePhone());
 		}
 		
 		setFieldValue(pdfDocument, "anstallning-salary", salary + "");
 		setFieldValue(pdfDocument, "anstallning-fromdate", job.getPeriod().getStartDate().toString());
 		setFieldValue(pdfDocument, "anstallning-todate", job.getPeriod().getEndDate().toString());
-		
-//		if (!StringUtils.isEmpty(job.getDescriptionForEmploymentPapers())) {
-//			setFieldValue(pdfDocument, "anstallning-specificinfo", job.getDescriptionForEmploymentPapers());
-//		} else {
-//			setFieldValue(pdfDocument, "anstallning-specificinfo", job.getWorkDescription());
-//		}
 		
 		if (!StringUtils.isEmpty(job.getDescriptionForEmploymentPapers())) {
 			setFieldValue(pdfDocument, "anstallning-specificinfo", job.getDescriptionForEmploymentPapers());

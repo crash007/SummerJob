@@ -18,12 +18,12 @@ import se.unlogic.standardutils.xml.XMLGenerator;
 public class MunicipalityMentor extends ContactDetails{
 	
 	@DAOManaged(columnName="jobId")
-	@ManyToOne
+	@ManyToOne(autoGet=false)
 	private MunicipalityJob job;
 	
-//	@DAOManaged
-//	@OneToMany
-//	private List<MunicipalityJobApplication> jobApplications;
+	@DAOManaged
+	@OneToMany(autoGet=false)
+	private List<MunicipalityJobApplication> jobApplications;
 	
 	public MunicipalityJob getJob() {
 		return job;
@@ -39,11 +39,5 @@ public class MunicipalityMentor extends ContactDetails{
 		return XMLGenerator.toXML(this, doc);
 	}
 
-//	public List<MunicipalityJobApplication> getJobApplications() {
-//		return jobApplications;
-//	}
-//
-//	public void setJobApplications(List<MunicipalityJobApplication> jobApplications) {
-//		this.jobApplications = jobApplications;
-//	}
+
 }
