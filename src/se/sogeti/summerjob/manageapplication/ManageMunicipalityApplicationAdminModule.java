@@ -113,7 +113,6 @@ public class ManageMunicipalityApplicationAdminModule extends AnnotatedRESTModul
         MunicipalityJobApplication app = appDAO.getById(appId);
         
         app.setApproved(true);
-        app.setApprovedDate(new Date(Calendar.getInstance().getTimeInMillis()));
         app.setControlled(true);
         app.setControlledByUser(user.getUsername());
         app.setControlledDate(new Date(Calendar.getInstance().getTimeInMillis()));

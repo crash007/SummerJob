@@ -207,11 +207,17 @@ public class BusinessSectorSummerJobApplicationModule extends AddSummerJobApplic
 						job.setApplications(appliedApplications);
 					}
 				}
-
+				
 				FileItem fileItem = requestWrapper.getFile(0);
 				if (!StringUtils.isEmpty(fileItem.getName())) {
 					saveCv(app,fileItem,job.getId()+"_"+app.getSocialSecurityNumber()+"_"+fileItem.getName(),writer, callback);
 				} 
+				
+				if (app.getId() == null) {
+					if (user != null && user.getUsername() != null) {
+						app.setAddedByUser(user.getUsername());
+					}
+				}
 
 				try {
 					log.info("Påbörjar sparning av näringslivsansökan");

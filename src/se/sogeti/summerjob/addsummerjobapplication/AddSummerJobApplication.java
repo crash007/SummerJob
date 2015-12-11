@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -115,6 +116,7 @@ public abstract class AddSummerJobApplication<T extends JobApplication> extends 
 		//If gymnasium och sundsvall set approved och controlled to true
 		if(app.getSchoolType()!=null && app.getSchoolType().equals("GY") && app.getSkvCity()!=null && cities!=null && cities.contains(app.getSkvCity())){
 			app.setApproved(true);
+			app.setControlledDate(new Date(Calendar.getInstance().getTimeInMillis()));
 			app.setControlled(true);
 			app.setControlledByUser("System");
 		}		

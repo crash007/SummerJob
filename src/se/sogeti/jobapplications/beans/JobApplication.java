@@ -169,14 +169,6 @@ public abstract class JobApplication implements Elementable{
 		this.personalLetter = personalLetter;
 	}
 
-	public Date getApprovedDate() {
-		return controlledDate;
-	}
-
-	public void setApprovedDate(Date approvedDate) {
-		this.controlledDate = approvedDate;
-	}
-
 	public String getSocialSecurityNumber() {
 		return socialSecurityNumber;
 	}
