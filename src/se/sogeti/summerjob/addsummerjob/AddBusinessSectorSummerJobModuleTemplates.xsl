@@ -516,9 +516,9 @@
 							placeholder="" />
 					</div>
 					
-					<div class="form-group col-md-1">
+					<div class="form-group col-md-1 remove-mentor">
 						<label>Ta bort</label>
-						<div class="remove-mentor mgn-top8px glyphicon glyphicon-remove" aria-hidden="true"></div>
+						<div class="mgn-top8px glyphicon glyphicon-remove" aria-hidden="true"></div>
 					</div>
 				</div>
 			</div>	
