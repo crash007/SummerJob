@@ -111,7 +111,8 @@ public class MatchMunicipalityJobsModule extends MatchCommon {
 		
 		if(jobId != null){
 			MunicipalityJob job = municipalityJobDAO.getById(jobId);
-			if(job != null){
+			
+			if(job != null){				
 				Element matchMunicipalityJobElement = doc.createElement("MatchMunicipalityJob");
 				doc.getFirstChild().appendChild(matchMunicipalityJobElement);
 				
