@@ -95,27 +95,36 @@ public abstract class SummerJobCommonDAO<T> extends AnnotatedDAO<T>{
 		return this.getByFieldAndBoolAndUsername("approved", false, rows,username);
 	}
 	
-	public java.util.List<T> getAllControlledAndApproved() throws SQLException {
-		return getControlledAndApprovedAddedByUsername(true,true,null);
+	public java.util.List<T> getAllControlledAndOpen() throws SQLException {
+		return getControlledAndApprovedAddedByUsername(true, true, true, null);
 	}
 	
 	public java.util.List<T> getAllControlledAndDisapproved() throws SQLException {		
-		return getControlledAndApprovedAddedByUsername(true,false,null);
+		return getControlledAndApprovedAddedByUsername(true, false, false, null);
 	}
 	
-	public java.util.List<T> getAllControlledAndApprovedAddedByUsername(String username) throws SQLException {
-		return getControlledAndApprovedAddedByUsername(true,true,username);
+	public java.util.List<T> getAllControlledAndClosed() throws SQLException {		
+		return getControlledAndApprovedAddedByUsername(true, true, false, null);
+	}
+	
+	public java.util.List<T> getAllControlledAndOpenAddedByUsername(String username) throws SQLException {
+		return getControlledAndApprovedAddedByUsername(true, true, true, username);
+	}
+	
+	public java.util.List<T> getAllControlledAndClosedAddedByUsername(String username) throws SQLException {
+		return getControlledAndApprovedAddedByUsername(true, true, false, username);
 	}
 	
 	public java.util.List<T> getAllControlledAndDisapprovedAddedByUsername(String username) throws SQLException {		
-		return getControlledAndApprovedAddedByUsername(true,false,username);
+		return getControlledAndApprovedAddedByUsername(true, false, false, username);
 	}
 	
 	
-	public java.util.List<T> getControlledAndApprovedAddedByUsername(boolean controlled,boolean approved, String username) throws SQLException {
+	public java.util.List<T> getControlledAndApprovedAddedByUsername(boolean controlled, boolean approved, boolean isOpen, String username) throws SQLException {
 		HighLevelQuery<T> query = new HighLevelQuery<T>();
 		query.addParameter(this.getParamFactory("controlled", Boolean.class).getParameter(controlled));
 		query.addParameter(this.getParamFactory("approved", Boolean.class).getParameter(approved));
+		query.addParameter(this.getParamFactory("isOpen", Boolean.class).getParameter(isOpen));
 		
 		if(username!=null){
 			query.addParameter(this.getParamFactory("addedByUser", String.class).getParameter(username));

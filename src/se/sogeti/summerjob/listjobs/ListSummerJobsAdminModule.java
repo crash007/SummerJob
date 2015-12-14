@@ -9,12 +9,13 @@ import javax.sql.DataSource;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import se.sogeti.jobapplications.beans.ApplicationStatus;
 import se.sogeti.jobapplications.beans.GeoArea;
 import se.sogeti.jobapplications.beans.business.BusinessSectorJob;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityJob;
 import se.sogeti.jobapplications.daos.GeoAreaDAO;
 import se.sogeti.jobapplications.daos.JobDAO;
-import se.sogeti.periodsadmin.beans.Period;
+import se.sogeti.summerjob.FormUtils;
 import se.unlogic.hierarchy.core.annotations.ModuleSetting;
 import se.unlogic.hierarchy.core.annotations.TextFieldSettingDescriptor;
 import se.unlogic.hierarchy.core.beans.SimpleForegroundModuleResponse;
@@ -71,135 +72,167 @@ public class ListSummerJobsAdminModule extends AnnotatedForegroundModule {
 		element.appendChild(this.sectionInterface.getSectionDescriptor().toXML(doc));
 		element.appendChild(this.moduleDescriptor.toXML(doc));
 		doc.appendChild(element);
-		
-		Element headingElement = doc.createElement("Heading");
-		Element controlledJobsElement = doc.createElement("ControlledJobs");
-		Element uncontrolledJobsElement = doc.createElement("UncontrolledJobs");
-		Element controlledDisapprovedJobsElement = doc.createElement("ControlledDisapprovedJobs");
 
 		Boolean showMunicipalityJobs = BooleanUtils.toBoolean(req.getParameter("showMunicipalityJobs"));
 		if (showMunicipalityJobs != null && showMunicipalityJobs) {
-			XMLUtils.appendNewElement(doc, headingElement, "title", "Interna sommarjobb (Kommunala)");
+			
+			Element municipalityJobs = doc.createElement("MunicipalityJobs");
+			
+			Element municipalityOpen = doc.createElement("MunicipalityOpen");
+			Element municipalityUncontrolled = doc.createElement("MunicipalityUncontrolled");
+			Element municipalityFinished = doc.createElement("MunicipalityFinished");
+			Element municipalityDisapproved = doc.createElement("MunicipalityDisapproved");
+			municipalityJobs.appendChild(municipalityOpen);
+			municipalityJobs.appendChild(municipalityUncontrolled);
+			municipalityJobs.appendChild(municipalityFinished);
+			municipalityJobs.appendChild(municipalityDisapproved);
+			
 
-			List<MunicipalityJob> controlledJobs = null;
+			List<MunicipalityJob> openJobs = null;
 			List<MunicipalityJob> uncontrolledJobs = null;
-			List<MunicipalityJob> controlledDisapprovedJobs = null;
+			List<MunicipalityJob> closedJobs = null;
+			List<MunicipalityJob> disapprovedJobs = null;
 			
 			if(user.isAdmin()){
-				controlledJobs = municipalityJobDAO.getAllControlledAndApproved();
+				openJobs = municipalityJobDAO.getAllControlledAndOpen();
 				uncontrolledJobs = municipalityJobDAO.getAllUncontrolled();
-				controlledDisapprovedJobs = municipalityJobDAO.getAllControlledAndDisapproved();
+				closedJobs = municipalityJobDAO.getAllControlledAndClosed();
+				disapprovedJobs = municipalityJobDAO.getAllControlledAndDisapproved();
 			}else{
-				controlledJobs = municipalityJobDAO.getAllControlledAndApprovedAddedByUsername(user.getUsername());
+				openJobs = municipalityJobDAO.getAllControlledAndOpenAddedByUsername(user.getUsername());
 				uncontrolledJobs = municipalityJobDAO.getAllUncontrolledAddedByUsername(user.getUsername());
-				controlledDisapprovedJobs = municipalityJobDAO.getAllControlledAndDisapprovedAddedByUsername(user.getUsername());
+				closedJobs = municipalityJobDAO.getAllControlledAndClosedAddedByUsername(user.getUsername());
+				disapprovedJobs = municipalityJobDAO.getAllControlledAndDisapprovedAddedByUsername(user.getUsername());
 			}
 			
-			if (controlledJobs != null) {
-				for (MunicipalityJob job : controlledJobs) {
-					Element municipalityJob = doc.createElement("ControlledJob");
-					XMLUtils.appendNewElement(doc, municipalityJob, "workTitle", job.getWorkTitle());
-					Period period = job.getPeriod();
-					XMLUtils.appendNewElement(doc, municipalityJob, "dates", period.getName() + " (" + period.getStartDate() + " - " + period.getEndDate() + ")");
-					XMLUtils.appendNewElement(doc, municipalityJob, "numberOfWorkersNeeded", job.getNumberOfWorkersNeeded());
-					XMLUtils.appendNewElement(doc, municipalityJob, "created", job.getCreated());
-					XMLUtils.appendNewElement(doc, municipalityJob, "approvedByUser", job.getApprovedByUser());
-					XMLUtils.appendNewElement(doc, municipalityJob, "controlledDate", job.getControlledDate());
-					XMLUtils.appendNewElement(doc, municipalityJob, "url", manageMunicipalityJobUrl+"?jobId=" + job.getId());
-					XMLUtils.appendNewElement(doc, municipalityJob, "matchURL", matchMunicipalityJobUrl + "?jobId=" + job.getId());
-					XMLUtils.appendNewElement(doc, municipalityJob, "approved", job.getApproved());
-					controlledJobsElement.appendChild(municipalityJob);
+			if (openJobs != null) {
+				for (MunicipalityJob job : openJobs) {
+					municipalityOpen.appendChild(createMunicipalityJobElement(doc, job));
 				}
 			}
-			
 			
 			if (uncontrolledJobs != null) {
 				for (MunicipalityJob job : uncontrolledJobs) {
-					Element municipalityJob = doc.createElement("UncontrolledJob");
-					XMLUtils.appendNewElement(doc, municipalityJob, "workTitle", job.getWorkTitle());
-					Period period = job.getPeriod();
-					XMLUtils.appendNewElement(doc, municipalityJob, "dates", period.getName() + " (" + period.getStartDate() + " - " + period.getEndDate() + ")");
-					XMLUtils.appendNewElement(doc, municipalityJob, "numberOfWorkersNeeded", job.getNumberOfWorkersNeeded());
-					XMLUtils.appendNewElement(doc, municipalityJob, "created", job.getCreated());
-					XMLUtils.appendNewElement(doc, municipalityJob, "initiatedByUser", job.getInitiatedByUser());
-					XMLUtils.appendNewElement(doc, municipalityJob, "url", manageMunicipalityJobUrl+"?jobId=" + job.getId());
-					XMLUtils.appendNewElement(doc, municipalityJob, "approved", job.getApproved());
-					uncontrolledJobsElement.appendChild(municipalityJob);
+					municipalityUncontrolled.appendChild(createMunicipalityJobElement(doc, job));
 				}
 			}
 			
-			
-			if (controlledDisapprovedJobs != null) {
-				for (MunicipalityJob job : controlledDisapprovedJobs) {
-					Element municipalityJob = doc.createElement("ControlledJob");
-					XMLUtils.appendNewElement(doc, municipalityJob, "workTitle", job.getWorkTitle());
-					Period period = job.getPeriod();
-					XMLUtils.appendNewElement(doc, municipalityJob, "dates", period.getName() + " (" + period.getStartDate() + " - " + period.getEndDate() + ")");
-					XMLUtils.appendNewElement(doc, municipalityJob, "numberOfWorkersNeeded", job.getNumberOfWorkersNeeded());
-					XMLUtils.appendNewElement(doc, municipalityJob, "created", job.getCreated());
-					XMLUtils.appendNewElement(doc, municipalityJob, "approvedByUser", job.getApprovedByUser());
-					XMLUtils.appendNewElement(doc, municipalityJob, "controlledDate", job.getControlledDate());
-					XMLUtils.appendNewElement(doc, municipalityJob, "url", manageMunicipalityJobUrl+"?jobId=" + job.getId());
-					controlledDisapprovedJobsElement.appendChild(municipalityJob);
+			if (closedJobs != null) {
+				for (MunicipalityJob job : closedJobs) {
+					municipalityFinished.appendChild(createMunicipalityJobElement(doc, job));
 				}
 			}
+			
+			if (disapprovedJobs != null) {
+				for (MunicipalityJob job : disapprovedJobs) {
+					municipalityDisapproved.appendChild(createMunicipalityJobElement(doc, job));
+				}
+			}
+			
+			doc.getFirstChild().appendChild(municipalityJobs);
+		
 		} else {
-			XMLUtils.appendNewElement(doc, headingElement, "title", "Externa sommarjobb (Näringslivet)");
+			
+			Element businessJobs = doc.createElement("BusinessJobs");
+			
+			Element businessOpen = doc.createElement("BusinessOpen");
+			Element businessUncontrolled = doc.createElement("BusinessUncontrolled");
+			Element businessFinished = doc.createElement("BusinessFinished");
+			Element businessDisapproved = doc.createElement("BusinessDisapproved");
+			businessJobs.appendChild(businessOpen);
+			businessJobs.appendChild(businessUncontrolled);
+			businessJobs.appendChild(businessFinished);
+			businessJobs.appendChild(businessDisapproved);
 
-			List<BusinessSectorJob> controlledJobs = businessSectorJobDAO.getAllControlledAndApproved();
-			if (controlledJobs != null) {
-				for (BusinessSectorJob job : controlledJobs) {
-					Element businessSectorJob = doc.createElement("ControlledJob");
-					XMLUtils.appendNewElement(doc, businessSectorJob, "workTitle", job.getWorkTitle());
-					XMLUtils.appendNewElement(doc, businessSectorJob, "dates", job.getStartDate() + " - " + job.getEndDate());
-					XMLUtils.appendNewElement(doc, businessSectorJob, "numberOfWorkersNeeded", job.getNumberOfWorkersNeeded());
-					XMLUtils.appendNewElement(doc, businessSectorJob, "created", job.getCreated());
-					XMLUtils.appendNewElement(doc, businessSectorJob, "approvedByUser", job.getApprovedByUser());
-					XMLUtils.appendNewElement(doc, businessSectorJob, "controlledDate", job.getControlledDate());
-					XMLUtils.appendNewElement(doc, businessSectorJob, "url", manageBusinessJobUrl+"?jobId=" + job.getId());
-					XMLUtils.appendNewElement(doc, businessSectorJob, "matchURL", matchBusinessJobUrl + "?jobId=" + job.getId());
-					XMLUtils.appendNewElement(doc, businessSectorJob, "approved", job.getApproved());
-
-					controlledJobsElement.appendChild(businessSectorJob);
+			List<BusinessSectorJob> openJobs = businessSectorJobDAO.getAllControlledAndOpen();
+			List<BusinessSectorJob> uncontrolledJobs = businessSectorJobDAO.getAllUncontrolled();
+			List<BusinessSectorJob> closedJobs = businessSectorJobDAO.getAllControlledAndClosed();
+			List<BusinessSectorJob> disapprovedJobs = businessSectorJobDAO.getAllControlledAndDisapproved();
+			
+			if (openJobs != null) {
+				for (BusinessSectorJob job : openJobs) {
+					businessOpen.appendChild(createBusinessJobElement(doc, job));
 				}
 			}
 			
-			List<BusinessSectorJob> uncontrolledJobs = businessSectorJobDAO.getAllUncontrolled();
 			if (uncontrolledJobs != null) {
 				for (BusinessSectorJob job : uncontrolledJobs) {
-					Element businessSectorJob = doc.createElement("UncontrolledJob");
-					XMLUtils.appendNewElement(doc, businessSectorJob, "workTitle", job.getWorkTitle());
-					XMLUtils.appendNewElement(doc, businessSectorJob, "dates", job.getStartDate() + " - " + job.getEndDate());
-					XMLUtils.appendNewElement(doc, businessSectorJob, "numberOfWorkersNeeded", job.getNumberOfWorkersNeeded());
-					XMLUtils.appendNewElement(doc, businessSectorJob, "created", job.getCreated());
-					XMLUtils.appendNewElement(doc, businessSectorJob, "initiatedByUser", job.getInitiatedByUser());
-					XMLUtils.appendNewElement(doc, businessSectorJob, "url", manageBusinessJobUrl+"?jobId=" + job.getId());
-					uncontrolledJobsElement.appendChild(businessSectorJob);
+					businessUncontrolled.appendChild(createBusinessJobElement(doc, job));
 				}
 			}
 			
-			List<BusinessSectorJob> controlledDisapprovedJobs = businessSectorJobDAO.getAllControlledAndDisapproved();
-			if (controlledDisapprovedJobs != null) {
-				for (BusinessSectorJob job : controlledDisapprovedJobs) {
-					Element businessSectorJob = doc.createElement("ControlledJob");
-					XMLUtils.appendNewElement(doc, businessSectorJob, "workTitle", job.getWorkTitle());
-					XMLUtils.appendNewElement(doc, businessSectorJob, "dates", job.getStartDate() + " - " + job.getEndDate());
-					XMLUtils.appendNewElement(doc, businessSectorJob, "numberOfWorkersNeeded", job.getNumberOfWorkersNeeded());
-					XMLUtils.appendNewElement(doc, businessSectorJob, "created", job.getCreated());
-					XMLUtils.appendNewElement(doc, businessSectorJob, "approvedByUser", job.getApprovedByUser());
-					XMLUtils.appendNewElement(doc, businessSectorJob, "controlledDate", job.getControlledDate());
-					XMLUtils.appendNewElement(doc, businessSectorJob, "url", manageBusinessJobUrl+"?jobId=" + job.getId());
-					XMLUtils.appendNewElement(doc, businessSectorJob, "approved", job.getApproved());
-					controlledDisapprovedJobsElement.appendChild(businessSectorJob);
+			if (closedJobs != null) {
+				for (BusinessSectorJob job : closedJobs) {
+					businessFinished.appendChild(createBusinessJobElement(doc, job));
 				}
 			}
+			
+			if (disapprovedJobs != null) {
+				for (BusinessSectorJob job : disapprovedJobs) {
+					businessDisapproved.appendChild(createBusinessJobElement(doc, job));
+				}
+			}
+			
+			doc.getFirstChild().appendChild(businessJobs);
 		}
 		
-		doc.getFirstChild().appendChild(headingElement);
-		doc.getFirstChild().appendChild(controlledJobsElement);
-		doc.getFirstChild().appendChild(uncontrolledJobsElement);
-		doc.getFirstChild().appendChild(controlledDisapprovedJobsElement);
-		
 		return new SimpleForegroundModuleResponse(doc);
+	}
+	
+	private Element createMunicipalityJobElement(Document doc, MunicipalityJob job) {
+		Element municipalityJob = doc.createElement("MunicipalityJob");
+		XMLUtils.appendNewElement(doc, municipalityJob, "workTitle", job.getWorkTitle());
+		XMLUtils.appendNewElement(doc, municipalityJob, "workDescription", job.getWorkDescription());
+		XMLUtils.appendNewElement(doc, municipalityJob, "period", job.getPeriod().getName());
+		XMLUtils.appendNewElement(doc, municipalityJob, "numberOfWorkersNeeded", job.getNumberOfWorkersNeeded());
+		
+		XMLUtils.appendNewElement(doc, municipalityJob, "organization", job.getOrganization());
+		XMLUtils.appendNewElement(doc, municipalityJob, "administration", job.getAdministration());
+		XMLUtils.appendNewElement(doc, municipalityJob, "department", job.getDepartment());
+		XMLUtils.appendNewElement(doc, municipalityJob, "location", job.getLocation());
+		
+		XMLUtils.appendNewElement(doc, municipalityJob, "created", job.getCreated());
+		XMLUtils.appendNewElement(doc, municipalityJob, "approvedByUser", job.getApprovedByUser());
+		XMLUtils.appendNewElement(doc, municipalityJob, "controlledDate", job.getControlledDate());
+		XMLUtils.appendNewElement(doc, municipalityJob, "url", manageMunicipalityJobUrl+"?jobId=" + job.getId());
+		XMLUtils.appendNewElement(doc, municipalityJob, "matchURL", matchMunicipalityJobUrl + "?jobId=" + job.getId());
+		
+		if (job.getApplications() != null) {
+			Integer matchedApplications = FormUtils.countApplications(job.getApplications(), ApplicationStatus.MATCHED);
+			job.setOpenApplications(job.getNumberOfWorkersNeeded() - matchedApplications);
+			XMLUtils.appendNewElement(doc, municipalityJob, "openApplications", job.getOpenApplications());
+		} else {
+			XMLUtils.appendNewElement(doc, municipalityJob, "openApplications", job.getNumberOfWorkersNeeded());
+		}
+		
+		return municipalityJob;
+	}
+	
+	private Element createBusinessJobElement(Document doc, BusinessSectorJob job) {
+		Element businessSectorJob = doc.createElement("BusinessJob");
+		
+		XMLUtils.appendNewElement(doc, businessSectorJob, "company", job.getCompany());
+		XMLUtils.appendNewElement(doc, businessSectorJob, "workTitle", job.getWorkTitle());
+		XMLUtils.appendNewElement(doc, businessSectorJob, "workDescription", job.getWorkDescription());
+		XMLUtils.appendNewElement(doc, businessSectorJob, "dates", job.getStartDate() + " - " + job.getEndDate());
+		XMLUtils.appendNewElement(doc, businessSectorJob, "corporateNumber", job.getCorporateNumber());
+		XMLUtils.appendNewElement(doc, businessSectorJob, "lastApplicationDay", job.getLastApplicationDay());
+		XMLUtils.appendNewElement(doc, businessSectorJob, "numberOfWorkersNeeded", job.getNumberOfWorkersNeeded());
+		XMLUtils.appendNewElement(doc, businessSectorJob, "created", job.getCreated());
+		XMLUtils.appendNewElement(doc, businessSectorJob, "approvedByUser", job.getApprovedByUser());
+		XMLUtils.appendNewElement(doc, businessSectorJob, "initiatedByUser", job.getInitiatedByUser());
+		XMLUtils.appendNewElement(doc, businessSectorJob, "controlledDate", job.getControlledDate());
+		XMLUtils.appendNewElement(doc, businessSectorJob, "url", manageBusinessJobUrl+"?jobId=" + job.getId());
+		XMLUtils.appendNewElement(doc, businessSectorJob, "matchURL", matchBusinessJobUrl + "?jobId=" + job.getId());
+		
+		if (job.getApplications() != null) {
+			Integer matchedApplications = FormUtils.countApplications(job.getApplications(), ApplicationStatus.MATCHED);
+			job.setOpenApplications(job.getNumberOfWorkersNeeded() - matchedApplications);
+			XMLUtils.appendNewElement(doc, businessSectorJob, "openApplications", job.getOpenApplications());
+		} else {
+			XMLUtils.appendNewElement(doc, businessSectorJob, "openApplications", job.getNumberOfWorkersNeeded());
+		}
+		
+		return businessSectorJob;
 	}
 }
