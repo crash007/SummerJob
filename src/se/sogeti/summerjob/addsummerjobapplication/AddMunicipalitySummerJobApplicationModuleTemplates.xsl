@@ -379,12 +379,12 @@
 			  			<h3 class="panel-title">Förhandsgranska ansökan</h3>
 			  		</div>  
 			  		<div class="panel-body">
-						<div id="save-failed" class="alert alert-danger" role="alert">
+						<div class="save-failed alert alert-danger" role="alert">
 							<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
 							<span class="sr-only">Error:</span>
 							<span class="message"></span>
 						</div>
-						<div id="save-succeeded" class="alert alert-success" role="alert">
+						<div class="save-succeeded alert alert-success" role="alert">
 							<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
 							<span class="sr-only">Success:</span>
 							<span class="message"></span>
@@ -553,17 +553,19 @@
 			  		</div>
 			  	</div>
 			  	
-			  		<div class="panel panel-default">
+			  	<div class="panel panel-default">
 			  		<div class="panel-heading">
 			  			<h3 class="panel-title">Skicka in ansökan</h3>
 			  		</div>  
 			  		<div class="panel-body">
-						<div id="save-failed" class="alert alert-danger" role="alert">
+			  			<div class="save-failed alert alert-danger" role="alert">
+<!-- 						<div id="save-failed" class="alert alert-danger" role="alert"> -->
 							<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
 							<span class="sr-only">Error:</span>
 							<span class="message"></span>
 						</div>
-						<div id="save-succeeded" class="alert alert-success" role="alert">
+						<div class="save-succeeded alert alert-success" role="alert">
+<!-- 						<div id="save-succeeded" class="alert alert-success" role="alert"> -->
 							<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
 							<span class="sr-only">Success:</span>
 							<span class="message"></span>

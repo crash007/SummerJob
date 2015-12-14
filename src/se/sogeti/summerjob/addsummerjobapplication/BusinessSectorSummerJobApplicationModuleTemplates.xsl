@@ -381,7 +381,18 @@
 				  		<div class="panel-heading">
 				  			<h3 class="panel-title">Förhandsgranska ansökan</h3>
 				  		</div>  
-				  		<div class="panel-body">							
+				  		<div class="panel-body">
+							<div class="save-failed alert alert-danger" role="alert">
+								<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+								<span class="sr-only">Error:</span>
+								<span class="message"></span>
+							</div>
+							<div class="save-succeeded alert alert-success" role="alert">
+								<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+								<span class="sr-only">Success:</span>
+								<span class="message"></span>
+							</div>				  		
+				  									
 							<button style="margin-top: 4px;" id="preview-business-job-application" type="submit" class="float-rgt mgn-lft8px btn btn-success questions-submit">
 				  				Förhandsgranska
 				  			</button>
@@ -477,12 +488,12 @@
 			  			<h3 class="panel-title">Skicka in ansökan</h3>
 			  		</div>  
 			  		<div class="panel-body">
-						<div id="save-failed" class="alert alert-danger" role="alert">
+						<div class="save-failed alert alert-danger" role="alert">
 							<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
 							<span class="sr-only">Error:</span>
 							<span class="message"></span>
 						</div>
-						<div id="save-succeeded" class="alert alert-success" role="alert">
+						<div class="save-succeeded alert alert-success" role="alert">
 							<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
 							<span class="sr-only">Success:</span>
 							<span class="message"></span>

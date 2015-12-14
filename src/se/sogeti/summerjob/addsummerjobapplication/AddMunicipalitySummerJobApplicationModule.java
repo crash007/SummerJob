@@ -173,7 +173,7 @@ public class AddMunicipalitySummerJobApplicationModule extends AddSummerJobAppli
 			MunicipalityJobApplication exisitingApplication = jobApplicationDAO.getbySocialSecurityNumber(requestWrapper.getParameter("socialSecurityNumber"));
 			
 			if(exisitingApplication != null) {
-				if (user != null && !user.isAdmin()){
+				if ((user != null && !user.isAdmin()) || user == null){
 					log.warn("Municipality application already exists for this user " + exisitingApplication.applicationBasicsToString());
 					JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"" + applicationExistsErrorMessage + "\"}", callback, writer);
 					return;
