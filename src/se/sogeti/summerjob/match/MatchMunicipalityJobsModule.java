@@ -225,7 +225,7 @@ public class MatchMunicipalityJobsModule extends MatchCommon {
 						jobApplication.setJob(null);
 						jobApplication.setStatus(ApplicationStatus.NONE);
 //						jobApplication.setPersonalMentor(null);
-						jobApplication.setPersonalMentorId(null);
+						jobApplication.setPersonalMentor(null);
 						jobApplication.setCallStatus(CallStatus.NONE);
 						jobApplication.setTimeForInformation(null);
 						municipalityJobApplicationDAO.save(jobApplication);
@@ -281,8 +281,7 @@ public class MatchMunicipalityJobsModule extends MatchCommon {
 							if(job!=null){
 								jobApplication.setStatus(ApplicationStatus.MATCHED);
 								jobApplication.setJob(job);
-								//						jobApplication.setPersonalMentor(null);
-								jobApplication.setPersonalMentorId(null);
+								jobApplication.setPersonalMentor(null);						
 								jobApplication.setCallStatus(CallStatus.NONE);
 								jobApplication.setTimeForInformation(null);
 								municipalityJobApplicationDAO.save(jobApplication);
@@ -353,7 +352,7 @@ public class MatchMunicipalityJobsModule extends MatchCommon {
 					if(jobApplication!=null){
 						log.info(jobApplication.getJob());
 						jobApplication.setStatus(ApplicationStatus.DENIED);
-						jobApplication.setPersonalMentorId(null);
+						jobApplication.setPersonalMentor(null);
 						municipalityJobApplicationDAO.save(jobApplication);
 					}else{
 						log.warn("No application with id: "+id);
@@ -418,41 +417,28 @@ public class MatchMunicipalityJobsModule extends MatchCommon {
 		if(jobId != null && applicationId != null) {
 			try {
 				log.debug("Getting application with id: " + applicationId);
-				MunicipalityJobApplication jobApplication = municipalityJobApplicationDAO.getById(applicationId);
-				MunicipalityJob job = municipalityJobDAO.getById(jobId);
+				MunicipalityJobApplication jobApplication = municipalityJobApplicationDAO.getByIdWithJob(applicationId);
+				
 				
 				if(jobApplication != null) {
-					if(job != null) {
+					
 						if (mentorId != null) {
-							List<MunicipalityMentor> mentors = job.getMentors();
-							if (mentors != null) {
-								for (MunicipalityMentor mentor : mentors) {
-									if (mentor.getId().intValue() == mentorId.intValue()) {
-										mentor.setJob(job);
-//										jobApplication.setPersonalMentor(mentor);
-										jobApplication.setPersonalMentorId(mentor.getId());
-										break;
-									}
-								}
+							log.debug("Trying to found mentor with id="+mentorId);
+							MunicipalityMentor mentor = mentorDAO.getById(mentorId);							
+							if (mentor != null) {
+								log.debug("Found mentor with id="+mentorId);
+								jobApplication.setPersonalMentor(mentor);
 							}
-						} else {
-//							jobApplication.setPersonalMentor(null);
-							jobApplication.setPersonalMentorId(null);
 						}
 						
 						jobApplication.setTimeForInformation(timeForInfoString);
 						jobApplication.setCallStatus(callStatus);
-						jobApplication.setJob(job);
+				
 						municipalityJobApplicationDAO.save(jobApplication);
 						result.putField("status", "success");
 						result.putField("message", "Added a personal mentor to application: " + applicationId);
 						JsonResponse.sendJsonResponse(result.toJson(), null, writer);
-					} else {
-						log.info("No job found with id " + jobId);
-						result.putField("status", "error");
-						result.putField("message", "No job found for id " + applicationId);
-						JsonResponse.sendJsonResponse(result.toJson(), null, writer);
-					}
+					
 				} else {
 					log.info("No application found with id " + applicationId);
 					result.putField("status", "error");
@@ -560,9 +546,8 @@ public class MatchMunicipalityJobsModule extends MatchCommon {
 		File file = null;
 		
 		switch (value) {
-		case "ALL":
-			MunicipalityMentor mentor = mentorDAO.getById(app.getPersonalMentorId());
-			file = PDFGenerator.generateEmployeeDocuments(templateFilePath, newFilePath, job, app, mentor, salary, placeForInfo, accounting, contact);
+		case "ALL":			
+			file = PDFGenerator.generateEmployeeDocuments(templateFilePath, newFilePath, job, app, salary, placeForInfo, accounting, contact);
 			break;
 
 		case "kallelse":
@@ -573,9 +558,8 @@ public class MatchMunicipalityJobsModule extends MatchCommon {
 			file = PDFGenerator.generateConfirmationDocument(templateFilePath, newFilePath, job, app, salary, accounting);
 			break;
 			
-		case "anstallningsbevis":
-			MunicipalityMentor mentor1 = mentorDAO.getById(app.getPersonalMentorId());
-			file = PDFGenerator.generateProofOfEmployment(templateFilePath, newFilePath, job, app, mentor1, salary);
+		case "anstallningsbevis":			
+			file = PDFGenerator.generateProofOfEmployment(templateFilePath, newFilePath, job, app, salary);
 			break;
 			
 		case "tjanstgoringsrapport":
