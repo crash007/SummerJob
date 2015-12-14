@@ -356,7 +356,7 @@
 								<h3>Matchade sommarjobbare</h3>
 								<form id="matched-workers-form">
 									<div id="matched-applications-container">
-										<xsl:variable name="mentorslist" select="mentors"></xsl:variable>
+										
 										<xsl:for-each select="applications/MunicipalityJobApplication">
 											<xsl:if test="status ='MATCHED'">
 												<div style="margin-top: 8px" class="matched-application">
@@ -391,18 +391,19 @@
 													<div class="mgn-top8px row">
 														<div class="col-xs-4 col-md-2 bold">Handledare</div>
 														<div class="col-md-5 col-xs-8 mentor-select-div">
-															<select id="personal-mentor_{id}" class="form-control personal-mentor">
-																<xsl:variable name="personalMentorId" select="personalMentorId"></xsl:variable>
-																<option value=""></option>
-																<xsl:for-each select="$mentorslist/MunicipalityMentor">
-																		<xsl:choose>
-																			<xsl:when test="$personalMentorId = id">
-																				<option selected="selected" value="{id}"><xsl:value-of select="firstname"/><xsl:text> </xsl:text><xsl:value-of select="lastname"/></option>
-																			</xsl:when>
-																			<xsl:otherwise>
-																				<option value="{id}"><xsl:value-of select="firstname"/><xsl:text> </xsl:text><xsl:value-of select="lastname"/></option>
-																			</xsl:otherwise>
-																		</xsl:choose>
+														<xsl:variable name="mentorId" select="MunicipalityMentor/id"/>
+															<select id="personal-mentor_{id}" class="form-control personal-mentor">																
+																
+																<option value=""/>	
+																<xsl:for-each select="/Document/MatchMunicipalityJob/MunicipalityJob/mentors/MunicipalityMentor">
+																	<option value="{id}">
+																		<xsl:if test="id =$mentorId">
+																			<xsl:attribute name="selected">selected</xsl:attribute>
+																		</xsl:if>
+																		
+																		<xsl:value-of select="firstname"/><xsl:text> </xsl:text><xsl:value-of select="lastname"/>
+																		
+																	</option>
 																</xsl:for-each>
 															</select>
 														</div>

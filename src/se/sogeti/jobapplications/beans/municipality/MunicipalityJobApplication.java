@@ -26,6 +26,7 @@ public class MunicipalityJobApplication extends JobApplication{
 	
 	@DAOManaged(columnName="personalMentorId")
 	@ManyToOne(remoteKeyField="id", autoGet = true, autoAdd = false, autoUpdate = false)
+	@XMLElement
 	private MunicipalityMentor personalMentor;
 	
 	@DAOManaged
@@ -116,10 +117,11 @@ public class MunicipalityJobApplication extends JobApplication{
 
 	@Override
 	public String toString() {
-		return "MunicipalityJobApplication [job=" + job + ", preferedArea1=" + preferedArea1 + ", preferedArea2="
-				+ preferedArea2 + ", preferedArea3=" + preferedArea3 + ", preferedGeoArea1=" + preferedGeoArea1
-				+ ", preferedGeoArea2=" + preferedGeoArea2 + ", preferedGeoArea3=" + preferedGeoArea3 + super.toString()+"]";
-		
+		return "MunicipalityJobApplication [job=" + job + ", personalMentor=" + personalMentor + ", noPreferedArea="
+				+ noPreferedArea + ", preferedArea1=" + preferedArea1 + ", preferedArea2=" + preferedArea2
+				+ ", preferedArea3=" + preferedArea3 + ", preferedGeoArea1=" + preferedGeoArea1 + ", preferedGeoArea2="
+				+ preferedGeoArea2 + ", preferedGeoArea3=" + preferedGeoArea3 + ", preferedPeriod=" + preferedPeriod
+				+ "]";
 	}
 	
 	public String applicationBasicsToString(){
