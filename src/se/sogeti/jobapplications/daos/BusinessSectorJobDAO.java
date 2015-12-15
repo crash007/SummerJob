@@ -8,7 +8,6 @@ import java.util.Calendar;
 import javax.sql.DataSource;
 
 import se.sogeti.jobapplications.beans.business.BusinessSectorJob;
-import se.sogeti.jobapplications.beans.municipality.MunicipalityJobApplication;
 import se.unlogic.standardutils.dao.AnnotatedDAOFactory;
 import se.unlogic.standardutils.dao.HighLevelQuery;
 import se.unlogic.standardutils.dao.QueryOperators;
@@ -24,16 +23,7 @@ public class BusinessSectorJobDAO extends JobDAO<BusinessSectorJob>{
 	private static final Field JOB_MENTORS_RELATION = ReflectionUtils.getField(BusinessSectorJob.class, "mentors");
 	private static final Field JOB_MANAGER_RELATION = ReflectionUtils.getField(BusinessSectorJob.class, "manager");
 	private static final Field JOB_DRIVERS_LICENSE_TYPE_RELATION = ReflectionUtils.getField(BusinessSectorJob.class, "driversLicenseType");
-	
-//	private static final Field JOB_APPLICATIONS_RELATION = ReflectionUtils.getField(BusinessSectorJob.class, "applications");
-//	
-//		
-//	public BusinessSectorJob getByIdWithApplications(Integer jobId) throws SQLException {
-//		HighLevelQuery<BusinessSectorJob> query = new HighLevelQuery<BusinessSectorJob>();
-//		query.addParameter(this.getParamFactory("id", Integer.class).getParameter(jobId));
-//		query.addRelation(JOB_APPLICATIONS_RELATION);
-//		return this.get(query);
-//	}
+
 	
 	public BusinessSectorJob getById(Integer jobId) throws SQLException {
 		HighLevelQuery<BusinessSectorJob> query = new HighLevelQuery<BusinessSectorJob>();

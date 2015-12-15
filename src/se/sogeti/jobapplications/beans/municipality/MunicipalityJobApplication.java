@@ -121,7 +121,7 @@ public class MunicipalityJobApplication extends JobApplication{
 				+ noPreferedArea + ", preferedArea1=" + preferedArea1 + ", preferedArea2=" + preferedArea2
 				+ ", preferedArea3=" + preferedArea3 + ", preferedGeoArea1=" + preferedGeoArea1 + ", preferedGeoArea2="
 				+ preferedGeoArea2 + ", preferedGeoArea3=" + preferedGeoArea3 + ", preferedPeriod=" + preferedPeriod
-				+ "]";
+				+ "]" + super.toString();
 	}
 	
 	public String applicationBasicsToString(){
@@ -166,4 +166,6 @@ public class MunicipalityJobApplication extends JobApplication{
 	public void setPersonalMentor(MunicipalityMentor personalMentor) {
 		this.personalMentor = personalMentor;
 	}
+
+	
 }
