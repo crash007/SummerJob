@@ -1,5 +1,6 @@
 package se.sogeti.summerjob.listjobs;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -208,7 +209,7 @@ public class ListSummerJobsAdminModule extends AnnotatedForegroundModule {
 		return municipalityJob;
 	}
 	
-	private Element createBusinessJobElement(Document doc, BusinessSectorJob job) {
+	private Element createBusinessJobElement(Document doc, BusinessSectorJob job) throws SQLException {
 		Element businessSectorJob = doc.createElement("BusinessJob");
 		
 		XMLUtils.appendNewElement(doc, businessSectorJob, "company", job.getCompany());
@@ -225,8 +226,10 @@ public class ListSummerJobsAdminModule extends AnnotatedForegroundModule {
 		XMLUtils.appendNewElement(doc, businessSectorJob, "url", manageBusinessJobUrl+"?jobId=" + job.getId());
 		XMLUtils.appendNewElement(doc, businessSectorJob, "matchURL", matchBusinessJobUrl + "?jobId=" + job.getId());
 		
-		if (job.getApplications() != null) {
-			Integer matchedApplications = FormUtils.countApplications(job.getApplications(), ApplicationStatus.MATCHED);
+		BusinessSectorJob jobWithApplications = businessSectorJobDAO.getByIdWithApplications(job.getId());
+		
+		if (jobWithApplications != null && jobWithApplications.getApplications() != null) {
+			Integer matchedApplications = FormUtils.countApplications(jobWithApplications.getApplications(), ApplicationStatus.MATCHED);
 			job.setOpenApplications(job.getNumberOfWorkersNeeded() - matchedApplications);
 			XMLUtils.appendNewElement(doc, businessSectorJob, "openApplications", job.getOpenApplications());
 		} else {
