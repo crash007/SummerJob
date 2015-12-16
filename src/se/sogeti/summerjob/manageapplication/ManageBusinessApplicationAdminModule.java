@@ -75,7 +75,7 @@ public class ManageBusinessApplicationAdminModule extends AnnotatedRESTModule {
 		Integer appId = NumberUtils.toInt(req.getParameter("appId"));
 		
 		if(appId != null){
-			BusinessSectorJobApplication app = jobApplicationDAO.getByIdWithJob(appId);
+			BusinessSectorJobApplication app = jobApplicationDAO.getByIdWithJobAndPersonApplications(appId);
 			if (app == null || app.getJob() == null) {
 				return new SimpleForegroundModuleResponse(doc);
 			}
@@ -111,7 +111,7 @@ public class ManageBusinessApplicationAdminModule extends AnnotatedRESTModule {
         if (appId == null) {
         	JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Kunde inte hämta den aktuella ansökan för att spara ändringarna.\"}", callback, writer);
         }
-        BusinessSectorJobApplication app = jobApplicationDAO.getByIdWithJob(appId);
+        BusinessSectorJobApplication app = jobApplicationDAO.getByIdWithJobAndPersonApplications(appId);
         
         app.setApproved(BooleanUtils.toBoolean(req.getParameter("statusApprove")));
         app.setControlled(true);

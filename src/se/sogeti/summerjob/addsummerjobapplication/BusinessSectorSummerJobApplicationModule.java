@@ -142,7 +142,8 @@ public class BusinessSectorSummerJobApplicationModule extends AddSummerJobApplic
 
 				if (appId != null) {
 					try {
-						app = jobApplicationDAO.getByIdWithJob(appId);
+//						app = jobApplicationDAO.getByIdWithJob(appId);
+						app = jobApplicationDAO.getByIdWithJobAndPersonApplications(appId);
 					} catch (SQLException e) {
 						log.error(e);
 						JsonResponse.sendJsonResponse("{\"status\":\"error\", \"message\":\"Databasfel. Det går inte att hämta upp den ansökan som ska ändras.\"}", callback, writer);
