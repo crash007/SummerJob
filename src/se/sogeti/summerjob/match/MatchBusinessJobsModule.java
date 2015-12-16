@@ -154,7 +154,7 @@ public class MatchBusinessJobsModule extends MatchCommon {
 			for(String id:applicationIdStrings){
 				
 				try {
-					BusinessSectorJobApplication jobApplication = businessJobApplicationDAO.getByIdWithJob(NumberUtils.toInt(id));
+					BusinessSectorJobApplication jobApplication = businessJobApplicationDAO.getByIdWithJobAndPersonApplications(NumberUtils.toInt(id));
 					
 					if(jobApplication!=null){						
 						jobApplication.setStatus(ApplicationStatus.NONE);
@@ -197,7 +197,7 @@ public class MatchBusinessJobsModule extends MatchCommon {
 		if(applicationId!=null && jobId!=null){
 			try {
 				log.debug("Getting application with id: "+applicationId);
-				BusinessSectorJobApplication jobApplication = businessJobApplicationDAO.getByIdWithJob(applicationId);
+				BusinessSectorJobApplication jobApplication = businessJobApplicationDAO.getByIdWithJobAndPersonApplications(applicationId);
 				BusinessSectorJob job = businessJobDAO.getByIdWithApplications(jobId);
 				
 				if(jobApplication!=null){
@@ -253,7 +253,7 @@ public class MatchBusinessJobsModule extends MatchCommon {
 			for(String id:applicationIdStrings){
 				
 				try {
-					BusinessSectorJobApplication jobApplication = businessJobApplicationDAO.getByIdWithJob(NumberUtils.toInt(id));
+					BusinessSectorJobApplication jobApplication = businessJobApplicationDAO.getByIdWithJobAndPersonApplications(NumberUtils.toInt(id));
 					
 					
 					if(jobApplication!=null){
@@ -296,7 +296,7 @@ public class MatchBusinessJobsModule extends MatchCommon {
 		Integer ranking = NumberUtils.toInt(req.getParameter("ranking"));
 		
 		if (appId != null) {
-			BusinessSectorJobApplication app = businessJobApplicationDAO.getByIdWithJob(appId);
+			BusinessSectorJobApplication app = businessJobApplicationDAO.getByIdWithJobAndPersonApplications(appId);
 			if (ranking != null) {
 				if (ranking.intValue() > 10) { ranking = 10; }
 				else if (ranking.intValue() < 1) { ranking = 1; }
