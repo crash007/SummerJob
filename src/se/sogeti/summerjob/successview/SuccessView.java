@@ -53,13 +53,11 @@ public class SuccessView extends AnnotatedForegroundModule {
 		String isMunicipalityJobString = req.getParameter("municipalityJob");
 		if (isMunicipalityJobString != null) {
 			isMunicipalityJob = BooleanUtils.toBoolean(isMunicipalityJobString);
-			System.out.println("isMunicipalityJob" + isMunicipalityJob);
 		}
 		
 		String isMunicipalityJobApplicationString = req.getParameter("municipalityJobApplication");
 		if (isMunicipalityJobApplicationString != null) {
 			isMunicipalityJobApplication = BooleanUtils.toBoolean(isMunicipalityJobApplicationString);
-			System.out.println("isMunicipalityJobApplication" + isMunicipalityJobApplication);
 		}
 		
 		if (isMunicipalityJob != null && isMunicipalityJob) {

@@ -65,6 +65,7 @@ public class ListApplicationsAdminModule extends AnnotatedForegroundModule {
 		doc.appendChild(element);
 		
 		XMLUtils.appendNewElement(doc, element, "CvBusinessApplicationUrl", cvServiceHandler.getBusinessApplicationCvUrl());
+		XMLUtils.appendNewElement(doc, element, "CvMunicipalityApplicationUrl", cvServiceHandler.getMunicipalityApplicationCvUrl());
 		
 		Element approvedMunicipalityElement = doc.createElement("ApprovedMunicipality");
 		Element disapprovedMunicipalityElement = doc.createElement("DisapprovedMunicipality");
@@ -118,6 +119,7 @@ public class ListApplicationsAdminModule extends AnnotatedForegroundModule {
 			for (MunicipalityJobApplication app : applications) {
 				Element appElement = doc.createElement("MunicipalityJobApplication");
 				appendCommonElements(doc, app, appElement);
+				XMLUtils.appendNewElement(doc, appElement, "applicationType", app.getApplicationType());
 				XMLUtils.appendNewElement(doc, appElement, "url", manageMunicipalityUrl + "?appId=" + app.getId());
 				applicationElementList.appendChild(appElement);
 			}
@@ -149,7 +151,9 @@ public class ListApplicationsAdminModule extends AnnotatedForegroundModule {
 		XMLUtils.appendNewElement(doc, appElement, "socialSecurityNumber", app.getSocialSecurityNumber());
 		XMLUtils.appendNewElement(doc, appElement, "name", app.getFirstname() + " " + app.getLastname());
 		XMLUtils.appendNewElement(doc, appElement, "id", app.getId());
-//		XMLUtils.appendNewElement(doc, appElement, "url", manageMunicipalityUrl + "?appId=" + app.getId());
+		XMLUtils.appendNewElement(doc, appElement, "controlledByUser", app.getControlledByUser());
+		XMLUtils.appendNewElement(doc, appElement, "controlledDate", app.getControlledDate());
+		XMLUtils.appendNewElement(doc, appElement, "approved", app.getApproved());
 		
 		if(app.getCvFilename()!=null){
 			XMLUtils.appendNewElement(doc, appElement, "hasCv", "true");
