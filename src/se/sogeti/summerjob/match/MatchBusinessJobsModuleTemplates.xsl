@@ -188,9 +188,21 @@
 							<div class="col-xs-4 col-md-3 bold">Adress</div>
 							<div class="col-md-3"><xsl:value-of select="streetAddress"/></div>
 							<div class="col-xs-4 col-md-3 bold">Period</div>
-							<div class="col-md-3"><xsl:value-of select="startDate"/><xsl:text> - </xsl:text><xsl:value-of select="endDate"/></div>
+							<div class="col-md-3"><xsl:value-of select="substring(startDate, 1, 10)"/><xsl:text> - </xsl:text><xsl:value-of select="substring(endDate, 1, 10)"/></div>
 							
 						</div>	
+						
+						<div class="row">
+							<div class="col-xs-4 col-md-3 bold">Sista ansökningsdag</div>
+							<xsl:choose>
+								<xsl:when test="/Document/hasPastLastApplicationDay = 'false'">
+									<div class="col-md-3 prio"><xsl:value-of select="substring(lastApplicationDay, 1, 10)"/></div>
+								</xsl:when>
+								<xsl:otherwise>
+									<div class="col-md-3"><xsl:value-of select="substring(lastApplicationDay, 1, 10)"/></div>
+								</xsl:otherwise>
+							</xsl:choose>
+						</div>
 					
 						<div class="row mgn-top8px">
 							<div class="col-xs-4 col-md-3 bold">Beskrivning</div>

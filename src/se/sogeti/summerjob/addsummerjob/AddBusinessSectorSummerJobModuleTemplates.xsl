@@ -54,17 +54,17 @@
 						<div class="row">
 				  			<div class="form-group col-md-3">
 								<label for="startDate">Startdatum*</label>
-								<input type="text" class="form-control" data-error="ÅÅÅÅ-MM-DD" id="startDate" name="startDate" placeholder="" required="required" value="{BusinessSectorJob/startDate}"/>
+								<input type="text" class="form-control" data-error="ÅÅÅÅ-MM-DD" id="startDate" name="startDate" placeholder="" required="required" value="{substring(BusinessSectorJob/startDate, 1, 10)}"/>
 								<div class="help-block with-errors">Datum då tjänsten börjar</div>
 					    	</div>
 					    	<div class="form-group col-md-3">
 								<label for="date">Slutdatum*</label>
-								<input type="text" class="form-control" data-error="ÅÅÅÅ-MM-DD" id="endDate" name="endDate" placeholder="" required="required" value="{BusinessSectorJob/endDate}"/>
+								<input type="text" class="form-control" data-error="ÅÅÅÅ-MM-DD" id="endDate" name="endDate" placeholder="" required="required" value="{substring(BusinessSectorJob/endDate, 1, 10)}"/>
 								<div class="help-block with-errors">Datum då tjänsten slutar</div>
 					    	</div>
 					    	<div class="form-group col-md-3">
 								<label for="date">Sista ansökningsdag*</label>
-								<input type="text" class="form-control" data-error="ÅÅÅÅ-MM-DD" id="lastApplicationDay" name="lastApplicationDay" placeholder="" required="required" value="{BusinessSectorJob/lastApplicationDay}"/>
+								<input type="text" class="form-control" data-error="ÅÅÅÅ-MM-DD" id="lastApplicationDay" name="lastApplicationDay" placeholder="" required="required" value="{substring(BusinessSectorJob/lastApplicationDay, 1, 10)}"/>
 								<div class="help-block with-errors"></div>
 						    </div>
 			    		</div>

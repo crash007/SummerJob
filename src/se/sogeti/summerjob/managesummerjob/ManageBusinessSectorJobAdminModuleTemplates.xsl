@@ -45,15 +45,15 @@
 						  	<div class="mgn-top8px row">
 								<div class="col-md-3">
 									<label for="startDate">Startdatum</label>
-									<span class="mgn-lft8px" id="startDate"><xsl:value-of select="BusinessSectorJob/startDate"></xsl:value-of></span>
+									<span class="mgn-lft8px" id="startDate"><xsl:value-of select="substring(BusinessSectorJob/startDate, 1, 10)"></xsl:value-of></span>
 								</div>
 								<div class="col-md-3">
 									<label for="endDate">Slutdatum</label>
-									<span class="mgn-lft8px" id="endDate"><xsl:value-of select="BusinessSectorJob/endDate"></xsl:value-of></span>
+									<span class="mgn-lft8px" id="endDate"><xsl:value-of select="substring(BusinessSectorJob/endDate, 1, 10)"></xsl:value-of></span>
 								</div>
 								<div class="col-md-4">
 									<label for="lastApplicationDay">Sista ansökningsdag</label>
-									<span class="mgn-lft8px" id="lastApplicationDay"><xsl:value-of select="BusinessSectorJob/lastApplicationDay"></xsl:value-of></span>
+									<span class="mgn-lft8px" id="lastApplicationDay"><xsl:value-of select="substring(BusinessSectorJob/lastApplicationDay, 1, 10)"></xsl:value-of></span>
 								</div>
 						  	</div>
 						  	<div class="mgn-top8px row">

@@ -112,7 +112,7 @@
 							</div>
 							<div class="col-md-5">
 								<label>Period</label>
-								<div><xsl:value-of select="MunicipalityJob/Period/name"></xsl:value-of><i> (<xsl:value-of select="MunicipalityJob/Period/startDate"></xsl:value-of> - <xsl:value-of select="MunicipalityJob/Period/endDate"></xsl:value-of>)</i></div>
+								<div><xsl:value-of select="MunicipalityJob/Period/name"></xsl:value-of><i> (<xsl:value-of select="substring(MunicipalityJob/Period/startDate, 1, 10)"></xsl:value-of> - <xsl:value-of select="substring(MunicipalityJob/Period/endDate, 1, 10)"></xsl:value-of>)</i></div>
 							</div>
 						</div>
 						<div class="row mgn-top8px">

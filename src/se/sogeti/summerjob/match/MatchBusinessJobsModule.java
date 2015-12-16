@@ -3,7 +3,9 @@ package se.sogeti.summerjob.match;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Date;
 import java.sql.SQLException;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -86,6 +88,9 @@ public class MatchBusinessJobsModule extends MatchCommon {
 				Element matchBusinessJobElement = doc.createElement("MatchBusinessJob");
 				doc.getFirstChild().appendChild(matchBusinessJobElement);
 				
+				XMLUtils.appendNewElement(doc, element, "hasPastLastApplicationDay", 
+						job.getLastApplicationDay().before(new Date(Calendar.getInstance().getTimeInMillis())));
+
 				if(job.getApplications()!=null){
 					Integer matchedApplications = FormUtils.countApplications(job.getApplications(), ApplicationStatus.MATCHED);
 					job.setMatchedApplications(matchedApplications);

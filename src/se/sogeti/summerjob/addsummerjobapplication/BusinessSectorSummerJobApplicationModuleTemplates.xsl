@@ -46,11 +46,11 @@
 						  	<div class="mgn-top8px row">
 								<div class="col-md-3">
 									<label for="startDate">Startdatum</label>
-									<span class="mgn-lft8px" id="startDate"><xsl:value-of select="startDate"></xsl:value-of></span>
+									<span class="mgn-lft8px" id="startDate"><xsl:value-of select="substring(startDate, 1, 10)"></xsl:value-of></span>
 								</div>
 								<div class="col-md-3">
 									<label for="endDate">Slutdatum</label>
-									<span class="mgn-lft8px" id="endDate"><xsl:value-of select="endDate"></xsl:value-of></span>
+									<span class="mgn-lft8px" id="endDate"><xsl:value-of select="substring(endDate, 1, 10)"></xsl:value-of></span>
 								</div>
 						  	</div>
 						  	<div class="mgn-top8px row">
@@ -246,7 +246,7 @@
 					   			<xsl:value-of select="numberOfWorkersNeeded"></xsl:value-of>
 					   		</td>
 					   		<td>
-					   			<xsl:value-of select="created"></xsl:value-of>
+					   			<xsl:value-of select="substring(created, 1, 10)"></xsl:value-of>
 					   		</td>
 					   		<td>
 					   			<a href="?jobId={id}">Ansök</a>
