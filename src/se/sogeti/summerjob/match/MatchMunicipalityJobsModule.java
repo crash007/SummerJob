@@ -21,14 +21,19 @@ import org.w3c.dom.Element;
 import se.sogeti.jobapplications.beans.ApplicationStatus;
 import se.sogeti.jobapplications.beans.ApplicationType;
 import se.sogeti.jobapplications.beans.CallStatus;
+import se.sogeti.jobapplications.beans.PersonApplications;
 import se.sogeti.jobapplications.beans.business.BusinessSectorJob;
+import se.sogeti.jobapplications.beans.business.BusinessSectorJobApplication;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityJob;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityJobApplication;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityMentor;
 import se.sogeti.jobapplications.cv.CvServiceHander;
+import se.sogeti.jobapplications.daos.BusinessSectorJobApplicationDAO;
+import se.sogeti.jobapplications.daos.BusinessSectorJobDAO;
 import se.sogeti.jobapplications.daos.ContactDetailsDAO;
 import se.sogeti.jobapplications.daos.JobDAO;
-import se.sogeti.jobapplications.daos.MuncipialityJobApplicationDAO;
+import se.sogeti.jobapplications.daos.MunicipalityJobApplicationDAO;
+import se.sogeti.jobapplications.daos.PersonApplicationsDAO;
 import se.sogeti.periodsadmin.beans.AccountingEntry;
 import se.sogeti.periodsadmin.beans.ContactPerson;
 import se.sogeti.periodsadmin.beans.PlaceForInformation;
@@ -59,12 +64,14 @@ import se.unlogic.webutils.http.URIParser;
 public class MatchMunicipalityJobsModule extends MatchCommon {
 	
 	private JobDAO<MunicipalityJob> municipalityJobDAO;
-	private MuncipialityJobApplicationDAO municipalityJobApplicationDAO;
+	private MunicipalityJobApplicationDAO municipalityJobApplicationDAO;
 	private SalaryDAO salaryDAO;
 	private PlaceForInformationDAO placeForInformationDAO;
 	private AccountingEntryDAO accountingDAO;
 	private ContactPersonDAO contactDAO;
 	private ContactDetailsDAO<MunicipalityMentor> mentorDAO;
+	private PersonApplicationsDAO personApplicationDAO;
+	private BusinessSectorJobApplicationDAO businessJobApplicationDAO;
 	
 	@InstanceManagerDependency(required=true)
 	private CvServiceHander cvServiceHandler;
@@ -75,12 +82,14 @@ public class MatchMunicipalityJobsModule extends MatchCommon {
 		HierarchyAnnotatedDAOFactory daoFactory = new HierarchyAnnotatedDAOFactory(dataSource, systemInterface);		
 
 		municipalityJobDAO = new JobDAO<MunicipalityJob>(dataSource, MunicipalityJob.class, daoFactory);
-		municipalityJobApplicationDAO = new MuncipialityJobApplicationDAO(dataSource, MunicipalityJobApplication.class, daoFactory);
+		municipalityJobApplicationDAO = new MunicipalityJobApplicationDAO(dataSource, MunicipalityJobApplication.class, daoFactory);
 		salaryDAO = new SalaryDAO(dataSource, Salary.class, daoFactory);
 		placeForInformationDAO = new PlaceForInformationDAO(dataSource, PlaceForInformation.class, daoFactory);
 		accountingDAO = new AccountingEntryDAO(dataSource, AccountingEntry.class, daoFactory);
 		contactDAO = new ContactPersonDAO(dataSource, ContactPerson.class, daoFactory);
 		mentorDAO = new ContactDetailsDAO<MunicipalityMentor>(dataSource, MunicipalityMentor.class, daoFactory);
+		personApplicationDAO = new PersonApplicationsDAO(dataSource, PersonApplications.class, daoFactory);
+		businessJobApplicationDAO = new BusinessSectorJobApplicationDAO(dataSource, BusinessSectorJobApplication.class, daoFactory);
 	}
 
 	@Override
@@ -139,58 +148,56 @@ public class MatchMunicipalityJobsModule extends MatchCommon {
 				}
 				
 				//First hand pick				
-				List<MunicipalityJobApplication> area1AndGeoArea1Candidates = municipalityJobApplicationDAO.getCandidatesByPreferedArea1AndPreferedGeoArea1(job.getArea(), job.getGeoArea(), bornBefore, job.getDriversLicenseType());
+				List<MunicipalityJobApplication> area1AndGeoArea1Candidates = personApplicationDAO.getCandidatesByPreferedArea1AndPreferedGeoArea1(businessJobApplicationDAO , municipalityJobApplicationDAO,job.getArea(), job.getGeoArea(), bornBefore, job.getDriversLicenseType());
 				XMLUtils.append(doc, matchMunicipalityJobElement, "Area1AndGeoArea1Candidates", area1AndGeoArea1Candidates);
 				printCandidates(job.getId(), area1AndGeoArea1Candidates,"Area1AndGeoArea1");	
 				
 				//Second hand pick				
-				List<MunicipalityJobApplication> area1AndGeoArea2Candidates = municipalityJobApplicationDAO.getCandidatesByPreferedArea1AndPreferedGeoArea2(job.getArea(), job.getGeoArea(), bornBefore, job.getDriversLicenseType());				
+				List<MunicipalityJobApplication> area1AndGeoArea2Candidates = personApplicationDAO.getCandidatesByPreferedArea1AndPreferedGeoArea2(businessJobApplicationDAO , municipalityJobApplicationDAO,job.getArea(), job.getGeoArea(), bornBefore, job.getDriversLicenseType());				
 				XMLUtils.append(doc, matchMunicipalityJobElement, "Area1AndGeoArea2Candidates", area1AndGeoArea2Candidates);
 				printCandidates(job.getId(), area1AndGeoArea2Candidates,"Area1AndGeoArea2");	
 				
-				List<MunicipalityJobApplication> area1AndGeoArea3Candidates = municipalityJobApplicationDAO.getCandidatesByPreferedArea1AndPreferedGeoArea3(job.getArea(), job.getGeoArea(), bornBefore, job.getDriversLicenseType());				
+				List<MunicipalityJobApplication> area1AndGeoArea3Candidates = personApplicationDAO.getCandidatesByPreferedArea1AndPreferedGeoArea3(businessJobApplicationDAO , municipalityJobApplicationDAO,job.getArea(), job.getGeoArea(), bornBefore, job.getDriversLicenseType());				
 				XMLUtils.append(doc, matchMunicipalityJobElement, "Area1AndGeoArea3Candidates", area1AndGeoArea3Candidates);
 				printCandidates(job.getId(), area1AndGeoArea3Candidates,"Area1AndGeoArea3");	
 
 				
 				//Third hand pick				
-				List<MunicipalityJobApplication> area2AndGeoArea1 = municipalityJobApplicationDAO.getCandidatesByPreferedArea2AndPreferedGeoArea1(job.getArea(), job.getGeoArea(), bornBefore, job.getDriversLicenseType());				
+				List<MunicipalityJobApplication> area2AndGeoArea1 = personApplicationDAO.getCandidatesByPreferedArea2AndPreferedGeoArea1(businessJobApplicationDAO , municipalityJobApplicationDAO,job.getArea(), job.getGeoArea(), bornBefore, job.getDriversLicenseType());				
 				XMLUtils.append(doc, matchMunicipalityJobElement, "Area2AndGeoArea1Candidates", area2AndGeoArea1);
 				printCandidates(job.getId(), area2AndGeoArea1,"Area2AndGeoArea1");
 				
-				List<MunicipalityJobApplication> area2AndGeoArea2 = municipalityJobApplicationDAO.getCandidatesByPreferedArea2AndPreferedGeoArea2(job.getArea(), job.getGeoArea(), bornBefore, job.getDriversLicenseType());				
+				List<MunicipalityJobApplication> area2AndGeoArea2 = personApplicationDAO.getCandidatesByPreferedArea2AndPreferedGeoArea2(businessJobApplicationDAO , municipalityJobApplicationDAO,job.getArea(), job.getGeoArea(), bornBefore, job.getDriversLicenseType());				
 				XMLUtils.append(doc, matchMunicipalityJobElement, "Area2AndGeoArea2Candidates", area2AndGeoArea2);
 				printCandidates(job.getId(), area2AndGeoArea2,"Area2AndGeoArea2");
 				
 				// TODO Lägg in dessa nya kandidater på sidan
-				List<MunicipalityJobApplication> area2AndGeoArea3 = municipalityJobApplicationDAO.getCandidatesByPreferedArea2AndPreferedGeoArea3(job.getArea(), job.getGeoArea(), bornBefore, job.getDriversLicenseType());				
+				List<MunicipalityJobApplication> area2AndGeoArea3 = personApplicationDAO.getCandidatesByPreferedArea2AndPreferedGeoArea3(businessJobApplicationDAO , municipalityJobApplicationDAO,job.getArea(), job.getGeoArea(), bornBefore, job.getDriversLicenseType());				
 				XMLUtils.append(doc, matchMunicipalityJobElement, "Area2AndGeoArea3Candidates", area2AndGeoArea3);
 				printCandidates(job.getId(), area2AndGeoArea3,"Area2AndGeoArea3");
 				
 				
 				
 				//Third hand pick				
-				List<MunicipalityJobApplication> area3AndGeoArea1 = municipalityJobApplicationDAO.getCandidatesByPreferedArea3AndPreferedGeoArea1(job.getArea(), job.getGeoArea(), bornBefore, job.getDriversLicenseType());				
+				List<MunicipalityJobApplication> area3AndGeoArea1 = personApplicationDAO.getCandidatesByPreferedArea3AndPreferedGeoArea1(businessJobApplicationDAO , municipalityJobApplicationDAO,job.getArea(), job.getGeoArea(), bornBefore, job.getDriversLicenseType());				
 				XMLUtils.append(doc, matchMunicipalityJobElement, "Area3AndGeoArea1Candidates", area3AndGeoArea1);
 				printCandidates(job.getId(), area3AndGeoArea1,"Area3AndGeoArea1");
 				
-				List<MunicipalityJobApplication> area3AndGeoArea2 = municipalityJobApplicationDAO.getCandidatesByPreferedArea3AndPreferedGeoArea2(job.getArea(), job.getGeoArea(), bornBefore, job.getDriversLicenseType());				
+				List<MunicipalityJobApplication> area3AndGeoArea2 = personApplicationDAO.getCandidatesByPreferedArea3AndPreferedGeoArea2(businessJobApplicationDAO , municipalityJobApplicationDAO,job.getArea(), job.getGeoArea(), bornBefore, job.getDriversLicenseType());				
 				XMLUtils.append(doc, matchMunicipalityJobElement, "Area3AndGeoArea2Candidates", area3AndGeoArea2);
 				printCandidates(job.getId(), area3AndGeoArea2,"Area3AndGeoArea2");
 				
-				List<MunicipalityJobApplication> area3AndGeoArea3 = municipalityJobApplicationDAO.getCandidatesByPreferedArea3AndPreferedGeoArea3(job.getArea(), job.getGeoArea(), bornBefore, job.getDriversLicenseType());				
+				List<MunicipalityJobApplication> area3AndGeoArea3 = personApplicationDAO.getCandidatesByPreferedArea3AndPreferedGeoArea3(businessJobApplicationDAO , municipalityJobApplicationDAO,job.getArea(), job.getGeoArea(), bornBefore, job.getDriversLicenseType());				
 				XMLUtils.append(doc, matchMunicipalityJobElement, "Area3AndGeoArea3Candidates", area3AndGeoArea3);
 				printCandidates(job.getId(), area3AndGeoArea3, "Area3AndGeoArea3");
 				
 				
-				
-				
 				//Any area
-				List<MunicipalityJobApplication> anyAreaAndGeoArea1Candidates = municipalityJobApplicationDAO.getCandidatesByNoPreferedAreaAndPreferedGeoArea1(job.getGeoArea(), bornBefore, job.getDriversLicenseType());				
+				List<MunicipalityJobApplication> anyAreaAndGeoArea1Candidates = personApplicationDAO.getCandidatesByNoPreferedAreaAndPreferedGeoArea1(businessJobApplicationDAO , municipalityJobApplicationDAO,job.getGeoArea(), bornBefore, job.getDriversLicenseType());				
 				XMLUtils.append(doc, matchMunicipalityJobElement, "AnyAreaAndGeoArea1Candidates", anyAreaAndGeoArea1Candidates);
 				printCandidates(job.getId(), anyAreaAndGeoArea1Candidates,"AnyAreaAndGeoArea1");
 			
-				List<MunicipalityJobApplication> anyAreaAndGeoArea2Candidates = municipalityJobApplicationDAO.getCandidatesByNoPreferedAreaAndPreferedGeoArea2(job.getGeoArea(), bornBefore, job.getDriversLicenseType());				
+				List<MunicipalityJobApplication> anyAreaAndGeoArea2Candidates = personApplicationDAO.getCandidatesByNoPreferedAreaAndPreferedGeoArea2(businessJobApplicationDAO , municipalityJobApplicationDAO,job.getGeoArea(), bornBefore, job.getDriversLicenseType());				
 				XMLUtils.append(doc, matchMunicipalityJobElement, "AnyAreaAndGeoArea2Candidates", anyAreaAndGeoArea2Candidates);
 				printCandidates(job.getId(), anyAreaAndGeoArea1Candidates,"AnyAreaAndGeoArea2");
 				

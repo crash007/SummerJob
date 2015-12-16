@@ -38,4 +38,10 @@ public class BusinessSectorJobApplication extends JobApplication{
 		this.job = job;
 	}
 
+
+	@Override
+	public String toString() {
+		return "BusinessSectorJobApplication [job=" + job + ", toString()=" + super.toString() + "]";
+	}
+
 }
