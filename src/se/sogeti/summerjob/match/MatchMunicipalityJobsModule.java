@@ -22,14 +22,12 @@ import se.sogeti.jobapplications.beans.ApplicationStatus;
 import se.sogeti.jobapplications.beans.ApplicationType;
 import se.sogeti.jobapplications.beans.CallStatus;
 import se.sogeti.jobapplications.beans.PersonApplications;
-import se.sogeti.jobapplications.beans.business.BusinessSectorJob;
 import se.sogeti.jobapplications.beans.business.BusinessSectorJobApplication;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityJob;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityJobApplication;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityMentor;
 import se.sogeti.jobapplications.cv.CvServiceHander;
 import se.sogeti.jobapplications.daos.BusinessSectorJobApplicationDAO;
-import se.sogeti.jobapplications.daos.BusinessSectorJobDAO;
 import se.sogeti.jobapplications.daos.ContactDetailsDAO;
 import se.sogeti.jobapplications.daos.JobDAO;
 import se.sogeti.jobapplications.daos.MunicipalityJobApplicationDAO;
@@ -51,7 +49,6 @@ import se.unlogic.hierarchy.core.beans.SimpleForegroundModuleResponse;
 import se.unlogic.hierarchy.core.beans.User;
 import se.unlogic.hierarchy.core.interfaces.ForegroundModuleResponse;
 import se.unlogic.hierarchy.core.utils.HierarchyAnnotatedDAOFactory;
-import se.unlogic.hierarchy.foregroundmodules.rest.AnnotatedRESTModule;
 import se.unlogic.hierarchy.foregroundmodules.rest.RESTMethod;
 import se.unlogic.standardutils.bool.BooleanUtils;
 import se.unlogic.standardutils.json.JsonObject;
@@ -227,12 +224,11 @@ public class MatchMunicipalityJobsModule extends MatchCommon {
 			for(String id:applicationIdStrings){
 				
 				try {
-					MunicipalityJobApplication jobApplication = municipalityJobApplicationDAO.getById(NumberUtils.toInt(id));
+					MunicipalityJobApplication jobApplication = municipalityJobApplicationDAO.getByIdWithPersonApplications(NumberUtils.toInt(id));
 					
-					if(jobApplication!=null){
+					if(jobApplication!=null){						
 						jobApplication.setJob(null);
 						jobApplication.setStatus(ApplicationStatus.NONE);
-//						jobApplication.setPersonalMentor(null);
 						jobApplication.setPersonalMentor(null);
 						jobApplication.setCallStatus(CallStatus.NONE);
 						jobApplication.setTimeForInformation(null);
@@ -282,7 +278,7 @@ public class MatchMunicipalityJobsModule extends MatchCommon {
 				if(applicationId!=null){
 					try {
 						log.debug("Getting application with id: "+applicationId);
-						MunicipalityJobApplication jobApplication = municipalityJobApplicationDAO.getById(applicationId);
+						MunicipalityJobApplication jobApplication = municipalityJobApplicationDAO.getByIdWithPersonApplications(applicationId);
 						MunicipalityJob job = municipalityJobDAO.getById(jobId);
 
 						if(jobApplication!=null){
@@ -342,7 +338,7 @@ public class MatchMunicipalityJobsModule extends MatchCommon {
 
 	@RESTMethod(alias="deny-workers.json", method="post")
 	public void denyWorker(HttpServletRequest req, HttpServletResponse res, User user, URIParser uriParser) throws IOException{
-		log.info("Request for assign-workers.json");
+		log.info("Request for deny-workers.json");
 
 		PrintWriter writer = res.getWriter();
 		JsonObject result = new JsonObject();
@@ -355,7 +351,6 @@ public class MatchMunicipalityJobsModule extends MatchCommon {
 				
 				try {
 					MunicipalityJobApplication jobApplication = municipalityJobApplicationDAO.getByIdWithJob(NumberUtils.toInt(id));
-					
 					
 					if(jobApplication!=null){
 						log.info(jobApplication.getJob());

@@ -1,16 +1,11 @@
 package se.sogeti.jobapplications.daos;
 
 import java.lang.reflect.Field;
-import java.sql.Date;
 import java.sql.SQLException;
-import java.util.Calendar;
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import se.sogeti.jobapplications.beans.ApplicationStatus;
-import se.sogeti.jobapplications.beans.DriversLicenseType;
-import se.sogeti.jobapplications.beans.business.BusinessSectorJob;
 import se.sogeti.jobapplications.beans.business.BusinessSectorJobApplication;
 import se.unlogic.standardutils.dao.AnnotatedDAOFactory;
 import se.unlogic.standardutils.dao.HighLevelQuery;
@@ -24,6 +19,7 @@ public class BusinessSectorJobApplicationDAO extends JobApplicationDAO<BusinessS
 	
 	public static final Field APPLICATION_JOB_RELATION = ReflectionUtils.getField(BusinessSectorJobApplication.class, "job");
 	public static final Field APPLICATION_DRIVERS_LICENSE_TYPE_RELATION = ReflectionUtils.getField(BusinessSectorJobApplication.class, "driversLicenseType");
+	public static final Field APPLICATION_PERSON_APPLICATIONS_RELATION = ReflectionUtils.getField(BusinessSectorJobApplication.class, "personApplications");
 	
 	public BusinessSectorJobApplicationDAO(DataSource dataSource, Class<BusinessSectorJobApplication> beanClass,
 			AnnotatedDAOFactory daoFactory) {
@@ -31,12 +27,13 @@ public class BusinessSectorJobApplicationDAO extends JobApplicationDAO<BusinessS
 		// TODO Auto-generated constructor stub
 	}
 
-	public BusinessSectorJobApplication getByIdWithJob(Integer id) throws SQLException {
+	public BusinessSectorJobApplication getByIdWithJobAndPersonApplications(Integer id) throws SQLException {
         HighLevelQuery<BusinessSectorJobApplication> query = new HighLevelQuery<BusinessSectorJobApplication>();
         query.addParameter(this.getParamFactory("id", Integer.class).getParameter(id));
 			
 		query.addRelation(APPLICATION_DRIVERS_LICENSE_TYPE_RELATION);
 		query.addRelation(APPLICATION_JOB_RELATION);
+		query.addRelation(APPLICATION_PERSON_APPLICATIONS_RELATION);
 		query.disableAutoRelations(true);
         return this.get(query);
 	}
@@ -137,4 +134,5 @@ public class BusinessSectorJobApplicationDAO extends JobApplicationDAO<BusinessS
 		query.disableAutoRelations(true);
 		return this.getAll(query);
 	}
+
 }
