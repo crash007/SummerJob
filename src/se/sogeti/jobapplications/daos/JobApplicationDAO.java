@@ -8,6 +8,7 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import se.sogeti.jobapplications.beans.JobApplication;
+import se.sogeti.jobapplications.beans.PersonApplications;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityJobApplication;
 import se.unlogic.standardutils.dao.AnnotatedDAOFactory;
 import se.unlogic.standardutils.dao.HighLevelQuery;
@@ -21,17 +22,27 @@ import se.unlogic.standardutils.string.StringUtils;
 public class JobApplicationDAO<T extends JobApplication> extends SummerJobCommonDAO<T> {
 
 	private static Field APPLICATION_JOB_RELATION;
+	private static Field APPLICATION_PERSON_APPLICATIONS_RELATION; 
 	
 	public JobApplicationDAO(DataSource dataSource,
 			Class<T> beanClass,
 			AnnotatedDAOFactory daoFactory) {
 		super(dataSource, beanClass, daoFactory);
 		 APPLICATION_JOB_RELATION=ReflectionUtils.getField(beanClass, "job");
+		 APPLICATION_PERSON_APPLICATIONS_RELATION = ReflectionUtils.getField(beanClass, "personApplications");
 	}
 	
 	public void save(T bean) throws SQLException {
 		this.addOrUpdate(bean, null);
 	}
+	
+	public T getByIdWithPersonApplications(Integer jobId) throws SQLException {
+		HighLevelQuery<T> query = new HighLevelQuery<T>();
+		query.addParameter(this.getParamFactory("id", Integer.class).getParameter(jobId));
+		query.addRelation(APPLICATION_PERSON_APPLICATIONS_RELATION);		
+		return this.get(query);
+	}
+	
 	
 	/**
 	 * To get all applications that has been matched to a certain job.

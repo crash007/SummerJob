@@ -81,7 +81,7 @@ public class MatchBusinessJobsModule extends MatchCommon {
 		}
 	
 		if(jobId!=null){
-			BusinessSectorJob job = businessJobDAO.getById(jobId);
+			BusinessSectorJob job = businessJobDAO.getByIdWithApplications(jobId);
 			if(job!=null){
 				Element matchBusinessJobElement = doc.createElement("MatchBusinessJob");
 				doc.getFirstChild().appendChild(matchBusinessJobElement);

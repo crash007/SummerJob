@@ -5,6 +5,7 @@ import java.sql.SQLException;
 
 import javax.sql.DataSource;
 
+import se.sogeti.jobapplications.beans.PersonApplications;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityJobApplication;
 import se.unlogic.standardutils.dao.AnnotatedDAOFactory;
 import se.unlogic.standardutils.dao.HighLevelQuery;
@@ -21,7 +22,8 @@ public class MunicipalityJobApplicationDAO extends JobApplicationDAO<Municipalit
 	public static final Field MUNICIPALITY_APPLICATION_PREFERED_GEO_AREA2_RELATION = ReflectionUtils.getField(MunicipalityJobApplication.class, "preferedGeoArea2");
 	public static final Field MUNICIPALITY_APPLICATION_PREFERED_GEO_AREA3_RELATION = ReflectionUtils.getField(MunicipalityJobApplication.class, "preferedGeoArea3");
 	public static final Field MUNICIPALITY_APPLICATION_DRIVERS_LICENSE_TYPE_RELATION = ReflectionUtils.getField(MunicipalityJobApplication.class, "driversLicenseType");
-
+	public static final Field MUNICIPALITY_APPLICATION_PERSON_APPLICATIONS_RELATION = ReflectionUtils.getField(MunicipalityJobApplication.class, "personApplications");
+	
 	public MunicipalityJobApplicationDAO(DataSource dataSource, Class<MunicipalityJobApplication> beanClass,
 			AnnotatedDAOFactory daoFactory) {
 		super(dataSource, beanClass, daoFactory);
@@ -40,6 +42,7 @@ public class MunicipalityJobApplicationDAO extends JobApplicationDAO<Municipalit
 		query.addRelation(MUNICIPALITY_APPLICATION_PREFERED_GEO_AREA3_RELATION);		
 		query.addRelation(MUNICIPALITY_APPLICATION_DRIVERS_LICENSE_TYPE_RELATION);
 		query.addRelation(MUNICIPALITY_APPLICATION_JOB_RELATION);
+		query.addRelation(MUNICIPALITY_APPLICATION_PERSON_APPLICATIONS_RELATION);
 		
 		query.disableAutoRelations(true);
         

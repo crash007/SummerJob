@@ -137,8 +137,10 @@ public class PersonApplicationsDAO extends AnnotatedDAO<PersonApplications> {
 		query.addRelationParameter(MunicipalityJobApplication.class,geoQueryArea);
 		query.addRelationParameter(MunicipalityJobApplication.class,municipalityApplicationDAO.getParamFactory("approved", Boolean.class).getParameter(true));
 		
-		//Om relationen finns så är ansökan redan kopplad till ett kommunalt jobb.
-		query.addRelationParameter(MunicipalityJobApplication.class,municipalityApplicationDAO.getParamFactory("job", MunicipalityJob.class).getIsNullParameter());
+		//hämta alla alla businessApplications som inte har statusen none för denna person. Om business applications inte är null så har personen ett business jobb.
+		//Får inte vara matchad eller denied någonstans.
+		query.addRelationParameter(BusinessSectorJobApplication.class, businessJobApplicationDAO.getParamFactory("status", ApplicationStatus.class).getParameter(ApplicationStatus.NONE,QueryOperators.NOT_EQUALS));
+		query.addRelationParameter(MunicipalityJobApplication.class, municipalityApplicationDAO.getParamFactory("status", ApplicationStatus.class).getParameter(ApplicationStatus.NONE, QueryOperators.EQUALS));
 		
 		if(bornBeforeDate != null){
 			java.sql.Date bornBeforeSqlDate = new java.sql.Date(bornBeforeDate.getTime());
@@ -159,8 +161,6 @@ public class PersonApplicationsDAO extends AnnotatedDAO<PersonApplications> {
 		query.addRelation(PersonApplicationsDAO.PERSON_APPLICATIONS_BUSINESS_APPLICATIONS);
 		query.addRelation(PersonApplicationsDAO.PERSON_APPLICATIONS_MUNICIPALITY_APPLICATIONS);
 		
-		//hämta alla alla businessApplications som inte har statusen none för denna person. Om business applications inte är null så har personen ett business jobb.
-		query.addRelationParameter(BusinessSectorJobApplication.class, businessJobApplicationDAO.getParamFactory("status", ApplicationStatus.class).getParameter(ApplicationStatus.NONE,QueryOperators.NOT_EQUALS));
 		
 		//Behövs inte pga koppling mot job
 		//query.addRelationParameter(MunicipalityJobApplication.class, municipalityApplicationDAO.getParamFactory("status", ApplicationStatus.class).getWhereInParameter(status));
