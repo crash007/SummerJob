@@ -14,11 +14,15 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import se.sogeti.jobapplications.beans.ApplicationStatus;
+import se.sogeti.jobapplications.beans.PersonApplications;
 import se.sogeti.jobapplications.beans.business.BusinessSectorJob;
 import se.sogeti.jobapplications.beans.business.BusinessSectorJobApplication;
+import se.sogeti.jobapplications.beans.municipality.MunicipalityJobApplication;
 import se.sogeti.jobapplications.cv.CvServiceHander;
 import se.sogeti.jobapplications.daos.BusinessSectorJobApplicationDAO;
 import se.sogeti.jobapplications.daos.BusinessSectorJobDAO;
+import se.sogeti.jobapplications.daos.MunicipalityJobApplicationDAO;
+import se.sogeti.jobapplications.daos.PersonApplicationsDAO;
 import se.sogeti.summerjob.FormUtils;
 import se.sogeti.summerjob.JsonResponse;
 import se.unlogic.hierarchy.core.annotations.InstanceManagerDependency;
@@ -26,7 +30,6 @@ import se.unlogic.hierarchy.core.beans.SimpleForegroundModuleResponse;
 import se.unlogic.hierarchy.core.beans.User;
 import se.unlogic.hierarchy.core.interfaces.ForegroundModuleResponse;
 import se.unlogic.hierarchy.core.utils.HierarchyAnnotatedDAOFactory;
-import se.unlogic.hierarchy.foregroundmodules.rest.AnnotatedRESTModule;
 import se.unlogic.hierarchy.foregroundmodules.rest.RESTMethod;
 import se.unlogic.standardutils.bool.BooleanUtils;
 import se.unlogic.standardutils.json.JsonObject;
@@ -41,6 +44,8 @@ public class MatchBusinessJobsModule extends MatchCommon {
 
 	private BusinessSectorJobDAO businessJobDAO;
 	private BusinessSectorJobApplicationDAO businessJobApplicationDAO;
+	private PersonApplicationsDAO personApplicationsDAO;
+	private MunicipalityJobApplicationDAO municipalityJobApplicationDAO;
 	
 	@InstanceManagerDependency(required=true)
 	private CvServiceHander cvServiceHandler;
@@ -52,6 +57,8 @@ public class MatchBusinessJobsModule extends MatchCommon {
 
 		businessJobDAO = new BusinessSectorJobDAO(dataSource, BusinessSectorJob.class, daoFactory);
 		businessJobApplicationDAO = new BusinessSectorJobApplicationDAO(dataSource, BusinessSectorJobApplication.class, daoFactory);
+		personApplicationsDAO = new PersonApplicationsDAO(dataSource, PersonApplications.class, daoFactory);
+		municipalityJobApplicationDAO = new MunicipalityJobApplicationDAO(dataSource, MunicipalityJobApplication.class, daoFactory);
 	}
 
 	@Override
@@ -74,7 +81,7 @@ public class MatchBusinessJobsModule extends MatchCommon {
 		}
 	
 		if(jobId!=null){
-			BusinessSectorJob job = businessJobDAO.getByIdWithApplications(jobId);
+			BusinessSectorJob job = businessJobDAO.getById(jobId);
 			if(job!=null){
 				Element matchBusinessJobElement = doc.createElement("MatchBusinessJob");
 				doc.getFirstChild().appendChild(matchBusinessJobElement);
@@ -96,8 +103,8 @@ public class MatchBusinessJobsModule extends MatchCommon {
 				
 				//sort applications by drivers license and if over 18
 				//First hand pick				
-				List<BusinessSectorJobApplication> goodCandidates = businessJobApplicationDAO.getCandidatesFulfillingCriteras(job);
-				if(goodCandidates!=null){
+				List<BusinessSectorJobApplication> goodCandidates = personApplicationsDAO.getBusinessCandidatesFulfillingCriteras(businessJobApplicationDAO, municipalityJobApplicationDAO,job);
+				if(goodCandidates!=null && !goodCandidates.isEmpty()){
 					for(BusinessSectorJobApplication candidate: goodCandidates){
 						log.info(candidate);
 					}
@@ -108,7 +115,8 @@ public class MatchBusinessJobsModule extends MatchCommon {
 				}
 				
 				
-				List<BusinessSectorJobApplication> badCandidates = businessJobApplicationDAO.getCandidatesNotFulfillingCriteras(job);
+				List<BusinessSectorJobApplication> badCandidates = personApplicationsDAO.getBusinessCandidatesNotFulfillingCriteras(businessJobApplicationDAO, municipalityJobApplicationDAO, job);
+				
 				if(badCandidates!=null){
 					for(BusinessSectorJobApplication candidate: badCandidates){
 						log.info(candidate);

@@ -3,6 +3,7 @@ package se.sogeti.jobapplications.daos;
 import java.lang.reflect.Field;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -14,6 +15,7 @@ import se.sogeti.jobapplications.beans.ApplicationStatus;
 import se.sogeti.jobapplications.beans.DriversLicenseType;
 import se.sogeti.jobapplications.beans.GeoArea;
 import se.sogeti.jobapplications.beans.PersonApplications;
+import se.sogeti.jobapplications.beans.business.BusinessSectorJob;
 import se.sogeti.jobapplications.beans.business.BusinessSectorJobApplication;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityJob;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityJobApplication;
@@ -166,6 +168,7 @@ public class PersonApplicationsDAO extends AnnotatedDAO<PersonApplications> {
 		query.disableAutoRelations(true);
 		
 		query.addRelationOrderByCriteria(MunicipalityJobApplication.class,municipalityApplicationDAO.getOrderByCriteria("ranking", Order.ASC));
+		
 		List<PersonApplications> result = this.getAll(query);
 		
 		if(result!=null){
@@ -180,6 +183,96 @@ public class PersonApplicationsDAO extends AnnotatedDAO<PersonApplications> {
 		}else{
 			return null;
 		}
+		
+	}
+	
+	
+	public List<BusinessSectorJobApplication> getBusinessCandidatesFulfillingCriteras(BusinessSectorJobApplicationDAO businessJobApplicationDAO,MunicipalityJobApplicationDAO municipalityJobApplicationDAO, BusinessSectorJob job) throws SQLException {
+		 HighLevelQuery<PersonApplications> query = new HighLevelQuery<PersonApplications>();
+		 
+		 query.addRelation(BusinessSectorJobApplicationDAO.APPLICATION_DRIVERS_LICENSE_TYPE_RELATION);
+		 query.addRelation(BusinessSectorJobApplicationDAO.APPLICATION_JOB_RELATION);
+		 query.addRelation(PersonApplicationsDAO.PERSON_APPLICATIONS_BUSINESS_APPLICATIONS);
+		 query.addRelation(PersonApplicationsDAO.PERSON_APPLICATIONS_MUNICIPALITY_APPLICATIONS);
+		 
+		 query.addRelationParameter(BusinessSectorJobApplication.class,businessJobApplicationDAO.getParamFactory("job", BusinessSectorJob.class).getParameter(job));
+		 query.addRelationParameter(BusinessSectorJobApplication.class,businessJobApplicationDAO.getParamFactory("status", ApplicationStatus.class).getParameter(ApplicationStatus.NONE));
+		 
+		 if(job.getMustBeOverEighteen()){
+			 Calendar cal = Calendar.getInstance();
+				cal.setTime(job.getStartDate());					
+				cal.set(Calendar.YEAR,cal.get(Calendar.YEAR)-18);
+				java.sql.Date bornBefore = new java.sql.Date(cal.getTime().getTime());
+			 query.addRelationParameter(BusinessSectorJobApplication.class,businessJobApplicationDAO.getParamFactory("birthDate", java.sql.Date.class).getParameter(bornBefore,QueryOperators.SMALLER_THAN_OR_EUALS));
+		 }
+		 
+		 query.addRelationParameter(BusinessSectorJobApplication.class,businessJobApplicationDAO.getParamFactory("driversLicenseType", DriversLicenseType.class).getParameter(job.getDriversLicenseType(),QueryOperators.BIGGER_THAN_OR_EUALS));	 		 		 
+		 query.addRelationOrderByCriteria(BusinessSectorJobApplication.class,businessJobApplicationDAO.getOrderByCriteria("ranking", Order.ASC));
+		
+		 //hämta alla municipalityapplications som inte har statusen none för denna person. Om inte null så har personen ett municipality jobb eller tackat nej till ett.
+			query.addRelationParameter(MunicipalityJobApplication.class, municipalityJobApplicationDAO.getParamFactory("status", ApplicationStatus.class).getParameter(ApplicationStatus.NONE,QueryOperators.NOT_EQUALS));
+		 
+		 List<PersonApplications> result = this.getAll(query);
+		 if(result!=null){
+			 List<BusinessSectorJobApplication> applications = new ArrayList<BusinessSectorJobApplication>();
+			 for(PersonApplications personApplications: result){				 
+				 log.debug(personApplications);
+				 if(personApplications.getMunicipalityApplications()==null && personApplications.getBusinessApplications()!=null){
+					 applications.addAll(personApplications.getBusinessApplications());
+				 }
+			}
+			 return applications;
+		 			
+		 }else{
+			 return null;
+		 }
+	}
+	
+	
+	public List<BusinessSectorJobApplication> getBusinessCandidatesNotFulfillingCriteras(BusinessSectorJobApplicationDAO businessJobApplicationDAO,MunicipalityJobApplicationDAO municipalityJobApplicationDAO, BusinessSectorJob job) throws SQLException {
+		HighLevelQuery<PersonApplications> query = new HighLevelQuery<PersonApplications>();
+		 
+		 query.addRelation(BusinessSectorJobApplicationDAO.APPLICATION_DRIVERS_LICENSE_TYPE_RELATION);
+		 query.addRelation(BusinessSectorJobApplicationDAO.APPLICATION_JOB_RELATION);
+		 query.addRelation(PersonApplicationsDAO.PERSON_APPLICATIONS_BUSINESS_APPLICATIONS);
+		 query.addRelation(PersonApplicationsDAO.PERSON_APPLICATIONS_MUNICIPALITY_APPLICATIONS);
+		 
+		 query.addRelationParameter(BusinessSectorJobApplication.class,businessJobApplicationDAO.getParamFactory("job", BusinessSectorJob.class).getParameter(job));
+		 query.addRelationParameter(BusinessSectorJobApplication.class,businessJobApplicationDAO.getParamFactory("status", ApplicationStatus.class).getParameter(ApplicationStatus.NONE));
+		 
+
+		 //hämta alla municipalityapplications som inte har statusen none för denna person. Om inte null så har personen ett municipality jobb eller tackat nej till ett.
+		query.addRelationParameter(MunicipalityJobApplication.class, municipalityJobApplicationDAO.getParamFactory("status", ApplicationStatus.class).getParameter(ApplicationStatus.NONE,QueryOperators.NOT_EQUALS));
+		query.addRelationOrderByCriteria(BusinessSectorJobApplication.class, businessJobApplicationDAO.getOrderByCriteria("ranking", Order.ASC)); 
+		 List<PersonApplications> result = this.getAll(query);
+		 if(result!=null){
+			 			 
+			 List<BusinessSectorJobApplication> applications = new ArrayList<BusinessSectorJobApplication>();
+			 
+			 Calendar cal = Calendar.getInstance();
+			cal.setTime(job.getStartDate());					
+			cal.set(Calendar.YEAR,cal.get(Calendar.YEAR)-18);
+			Date mustBeBornBeforeDate = cal.getTime();
+				
+			 for(PersonApplications personApplications: result){				 
+				 
+				 log.debug(personApplications);
+				 
+				 if(personApplications.getMunicipalityApplications()==null && personApplications.getBusinessApplications()!=null){
+					 //Borde bara vara 1 ansökan per person
+					 for(BusinessSectorJobApplication app : personApplications.getBusinessApplications()){
+						 
+						if(app.getDriversLicenseType().getId()< job.getDriversLicenseType().getId() || app.getBirthDate().after(mustBeBornBeforeDate)){
+							applications.add(app);							
+						}
+					 }					 
+				 }
+			}
+			 return applications;
+		 			
+		 }else{
+			 return null;
+		 }
 		
 	}
 }

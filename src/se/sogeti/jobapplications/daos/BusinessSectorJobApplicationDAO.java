@@ -22,8 +22,8 @@ import se.unlogic.standardutils.string.StringUtils;
 
 public class BusinessSectorJobApplicationDAO extends JobApplicationDAO<BusinessSectorJobApplication>{
 	
-	private static final Field APPLICATION_JOB_RELATION = ReflectionUtils.getField(BusinessSectorJobApplication.class, "job");
-	private static final Field APPLICATION_DRIVERS_LICENSE_TYPE_RELATION = ReflectionUtils.getField(BusinessSectorJobApplication.class, "driversLicenseType");
+	public static final Field APPLICATION_JOB_RELATION = ReflectionUtils.getField(BusinessSectorJobApplication.class, "job");
+	public static final Field APPLICATION_DRIVERS_LICENSE_TYPE_RELATION = ReflectionUtils.getField(BusinessSectorJobApplication.class, "driversLicenseType");
 	
 	public BusinessSectorJobApplicationDAO(DataSource dataSource, Class<BusinessSectorJobApplication> beanClass,
 			AnnotatedDAOFactory daoFactory) {
@@ -41,48 +41,48 @@ public class BusinessSectorJobApplicationDAO extends JobApplicationDAO<BusinessS
         return this.get(query);
 	}
 
-	public List<BusinessSectorJobApplication> getCandidatesFulfillingCriteras(BusinessSectorJob job) throws SQLException {
-		 HighLevelQuery<BusinessSectorJobApplication> query = new HighLevelQuery<BusinessSectorJobApplication>();
-		 
-		 query.addParameter(this.getParamFactory("job", BusinessSectorJob.class).getParameter(job));
-		 query.addParameter(this.getParamFactory("status", ApplicationStatus.class).getParameter(ApplicationStatus.NONE));
-		 
-		 if(job.getMustBeOverEighteen()){
-			 Calendar cal = Calendar.getInstance();
-				cal.setTime(job.getStartDate());					
-				cal.set(Calendar.YEAR,cal.get(Calendar.YEAR)-18);
-				Date bornBefore = new Date(cal.getTime().getTime());
-			 query.addParameter(this.getParamFactory("birthDate", Date.class).getParameter(bornBefore,QueryOperators.SMALLER_THAN_OR_EUALS));
-		 }
-		 
-		 query.addParameter(this.getParamFactory("driversLicenseType", DriversLicenseType.class).getParameter(job.getDriversLicenseType(),QueryOperators.BIGGER_THAN_OR_EUALS));	 
-		 
-		 
-		 query.addOrderByCriteria(this.getOrderByCriteria("ranking", Order.ASC));
-		 return this.getAll(query);
-		 
-	}
+//	public List<BusinessSectorJobApplication> getCandidatesFulfillingCriteras(BusinessSectorJob job) throws SQLException {
+//		 HighLevelQuery<BusinessSectorJobApplication> query = new HighLevelQuery<BusinessSectorJobApplication>();
+//		 
+//		 query.addParameter(this.getParamFactory("job", BusinessSectorJob.class).getParameter(job));
+//		 query.addParameter(this.getParamFactory("status", ApplicationStatus.class).getParameter(ApplicationStatus.NONE));
+//		 
+//		 if(job.getMustBeOverEighteen()){
+//			 Calendar cal = Calendar.getInstance();
+//				cal.setTime(job.getStartDate());					
+//				cal.set(Calendar.YEAR,cal.get(Calendar.YEAR)-18);
+//				Date bornBefore = new Date(cal.getTime().getTime());
+//			 query.addParameter(this.getParamFactory("birthDate", Date.class).getParameter(bornBefore,QueryOperators.SMALLER_THAN_OR_EUALS));
+//		 }
+//		 
+//		 query.addParameter(this.getParamFactory("driversLicenseType", DriversLicenseType.class).getParameter(job.getDriversLicenseType(),QueryOperators.BIGGER_THAN_OR_EUALS));	 
+//		 		 
+//		 query.addOrderByCriteria(this.getOrderByCriteria("ranking", Order.ASC));
+//		 return this.getAll(query);
+//		 
+//	}
 
-	public List<BusinessSectorJobApplication> getCandidatesNotFulfillingCriteras(BusinessSectorJob job) throws SQLException {
-		HighLevelQuery<BusinessSectorJobApplication> query = new HighLevelQuery<BusinessSectorJobApplication>();
-		 
-		 query.addParameter(this.getParamFactory("job", BusinessSectorJob.class).getParameter(job));
-		 query.addParameter(this.getParamFactory("status", ApplicationStatus.class).getParameter(ApplicationStatus.NONE));
-		 
-		 if(job.getMustBeOverEighteen()){
-			 Calendar cal = Calendar.getInstance();
-				cal.setTime(job.getStartDate());					
-				cal.set(Calendar.YEAR,cal.get(Calendar.YEAR)-18);
-				Date bornBefore = new Date(cal.getTime().getTime());
-			 query.addParameter(this.getParamFactory("birthDate", Date.class).getParameter(bornBefore,QueryOperators.BIGGER_THAN));
-		 }
-		 
-		 query.addParameter(this.getParamFactory("driversLicenseType", DriversLicenseType.class).getParameter(job.getDriversLicenseType(), QueryOperators.SMALLER_THAN));	 
-		 
-		 
-		 query.addOrderByCriteria(this.getOrderByCriteria("ranking", Order.ASC));
-		 return this.getAll(query);
-	}
+//	//TODO Nu är vilkoren och'ade, ska vara eller.
+//	public List<BusinessSectorJobApplication> getCandidatesNotFulfillingCriteras(BusinessSectorJob job) throws SQLException {
+//		HighLevelQuery<BusinessSectorJobApplication> query = new HighLevelQuery<BusinessSectorJobApplication>();
+//		 
+//		 query.addParameter(this.getParamFactory("job", BusinessSectorJob.class).getParameter(job));
+//		 query.addParameter(this.getParamFactory("status", ApplicationStatus.class).getParameter(ApplicationStatus.NONE));
+//		 
+//		 if(job.getMustBeOverEighteen()){
+//			 Calendar cal = Calendar.getInstance();
+//				cal.setTime(job.getStartDate());					
+//				cal.set(Calendar.YEAR,cal.get(Calendar.YEAR)-18);
+//				Date bornBefore = new Date(cal.getTime().getTime());
+//			 query.addParameter(this.getParamFactory("birthDate", Date.class).getParameter(bornBefore,QueryOperators.BIGGER_THAN));
+//		 }
+//		 
+//		 query.addParameter(this.getParamFactory("driversLicenseType", DriversLicenseType.class).getParameter(job.getDriversLicenseType(), QueryOperators.SMALLER_THAN));	 
+//		 
+//		 
+//		 query.addOrderByCriteria(this.getOrderByCriteria("ranking", Order.ASC));
+//		 return this.getAll(query);
+//	}
 	
 	public BusinessSectorJobApplication getWithJob() throws SQLException {
         HighLevelQuery<BusinessSectorJobApplication> query = new HighLevelQuery<BusinessSectorJobApplication>();
