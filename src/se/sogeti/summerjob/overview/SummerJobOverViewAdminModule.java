@@ -57,6 +57,14 @@ public class SummerJobOverViewAdminModule extends AnnotatedForegroundModule{
 	@TextFieldSettingDescriptor(name="Match business jobs url", description="relativ url för matchning av näringslivsjobb",required=true)
 	private String manageBusinessUrl="manage-businesssector-job";
 	
+	@ModuleSetting(allowsNull=false)
+	@TextFieldSettingDescriptor(name="Match business application url", description="relativ url för att hantera näringslivsansökan",required=true)
+	private String manageBusinessApplicationUrl="manage-business-app";
+	
+	@ModuleSetting(allowsNull=false)
+	@TextFieldSettingDescriptor(name="Match municipality application url", description="relativ url för att hantera av kommunal ansökan",required=true)
+	private String manageMunicipalityApplicationUrl="manage-municipality-app";
+	
 	@Override
 	protected void createDAOs(DataSource dataSource) throws Exception {
 		super.createDAOs(dataSource);	
@@ -98,7 +106,7 @@ public class SummerJobOverViewAdminModule extends AnnotatedForegroundModule{
 		if(showMunicipality){
 			if(user.isAdmin()){
 				newJobs = municipalityJobDAO.getLatestUncontrolled(rows);	
-				approvedJobs = municipalityJobDAO.getLatestApproved(rows);
+				approvedJobs = municipalityJobDAO.getLatestApproved(rows); 
 				approvedMunicipalityApplications = municipalityJobApplicationDAO.getLatestApproved(rows);
 				unapprovedMunicipalityApplications = municipalityJobApplicationDAO.getLatestUnapproved(rows);
 			}else{
@@ -115,6 +123,8 @@ public class SummerJobOverViewAdminModule extends AnnotatedForegroundModule{
 			XMLUtils.appendNewElement(doc,municipality, "MatchBusinessJobsUrl",matchBusinessUrl);
 			XMLUtils.appendNewElement(doc,municipality, "ManageMunicipalityJobsUrl",manageMunicipalityUrl);
 			XMLUtils.appendNewElement(doc,municipality, "ManageBusinessJobsUrl",manageBusinessUrl);
+			XMLUtils.appendNewElement(doc,municipality, "ManageBusinessApplicationUrl", manageBusinessApplicationUrl);
+			XMLUtils.appendNewElement(doc,municipality, "ManageMunicipalityApplicationUrl", manageMunicipalityApplicationUrl);
 			
 			doc.getFirstChild().appendChild(municipality);
 			Element newMunicipalityJobsElement = doc.createElement("NewMunicipalityJobs");
@@ -195,6 +205,8 @@ public class SummerJobOverViewAdminModule extends AnnotatedForegroundModule{
 			if(municipalityApplications!=null){
 				for(MunicipalityJobApplication app: municipalityApplications){
 					Element municipalityApplication = doc.createElement("MunicipalityApplication");
+					XMLUtils.appendNewElement(doc, municipalityApplication, "id", app.getId());
+					XMLUtils.appendNewElement(doc, municipalityApplication, "socialSecurityNumber", app.getSocialSecurityNumber());
 					XMLUtils.appendNewElement(doc, municipalityApplication, "firstname", app.getFirstname());
 					XMLUtils.appendNewElement(doc, municipalityApplication, "lastname", app.getLastname());
 					
