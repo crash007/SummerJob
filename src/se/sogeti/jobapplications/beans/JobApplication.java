@@ -16,6 +16,11 @@ public abstract class JobApplication implements Elementable{
 	@Key
 	@XMLElement
 	private Integer id;
+	
+	@DAOManaged(columnName="personApplicationId")
+	@ManyToOne(remoteKeyField="id", autoGet = false, autoAdd = true, autoUpdate = true)
+	@XMLElement
+	private PersonApplications personApplications;
 
 	@DAOManaged
 	@XMLElement
@@ -307,16 +312,16 @@ public abstract class JobApplication implements Elementable{
 	
 	@Override
 	public String toString() {
-		return "JobApplication [id=" + id + ", ranking=" + ranking + ", created=" + created + ", driversLicenseType="
-				+ driversLicenseType + ", personalLetter=" + personalLetter + ", cvFilename=" + cvFilename
-				+ ", approved=" + approved + ", controlled=" + controlled + ", controlledByUser=" + controlledByUser
-				+ ", controlledDate=" + controlledDate + ", socialSecurityNumber=" + socialSecurityNumber
-				+ ", firstname=" + firstname + ", lastname=" + lastname + ", streetAddress=" + streetAddress
-				+ ", zipCode=" + zipCode + ", city=" + city + ", email=" + email + ", phoneNumber=" + phoneNumber
-				+ ", schoolName=" + schoolName + ", schoolType=" + schoolType + ", skvCity=" + skvCity + ", adminNotes="
-				+ adminNotes + ", addedByUser=" + addedByUser + ", birthDate=" + birthDate + ", status=" + status
-				+ ", callStatus=" + callStatus + ", timeForInformation=" + timeForInformation + ", applicationType="
-				+ applicationType + "]";
+		return "JobApplication [id=" + id + ", personApplications=" + personApplications + ", ranking=" + ranking
+				+ ", created=" + created + ", driversLicenseType=" + driversLicenseType + ", personalLetter="
+				+ personalLetter + ", cvFilename=" + cvFilename + ", approved=" + approved + ", controlled="
+				+ controlled + ", controlledByUser=" + controlledByUser + ", controlledDate=" + controlledDate
+				+ ", socialSecurityNumber=" + socialSecurityNumber + ", firstname=" + firstname + ", lastname="
+				+ lastname + ", streetAddress=" + streetAddress + ", zipCode=" + zipCode + ", city=" + city + ", email="
+				+ email + ", phoneNumber=" + phoneNumber + ", schoolName=" + schoolName + ", schoolType=" + schoolType
+				+ ", skvCity=" + skvCity + ", adminNotes=" + adminNotes + ", addedByUser=" + addedByUser
+				+ ", birthDate=" + birthDate + ", status=" + status + ", callStatus=" + callStatus
+				+ ", timeForInformation=" + timeForInformation + ", applicationType=" + applicationType + "]";
 	}
 
 	public String getAddedByUser() {
@@ -385,6 +390,14 @@ public abstract class JobApplication implements Elementable{
 
 	public void setCvFilename(String cvFilename) {
 		this.cvFilename = cvFilename;
+	}
+	
+	public PersonApplications getPersonApplications() {
+		return personApplications;
+	}
+
+	public void setPersonApplications(PersonApplications personApplications) {
+		this.personApplications = personApplications;
 	}
 
 }

@@ -80,23 +80,25 @@ public class BusinessSectorSummerJobApplicationModule extends AddSummerJobApplic
 		if(jobId!=null){
 			BusinessSectorJob job = jobDAO.getById(jobId);
 			log.debug(job);
-			Element jobInfo = doc.createElement("JobInfo");
-			XMLUtils.append(doc, jobInfo, job);
-			doc.getFirstChild().appendChild(jobInfo);
-
-			Element jobApplication = doc.createElement("JobApplicationForm");
-			XMLUtils.appendNewElement(doc, jobApplication, "manageAppURL", manageApplicationURL);
-			XMLUtils.appendNewElement(doc, jobApplication, "jobId", job.getId());
-			BusinessSectorJobApplication app = null;
-			if (appId != null) {
-				app = jobApplicationDAO.getById(appId);
-				XMLUtils.append(doc, jobApplication, app);
-			}
+			if(job!=null){
+				Element jobInfo = doc.createElement("JobInfo");
+				XMLUtils.append(doc, jobInfo, job);
+				doc.getFirstChild().appendChild(jobInfo);
+	
+				Element jobApplication = doc.createElement("JobApplicationForm");
+				XMLUtils.appendNewElement(doc, jobApplication, "manageAppURL", manageApplicationURL);
+				XMLUtils.appendNewElement(doc, jobApplication, "jobId", job.getId());
+				BusinessSectorJobApplication app = null;
+				if (appId != null) {
+					app = jobApplicationDAO.getById(appId);
+					XMLUtils.append(doc, jobApplication, app);
+				}
+				
+	
+				XMLUtils.append(doc, jobApplication, "DriversLicenseTypes",driversLicenseTypeDAO.getAll());
 			
-
-			XMLUtils.append(doc, jobApplication, "DriversLicenseTypes",driversLicenseTypeDAO.getAll());
-		
-			doc.getFirstChild().appendChild(jobApplication);
+				doc.getFirstChild().appendChild(jobApplication);
+			}
 			
 		} else {
 			Element jobList = doc.createElement("JobList");
@@ -109,7 +111,7 @@ public class BusinessSectorSummerJobApplicationModule extends AddSummerJobApplic
 	}
 	
 	@RESTMethod(alias="save/businessapplication.json", method="post")
-	public void saveApplication(HttpServletRequest req, HttpServletResponse res, User user, URIParser uriParser) throws IOException {
+	public void saveApplication(HttpServletRequest req, HttpServletResponse res, User user, URIParser uriParser) throws IOException, SQLException {
 			
 		MultipartRequest requestWrapper = null;
 
@@ -164,9 +166,7 @@ public class BusinessSectorSummerJobApplicationModule extends AddSummerJobApplic
 				createJobApplication(app, requestWrapper, person);
 				automaticControllAndApprove(app);
 
-				boolean hasDriversLicense = requestWrapper.getParameter("hasDriversLicense") != null ? true : false;
-				
-				if (hasDriversLicense) {
+			
 					Integer typeId = NumberUtils.toInt(requestWrapper.getParameter("driversLicenseType"));
 					if (typeId == null) {
 						JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Om du har körkort måste du ange en körkortstyp\"}", callback, writer);
@@ -180,10 +180,7 @@ public class BusinessSectorSummerJobApplicationModule extends AddSummerJobApplic
 						log.error(e1);
 						JsonResponse.sendJsonResponse("{\"status\":\"error\", \"message\":\"Databasfel. Kunde inte hämta körkortstypen.\"}", callback, writer);
 						return;
-					}
-				} else {
-					app.setDriversLicenseType(null);
-				}
+					}				
 
 				if(!validatePersonalInformation(writer, callback, app)){
 					return;
@@ -218,6 +215,8 @@ public class BusinessSectorSummerJobApplicationModule extends AddSummerJobApplic
 						app.setAddedByUser(user.getUsername());
 					}
 				}
+				
+				setPersonApplications(app);
 
 				try {
 					log.info("Påbörjar sparning av näringslivsansökan");

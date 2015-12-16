@@ -9,15 +9,15 @@ import java.util.Calendar;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.sql.DataSource;
 
 import org.apache.commons.fileupload.FileItem;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
-import se.sogeti.jobapplications.beans.DriversLicenseType;
 import se.sogeti.jobapplications.beans.JobApplication;
-import se.sogeti.jobapplications.beans.business.BusinessSectorJobApplication;
+import se.sogeti.jobapplications.beans.PersonApplications;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityJobApplication;
+import se.sogeti.jobapplications.daos.JobApplicationDAO;
+import se.sogeti.jobapplications.daos.PersonApplicationsDAO;
 import se.sogeti.summerjob.FormUtils;
 import se.sogeti.summerjob.JsonResponse;
 import se.sundsvall.openetown.smex.SmexServiceHandler;
@@ -27,8 +27,8 @@ import se.unlogic.hierarchy.core.annotations.InstanceManagerDependency;
 import se.unlogic.hierarchy.core.annotations.ModuleSetting;
 import se.unlogic.hierarchy.core.annotations.TextAreaSettingDescriptor;
 import se.unlogic.hierarchy.core.annotations.TextFieldSettingDescriptor;
+import se.unlogic.hierarchy.core.utils.HierarchyAnnotatedDAOFactory;
 import se.unlogic.hierarchy.foregroundmodules.rest.AnnotatedRESTModule;
-import se.unlogic.standardutils.xml.XMLUtils;
 
 public abstract class AddSummerJobApplication<T extends JobApplication> extends AnnotatedRESTModule{
 	
@@ -38,6 +38,8 @@ public abstract class AddSummerJobApplication<T extends JobApplication> extends 
 	
 	@InstanceManagerDependency(required = true)
 	private SmexServiceHandler smexServiceHandler;
+	
+	protected PersonApplicationsDAO personApplicationsDAO;
 	
 	@ModuleSetting
 	@TextAreaSettingDescriptor(name = "Allowed cities", description = "postorter som ingår i Sundsvalls kommun")
@@ -171,6 +173,27 @@ public abstract class AddSummerJobApplication<T extends JobApplication> extends 
 			app.setSchoolType(person.getTypeOfSchool());
 			app.setSkvCity(person.getCity());
 		}
+	}
+	
+	protected void setPersonApplications(T app) throws SQLException {
+		PersonApplications personApplications = personApplicationsDAO.getBySocialSecurityNumber(app.getSocialSecurityNumber());
+		if(personApplications==null){
+			personApplications = new PersonApplications();
+			personApplications.setSocialSecurityNumber(app.getSocialSecurityNumber());
+			
+		}			
+		app.setPersonApplications(personApplications);
+	}
+
+
+
+	@Override
+	protected void createDAOs(DataSource dataSource) throws Exception {
+		// TODO Auto-generated method stub
+		super.createDAOs(dataSource);
+
+		HierarchyAnnotatedDAOFactory hierarchyDaoFactory = new HierarchyAnnotatedDAOFactory(dataSource, systemInterface);		
+		personApplicationsDAO = new PersonApplicationsDAO(dataSource, PersonApplications.class, hierarchyDaoFactory);
 	}
 
 }

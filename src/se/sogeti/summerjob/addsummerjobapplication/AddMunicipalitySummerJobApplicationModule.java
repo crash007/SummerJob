@@ -18,6 +18,7 @@ import org.w3c.dom.Element;
 import se.sogeti.jobapplications.beans.ApplicationType;
 import se.sogeti.jobapplications.beans.DriversLicenseType;
 import se.sogeti.jobapplications.beans.GeoArea;
+import se.sogeti.jobapplications.beans.PersonApplications;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityJobApplication;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityJobArea;
 import se.sogeti.jobapplications.beans.municipality.PreferedPeriod;
@@ -25,6 +26,7 @@ import se.sogeti.jobapplications.daos.AreaDAO;
 import se.sogeti.jobapplications.daos.DriversLicenseTypeDAO;
 import se.sogeti.jobapplications.daos.GeoAreaDAO;
 import se.sogeti.jobapplications.daos.JobApplicationDAO;
+import se.sogeti.jobapplications.daos.PersonApplicationsDAO;
 import se.sogeti.periodsadmin.beans.Period;
 import se.sogeti.periodsadmin.daos.PeriodDAO;
 import se.sogeti.summerjob.JsonResponse;
@@ -75,6 +77,7 @@ public class AddMunicipalitySummerJobApplicationModule extends AddSummerJobAppli
 		periodDAO = new PeriodDAO(dataSource, Period.class, hierarchyDaoFactory);
 		geoAreaDAO = new GeoAreaDAO(dataSource, GeoArea.class, hierarchyDaoFactory);
 		driversLicenseTypeDAO = new DriversLicenseTypeDAO(dataSource, DriversLicenseType.class, hierarchyDaoFactory);
+		
 	}
 
 	@Override
@@ -281,11 +284,13 @@ public class AddMunicipalitySummerJobApplicationModule extends AddSummerJobAppli
 			log.debug(app);
 			
 			// A new application
-			if (appId == null) {
+			if (app.getId() == null) {
 				if (user != null && user.getUsername() != null) {
 					app.setAddedByUser(user.getUsername());
 				}
 			}
+			
+			setPersonApplications(app);
 			
 			if (user != null && user.isAdmin()) {
 				String applicationType = requestWrapper.getParameter("applicationType");
@@ -321,6 +326,8 @@ public class AddMunicipalitySummerJobApplicationModule extends AddSummerJobAppli
 			
 		}
 	}
+
+	
 
 	
 

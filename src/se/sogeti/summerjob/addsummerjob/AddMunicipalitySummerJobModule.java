@@ -147,8 +147,8 @@ public class AddMunicipalitySummerJobModule extends AnnotatedRESTModule{
 
 	@RESTMethod(alias="add/municipalitysummerjob.json", method="post")
 	public void addSummerjob(HttpServletRequest req, HttpServletResponse res, User user, URIParser uriParser) throws IOException, SQLException {
-		log.info("POST");
-		
+
+		log.info("add/municipalitysummerjob.json");
 		
 		PrintWriter writer = res.getWriter();
         String callback = req.getParameter("callback"); 

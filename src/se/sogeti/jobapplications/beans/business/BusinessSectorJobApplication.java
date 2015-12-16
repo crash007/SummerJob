@@ -16,32 +16,15 @@ public class BusinessSectorJobApplication extends JobApplication{
 	
 	public BusinessSectorJobApplication() {
 		super();
-		this.assigned = false;
 	}
 	
 	@DAOManaged(columnName="jobId")
 	@ManyToOne(remoteKeyField="id",autoGet=false,autoAdd=false,autoUpdate=false)
 	@XMLElement
 	private BusinessSectorJob job;
-	
-	//assigned is true if application is matched with the job.
-	@DAOManaged
-	private Boolean assigned;
-
-
-	public Boolean getAssigned() {
-		return assigned;
-	}
-
-
-	public void setAssigned(Boolean assigned) {
-		this.assigned = assigned;
-	}
-
 
 	@Override
 	public Element toXML(Document doc) {
-
 		return XMLGenerator.toXML(this, doc);
 	}
 
@@ -53,6 +36,12 @@ public class BusinessSectorJobApplication extends JobApplication{
 
 	public void setJob(BusinessSectorJob job) {
 		this.job = job;
+	}
+
+
+	@Override
+	public String toString() {
+		return "BusinessSectorJobApplication [job=" + job + ", toString()=" + super.toString() + "]";
 	}
 
 }
