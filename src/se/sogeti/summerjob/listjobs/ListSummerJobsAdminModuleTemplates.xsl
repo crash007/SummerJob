@@ -45,8 +45,8 @@
 					<div class="col-md-2 bold">Period</div>
 					<div class="col-md-2 bold">Antal platser</div>
 					<div class="col-md-2 bold">Skapad</div>
-					<div class="col-md-1 bold"></div> <!-- HANTERA-URL -->
-					<div class="col-md-1 bold"></div> <!-- MATCHA-URL -->
+					<div class="col-md-1 bold"></div>
+					<div class="col-md-1 bold"></div>
 				</div>
 				
 				<xsl:for-each select="MunicipalityJob">
@@ -84,8 +84,7 @@
 							</div>
 						</div>
 					</div>
-					
-				</xsl:for-each>>
+				</xsl:for-each>
 			</div>
 		</div>
 	</xsl:template>
