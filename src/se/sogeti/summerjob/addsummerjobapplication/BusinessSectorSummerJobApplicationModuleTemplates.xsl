@@ -56,27 +56,20 @@
 						  	<div class="mgn-top8px row">
 						  		<div class="col-md-12">
 							  		<label>Handledare</label>
-							  		<table class="table">
-										<thead>
-											<tr>
-												<th class="overview">Förnamn</th>
-												<th class="overview">Efternamn</th>							
-												<th class="overview">Telefonnummer</th>
-												<th class="overview">E-postadress</th>
-											</tr>
-										</thead>
-						
-										<tbody>
-											<xsl:for-each select="mentors/BusinessSectorMentor">
-											<tr>
-									  			<td><xsl:value-of select="firstname"></xsl:value-of></td>
-									  			<td><xsl:value-of select="lastname"></xsl:value-of></td>
-									  			<td><xsl:value-of select="mobilePhone"></xsl:value-of></td>
-									  			<td><xsl:value-of select="email"></xsl:value-of></td>
-									  		</tr>
-								  			</xsl:for-each>
-										</tbody>
-									</table>
+						  			<div class="row">
+						  				<div class="col-md-2 bold col-xs-2" style="font-size: 90%; padding-right: 0px;">Förnamn</div>
+						  				<div class="col-md-2 bold col-xs-2" style="font-size: 90%; padding-right: 0px;">Efternamn</div>
+						  				<div class="col-md-2 bold col-xs-3" style="font-size: 90%; padding-right: 0px;">Telefonnummer</div>
+						  				<div class="col-md-2 bold col-xs-3" style="font-size: 90%; padding-right: 0px;">E-postadress</div>
+						  			</div>
+						  			<xsl:for-each select="mentors/BusinessSectorMentor">
+						  				<div class="row">
+						  					<div class="col-md-2 col-xs-2" style="padding-right: 0px;"><xsl:value-of select="firstname" /></div>
+						  					<div class="col-md-2 col-xs-2" style="padding-right: 0px;"><xsl:value-of select="lastname" /></div>
+						  					<div class="col-md-2 col-xs-3" style="padding-right: 0px;"><xsl:value-of select="mobilePhone" /></div>
+						  					<div class="col-md-2 col-xs-3" style="padding-right: 0px;"><xsl:value-of select="email" /></div>
+						  				</div>
+						  			</xsl:for-each>
 								</div>
 						  	</div>
 					  	</div>
@@ -177,88 +170,35 @@
 				</div>
 			</div>
 		</div>
-		<!-- <div class="well">
-			<div class="row">
-			<form class="form-horizontal">
-			  <div class="form-group">
-			    <label class="col-sm-2 control-label">Företag</label>
-			    <div class="col-sm-10">
-			      <p class="form-control-static"><xsl:value-of select="company"/></p>
-			    </div>
-			  </div>
-			  <div class="form-group">
-				    <label class="col-sm-2 control-label">Beskrivning</label>
-				    <div class="col-sm-10">
-				      <p class="form-control-static"><xsl:value-of select="workDescription"/></p>
-				    </div>
-			  </div>
-			  <div class="form-group">
-				    <label class="col-sm-2 control-label">Antal platser</label>
-				    <div class="col-sm-10">
-				      <p class="form-control-static"><xsl:value-of select="numberOfWorkersNeeded"/></p>
-				    </div>
-			  </div>
-			  <div class="form-group">
-				    <label class="col-sm-2 control-label">Address</label>
-				    <div class="col-sm-10">
-				      <p class="form-control-static"><xsl:value-of select="streetAddress"/></p>
-				    </div>
-			  </div>
-			</form>
-			</div>
-	  	</div> -->
 	
 	</xsl:template>
 	
 	<xsl:template match="JobList">
-	<h1>Lediga sommarjobb inom privata sektorn</h1>
-		<div class="row well">
-		  
-		  <div class="col-xs-9 col-md-6">
-		  	<div class="panel panel-default">
-			  <div class="panel-heading">
-			    <h3 class="panel-title">Sommarjobb inom näringslivet</h3>
-			  </div>
-			  <div class="panel-body">
-			    <table class="table">
-				  <thead>
-				  	<tr>
-				  		<th>Yrke</th>
-	     				<th>Företag</th>
-	     				<th>Antal platser</th>
-	     				<th>Inkommen</th>
-	     				<th></th>	     				
-				  	</tr>
-				  </thead>
-				  
-				  <tbody>
-<!-- 				  <xsl:apply-templates select="BusinessSectorJob"/> -->
-				  
-					  <xsl:for-each select="BusinessSectorJob">
-					  	<tr>
-							<td>
-					   			<xsl:value-of select="workTitle"></xsl:value-of>
-					   		</td>
-					   		<td>
-					   			<xsl:value-of select="company"/>
-					   		</td>
-					   		<td>
-					   			<xsl:value-of select="numberOfWorkersNeeded"></xsl:value-of>
-					   		</td>
-					   		<td>
-					   			<xsl:value-of select="substring(created, 1, 10)"></xsl:value-of>
-					   		</td>
-					   		<td>
-					   			<a href="?jobId={id}">Ansök</a>
-					   		</td>					   		
-				   		</tr>
-					  </xsl:for-each>
-				  </tbody>
-				</table>
-			  </div>
+		<h1>Lediga sommarjobb inom privata sektorn</h1>
+		<div class="col-xs-12 col-md-9 well">
+	  		<div class="panel panel-default" style="margin-left: 0px; margin-right: 0px;">
+		  		<div class="panel-heading">
+		    		<h3 class="panel-title">Sommarjobb inom näringslivet</h3>
+		  		</div>
+		  		<div class="panel-body">
+		  			<div class="row">
+		  				<div class="col-md-2 col-xs-3 bold">Yrkestitel</div>
+		  				<div class="col-md-2 col-xs-3 bold">Företag</div>
+		  				<div class="col-md-2 col-xs-2 bold" style="padding-left: 0px; padding-right: 0px;">Platser</div>
+		  				<div class="col-md-2 col-xs-3 bold">Inkommen</div>
+		  			</div>
+		  			<xsl:for-each select="BusinessSectorJob">
+		  				<div class="row mgn-top8px job-row">
+		  					<div class="col-md-2 col-xs-3"><xsl:value-of select="workTitle" /></div>
+		  					<div class="col-md-2 col-xs-3"><xsl:value-of select="company" /></div>
+		  					<div class="col-md-2 col-xs-2" style="padding-left: 0px; padding-right: 0px;"><xsl:value-of select="numberOfWorkersNeeded" /></div>
+		  					<div class="col-md-2 col-xs-3" style="padding-right: 0px;"><xsl:value-of select="substring(created, 1, 10)" /></div>
+		  					<div class="col-md-1 col-xs-1 float-rgt bold" style="padding-left: 0px;"><a href="?jobId={id}">Ansök</a></div>
+		  				</div> 
+		  			</xsl:for-each>
+		  		</div>
 			</div>
-		  </div>
-		  </div>
+		</div>
 	
 	</xsl:template>
 	

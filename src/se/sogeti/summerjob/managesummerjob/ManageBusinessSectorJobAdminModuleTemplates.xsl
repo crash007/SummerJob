@@ -59,27 +59,20 @@
 						  	<div class="mgn-top8px row">
 						  		<div class="col-md-12">
 							  		<label>Handledare</label>
-							  		<table class="table">
-										<thead>
-											<tr>
-												<th class="overview">Förnamn</th>
-												<th class="overview">Efternamn</th>							
-												<th class="overview">Telefonnummer</th>
-												<th class="overview">E-postadress</th>
-											</tr>
-										</thead>
-						
-										<tbody>
-											<xsl:for-each select="BusinessSectorJob/mentors/BusinessSectorMentor">
-											<tr>
-									  			<td><xsl:value-of select="firstname"></xsl:value-of></td>
-									  			<td><xsl:value-of select="lastname"></xsl:value-of></td>
-									  			<td><xsl:value-of select="mobilePhone"></xsl:value-of></td>
-									  			<td><xsl:value-of select="email"></xsl:value-of></td>
-									  		</tr>
-								  			</xsl:for-each>
-										</tbody>
-									</table>
+							  		<div class="row">
+						  				<div class="col-md-2 bold col-xs-2" style="font-size: 90%; padding-right: 0px;">Förnamn</div>
+						  				<div class="col-md-2 bold col-xs-2" style="font-size: 90%; padding-right: 0px;">Efternamn</div>
+						  				<div class="col-md-2 bold col-xs-3" style="font-size: 90%; padding-right: 0px;">Telefonnummer</div>
+						  				<div class="col-md-2 bold col-xs-3" style="font-size: 90%; padding-right: 0px;">E-postadress</div>
+						  			</div>
+						  			<xsl:for-each select="BusinessSectorJob/mentors/BusinessSectorMentor">
+						  				<div class="row">
+						  					<div class="col-md-2 col-xs-2" style="padding-right: 0px;"><xsl:value-of select="firstname" /></div>
+						  					<div class="col-md-2 col-xs-2" style="padding-right: 0px;"><xsl:value-of select="lastname" /></div>
+						  					<div class="col-md-2 col-xs-3" style="padding-right: 0px;"><xsl:value-of select="mobilePhone" /></div>
+						  					<div class="col-md-2 col-xs-3" style="padding-right: 0px;"><xsl:value-of select="email" /></div>
+						  				</div>
+						  			</xsl:for-each>
 								</div>
 						  	</div>
 					  	</div>
