@@ -160,7 +160,7 @@
 				<div class="col-md-4 cv">
 				<xsl:choose>
 				    <xsl:when test="cvFilename !=''">				       
-				       <a target="_blank" href="{/Document/requestinfo/contextpath}/{/Document/CvMunicipalityApplicationUrl}?id={id}">Ladda ner</a>
+				       <a target="_blank" href="{/Document/requestinfo/contextpath}{/Document/CvMunicipalityApplicationUrl}?id={id}">Ladda ner</a>
 				    </xsl:when>
 				    <xsl:otherwise>
 				        CV saknas
