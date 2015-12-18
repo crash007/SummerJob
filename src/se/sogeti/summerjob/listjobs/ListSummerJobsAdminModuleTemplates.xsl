@@ -23,7 +23,7 @@
 		</div>
 	</xsl:template>
 	
-	<xsl:template match="BusinessJobs">
+	<xsl:template match="BusinessJobs">	
 		<h1>Sommarjobb inom näringslivet</h1>
 		<div class="well">
 			<xsl:apply-templates select="BusinessOpen"/>
