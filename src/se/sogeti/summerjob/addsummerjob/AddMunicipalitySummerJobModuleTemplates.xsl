@@ -46,7 +46,7 @@
 					  <div class="form-group">
 					  	<div class="row">
 			  				<div class="col-md-4">
-							    <label for="location">Ange platsen*</label>
+							    <label for="location">Ange arbetsplatsen*</label>
 							    <input type="text" class="form-control" data-error="Tex Himlabadet" id="location" name="location" placeholder="" required="required" value="{MunicipalityJob/location}"/>
 							    <p class="help-block with-errors">Tex Himlabadet</p>
 						   	</div>
