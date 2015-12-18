@@ -3,6 +3,7 @@ package se.sogeti.summerjob.listjobs;
 import java.sql.SQLException;
 import java.util.List;
 
+import javax.print.attribute.standard.JobSheets;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
@@ -200,11 +201,12 @@ public class ListSummerJobsAdminModule extends AnnotatedForegroundModule {
 		XMLUtils.appendNewElement(doc, municipalityJob, "matchURL", matchMunicipalityJobUrl + "?jobId=" + job.getId());
 		
 		if (job.getApplications() != null) {
-			Integer matchedApplications = FormUtils.countApplications(job.getApplications(), ApplicationStatus.MATCHED);
-			job.setOpenApplications(job.getNumberOfWorkersNeeded() - matchedApplications);
-			XMLUtils.appendNewElement(doc, municipalityJob, "openApplications", job.getOpenApplications());
+			Integer matchedApplications = FormUtils.countApplications(job.getApplications(), ApplicationStatus.MATCHED);			
+			job.setMatchedApplications(matchedApplications);
+			XMLUtils.appendNewElement(doc, municipalityJob, "matchedApplications", job.getMatchedApplications());
+		
 		} else {
-			XMLUtils.appendNewElement(doc, municipalityJob, "openApplications", job.getNumberOfWorkersNeeded());
+			XMLUtils.appendNewElement(doc, municipalityJob, "matchedApplications", 0);
 		}
 		
 		return municipalityJob;
@@ -232,9 +234,11 @@ public class ListSummerJobsAdminModule extends AnnotatedForegroundModule {
 		if (jobWithApplications != null && jobWithApplications.getApplications() != null) {
 			Integer matchedApplications = FormUtils.countApplications(jobWithApplications.getApplications(), ApplicationStatus.MATCHED);
 			job.setOpenApplications(job.getNumberOfWorkersNeeded() - matchedApplications);
-			XMLUtils.appendNewElement(doc, businessSectorJob, "openApplications", job.getOpenApplications());
-		} else {
-			XMLUtils.appendNewElement(doc, businessSectorJob, "openApplications", job.getNumberOfWorkersNeeded());
+			job.setMatchedApplications(matchedApplications);
+			XMLUtils.appendNewElement(doc, businessSectorJob, "matchedApplications", job.getMatchedApplications());
+		} 
+		else {
+			XMLUtils.appendNewElement(doc, businessSectorJob, "matchedApplications", 0);
 		}
 		
 		return businessSectorJob;
