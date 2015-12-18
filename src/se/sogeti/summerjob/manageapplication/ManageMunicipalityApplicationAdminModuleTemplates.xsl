@@ -94,7 +94,7 @@
 				    	<xsl:choose>
 				    		<xsl:when test="cvFilename != ''">
 						    	<div>
-						    		<a target="_blank" href="{/Document/requestinfo/contextpath}/{/Document/CvMunicipalityApplicationUrl}?id={id}">Ladda ner</a>
+						    		<a target="_blank" href="{/Document/requestinfo/contextpath}{/Document/CvMunicipalityApplicationUrl}?id={id}">Ladda ner</a>
 						    	</div>						    	
 				    		</xsl:when>
 				    		<xsl:otherwise>
