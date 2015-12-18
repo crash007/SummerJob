@@ -40,7 +40,7 @@
 			</div>
 			<div class="panel-body">
 				<div class="row">
-					<div class="col-md-2 bold">Plats</div>
+					<div class="col-md-2 bold">Arbetsplats</div>
 					<div class="col-md-2 bold">Avdelning</div>
 					<div class="col-md-2 bold">Period</div>
 					<div class="col-md-2 bold">Totalt/Tillsatta</div>
@@ -96,7 +96,7 @@
 			</div>
 			<div class="panel-body">
 				<div class="row">
-					<div class="col-md-2 bold">Plats</div>
+					<div class="col-md-2 bold">Arbetsplats</div>
 					<div class="col-md-2 bold">Avdelning</div>
 					<div class="col-md-2 bold">Period</div>
 					<div class="col-md-2 bold">Antal platser</div>
@@ -146,7 +146,7 @@
 			</div>
 			<div class="panel-body">
 				<div class="row">
-					<div class="col-md-2 bold">Plats</div>
+					<div class="col-md-2 bold">Arbetsplats</div>
 					<div class="col-md-2 bold">Avdelning</div>
 					<div class="col-md-2 bold">Period</div>
 					<div class="col-md-2 bold">Totalt/Tillsatta</div>
@@ -201,7 +201,7 @@
 			</div>
 			<div class="panel-body">
 				<div class="row">
-					<div class="col-md-2 bold">Plats</div>
+					<div class="col-md-2 bold">Arbetsplats</div>
 					<div class="col-md-2 bold">Avdelning</div>
 					<div class="col-md-2 bold">Period</div>
 					<div class="col-md-2 bold">Antal platser</div>
