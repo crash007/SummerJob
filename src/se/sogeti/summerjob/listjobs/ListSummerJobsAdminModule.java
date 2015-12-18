@@ -194,6 +194,7 @@ public class ListSummerJobsAdminModule extends AnnotatedForegroundModule {
 		
 		XMLUtils.appendNewElement(doc, municipalityJob, "created", job.getCreated());
 		XMLUtils.appendNewElement(doc, municipalityJob, "approvedByUser", job.getApprovedByUser());
+		XMLUtils.appendNewElement(doc, municipalityJob, "initiatedByUser", job.getInitiatedByUser());
 		XMLUtils.appendNewElement(doc, municipalityJob, "controlledDate", job.getControlledDate());
 		XMLUtils.appendNewElement(doc, municipalityJob, "url", manageMunicipalityJobUrl+"?jobId=" + job.getId());
 		XMLUtils.appendNewElement(doc, municipalityJob, "matchURL", matchMunicipalityJobUrl + "?jobId=" + job.getId());

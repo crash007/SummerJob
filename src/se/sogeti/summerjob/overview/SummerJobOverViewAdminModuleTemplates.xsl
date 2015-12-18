@@ -182,19 +182,19 @@
 							<div class="col-md-2 bold">Yrkestitel</div>
 							<div class="col-md-2 bold">Företag</div>
 							<div class="col-md-1 bold">Platser</div>
-							<div class="col-md-2 bold">Startdatum</div>
-							<div class="col-md-2 bold">Slutdatum</div>
-							<div class="col-md-2 bold">Sista ansökningsdag</div>
-							<div class="col-md-1"></div>
+							<div class="col-md-1 bold" style="padding-left: 0px;">Startdatum</div>
+							<div class="col-md-1 bold" style="padding-left: 0px;">Slutdatum</div>
+							<div class="col-md-2 bold" style="padding-left: 0px;">Sista ansökningsdag</div>
 						</div>
 						<xsl:for-each select="NewBusinessJobs/BusinessSectorJob">
 							<div class="row job-row">
 								<div class="col-md-2"><xsl:value-of select="workTitle" /></div>
 								<div class="col-md-2"><xsl:value-of select="company" /></div>
 								<div class="col-md-1"><xsl:value-of select="numberOfWorkersNeeded" /></div>
-								<div class="col-md-2"><xsl:value-of select="substring(startDate, 1, 10)" /></div>
-								<div class="col-md-2"><xsl:value-of select="substring(endDate, 1, 10)" /></div>
-								<div class="col-md-2"><xsl:value-of select="substring(lastApplicationDay, 1, 10)" /></div>
+								<div class="col-md-1" style="padding-left: 0px;"><xsl:value-of select="substring(startDate, 1, 10)" /></div>
+								<div class="col-md-1" style="padding-left: 0px;"><xsl:value-of select="substring(endDate, 1, 10)" /></div>
+								<div class="col-md-2" style="padding-left: 0px;"><xsl:value-of select="substring(lastApplicationDay, 1, 10)" /></div>
+								<div class="col-md-2"></div>
 								<div class="col-md-1 bold"><a href="{/Document/requestinfo/contextpath}/{/Document/Municipality/ManageBusinessJobsUrl}?jobId={id}">Hantera</a></div>
 							</div>
 						</xsl:for-each>
@@ -209,20 +209,21 @@
 							<div class="col-md-2 bold">Yrkestitel</div>
 							<div class="col-md-2 bold">Företag</div>
 							<div class="col-md-1 bold">Platser</div>
-							<div class="col-md-2 bold">Startdatum</div>
-							<div class="col-md-2 bold">Slutdatum</div>
-							<div class="col-md-2 bold">Sista ansökningsdag</div>
-							<div class="col-md-1"></div>
+							<div class="col-md-1 bold" style="padding-left: 0px; padding-right: 0px;">Startdatum</div>
+							<div class="col-md-1 bold" style="padding-left: 0px; padding-right: 0px;">Slutdatum</div>
+							<div class="col-md-2 bold" style="padding-left: 0px;">Sista ansökningsdag</div>
 						</div>
 						<xsl:for-each select="ApprovedBusinessJobs/BusinessSectorJob">
 							<div class="row job-row">
 								<div class="col-md-2"><xsl:value-of select="workTitle" /></div>
 								<div class="col-md-2"><xsl:value-of select="company" /></div>
 								<div class="col-md-1"><xsl:value-of select="numberOfWorkersNeeded" /></div>
-								<div class="col-md-2"><xsl:value-of select="substring(startDate, 1, 10)" /></div>
-								<div class="col-md-2"><xsl:value-of select="substring(endDate, 1, 10)" /></div>
-								<div class="col-md-2"><xsl:value-of select="substring(lastApplicationDay, 1, 10)" /></div>
+								<div class="col-md-1" style="padding-left: 0px; padding-right: 0px;"><xsl:value-of select="substring(startDate, 1, 10)" /></div>
+								<div class="col-md-1" style="padding-left: 0px; padding-right: 0px;"><xsl:value-of select="substring(endDate, 1, 10)" /></div>
+								<div class="col-md-2" style="padding-left: 0px;"><xsl:value-of select="substring(lastApplicationDay, 1, 10)" /></div>
+								<div class="col-md-1"></div>
 								<div class="col-md-1 bold"><a href="{/Document/requestinfo/contextpath}/{/Document/Municipality/ManageBusinessJobsUrl}?jobId={id}">Hantera</a></div>
+								<div class="col-md-1 bold"><a href="{/Document/requestinfo/contextpath}/{/Document/Municipality/MatchBusinessJobsUrl}?jobId={id}">Matcha</a></div>
 							</div>
 						</xsl:for-each>
 					 </div>

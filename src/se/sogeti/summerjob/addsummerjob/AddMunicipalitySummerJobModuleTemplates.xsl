@@ -46,7 +46,7 @@
 					  <div class="form-group">
 					  	<div class="row">
 			  				<div class="col-md-4">
-							    <label for="location">Ange platsen</label>
+							    <label for="location">Ange platsen*</label>
 							    <input type="text" class="form-control" data-error="Tex Himlabadet" id="location" name="location" placeholder="" required="required" value="{MunicipalityJob/location}"/>
 							    <p class="help-block with-errors">Tex Himlabadet</p>
 						   	</div>
@@ -210,23 +210,24 @@
 							  			</div>
 							  			<div style="margin-bottom: 8px" class="add-mentor-div hidden">
 							  				<label>Ange handledare <span style="font-weight: normal; font-size: 90%;"><i>(Förnamn, efternamn och telefonnummer krävs för att en handledare ska sparas)</i></span></label>
-							  				<div id="mentors-wrapper">
+<!-- 							  				<div id="mentors-wrapper"> -->
+												<div class="mentors-wrapper">
 							  					<xsl:if test="selected = 'true'">
 										  			<xsl:for-each select="mentors/MunicipalityMentor">
 														<div class="row collapse in" style="margin-bottom: 8px;">
 															<input style="display: none;" id="mentor-id-{id}" name="mentor-id-{id}" type="text" value="{id}"/>
 															<div class="form-group col-md-3">
-																<label for="mentor-firstname">Förnamn</label><input type="text" class="form-control" id="mentor-firstname" name="mentor-firstname_{id}" placeholder="" value="{firstname}"/>
+																<label for="mentor-firstname">Förnamn</label><input type="text" class="form-control mentor-firstname" name="mentor-firstname_{id}" placeholder="" value="{firstname}"/>
 															</div>
 															<div class="form-group col-md-3">
-																<label for="mentor-lastname">Efternamn</label><input type="text" class="form-control" id="mentor-lastname" name="mentor-lastname_{id}" placeholder="" value="{lastname}"/>
+																<label for="mentor-lastname">Efternamn</label><input type="text" class="form-control mentor-lastname" name="mentor-lastname_{id}" placeholder="" value="{lastname}"/>
 															</div>
 															<div class="form-group col-md-2">
-																<label for="mentor-phone">Telefonnummer</label><input type="text" class="numberValidation form-control" id="mentor-phone" name="mentor-phone_{id}" placeholder="" value="{mobilePhone}"/>
+																<label for="mentor-phone">Telefonnummer</label><input type="text" class="numberValidation form-control mentor-phone" name="mentor-phone_{id}" placeholder="" value="{mobilePhone}"/>
 																<p class="help-block">Endast siffror</p>
 															</div>
 															<div class="form-group col-md-3">
-																<label for="mentor-email">E-post</label><input type="email" class="col-md-3 form-control" id="mentor-email" name="mentor-email_{id}" placeholder="" value="{email}"/>
+																<label for="mentor-email">E-post</label><input type="email" class="col-md-3 form-control mentor-email" name="mentor-email_{id}" placeholder="" value="{email}"/>
 															</div>
 															<div class="remove-mentor form-group col-md-1">
 																<label>Ta bort</label>
@@ -256,7 +257,8 @@
 							  			</div>
 							  			<div style="margin-bottom: 8px" class="add-mentor-div hidden">
 							  				<label>Ange handledare <span style="font-weight: normal; font-size: 90%;"><i>(Förnamn, efternamn och telefonnummer krävs för att en handledare ska sparas)</i></span></label>
-							  				<div id="mentors-wrapper">
+<!-- 							  				<div id="mentors-wrapper"> -->
+											<div class="mentors-wrapper">
 									    	</div>
 							  				<a href="#" class="add-municipality-mentor-btn"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Lägg till handledare</a>
 							  			</div>
@@ -275,7 +277,8 @@
 						  			</div>
 						  			<div style="margin-bottom: 8px" class="add-mentor-div hidden">
 						  				<label>Ange handledare <span style="font-weight: normal; font-size: 90%;"><i>(Förnamn, efternamn och telefonnummer krävs för att en handledare ska sparas)</i></span></label>
-						  				<div id="mentors-wrapper">
+<!-- 						  				<div id="mentors-wrapper"> -->
+										<div class="mentors-wrapper">
 								    	</div>
 						  				<a href="#" class="add-municipality-mentor-btn"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Lägg till handledare</a>
 						  			</div>
@@ -401,22 +404,26 @@
 	    		<div class="row collapse">
 	  				<div class="col-md-3">
 					    <label for="mentor">Förnamn</label>				    
-					     <input type="text" class="form-control" id="mentor-firstname" name="mentor-firstname" placeholder=""/>							    
+<!-- 					     <input type="text" class="form-control" id="mentor-firstname" name="mentor-firstname" placeholder=""/>							     -->
+			    		<input type="text" class="form-control mentor-firstname" name="mentor-firstname" placeholder=""/>
 			    	</div>
 			    	<div class="col-md-3">
 					    <label for="mentor">Efternamn</label>				    
-					     <input type="text" class="form-control" id="mentor-lastname" name="mentor-lastname" placeholder=""/>							    
+<!-- 					     <input type="text" class="form-control" id="mentor-lastname" name="mentor-lastname" placeholder=""/>							     -->
+			    		<input type="text" class="form-control mentor-lastname" name="mentor-lastname" placeholder=""/>
 			    	</div>
 			    
 	  				<div class="col-md-2">
 					    <label for="mentor">Telefonnummer</label>				    
-					     <input type="text" class="numberValidation form-control" id="mentor-phone" name="mentor-phone" placeholder=""/>
+<!-- 					     <input type="text" class="numberValidation form-control" id="mentor-phone" name="mentor-phone" placeholder=""/> -->
+					    <input type="text" class="numberValidation form-control mentor-phone" name="mentor-phone" placeholder=""/>
 					    <p class="help-block">Endast siffror</p>
 			    	</div>
 			    
 	  				<div class="col-md-3">
 					    <label for="mentor">E-post</label>				    
-					     <input type="text" class="form-control" id="mentor-email" name="mentor-email" placeholder=""/>
+<!-- 					     <input type="text" class="form-control" id="mentor-email" name="mentor-email" placeholder=""/> -->
+						<input type="text" class="form-control mentor-email" name="mentor-email" placeholder=""/>
 					    <p class="help-block">Valfri</p>
 			    	</div>
 			    	
@@ -627,19 +634,19 @@
 	
 		<div id="preview-period-template">
 			<div class="row">
-				<div class="col-md-2 bold" id="preview-period-name"></div>
-				<div class="col-md-2 bold" id="preview-period-startdate"></div>
-				<div class="col-md-2 bold" id="preview-period-enddate"></div>
-				<div class="col-md-3"><span class="bold">Antal arbetare: </span> <span id="preview-period-numberOfWorkers"></span></div>
+				<div class="col-md-2 bold preview-period-name"></div>
+				<div class="col-md-2 bold preview-period-startdate"></div>
+				<div class="col-md-2 bold preview-period-enddate"></div>
+				<div class="col-md-3"><span class="bold">Antal arbetare: </span> <span class="preview-period-numberOfWorkers"></span></div>
 			</div>
 			<br/>
 			<label>Handledare under perioden <span style="font-weight: normal; font-size: 90%;"><i>(Förnamn, efternamn och telefonnummer krävs för att en handledare ska sparas)</i></span></label>
-			<div id="preview-mentor-body">
-				<div class="row" style="display: none" id="preview-mentor-row">
-					<div class="col-md-2" id="preview-mentor-firstname"></div>
-					<div class="col-md-2" id="preview-mentor-lastname"></div>
-					<div class="col-md-2" id="preview-mentor-phonenumber"></div>
-					<div class="col-md-2" id="preview-mentor-email"></div>
+			<div class="preview-mentor-body">
+				<div class="row preview-mentor-row" style="display: none">
+					<div class="col-md-2 preview-mentor-firstname"></div>
+					<div class="col-md-2 preview-mentor-lastname"></div>
+					<div class="col-md-2 preview-mentor-phonenumber"></div>
+					<div class="col-md-2 preview-mentor-email"></div>
 				</div>
 			</div>
 		</div>
