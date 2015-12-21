@@ -46,7 +46,7 @@
 				  	</div>
 				  	<div class="panel-body">
 				  		<div class="row">
-				  			<div class="col-md-2 bold">Plats</div>
+				  			<div class="col-md-2 bold">Arbetsplats</div>
 					  		<div class="col-md-2 bold">Avdelning</div>
 					  		<div class="col-md-3 bold">Verksamhetsområde</div>
 					  		<div class="col-md-2 bold">Geografiskt område</div>
@@ -74,7 +74,7 @@
 			  		</div>
 			  		<div class="panel-body">
 			  			<div class="row">
-				  			<div class="col-md-2 bold">Plats</div>
+				  			<div class="col-md-2 bold">Arbetsplats</div>
 						  	<div class="col-md-2 bold">Avdelning</div>
 						  	<div class="col-md-2 bold">Verksamhetsområde</div>
 						  	<div class="col-md-2 bold">Geografiskt område</div>
