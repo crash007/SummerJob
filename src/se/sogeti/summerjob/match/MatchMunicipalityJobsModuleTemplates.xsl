@@ -32,7 +32,7 @@
 	
 	 <xsl:template name="candidatesTableTemplate">
 	 	<xsl:param name="header" />
-		 	<div style="padding-top: 16px" class="row">
+		 	<div class="row mgn-top16px">
 			 	<div class="col-xs-18 col-md-12">
 			 		<div class="panel panel-default">
 			 			<div class="panel-heading">
@@ -343,8 +343,8 @@
 							<div class="col-md-9 col-xs-12"><xsl:value-of select="freeTextRequirements"/></div>
 						</div>
 						
-						<div id="jobinfo-contact">
-						<label>Kontaktuppgifter</label>
+						<div>
+							<h3>Kontaktuppgifter</h3>
 							<div class="row mgn-top8px">								
 								<div class="col-xs-4 col-md-3 bold">Förnamn</div>
 								<div class="col-md-3"><xsl:value-of select="MunicipalityManager/firstname"/></div>
@@ -467,7 +467,6 @@
 														<div class="col-md-2 col-xs-4"><button class="save-application-options btn btn-primary" id="{id}">Spara</button></div>
 													</div>
 													<div class="mgn-top16px row">
-<!-- 														<form> -->
 														<div class="col-md-2 col-xs-4 bold">Dokument</div>
 														<div class="col-md-6 col-xs-12">
 															<xsl:choose>
@@ -490,7 +489,6 @@
 															</xsl:choose>
 														</div>
 														<div class="col-md-2 col-xs-4"><button disabled="disabled" class="generate-document-button btn btn-primary" id="generate-document_{id}">Generera</button></div>
-<!-- 														</form> -->
 													</div>
 													<div class="mgn-top8px row">		
 														<div class="col-md-3">Markera</div>						
