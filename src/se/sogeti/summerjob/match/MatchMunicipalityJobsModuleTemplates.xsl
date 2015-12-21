@@ -15,18 +15,19 @@
 	</xsl:template>
 	
 	<xsl:template match="MatchMunicipalityJob">
-		<div class="well">
-			<xsl:apply-templates select="MunicipalityJob"/>		
-			<xsl:apply-templates select="Area1AndGeoArea1Candidates" />	
-			<xsl:apply-templates select="Area1AndGeoArea2Candidates"/>		
-			<xsl:apply-templates select="Area1AndGeoArea3Candidates"/>
-			<xsl:apply-templates select="AnyAreaAndGeoArea1Candidates"/>
-			<xsl:apply-templates select="AnyAreaAndGeoArea2Candidates"/>
-			<xsl:apply-templates select="AnyAreaAndGeoArea3Candidates"/>
-			<xsl:apply-templates select="Area2AndGeoArea1Candidates"/>
-			<xsl:apply-templates select="Area3AndGeoArea1Candidates"/>
-		</div>
-				
+		<xsl:apply-templates select="MunicipalityJob"/>		
+		<xsl:apply-templates select="Area1AndGeoArea1Candidates" />	
+		<xsl:apply-templates select="Area1AndGeoArea2Candidates"/>		
+		<xsl:apply-templates select="Area1AndGeoArea3Candidates"/>
+		<xsl:apply-templates select="AnyAreaAndGeoArea1Candidates"/>
+		<xsl:apply-templates select="AnyAreaAndGeoArea2Candidates"/>
+		<xsl:apply-templates select="AnyAreaAndGeoArea3Candidates"/>
+		<xsl:apply-templates select="Area2AndGeoArea1Candidates"/>
+		<xsl:apply-templates select="Area2AndGeoArea2Candidates"/>
+		<xsl:apply-templates select="Area2AndGeoArea3Candidates"/>
+		<xsl:apply-templates select="Area3AndGeoArea1Candidates"/>
+		<xsl:apply-templates select="Area3AndGeoArea2Candidates"/>
+		<xsl:apply-templates select="Area3AndGeoArea3Candidates"/>
 	</xsl:template>
 	
 	 <xsl:template name="candidatesTableTemplate">
@@ -35,10 +36,10 @@
 			 	<div class="col-xs-18 col-md-12">
 			 		<div class="panel panel-default">
 			 			<div class="panel-heading">
-						  	 <h3 class="panel-title" style="margin-top: 0px"><xsl:value-of select="$header"></xsl:value-of></h3>			
+							<h3 class="panel-title" style="margin-top: 0px"><xsl:value-of select="$header"></xsl:value-of></h3>			
 			 			</div>
 			 			<div class="panel-body">
-		 				  <xsl:apply-templates select="MunicipalityJobApplication" />			  
+		 					<xsl:apply-templates select="MunicipalityJobApplication" />			  
 			 			</div>
 			 		</div>
 				  </div>
@@ -75,7 +76,7 @@
 		</xsl:call-template>
 	</xsl:template>
 	
-	<xsl:template match="AnyAreaAndGeoArea2Candidates">
+	<xsl:template match="AnyAreaAndGeoArea3Candidates">
 		<xsl:call-template name="candidatesTableTemplate">
 			<xsl:with-param name="header" select="'Godtyckligt verksamhetsområde och tredjehandsval på geografiskt område'" />
 		</xsl:call-template>
@@ -83,13 +84,37 @@
 	
 	<xsl:template match="Area2AndGeoArea1Candidates">
 		<xsl:call-template name="candidatesTableTemplate">
-			<xsl:with-param name="header" select="'Andrahansval på verksamhetsområde och förstahandsval på geografiskt område'" />
+			<xsl:with-param name="header" select="'Andrahandsval på verksamhetsområde och förstahandsval på geografiskt område'" />
 		</xsl:call-template>
 	</xsl:template>
 
 	<xsl:template match="Area2AndGeoArea2Candidates">
 		<xsl:call-template name="candidatesTableTemplate">
-			<xsl:with-param name="header" select="'Andrahansval på verksamhetsområde och andrahandsval på geografiskt område'" />
+			<xsl:with-param name="header" select="'Andrahandsval på verksamhetsområde och andrahandsval på geografiskt område'" />
+		</xsl:call-template>
+	</xsl:template>
+	
+	<xsl:template match="Area2AndGeoArea3Candidates">
+		<xsl:call-template name="candidatesTableTemplate">
+			<xsl:with-param name="header" select="'Andrahandsval på verksamhetsområde och andrahandsval på geografiskt område'" />
+		</xsl:call-template>
+	</xsl:template>
+	
+	<xsl:template match="Area3AndGeoArea1Candidates">
+		<xsl:call-template name="candidatesTableTemplate">
+			<xsl:with-param name="header" select="'Tredjehandsval på verksamhetsområde och förstahandsval på geografiskt område'" />
+		</xsl:call-template>
+	</xsl:template>
+	
+	<xsl:template match="Area3AndGeoArea2Candidates">
+		<xsl:call-template name="candidatesTableTemplate">
+			<xsl:with-param name="header" select="'Tredjehandsval på verksamhetsområde och andrahandsval på geografiskt område'" />
+		</xsl:call-template>
+	</xsl:template>
+	
+	<xsl:template match="Area3AndGeoArea3Candidates">
+		<xsl:call-template name="candidatesTableTemplate">
+			<xsl:with-param name="header" select="'Tredjehandsval på verksamhetsområde och tredjehandsval på geografiskt område'" />
 		</xsl:call-template>
 	</xsl:template>
 	

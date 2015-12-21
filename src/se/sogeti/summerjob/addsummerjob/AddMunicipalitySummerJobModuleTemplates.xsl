@@ -16,7 +16,7 @@
 	
 	<xsl:template match="MunicipalityJobForm">
 		<h1 class="createJobHeadline">Lägg till sommarjobb inom kommunal verksamhet</h1>
-		<form class="well" role="form" method="POST" id="municipality-job-form" data-toggle="validator">
+		<form role="form" method="POST" id="municipality-job-form" data-toggle="validator">
 			 
 			 <input name="jobId" style="display: none" class="form-control" type="text" value="{MunicipalityJob/id}"/>
 			 
@@ -46,7 +46,7 @@
 					  <div class="form-group">
 					  	<div class="row">
 			  				<div class="col-md-4">
-							    <label for="location">Ange platsen*</label>
+							    <label for="location">Ange arbetsplatsen*</label>
 							    <input type="text" class="form-control" data-error="Tex Himlabadet" id="location" name="location" placeholder="" required="required" value="{MunicipalityJob/location}"/>
 							    <p class="help-block with-errors">Tex Himlabadet</p>
 						   	</div>
@@ -400,29 +400,25 @@
 		  		
 			</form>
 			
-			<div id="mentor-template" >
+			<div class="mentor-template" >
 	    		<div class="row collapse">
 	  				<div class="col-md-3">
 					    <label for="mentor">Förnamn</label>				    
-<!-- 					     <input type="text" class="form-control" id="mentor-firstname" name="mentor-firstname" placeholder=""/>							     -->
 			    		<input type="text" class="form-control mentor-firstname" name="mentor-firstname" placeholder=""/>
 			    	</div>
 			    	<div class="col-md-3">
 					    <label for="mentor">Efternamn</label>				    
-<!-- 					     <input type="text" class="form-control" id="mentor-lastname" name="mentor-lastname" placeholder=""/>							     -->
 			    		<input type="text" class="form-control mentor-lastname" name="mentor-lastname" placeholder=""/>
 			    	</div>
 			    
 	  				<div class="col-md-2">
 					    <label for="mentor">Telefonnummer</label>				    
-<!-- 					     <input type="text" class="numberValidation form-control" id="mentor-phone" name="mentor-phone" placeholder=""/> -->
 					    <input type="text" class="numberValidation form-control mentor-phone" name="mentor-phone" placeholder=""/>
 					    <p class="help-block">Endast siffror</p>
 			    	</div>
 			    
 	  				<div class="col-md-3">
 					    <label for="mentor">E-post</label>				    
-<!-- 					     <input type="text" class="form-control" id="mentor-email" name="mentor-email" placeholder=""/> -->
 						<input type="text" class="form-control mentor-email" name="mentor-email" placeholder=""/>
 					    <p class="help-block">Valfri</p>
 			    	</div>
@@ -432,207 +428,202 @@
 						<div class="mgn-top8px glyphicon glyphicon-remove" aria-hidden="true"></div>
 					</div>
 		    	</div>
-	    	
 	    	</div>
 	    	
 	    	
-	    	
 	    <div id="preview-template">
-	    	<h1>Förhandsgranska annons</h1>
-			<div class="well">
-			  	<div class="panel panel-default">
-				  	<div class="panel-heading">
-				  		<h3 class="panel-title">Plats</h3>
+    		<h1>Förhandsgranska annons</h1>
+		  	<div class="panel panel-default">
+			  	<div class="panel-heading">
+			  		<h3 class="panel-title">Plats</h3>
+			  	</div>
+			  	<div class="panel-body">
+				  	<div class="row">
+				  		<div class="col-md-3">
+							<label>Organisation</label>
+							<p id="preview-organisation"></p>
+						</div>
+						<div class="col-md-3">
+							<label>Förvaltning</label>
+							<p id="preview-administration"></p>
+						</div>
+						<div class="col-md-3">
+							<label>Arbetsplats</label>
+							<p id="preview-location"></p>
+						</div>
 				  	</div>
-				  	<div class="panel-body">
-					  	<div class="row">
-					  		<div class="col-md-3">
-								<label>Organisation</label>
-								<p id="preview-organisation"></p>
-							</div>
-							<div class="col-md-3">
-								<label>Förvaltning</label>
-								<p id="preview-administration"></p>
-							</div>
-							<div class="col-md-3">
-								<label>Plats</label>
-								<p id="preview-location"></p>
-							</div>
-					  	</div>
-					  	<div class="mgn-top8px row">
-							<div class="col-md-4">
-								<label>Verksamhetsområde</label>
-								<p id="preview-area"></p>
-							</div>
-					  	</div>
+				  	<div class="mgn-top8px row">
+						<div class="col-md-4">
+							<label>Verksamhetsområde</label>
+							<p id="preview-area"></p>
+						</div>
 				  	</div>
+			  	</div>
+			</div>
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">Adress till arbetsplatsen</h3>
 				</div>
-				<div class="panel panel-default">
-					<div class="panel-heading">
-						<h3 class="panel-title">Adress till arbetsplatsen</h3>
+				<div class="panel-body">
+					<div class="row">
+						<div class="col-md-3">
+							<label>Gatuadress</label>
+							<p id="preview-street"></p>
+						</div>
+						<div class="col-md-2">
+							<label>Postnummer</label>
+							<p id="preview-zipcode"></p>
+						</div>
+						<div class="col-md-2">
+							<label>Postort</label>
+							<p id="preview-city"></p>
+						</div>
 					</div>
-					<div class="panel-body">
-						<div class="row">
+					<div class="mgn-top8px row">
+						<div class="col-md-3">
+							<label>Avdelning</label>
+							<p id="preview-department"></p>							
+						</div>
+						<div class="col-md-3">
+							<label>Geografiskt område</label>
+							<p id="preview-geoarea"></p>							
+						</div>
+					</div>
+				</div>
+			</div>
+					
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">Arbete</h3>
+				</div>
+				<div class="panel-body">
+					<div class="mgn-top8px row">
+						<div class="col-md-3 ">
+							<label>Rubrik</label>
+							<p id="preview-worktitle"></p>
+						</div>
+						<div class="col-md-9">
+							<label>Arbetsbeskrivning</label>
+							<p id="preview-workdescription"></p>
+						</div>
+					</div>
+					
+					<div class="row mgn-top8px">
+						<div class="col-md-2">
+							<label>Perioder</label>
+						</div>
+						<br/>
+						<div id="preview-period-div"></div>
+					</div>
+					
+					
+					<div class="row mgn-top8px">
+						<div class="col-md-3">
+							<label>Ansvarig på arbetsplatsen</label>
+						</div>
+						<div class="col-md-12 row">
+							<div class="col-md-2">
+								<label>Förnamn</label>
+								<p id="preview-manager-firstname"></p>
+							</div>
 							<div class="col-md-3">
-								<label>Gatuadress</label>
-								<p id="preview-street"></p>
+								<label>Efternamn</label>
+								<p id="preview-manager-lastname"></p>
 							</div>
 							<div class="col-md-2">
-								<label>Postnummer</label>
-								<p id="preview-zipcode"></p>
+								<label>Telefonnummer</label>
+								<p id="preview-manager-phoneNumber"></p>
 							</div>
-							<div class="col-md-2">
-								<label>Postort</label>
-								<p id="preview-city"></p>
-							</div>
-						</div>
-						<div class="mgn-top8px row">
-							<div class="col-md-3">
-								<label>Avdelning</label>
-								<p id="preview-department"></p>							
-							</div>
-							<div class="col-md-3">
-								<label>Geografiskt område</label>
-								<p id="preview-geoarea"></p>							
+							<div class="col-md-5">
+								<label>E-postadress</label>
+								<p id="preview-manager-email"></p>
 							</div>
 						</div>
 					</div>
 				</div>
-						
-				<div class="panel panel-default">
-					<div class="panel-heading">
-						<h3 class="panel-title">Arbete</h3>
+			</div>
+					
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">Krav</h3>
+				</div>
+				<div class="panel-body">
+					<div class="row">
+						<div class="col-md-4">
+							<label>Körkort</label>
+							<input type="hidden" id="driversLicenseNeededText" value="Ja, tjänsten kräver körkort av typ " />
+							<input type="hidden" id="driversLicenseNotNeededText" value="Nej, tjänsten kräver EJ körkort" />
+							<p id="preview-driverslicense"></p>
+						</div>
+						<div class="col-md-4">
+							<label>Ålder</label>
+							<input type="hidden" id="overEighteenNeededText" value="Tjänsten kräver att sökande är över 18 år" />
+							<input type="hidden" id="overEighteenNotNeededText" value="Tjänsten kräver EJ att sökande är över 18 år" />
+							<p id="preview-age"></p>
+						</div>
 					</div>
-					<div class="panel-body">
-						<div class="mgn-top8px row">
-							<div class="col-md-3 ">
-								<label>Rubrik</label>
-								<p id="preview-worktitle"></p>
-							</div>
-							<div class="col-md-9">
-								<label>Arbetsbeskrivning</label>
-								<p id="preview-workdescription"></p>
-							</div>
-						</div>
-						
-						<div class="row mgn-top8px">
-							<div class="col-md-2">
-								<label>Perioder</label>
-							</div>
-							<br/>
-							<div id="preview-period-div"></div>
-						</div>
-						
-						
-						<div class="row mgn-top8px">
-							<div class="col-md-3">
-								<label>Ansvarig på arbetsplatsen</label>
-							</div>
-							<div class="col-md-12 row">
-								<div class="col-md-2">
-									<label>Förnamn</label>
-									<p id="preview-manager-firstname"></p>
-								</div>
-								<div class="col-md-3">
-									<label>Efternamn</label>
-									<p id="preview-manager-lastname"></p>
-								</div>
-								<div class="col-md-2">
-									<label>Telefonnummer</label>
-									<p id="preview-manager-phoneNumber"></p>
-								</div>
-								<div class="col-md-5">
-									<label>E-postadress</label>
-									<p id="preview-manager-email"></p>
-								</div>
-							</div>
+					<div class="mgn-top8px row">
+						<div class="col-md-12">
+							<label>Övriga krav och önskemål</label>
+							<p id="preview-otherrequirements"></p>
 						</div>
 					</div>
 				</div>
-						
-				<div class="panel panel-default">
-					<div class="panel-heading">
-						<h3 class="panel-title">Krav</h3>
-					</div>
-					<div class="panel-body">
-						<div class="row">
-							<div class="col-md-4">
-								<label>Körkort</label>
-								<input type="hidden" id="driversLicenseNeededText" value="Ja, tjänsten kräver körkort av typ " />
-								<input type="hidden" id="driversLicenseNotNeededText" value="Nej, tjänsten kräver EJ körkort" />
-								<p id="preview-driverslicense"></p>
-							</div>
-							<div class="col-md-4">
-								<label>Ålder</label>
-								<input type="hidden" id="overEighteenNeededText" value="Tjänsten kräver att sökande är över 18 år" />
-								<input type="hidden" id="overEighteenNotNeededText" value="Tjänsten kräver EJ att sökande är över 18 år" />
-								<p id="preview-age"></p>
-							</div>
-						</div>
-						<div class="mgn-top8px row">
-							<div class="col-md-12">
-								<label>Övriga krav och önskemål</label>
-								<p id="preview-otherrequirements"></p>
-							</div>
+			</div>
+			
+			
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">Övrigt</h3>
+				</div>
+				<div class="panel-body">
+					
+					<div class="mgn-top8px row">
+						<div class="col-md-12">
+							<label>Övrigt</label>
+							<p id="preview-freetext"></p>
 						</div>
 					</div>
 				</div>
-				
-				
-				<div class="panel panel-default">
-					<div class="panel-heading">
-						<h3 class="panel-title">Övrigt</h3>
-					</div>
-					<div class="panel-body">
-						
-						<div class="mgn-top8px row">
-							<div class="col-md-12">
-								<label>Övrigt</label>
-								<p id="preview-freetext"></p>
-							</div>
-						</div>
-					</div>
-				</div>
-				
-				<div class="panel panel-default">
-				  		<div class="panel-heading">
-				  			<h3 class="panel-title">
-								<xsl:choose>
-									<xsl:when test="MunicipalityJob">Spara ändringar i annons</xsl:when>
-									<xsl:otherwise>Skicka in annons</xsl:otherwise>
-								</xsl:choose>			  			
-				  			</h3>
-				  		</div>  
-				  		<div class="panel-body">
-							<div class="save-failed alert alert-danger" role="alert">
-								<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-								<span class="sr-only">Error:</span>
-								<span class="message"></span>
+			</div>
+			
+			<div class="panel panel-default">
+		  		<div class="panel-heading">
+		  			<h3 class="panel-title">
+						<xsl:choose>
+							<xsl:when test="MunicipalityJob">Spara ändringar i annons</xsl:when>
+							<xsl:otherwise>Skicka in annons</xsl:otherwise>
+						</xsl:choose>			  			
+		  			</h3>
+		  		</div>  
+		  		<div class="panel-body">
+					<div class="save-failed alert alert-danger" role="alert">
+						<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+						<span class="sr-only">Error:</span>
+						<span class="message"></span>
 							</div>
 <!-- 							<div id="save-succeeded" class="alert alert-success" role="alert"> -->
 <!-- 								<span class="glyphicon glyphicon-ok" aria-hidden="true"></span> -->
 <!-- 								<span class="sr-only">Success:</span> -->
 <!-- 								<span class="message"></span> -->
 <!-- 							</div> -->
-							
-				  			<button style="margin-top: 4px;" id="submit-municipality-job" class="float-rgt mgn-lft8px btn btn-success questions-submit">
-				  				<xsl:choose>
-				  					<xsl:when test="MunicipalityJob">Spara</xsl:when>
-				  					<xsl:otherwise>Skicka</xsl:otherwise>
-				  				</xsl:choose>
-				  			</button>
-				  			
-				  			<button style="margin-top: 4px;" id="cancel-preview-municipality-job" class="mgn-lft8px btn btn-warning questions-submit">Redigera</button>
-				  			
-							<span class="glyphicon glyphicon-ok collapse" aria-hidden="true"></span><span class="glyphicon glyphicon-remove collapse" aria-hidden="true"></span>
-						</div>
-				  	</div>
-				
-			</div>
+					
+		  			<button style="margin-top: 4px;" id="submit-municipality-job" class="float-rgt mgn-lft8px btn btn-success questions-submit">
+		  				<xsl:choose>
+		  					<xsl:when test="MunicipalityJob">Spara</xsl:when>
+		  					<xsl:otherwise>Skicka</xsl:otherwise>
+		  				</xsl:choose>
+		  			</button>
+		  			
+		  			<button style="margin-top: 4px;" id="cancel-preview-municipality-job" class="mgn-lft8px btn btn-warning questions-submit">Redigera</button>
+		  			
+					<span class="glyphicon glyphicon-ok collapse" aria-hidden="true"></span><span class="glyphicon glyphicon-remove collapse" aria-hidden="true"></span>
+				</div>
+		  	</div>
 		</div>
 	
 	
-		<div id="preview-period-template">
+		<div class="preview-period-template">
 			<div class="row">
 				<div class="col-md-2 bold preview-period-name"></div>
 				<div class="col-md-2 bold preview-period-startdate"></div>

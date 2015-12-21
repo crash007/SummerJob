@@ -15,11 +15,9 @@
 	</xsl:template>
 	
 	<xsl:template match="MatchBusinessJob">
-		<div class="well">
-			<xsl:apply-templates select="BusinessSectorJob"/>		
-			<xsl:apply-templates select="GoodCandidates"/>
-			<xsl:apply-templates select="BadCandidates"/>
-		</div>
+		<xsl:apply-templates select="BusinessSectorJob"/>		
+		<xsl:apply-templates select="GoodCandidates"/>
+		<xsl:apply-templates select="BadCandidates"/>
 	</xsl:template>
 	
 	 <xsl:template name="candidatesTableTemplate">
@@ -36,9 +34,6 @@
 		 		</div>
 			</div>
 		</div>
-
-
-
 	 </xsl:template>
 	
 	 <xsl:template match="GoodCandidates">

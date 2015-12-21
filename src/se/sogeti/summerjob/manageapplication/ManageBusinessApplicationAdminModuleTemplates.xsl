@@ -14,103 +14,100 @@
 	
 	<xsl:template match="BusinessSectorJobApplication">
 		<div style="display: none" id="appIdDiv"><xsl:value-of select="id"></xsl:value-of></div>
-
-		<div class="well">
-		  	<div class="panel panel-default">
-			  	<div class="panel-heading">
-			  		<h3 class="panel-title">Personuppgifter</h3>
-			  	</div>
-			  	<div class="panel-body">
-			  		<div class="row">
-			  			<div class="col-md-3">
-			  				<label>Personnummer</label>
-			  				<div><xsl:value-of select="socialSecurityNumber"></xsl:value-of></div>
-			  			</div>
-			  		</div>
-				  	<div class="mgn-top8px row">
-		  				<div class="col-md-3">
-						    <label>Förnamn</label>				    
-						    <div><xsl:value-of select="firstname"></xsl:value-of></div>
-				    	</div>
-				    	<div class="col-md-3">
-						    <label>Efternamn</label>				    
-						    <div><xsl:value-of select="lastname"></xsl:value-of></div>
-				    	</div>
-		  				<div class="col-md-3">
-						    <label>Telefonnummer</label>				    
-						    <div><xsl:value-of select="phoneNumber"></xsl:value-of></div>
-				    	</div>
-		  				<div class="col-md-3">
-						    <label>E-post</label>				    
-						    <div><xsl:value-of select="email"></xsl:value-of></div>
-				    	</div>
-	    			</div>
-	    			<div class="mgn-top8px row">
-		  				<div class="col-md-3">
-						    <label>Gatuadress</label>				    
-						    <div><xsl:value-of select="streetAddress"></xsl:value-of></div>
-				    	</div>
-				    	<div class="col-md-3">
-						    <label>Postnummer</label>				    
-						    <div><xsl:value-of select="zipCode"></xsl:value-of></div>
-				    	</div>
-		  				<div class="col-md-3">
-						    <label>Postort</label>				    
-						    <div><xsl:value-of select="city"></xsl:value-of></div>
-				    	</div>
-	    			</div>
-	    			<div class="mgn-top8px row">
-		  				<div class="col-md-3">
-						    <label>Skola</label>				    
-						    <div><xsl:value-of select="schoolName"></xsl:value-of></div>
-				    	</div>
-				    	<div class="col-md-3">
-						    <label>Skoltyp</label>				    
-						    <div><xsl:value-of select="schoolType"></xsl:value-of></div>
-				    	</div>
-		  				<div class="col-md-3">
-						    <label>Ort från skatteverket</label>				    
-						    <div><xsl:value-of select="skvCity"></xsl:value-of></div>
-				    	</div>
-	    			</div>
-			  	</div>
-			</div>
-			
-			<div class="panel panel-default">
-			 	<div class="panel-heading">
-			   		<h3 class="panel-title">Ansökan</h3>
-			 	</div>
-			  <div class="panel-body">
-			  	<div class="row">
-			  		<div class="col-md-12">
-						<label>Personligt brev</label>				    
-				  		<div><xsl:value-of select="personalLetter"></xsl:value-of></div>
-				  	</div>
-			  	</div>
-		  		<div class="mgn-top8px row">
-				    <div class="col-md-4">
-				    	<label>CV</label>
-				    	<xsl:choose>
-				    		<xsl:when test="cvFilename != ''">
-						    	<div>
-						    		<a target="_blank" href="{/Document/requestinfo/contextpath}{/Document/CvBusinessApplicationUrl}?id={id}">Ladda ner</a>
-						    	</div>
-				    		</xsl:when>
-				    		<xsl:otherwise>
-				    			<div><i>Inget CV är bifogat</i></div>
-				    		</xsl:otherwise>
-				    	</xsl:choose>
-				    </div>
-			 	</div>
+	  	<div class="panel panel-default">
+		  	<div class="panel-heading">
+		  		<h3 class="panel-title">Personuppgifter</h3>
+		  	</div>
+		  	<div class="panel-body">
+		  		<div class="row">
+		  			<div class="col-md-3">
+		  				<label>Personnummer</label>
+		  				<div><xsl:value-of select="socialSecurityNumber"></xsl:value-of></div>
+		  			</div>
+		  		</div>
 			  	<div class="mgn-top8px row">
-			  		<div class="col-md-3">
-			  			<label>Körkort</label>			  			
-	  					<div>jag har <xsl:value-of select="DriversLicenseType/name"></xsl:value-of></div>			  				
-			  		</div>						
-				</div>
-	  		</div>
-	  	</div>
+	  				<div class="col-md-3">
+					    <label>Förnamn</label>				    
+					    <div><xsl:value-of select="firstname"></xsl:value-of></div>
+			    	</div>
+			    	<div class="col-md-3">
+					    <label>Efternamn</label>				    
+					    <div><xsl:value-of select="lastname"></xsl:value-of></div>
+			    	</div>
+	  				<div class="col-md-3">
+					    <label>Telefonnummer</label>				    
+					    <div><xsl:value-of select="phoneNumber"></xsl:value-of></div>
+			    	</div>
+	  				<div class="col-md-3">
+					    <label>E-post</label>				    
+					    <div><xsl:value-of select="email"></xsl:value-of></div>
+			    	</div>
+    			</div>
+    			<div class="mgn-top8px row">
+	  				<div class="col-md-3">
+					    <label>Gatuadress</label>				    
+					    <div><xsl:value-of select="streetAddress"></xsl:value-of></div>
+			    	</div>
+			    	<div class="col-md-3">
+					    <label>Postnummer</label>				    
+					    <div><xsl:value-of select="zipCode"></xsl:value-of></div>
+			    	</div>
+	  				<div class="col-md-3">
+					    <label>Postort</label>				    
+					    <div><xsl:value-of select="city"></xsl:value-of></div>
+			    	</div>
+    			</div>
+    			<div class="mgn-top8px row">
+	  				<div class="col-md-3">
+					    <label>Skola</label>				    
+					    <div><xsl:value-of select="schoolName"></xsl:value-of></div>
+			    	</div>
+			    	<div class="col-md-3">
+					    <label>Skoltyp</label>				    
+					    <div><xsl:value-of select="schoolType"></xsl:value-of></div>
+			    	</div>
+	  				<div class="col-md-3">
+					    <label>Ort från skatteverket</label>				    
+					    <div><xsl:value-of select="skvCity"></xsl:value-of></div>
+			    	</div>
+    			</div>
+		  	</div>
 		</div>
+		
+		<div class="panel panel-default">
+		 	<div class="panel-heading">
+		   		<h3 class="panel-title">Ansökan</h3>
+		 	</div>
+		  <div class="panel-body">
+		  	<div class="row">
+		  		<div class="col-md-12">
+					<label>Personligt brev</label>				    
+			  		<div><xsl:value-of select="personalLetter"></xsl:value-of></div>
+			  	</div>
+		  	</div>
+	  		<div class="mgn-top8px row">
+			    <div class="col-md-4">
+			    	<label>CV</label>
+			    	<xsl:choose>
+			    		<xsl:when test="cvFilename != ''">
+					    	<div>
+					    		<a target="_blank" href="{/Document/requestinfo/contextpath}{/Document/CvBusinessApplicationUrl}?id={id}">Ladda ner</a>
+					    	</div>
+			    		</xsl:when>
+			    		<xsl:otherwise>
+			    			<div><i>Inget CV är bifogat</i></div>
+			    		</xsl:otherwise>
+			    	</xsl:choose>
+			    </div>
+		 	</div>
+		  	<div class="mgn-top8px row">
+		  		<div class="col-md-3">
+		  			<label>Körkort</label>			  			
+  					<div>Jag har <xsl:value-of select="DriversLicenseType/name"></xsl:value-of></div>			  				
+		  		</div>						
+			</div>
+  		</div>
+  	</div>
 		
 		<div class="panel panel-default">
 			<div class="panel-heading">

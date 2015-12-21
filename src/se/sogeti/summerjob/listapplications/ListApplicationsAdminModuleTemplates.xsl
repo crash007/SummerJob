@@ -10,58 +10,56 @@
 		</script>
 		
 		<xsl:variable name="isAdmin" select="IsAdmin"/>
-		
-		<div class="well">
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<h3 class="panel-title">Ansökningar enligt kriterier</h3>
-				</div>
-				<div class="panel-body">
-					<form method="POST" role="form" id="search-applications-form" data-toggle="validator">
-							<div class="form-group" style="margin-bottom: 0px">
-							<div class="row">
-								<div class="col-md-3">
-									<label>Personnummer</label>
-									<input type="text" name="socialSecurityNumber" value="{SocialSecurityNumber}" placeholder="" class="form-control" data-error="ÅÅÅÅMMDDxxxx" maxlength="12" />
-									<p class="help-block with-errors">ÅÅÅÅMMDDxxxx</p>
-								</div>
-								<div class="col-md-3">
-									<label>Förnamn</label>
-									<input type="text" name="firstname" value="{Firstname}" placeholder="" class="form-control" data-error="Förnamn" maxlength="12" />									
-								</div>
-								<div class="col-md-3">
-									<label>Efternamn</label>
-									<input type="text" name="lastname" value="{Lastname}" placeholder="" class="form-control" data-error="Efternamn" maxlength="12" />
-								</div>
+		<h1>Lista ansökningar</h1>
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title">Ansökningar enligt kriterier</h3>
+			</div>
+			<div class="panel-body">
+				<form method="POST" role="form" id="search-applications-form" data-toggle="validator">
+						<div class="form-group" style="margin-bottom: 0px">
+						<div class="row">
+							<div class="col-md-3">
+								<label>Personnummer</label>
+								<input type="text" name="socialSecurityNumber" value="{SocialSecurityNumber}" placeholder="" class="form-control" data-error="ÅÅÅÅMMDDxxxx" maxlength="12" />
+								<p class="help-block with-errors">ÅÅÅÅMMDDxxxx</p>
 							</div>
-							<div class="row">
-								<div class="col-md-1">
-									<button type="submit" class="btn btn-primary">Skicka</button>
-								</div>
-								<div class="col-md-1">
-									<button type="submit" id="clear-search-button" class="btn btn-warning">Nollställ</button>
-								</div>
+							<div class="col-md-3">
+								<label>Förnamn</label>
+								<input type="text" name="firstname" value="{Firstname}" placeholder="" class="form-control" data-error="Förnamn" maxlength="12" />									
+							</div>
+							<div class="col-md-3">
+								<label>Efternamn</label>
+								<input type="text" name="lastname" value="{Lastname}" placeholder="" class="form-control" data-error="Efternamn" maxlength="12" />
 							</div>
 						</div>
-					</form>
-				</div>
+						<div class="row">
+							<div class="col-md-1">
+								<button type="submit" class="btn btn-primary">Skicka</button>
+							</div>
+							<div class="col-md-1">
+								<button type="submit" id="clear-search-button" class="btn btn-warning">Nollställ</button>
+							</div>
+						</div>
+					</div>
+				</form>
 			</div>
-			
-			<div class="row">
-				<div class="col-md-6 col-xs-12">
-					<xsl:apply-templates select="ApprovedMunicipality"></xsl:apply-templates>
-				</div>
-				<div class="col-md-6 col-xs-12">
-					<xsl:apply-templates select="DisapprovedMunicipality"></xsl:apply-templates>
-				</div>
+		</div>
+		
+		<div class="row">
+			<div class="col-md-6 col-xs-12">
+				<xsl:apply-templates select="ApprovedMunicipality"></xsl:apply-templates>
 			</div>
-			<div class="row">
-				<div class="col-md-6 col-xs-12">
-					<xsl:apply-templates select="ApprovedBusiness"></xsl:apply-templates>
-				</div>
-				<div class="col-md-6 col-xs-12">
-					<xsl:apply-templates select="DisapprovedBusiness"></xsl:apply-templates>
-				</div>
+			<div class="col-md-6 col-xs-12">
+				<xsl:apply-templates select="DisapprovedMunicipality"></xsl:apply-templates>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-6 col-xs-12">
+				<xsl:apply-templates select="ApprovedBusiness"></xsl:apply-templates>
+			</div>
+			<div class="col-md-6 col-xs-12">
+				<xsl:apply-templates select="DisapprovedBusiness"></xsl:apply-templates>
 			</div>
 		</div>
 	</xsl:template>

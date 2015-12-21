@@ -15,22 +15,18 @@
 	
 	<xsl:template match="MunicipalityJobs">
 		<h1>Kommunala sommarjobb</h1>
-		<div class="well">
-			<xsl:apply-templates select="MunicipalityOpen"/>
-			<xsl:apply-templates select="MunicipalityUncontrolled"/>
-			<xsl:apply-templates select="MunicipalityFinished"/>
-			<xsl:apply-templates select="MunicipalityDisapproved"/>
-		</div>
+		<xsl:apply-templates select="MunicipalityOpen"/>
+		<xsl:apply-templates select="MunicipalityUncontrolled"/>
+		<xsl:apply-templates select="MunicipalityFinished"/>
+		<xsl:apply-templates select="MunicipalityDisapproved"/>
 	</xsl:template>
 	
 	<xsl:template match="BusinessJobs">	
 		<h1>Sommarjobb inom näringslivet</h1>
-		<div class="well">
-			<xsl:apply-templates select="BusinessOpen"/>
-			<xsl:apply-templates select="BusinessUncontrolled"/>
-			<xsl:apply-templates select="BusinessFinished"/>
-			<xsl:apply-templates select="BusinessDisapproved"/>
-		</div>
+		<xsl:apply-templates select="BusinessOpen"/>
+		<xsl:apply-templates select="BusinessUncontrolled"/>
+		<xsl:apply-templates select="BusinessFinished"/>
+		<xsl:apply-templates select="BusinessDisapproved"/>
 	</xsl:template>
 	
 	<xsl:template match="MunicipalityOpen">
@@ -40,7 +36,7 @@
 			</div>
 			<div class="panel-body">
 				<div class="row">
-					<div class="col-md-2 bold">Plats</div>
+					<div class="col-md-2 bold">Arbetsplats</div>
 					<div class="col-md-2 bold">Avdelning</div>
 					<div class="col-md-2 bold">Period</div>
 					<div class="col-md-2 bold">Antal platser</div>
@@ -96,7 +92,7 @@
 			</div>
 			<div class="panel-body">
 				<div class="row">
-					<div class="col-md-2 bold">Plats</div>
+					<div class="col-md-2 bold">Arbetsplats</div>
 					<div class="col-md-2 bold">Avdelning</div>
 					<div class="col-md-2 bold">Period</div>
 					<div class="col-md-2 bold">Antal platser</div>
@@ -146,7 +142,7 @@
 			</div>
 			<div class="panel-body">
 				<div class="row">
-					<div class="col-md-2 bold">Plats</div>
+					<div class="col-md-2 bold">Arbetsplats</div>
 					<div class="col-md-2 bold">Avdelning</div>
 					<div class="col-md-2 bold">Period</div>
 					<div class="col-md-2 bold">Antal platser</div>
@@ -201,7 +197,7 @@
 			</div>
 			<div class="panel-body">
 				<div class="row">
-					<div class="col-md-2 bold">Plats</div>
+					<div class="col-md-2 bold">Arbetsplats</div>
 					<div class="col-md-2 bold">Avdelning</div>
 					<div class="col-md-2 bold">Period</div>
 					<div class="col-md-2 bold">Antal platser</div>
