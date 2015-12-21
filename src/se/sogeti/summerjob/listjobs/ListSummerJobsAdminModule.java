@@ -201,6 +201,8 @@ public class ListSummerJobsAdminModule extends AnnotatedForegroundModule {
 		Element municipalityJob = doc.createElement("MunicipalityJob");
 		XMLUtils.appendNewElement(doc, municipalityJob, "workTitle", job.getWorkTitle());
 		XMLUtils.appendNewElement(doc, municipalityJob, "workDescription", job.getWorkDescription());
+		XMLUtils.appendNewElement(doc, municipalityJob, "area", job.getArea().getName());
+		
 		XMLUtils.appendNewElement(doc, municipalityJob, "period", job.getPeriod().getName());
 		XMLUtils.appendNewElement(doc, municipalityJob, "numberOfWorkersNeeded", job.getNumberOfWorkersNeeded());
 		
