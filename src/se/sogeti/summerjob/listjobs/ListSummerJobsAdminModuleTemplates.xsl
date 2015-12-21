@@ -39,7 +39,7 @@
 					<div class="col-md-2 bold">Arbetsplats</div>
 					<div class="col-md-2 bold">Avdelning</div>
 					<div class="col-md-2 bold">Period</div>
-					<div class="col-md-2 bold">Antal platser</div>
+					<div class="col-md-2 bold">Totalt/Tillsatta</div>
 					<div class="col-md-2 bold">Skapad</div>
 					<div class="col-md-1 bold"></div>
 					<div class="col-md-1 bold"></div>
@@ -51,7 +51,7 @@
 							<div class="col-md-2"><xsl:value-of select="location" /></div>
 							<div class="col-md-2"><xsl:value-of select="department" /></div>
 							<div class="col-md-2"><xsl:value-of select="period" /></div>
-							<div class="col-md-2"><xsl:value-of select="numberOfWorkersNeeded" /><xsl:text> </xsl:text><span>(<xsl:value-of select="openApplications" />)</span></div>
+							<div class="col-md-2"><xsl:value-of select="numberOfWorkersNeeded" /><xsl:text> </xsl:text><span>(<xsl:value-of select="matchedApplications" />)</span></div>
 							<div class="col-md-2"><xsl:value-of select="created" /></div>
 							<div class="col-md-1"><a href='{url}'><strong>Hantera</strong></a></div>
 							<div class="col-md-1"><a href="{matchURL}"><strong>Matcha</strong></a></div>
@@ -145,7 +145,7 @@
 					<div class="col-md-2 bold">Arbetsplats</div>
 					<div class="col-md-2 bold">Avdelning</div>
 					<div class="col-md-2 bold">Period</div>
-					<div class="col-md-2 bold">Antal platser</div>
+					<div class="col-md-2 bold">Totalt/Tillsatta</div>
 					<div class="col-md-2 bold">Skapad</div>
 					<div class="col-md-1 bold"></div> <!-- HANTERA-URL -->
 					<div class="col-md-1 bold"></div> <!-- MATCHA-URL -->
@@ -157,7 +157,7 @@
 							<div class="col-md-2"><xsl:value-of select="location" /></div>
 							<div class="col-md-2"><xsl:value-of select="department" /></div>
 							<div class="col-md-2"><xsl:value-of select="period" /></div>
-							<div class="col-md-2"><xsl:value-of select="numberOfWorkersNeeded" /><xsl:text> </xsl:text><span>(<xsl:value-of select="openApplications" />)</span></div>
+							<div class="col-md-2"><xsl:value-of select="numberOfWorkersNeeded" /><xsl:text> </xsl:text><span>(<xsl:value-of select="matchedApplications" />)</span></div>
 							<div class="col-md-2"><xsl:value-of select="created" /></div>
 							<div class="col-md-1"><a href='{url}'><strong>Hantera</strong></a></div>
 							<div class="col-md-1"><a href="{matchURL}"><strong>Öppna</strong></a></div>
@@ -230,7 +230,7 @@
 				<div class="row">
 					<div class="col-md-2 bold">Företag</div>
 					<div class="col-md-3 bold">Datum</div>
-					<div class="col-md-2 bold">Antal platser</div>
+					<div class="col-md-2 bold">Totalt/Tillsatta</div>
 					<div class="col-md-2 bold">Skapad</div>
 					<div class="col-md-1 bold"></div>
 					<div class="col-md-1 bold"></div> <!-- HANTERA-URL -->
@@ -242,7 +242,7 @@
 						<div class="row job-row">
 							<div class="col-md-2"><xsl:value-of select="company" /></div>
 							<div class="col-md-3"><xsl:value-of select="dates" /></div>
-							<div class="col-md-2"><xsl:value-of select="numberOfWorkersNeeded" /><xsl:text> </xsl:text><span>(<xsl:value-of select="openApplications" />)</span></div>
+							<div class="col-md-2"><xsl:value-of select="numberOfWorkersNeeded" /><xsl:text> </xsl:text><span>(<xsl:value-of select="matchedApplications" />)</span></div>
 							<div class="col-md-2"><xsl:value-of select="created" /></div>
 							<div class="col-md-1"></div>
 							<div class="col-md-1"><a href='{url}'><strong>Hantera</strong></a></div>
@@ -338,7 +338,7 @@
 				<div class="row">
 					<div class="col-md-2 bold">Företag</div>
 					<div class="col-md-3 bold">Datum</div>
-					<div class="col-md-2 bold">Antal platser</div>
+					<div class="col-md-2 bold">Totalt/Tillsatta</div>
 					<div class="col-md-2 bold">Skapad</div>
 					<div class="col-md-1 bold"></div>
 					<div class="col-md-1 bold"></div> <!-- HANTERA-URL -->
@@ -350,7 +350,7 @@
 						<div class="row job-row">
 							<div class="col-md-2"><xsl:value-of select="company" /></div>
 							<div class="col-md-3"><xsl:value-of select="dates" /></div>
-							<div class="col-md-2"><xsl:value-of select="numberOfWorkersNeeded" /><xsl:text> </xsl:text><span>(<xsl:value-of select="openApplications" />)</span></div>
+							<div class="col-md-2"><xsl:value-of select="numberOfWorkersNeeded" /><xsl:text> </xsl:text><span>(<xsl:value-of select="matchedApplications" />)</span></div>
 							<div class="col-md-2"><xsl:value-of select="created" /></div>
 							<div class="col-md-1"></div>
 							<div class="col-md-1"><a href='{url}'><strong>Hantera</strong></a></div>

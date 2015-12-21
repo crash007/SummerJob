@@ -1,8 +1,10 @@
 package se.sogeti.summerjob.listjobs;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.print.attribute.standard.JobSheets;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
@@ -25,6 +27,8 @@ import se.unlogic.hierarchy.core.interfaces.ForegroundModuleResponse;
 import se.unlogic.hierarchy.core.utils.HierarchyAnnotatedDAOFactory;
 import se.unlogic.hierarchy.foregroundmodules.AnnotatedForegroundModule;
 import se.unlogic.standardutils.bool.BooleanUtils;
+import se.unlogic.standardutils.dao.OrderByCriteria;
+import se.unlogic.standardutils.enums.Order;
 import se.unlogic.standardutils.xml.XMLUtils;
 import se.unlogic.webutils.http.RequestUtils;
 import se.unlogic.webutils.http.URIParser;
@@ -94,16 +98,29 @@ public class ListSummerJobsAdminModule extends AnnotatedForegroundModule {
 			List<MunicipalityJob> closedJobs = null;
 			List<MunicipalityJob> disapprovedJobs = null;
 			
+			//Verksamhetsområde
+			List<OrderByCriteria<MunicipalityJob>> orderByCriterias = new ArrayList<>();
+			OrderByCriteria<MunicipalityJob> jobAreaOrder = municipalityJobDAO.getOrderByCriteria("area", Order.ASC);
+			orderByCriterias.add(jobAreaOrder);
+			
+			//Arbetsplats
+			OrderByCriteria<MunicipalityJob> locationOrder = municipalityJobDAO.getOrderByCriteria("location", Order.ASC);
+			orderByCriterias.add(locationOrder);
+			
+			//Arbetsplats
+			OrderByCriteria<MunicipalityJob> departmentOrder = municipalityJobDAO.getOrderByCriteria("department", Order.ASC);
+			orderByCriterias.add(departmentOrder);
+			
 			if(user.isAdmin()){
-				openJobs = municipalityJobDAO.getAllControlledAndOpen();
-				uncontrolledJobs = municipalityJobDAO.getAllUncontrolled();
-				closedJobs = municipalityJobDAO.getAllControlledAndClosed();
-				disapprovedJobs = municipalityJobDAO.getAllControlledAndDisapproved();
+				openJobs = municipalityJobDAO.getAllControlledAndApprovedAndOpen(orderByCriterias);				
+				uncontrolledJobs = municipalityJobDAO.getAllUncontrolled(orderByCriterias);
+				closedJobs = municipalityJobDAO.getAllControlledAndClosed(orderByCriterias);
+				disapprovedJobs = municipalityJobDAO.getAllControlledAndDisapproved(orderByCriterias);
 			}else{
-				openJobs = municipalityJobDAO.getAllControlledAndOpenAddedByUsername(user.getUsername());
-				uncontrolledJobs = municipalityJobDAO.getAllUncontrolledAddedByUsername(user.getUsername());
-				closedJobs = municipalityJobDAO.getAllControlledAndClosedAddedByUsername(user.getUsername());
-				disapprovedJobs = municipalityJobDAO.getAllControlledAndDisapprovedAddedByUsername(user.getUsername());
+				openJobs = municipalityJobDAO.getAllControlledAndOpenAddedByUsername(user.getUsername(),orderByCriterias);
+				uncontrolledJobs = municipalityJobDAO.getAllUncontrolledAddedByUsername(user.getUsername(),orderByCriterias);
+				closedJobs = municipalityJobDAO.getAllControlledAndClosedAddedByUsername(user.getUsername(),orderByCriterias);
+				disapprovedJobs = municipalityJobDAO.getAllControlledAndDisapprovedAddedByUsername(user.getUsername(),orderByCriterias);
 			}
 			
 			if (openJobs != null) {
@@ -145,10 +162,10 @@ public class ListSummerJobsAdminModule extends AnnotatedForegroundModule {
 			businessJobs.appendChild(businessFinished);
 			businessJobs.appendChild(businessDisapproved);
 
-			List<BusinessSectorJob> openJobs = businessSectorJobDAO.getAllControlledAndOpen();
+			List<BusinessSectorJob> openJobs = businessSectorJobDAO.getAllControlledAndApprovedAndOpen();
 			List<BusinessSectorJob> uncontrolledJobs = businessSectorJobDAO.getAllUncontrolled();
 			List<BusinessSectorJob> closedJobs = businessSectorJobDAO.getAllControlledAndClosed();
-			List<BusinessSectorJob> disapprovedJobs = businessSectorJobDAO.getAllControlledAndDisapproved();
+			List<BusinessSectorJob> disapprovedJobs = businessSectorJobDAO.getAllControlledAndDisapproved(null);
 			
 			if (openJobs != null) {
 				for (BusinessSectorJob job : openJobs) {
@@ -200,11 +217,12 @@ public class ListSummerJobsAdminModule extends AnnotatedForegroundModule {
 		XMLUtils.appendNewElement(doc, municipalityJob, "matchURL", matchMunicipalityJobUrl + "?jobId=" + job.getId());
 		
 		if (job.getApplications() != null) {
-			Integer matchedApplications = FormUtils.countApplications(job.getApplications(), ApplicationStatus.MATCHED);
-			job.setOpenApplications(job.getNumberOfWorkersNeeded() - matchedApplications);
-			XMLUtils.appendNewElement(doc, municipalityJob, "openApplications", job.getOpenApplications());
+			Integer matchedApplications = FormUtils.countApplications(job.getApplications(), ApplicationStatus.MATCHED);			
+			job.setMatchedApplications(matchedApplications);
+			XMLUtils.appendNewElement(doc, municipalityJob, "matchedApplications", job.getMatchedApplications());
+		
 		} else {
-			XMLUtils.appendNewElement(doc, municipalityJob, "openApplications", job.getNumberOfWorkersNeeded());
+			XMLUtils.appendNewElement(doc, municipalityJob, "matchedApplications", 0);
 		}
 		
 		return municipalityJob;
@@ -232,9 +250,11 @@ public class ListSummerJobsAdminModule extends AnnotatedForegroundModule {
 		if (jobWithApplications != null && jobWithApplications.getApplications() != null) {
 			Integer matchedApplications = FormUtils.countApplications(jobWithApplications.getApplications(), ApplicationStatus.MATCHED);
 			job.setOpenApplications(job.getNumberOfWorkersNeeded() - matchedApplications);
-			XMLUtils.appendNewElement(doc, businessSectorJob, "openApplications", job.getOpenApplications());
-		} else {
-			XMLUtils.appendNewElement(doc, businessSectorJob, "openApplications", job.getNumberOfWorkersNeeded());
+			job.setMatchedApplications(matchedApplications);
+			XMLUtils.appendNewElement(doc, businessSectorJob, "matchedApplications", job.getMatchedApplications());
+		} 
+		else {
+			XMLUtils.appendNewElement(doc, businessSectorJob, "matchedApplications", 0);
 		}
 		
 		return businessSectorJob;

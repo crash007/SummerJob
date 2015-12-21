@@ -175,31 +175,27 @@
 	
 	<xsl:template match="JobList">
 		<h1>Lediga sommarjobb inom privata sektorn</h1>
-		<div class="col-xs-12 col-md-9">
-	  		<div class="panel panel-default" style="margin-left: 0px; margin-right: 0px;">
-		  		<div class="panel-heading">
-		    		<h3 class="panel-title">Sommarjobb inom näringslivet</h3>
-		  		</div>
-		  		<div class="panel-body">
-		  			<div class="row">
-		  				<div class="col-md-2 col-xs-3 bold">Yrkestitel</div>
-		  				<div class="col-md-2 col-xs-3 bold">Företag</div>
-		  				<div class="col-md-2 col-xs-2 bold" style="padding-left: 0px; padding-right: 0px;">Platser</div>
-		  				<div class="col-md-2 col-xs-3 bold">Inkommen</div>
-		  			</div>
-		  			<xsl:for-each select="BusinessSectorJob">
-		  				<div class="row mgn-top8px job-row">
-		  					<div class="col-md-2 col-xs-3"><xsl:value-of select="workTitle" /></div>
-		  					<div class="col-md-2 col-xs-3"><xsl:value-of select="company" /></div>
-		  					<div class="col-md-2 col-xs-2" style="padding-left: 0px; padding-right: 0px;"><xsl:value-of select="numberOfWorkersNeeded" /></div>
-		  					<div class="col-md-2 col-xs-3" style="padding-right: 0px;"><xsl:value-of select="substring(created, 1, 10)" /></div>
-		  					<div class="col-md-1 col-xs-1 float-rgt bold" style="padding-left: 0px;"><a href="?jobId={id}">Ansök</a></div>
-		  				</div> 
-		  			</xsl:for-each>
-		  		</div>
+		<div id="page-tabs" class="vacancy-list mgn-top16px">
+	        <div class="content dynamic-content">
+		        <ul class="pagelist">
+		        	<xsl:for-each select="BusinessSectorJob">
+		        	 	<li>
+		        	 	
+							<xsl:if test="(position() mod 2) = 1">							
+								<xsl:attribute name="class">alternate</xsl:attribute>
+							</xsl:if>
+						
+		        	 		<a href="?jobId={id}" title="{workTitle}">		                    
+		                        <span class="h3span"><xsl:value-of select="workTitle"/></span>
+		                        <span class="lh140"><xsl:value-of select="workDescription" /></span>
+		                        <span class="last-appliance">Sista ansökningsdag <xsl:value-of select="substring(lastApplicationDay, 1, 10)" /> 
+	                        	</span>
+		                    </a>
+				        </li>				        
+		        	</xsl:for-each>				        
+				</ul>
 			</div>
 		</div>
-	
 	</xsl:template>
 	
 	<xsl:template match="JobApplicationForm">

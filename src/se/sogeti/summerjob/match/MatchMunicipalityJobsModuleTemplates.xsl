@@ -280,7 +280,7 @@
 						
 						<div class="row">
 					
-							<div class="col-xs-4 col-md-3 bold">Plats</div>
+							<div class="col-xs-4 col-md-3 bold">Arbetsplats</div>
 							<div class="col-md-3"><xsl:value-of select="location"/></div>
 							<div class="col-xs-4 col-md-3 bold">Geografisk plats</div>
 							<div class="col-md-3"><xsl:value-of select="GeoArea/name"/></div>

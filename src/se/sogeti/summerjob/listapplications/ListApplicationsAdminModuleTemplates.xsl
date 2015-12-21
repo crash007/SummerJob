@@ -17,7 +17,7 @@
 			</div>
 			<div class="panel-body">
 				<form method="POST" role="form" id="search-applications-form" data-toggle="validator">
-						<div class="form-group" style="margin-bottom: 0px">
+					<div class="form-group" style="margin-bottom: 0px">
 						<div class="row">
 							<div class="col-md-3">
 								<label>Personnummer</label>
@@ -34,11 +34,9 @@
 							</div>
 						</div>
 						<div class="row">
-							<div class="col-md-1">
-								<button type="submit" class="btn btn-primary">Skicka</button>
-							</div>
-							<div class="col-md-1">
-								<button type="submit" id="clear-search-button" class="btn btn-warning">Nollställ</button>
+							<div class="col-md-6 col-xs-6 col-sm-6">
+								<button class="btn btn-primary" type="submit">Skicka</button>
+								<button class="btn btn-warning" id="clear-search-button" type="submit">Nollställ</button>
 							</div>
 						</div>
 					</div>
