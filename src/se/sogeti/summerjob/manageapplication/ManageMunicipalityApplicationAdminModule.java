@@ -113,7 +113,7 @@ public class ManageMunicipalityApplicationAdminModule extends AnnotatedRESTModul
         	JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Kunde inte hämta den aktuella ansökan för att spara ändringarna.\"}", callback, writer);
         }
         
-        MunicipalityJobApplication app = appDAO.getById(appId);
+        MunicipalityJobApplication app = appDAO.getByIdWithPersonApplications(appId);
         
         app.setApproved(BooleanUtils.toBoolean(req.getParameter("statusApprove")));
         app.setControlled(true);
@@ -131,64 +131,4 @@ public class ManageMunicipalityApplicationAdminModule extends AnnotatedRESTModul
 			JsonResponse.sendJsonResponse("{\"status\":\"error\", \"message\":\"Något gick fel när ändringarna skulle sparas.\"}", callback, writer);
 		}				
 	}
-	
-//	@RESTMethod(alias="approveapplication.json", method="post")
-//	public void approveSummerjob(HttpServletRequest req, HttpServletResponse res, User user, URIParser uriParser) throws IOException, SQLException {
-//        PrintWriter writer = res.getWriter();
-//        String callback = req.getParameter("callback"); 
-//		
-//        JsonResponse.initJsonResponse(res, writer, callback);
-//        
-//        Integer appId = NumberUtils.toInt(req.getParameter("appId"));
-//        if (appId == null) {
-//        	JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Kunde inte hämta den aktuella ansökan för att spara ändringarna.\"}", callback, writer);
-//        }
-//        MunicipalityJobApplication app = appDAO.getById(appId);
-//        
-//        app.setApproved(true);
-//        app.setControlled(true);
-//        app.setControlledByUser(user.getUsername());
-//        app.setControlledDate(new Date(Calendar.getInstance().getTimeInMillis()));
-//        app.setAdminNotes(req.getParameter("adminNotes"));
-//        app.setRanking(NumberUtils.toInt(req.getParameter("ranking")));
-//        
-//		try {
-//			appDAO.save(app);
-//			JsonResponse.sendJsonResponse("{\"status\":\"success\", \"message\":\"Ansökan är nu godkänd.\"}", callback, writer);
-//			return;
-//		} catch (SQLException e) {
-//			log.error("SQL exception", e);
-//			JsonResponse.sendJsonResponse("{\"status\":\"error\", \"message\":\"Något gick fel när ändringarna skulle sparas.\"}", callback, writer);
-//		}				
-//	}
-//	
-//	@RESTMethod(alias="disapproveapplication.json", method="post")
-//	public void disapproveSummerjob(HttpServletRequest req, HttpServletResponse res, User user, URIParser uriParser) throws IOException, SQLException {
-//        PrintWriter writer = res.getWriter();
-//        String callback = req.getParameter("callback"); 
-//		
-//        JsonResponse.initJsonResponse(res, writer, callback);
-//        
-//        Integer appId = NumberUtils.toInt(req.getParameter("appId"));
-//        if (appId == null) {
-//        	JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Kunde inte hämta den aktuella ansökan för att spara ändringarna.\"}", callback, writer);
-//        }
-//        MunicipalityJobApplication app = appDAO.getById(appId);
-//        
-//        app.setApproved(false);
-//        app.setControlledByUser(user.getUsername());
-//        app.setControlled(true);
-//        app.setControlledDate(new Date(Calendar.getInstance().getTimeInMillis()));
-//        app.setAdminNotes(req.getParameter("adminNotes"));
-//        app.setRanking(NumberUtils.toInt(req.getParameter("ranking")));
-//        
-//		try {
-//			appDAO.save(app);
-//			JsonResponse.sendJsonResponse("{\"status\":\"success\", \"message\":\"Ansökan har nu nekats.\"}", callback, writer);
-//			return;
-//		} catch (SQLException e) {
-//			log.error("SQL exception", e);
-//			JsonResponse.sendJsonResponse("{\"status\":\"error\", \"message\":\"Något gick fel när ändringarna skulle sparas.\"}", callback, writer);
-//		}				
-//	}
 }
