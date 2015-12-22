@@ -103,13 +103,17 @@ public class ManageMunicipalityApplicationAdminModule extends AnnotatedRESTModul
 	
 	@RESTMethod(alias="saveapplicationoptions.json", method="post")
 	public void saveApplicationOptions(HttpServletRequest req, HttpServletResponse res, User user, URIParser uriParser) throws IOException, SQLException {
-        PrintWriter writer = res.getWriter();
+        
+		Integer appId = NumberUtils.toInt(req.getParameter("appId"));        
+        log.info("Request for savemunicipalityoptions.json with appId:"+appId+" by user:"+user);
+        
+		PrintWriter writer = res.getWriter();
         String callback = req.getParameter("callback"); 
 		
         JsonResponse.initJsonResponse(res, writer, callback);
         
-        Integer appId = NumberUtils.toInt(req.getParameter("appId"));
-        if (appId == null) {
+        
+		if (appId == null) {
         	JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Kunde inte hämta den aktuella ansökan för att spara ändringarna.\"}", callback, writer);
         }
         
