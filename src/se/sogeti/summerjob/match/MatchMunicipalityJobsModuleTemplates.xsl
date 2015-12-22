@@ -257,6 +257,22 @@
 
 					
 					<input type="hidden" id="job-id" value="{id}"/>			
+					
+					<div class="row">
+						<div class="col-md-6 col-xs-12">
+							<button class="col-md-6 col-xs-12 generate-workplace-document-button btn btn-primary" id="generate-workplace-document_{id}">Generera dokument till arbetsplatsen</button>
+							<div class="col-md-1"></div>
+							<xsl:choose>
+								<xsl:when test="isOpen = 'true'">
+									<button class="col-md-3 col-xs-6 close-job-button btn btn-danger" id="close-job_{id}">Stäng annons</button>
+								</xsl:when>
+								<xsl:otherwise>
+									<button class="col-md-3 col-xs-6 open-job-button btn btn-success" id="open-job_{id}">Öppna annons</button>
+								</xsl:otherwise>
+							</xsl:choose>
+						</div>
+					</div>
+						
 					<div class="job-info">	
 						<input type="hidden" id="jobIsOpenStatus" value="{isOpen}"></input>
 						<xsl:if test="isOpen = 'false'">
@@ -374,21 +390,7 @@
 						</div>
 						
 						<div>
-						<div class="row">
-							<div class="col-md-6 col-xs-12">
-								<h3>Administrera annonsen</h3>
-								<button class="col-md-6 col-xs-12 generate-workplace-document-button btn btn-primary" id="generate-workplace-document_{id}">Generera dokument till arbetsplatsen</button>
-								<div class="col-md-1"></div>
-								<xsl:choose>
-									<xsl:when test="isOpen = 'true'">
-										<button class="col-md-3 col-xs-6 close-job-button btn btn-danger" id="close-job_{id}">Stäng annons</button>
-									</xsl:when>
-									<xsl:otherwise>
-										<button class="col-md-3 col-xs-6 open-job-button btn btn-success" id="open-job_{id}">Öppna annons</button>
-									</xsl:otherwise>
-								</xsl:choose>
-							</div>
-						</div>
+						
 						
 						<div class="row">
 							<xsl:if test="applications/MunicipalityJobApplication[status !='DENIED']">
@@ -479,7 +481,7 @@
 														</div>
 													</div>
 													<div class="mgn-top8px row">
-														<div class="col-md-2 col-xs-4"><button class="save-application-options btn btn-primary" id="{id}">Spara</button></div>
+														<div class="col-md-7 col-xs-4"><button class="save-application-options btn btn-primary" id="{id}">Spara</button></div>
 													</div>
 													<div class="mgn-top16px row">
 														<div class="col-md-2 col-xs-4 bold">Dokument</div>
