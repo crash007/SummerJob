@@ -255,10 +255,10 @@ public class PDFGenerator {
 		setFieldValue(pdfDocument, "naringslivet-managerphone", job.getManager().getMobilePhone());
 		setFieldValue(pdfDocument, "naringslivet-manageremail", job.getManager().getEmail());
 		
-		if (job.getMentors() != null && job.getMentors().size() > 0) {
-			setFieldValue(pdfDocument, "naringslivet-contactname", job.getMentors().get(0).getFirstname() + " " + job.getMentors().get(0).getLastname());
-			setFieldValue(pdfDocument, "naringslivet-contactphone", job.getMentors().get(0).getMobilePhone());
-			setFieldValue(pdfDocument, "naringslivet-contactemail", job.getMentors().get(0).getEmail());
+		if (job.getMentor() != null) {
+			setFieldValue(pdfDocument, "naringslivet-contactname", job.getMentor().getFirstname() + " " + job.getMentor().getLastname());
+			setFieldValue(pdfDocument, "naringslivet-contactphone", job.getMentor().getMobilePhone());
+			setFieldValue(pdfDocument, "naringslivet-contactemail", job.getMentor().getEmail());
 		}
 		
 		setFieldValue(pdfDocument, "naringslivet-numberofworkers", job.getNumberOfWorkersNeeded().toString());

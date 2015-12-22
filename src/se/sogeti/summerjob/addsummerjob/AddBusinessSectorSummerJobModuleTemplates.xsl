@@ -71,34 +71,62 @@
 						</div>
 				  		
 				  		<div style="margin-top: 8px;">
-				  			<label>Ange handledare <span style="font-weight: normal; font-size: 90%;"><i>(Förnamn, efternamn och telefonnummer krävs för att en handledare ska sparas)</i></span></label>
-				  			
-				  			<div id="mentors-wrapper">
-								<xsl:for-each select="BusinessSectorJob/mentors/BusinessSectorMentor">
-									<div class="row collapse in" style="margin-bottom: 8px;">
-										<input style="display: none;" id="mentor-id-{id}" name="mentor-id-{id}" type="text" value="{id}"/>
-										<div class="form-group col-md-3">
-											<label for="mentor-firstname">Förnamn</label><input type="text" class="form-control" id="mentor-firstname" name="mentor-firstname_{id}" placeholder="" value="{firstname}"/>
-										</div>
-										<div class="form-group col-md-3">
-											<label for="mentor-lastname">Efternamn</label><input type="text" class="form-control" id="mentor-lastname" name="mentor-lastname_{id}" placeholder="" value="{lastname}"/>
-										</div>
-										<div class="form-group col-md-2">
-											<label for="mentor-phone">Telefonnummer</label><input type="text" class="numberValidation form-control" id="mentor-phone" name="mentor-phone_{id}" placeholder="" value="{mobilePhone}"/>
-											<p class="help-block">Endast siffror</p>
-										</div>
-										<div class="form-group col-md-3">
-											<label for="mentor-email">E-post</label>
-											<input type="email" class="col-md-3 form-control" id="mentor-email" name="mentor-email_{id}" placeholder="" value="{email}"/>
-										</div>
-										<div class="form-group col-md-1">
-											<label>Ta bort</label>
-											<div class="remove-mentor mgn-top8px glyphicon glyphicon-remove" aria-hidden="true"></div>
-										</div>
-									</div>
-								</xsl:for-each>
-					    	</div>
-					    	<a href="#" class="add-business-mentor-btn"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Lägg till ny handledare</a>
+				  			<label>Ange kontaktperson på arbetsplatsen <span style="font-weight: normal; font-size: 90%;"><i>(Förnamn, efternamn och telefonnummer krävs för att en kontaktperson ska sparas)</i></span></label>
+				  			<div class="row">
+								<div class="form-group col-md-3">
+									<label>Förnamn</label>
+									<input type="text" class="form-control" id="mentor-firstname"
+										name="mentor-firstname" placeholder="" value="{BusinessSectorJob/BusinessSectorMentor/firstname}"/>
+									<p class="help-block with-errors">Förnamn till kontaktperson på arbetsplatsen</p>
+								</div>
+								
+								<div class="form-group col-md-3">
+									<label>Efternamn</label>
+									<input type="text" class="form-control" id="mentor-lastname"
+										name="mentor-lastname" placeholder="" value="{BusinessSectorJob/BusinessSectorMentor/lastname}"/>
+									<p class="help-block with-errors">Efternamn till kontaktperson på arbetsplatsen</p>
+								</div>
+							
+								<div class="form-group col-md-3">
+									<label>Telefonnummer</label>
+									<input type="text" data-error="Ange ett telefonnummer utan bindestreck" class="numberValidation form-control" id="mentor-phone" name="mentor-phone"
+										placeholder="" value="{BusinessSectorJob/BusinessSectorMentor/mobilePhone}"/>
+									<p class="help-block with-errors">Telefonnummer till kontaktperson på arbetsplatsen</p>
+								</div>
+							
+								<div class="form-group col-md-3">
+									<label>E-post</label>
+									<input type="email" class="form-control" id="mentor-email" name="mentor-email"
+										placeholder="" value="{BusinessSectorJob/BusinessSectorMentor/email}" />
+									<p class="help-block with-errors">E-post till kontaktperson på arbetsplatsen</p>
+								</div>
+							</div>
+<!-- 				  			<div id="mentors-wrapper"> -->
+<!-- 								<xsl:for-each select="BusinessSectorJob/mentors/BusinessSectorMentor"> -->
+<!-- 									<div class="row collapse in" style="margin-bottom: 8px;"> -->
+<!-- 										<input style="display: none;" id="mentor-id-{id}" name="mentor-id-{id}" type="text" value="{id}"/> -->
+<!-- 										<div class="form-group col-md-3"> -->
+<!-- 											<label for="mentor-firstname">Förnamn</label><input type="text" class="form-control" id="mentor-firstname" name="mentor-firstname_{id}" placeholder="" value="{firstname}"/> -->
+<!-- 										</div> -->
+<!-- 										<div class="form-group col-md-3"> -->
+<!-- 											<label for="mentor-lastname">Efternamn</label><input type="text" class="form-control" id="mentor-lastname" name="mentor-lastname_{id}" placeholder="" value="{lastname}"/> -->
+<!-- 										</div> -->
+<!-- 										<div class="form-group col-md-2"> -->
+<!-- 											<label for="mentor-phone">Telefonnummer</label><input type="text" class="numberValidation form-control" id="mentor-phone" name="mentor-phone_{id}" placeholder="" value="{mobilePhone}"/> -->
+<!-- 											<p class="help-block">Endast siffror</p> -->
+<!-- 										</div> -->
+<!-- 										<div class="form-group col-md-3"> -->
+<!-- 											<label for="mentor-email">E-post</label> -->
+<!-- 											<input type="email" class="col-md-3 form-control" id="mentor-email" name="mentor-email_{id}" placeholder="" value="{email}"/> -->
+<!-- 										</div> -->
+<!-- 										<div class="form-group col-md-1"> -->
+<!-- 											<label>Ta bort</label> -->
+<!-- 											<div class="remove-mentor mgn-top8px glyphicon glyphicon-remove" aria-hidden="true"></div> -->
+<!-- 										</div> -->
+<!-- 									</div> -->
+<!-- 								</xsl:for-each> -->
+<!-- 					    	</div> -->
+<!-- 					    	<a href="#" class="add-business-mentor-btn"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Lägg till ny handledare</a> -->
 					  	</div>
 		  			</div>
 		  		</div>
@@ -312,20 +340,24 @@
 							</div>
 					  	</div>
 					  	<div class="mgn-top8px row">
-					  		<div class="col-md-12 preview-mentors-list">
-						  		<label>Handledare <span style="font-weight: normal; font-size: 90%;"><i>(Förnamn, efternamn och telefonnummer krävs för att en handledare ska sparas)</i></span></label>
+					  		<div class="col-md-12">
+						  		<label>Kontaktperson <span style="font-weight: normal; font-size: 90%;"><i>(Förnamn, efternamn och telefonnummer krävs för att en handledare ska sparas)</i></span></label>
 								<div class="row">
-									<div class="col-md-3 col-xs-2 bold">Förnamn</div>
-									<div class="col-md-3 col-xs-3 bold">Efternamn</div>
-									<div class="col-md-3 col-xs-3 bold">Telefonnummer</div>
-									<div class="col-md-3 col-xs-4 bold">E-post</div>
-								</div>
-								<div id="preview-mentor-body">
-									<div style="display: none" class="preview-mentor-row row">
-										<div class="col-md-3 col-xs-2 preview-mentor-firstname"></div>
-										<div class="col-md-3 col-xs-3 preview-mentor-lastname"></div>
-										<div class="col-md-3 col-xs-3 preview-mentor-phonenumber"></div>
-										<div class="col-md-3 col-xs-4 preview-mentor-email"></div>
+									<div class="col-md-2">
+										<label>Förnamn</label>
+										<p id="preview-mentor-firstname"></p>
+									</div>
+									<div class="col-md-2">
+										<label>Efternamn</label>
+										<p id="preview-mentor-lastname"></p>
+									</div>
+									<div class="col-md-2">
+										<label>Telefonnummer</label>
+										<p id="preview-mentor-phonenumber"></p>
+									</div>
+									<div class="col-md-3">
+										<label>E-postadress</label>
+										<p id="preview-mentor-email"></p>
 									</div>
 								</div>
 							</div>
@@ -470,40 +502,40 @@
 			  	</div>
 			</div>
 			
-			<div class="mentor-template">
-				<div class="row collapse" style="margin-bottom: 8px;">
+<!-- 			<div class="mentor-template"> -->
+<!-- 				<div class="row collapse" style="margin-bottom: 8px;"> -->
 				
-					<div class="form-group col-md-3">
-						<label for="mentor-firstname">Förnamn</label>
-						<input type="text" class="form-control mentor-firstname"
-							name="mentor-firstname" placeholder="" />
-					</div>
+<!-- 					<div class="form-group col-md-3"> -->
+<!-- 						<label for="mentor-firstname">Förnamn</label> -->
+<!-- 						<input type="text" class="form-control mentor-firstname" -->
+<!-- 							name="mentor-firstname" placeholder="" /> -->
+<!-- 					</div> -->
 			
-					<div class="form-group col-md-3">
-						<label for="mentor-lastname">Efternamn</label>
-						<input type="text" class="form-control mentor-lastname"
-							name="mentor-lastname" placeholder="" />
-					</div>
+<!-- 					<div class="form-group col-md-3"> -->
+<!-- 						<label for="mentor-lastname">Efternamn</label> -->
+<!-- 						<input type="text" class="form-control mentor-lastname" -->
+<!-- 							name="mentor-lastname" placeholder="" /> -->
+<!-- 					</div> -->
 			
-					<div class="form-group col-md-2">
-						<label for="mentor-phone">Telefonnummer</label>
-						<input type="text" class="numberValidation form-control mentor-phone" name="mentor-phone"
-							placeholder="" />
-						<p class="help-block">Endast siffror</p>
-					</div>
+<!-- 					<div class="form-group col-md-2"> -->
+<!-- 						<label for="mentor-phone">Telefonnummer</label> -->
+<!-- 						<input type="text" class="numberValidation form-control mentor-phone" name="mentor-phone" -->
+<!-- 							placeholder="" /> -->
+<!-- 						<p class="help-block">Endast siffror</p> -->
+<!-- 					</div> -->
 			
-					<div class="form-group col-md-3">
-						<label for="mentor-email">E-post</label>
-						<input type="email" class="form-control mentor-email" name="mentor-email"
-							placeholder="" />
-					</div>
+<!-- 					<div class="form-group col-md-3"> -->
+<!-- 						<label for="mentor-email">E-post</label> -->
+<!-- 						<input type="email" class="form-control mentor-email" name="mentor-email" -->
+<!-- 							placeholder="" /> -->
+<!-- 					</div> -->
 					
-					<div class="form-group col-md-1 remove-mentor">
-						<label>Ta bort</label>
-						<div class="mgn-top8px glyphicon glyphicon-remove" aria-hidden="true"></div>
-					</div>
-				</div>
-			</div>	
+<!-- 					<div class="form-group col-md-1 remove-mentor"> -->
+<!-- 						<label>Ta bort</label> -->
+<!-- 						<div class="mgn-top8px glyphicon glyphicon-remove" aria-hidden="true"></div> -->
+<!-- 					</div> -->
+<!-- 				</div> -->
+<!-- 			</div>	 -->
 	</xsl:template>
 	
 </xsl:stylesheet>					

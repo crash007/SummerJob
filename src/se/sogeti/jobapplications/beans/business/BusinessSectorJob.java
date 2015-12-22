@@ -58,10 +58,14 @@ public class BusinessSectorJob extends Job{
 	@OneToMany(autoGet=false,autoAdd=true, autoUpdate=false)
 	private List<BusinessSectorJobApplication> applications;
 	
-	@DAOManaged
+//	@DAOManaged
+//	@XMLElement
+//	@OneToMany(autoGet=true,autoAdd=true, autoUpdate=true)
+//	private List<BusinessSectorMentor> mentors;
+	@DAOManaged(columnName="mentor_id")
 	@XMLElement
-	@OneToMany(autoGet=true,autoAdd=true, autoUpdate=true)
-	private List<BusinessSectorMentor> mentors;
+	@ManyToOne(autoGet=true,autoAdd=true, autoUpdate=true, remoteKeyField="id")
+	private BusinessSectorMentor mentor;
 	
 	public List<BusinessSectorJobApplication> getApplications() {
 		return applications;
@@ -87,13 +91,13 @@ public class BusinessSectorJob extends Job{
 		this.endDate = endDate;
 	}
 
-	public List<BusinessSectorMentor> getMentors() {
-		return mentors;
-	}
-
-	public void setMentors(List<BusinessSectorMentor> mentors) {
-		this.mentors = mentors;
-	}
+//	public List<BusinessSectorMentor> getMentors() {
+//		return mentors;
+//	}
+//
+//	public void setMentors(List<BusinessSectorMentor> mentors) {
+//		this.mentors = mentors;
+//	}
 	
 
 	public BusinessSectorManager getManager() {
@@ -120,7 +124,7 @@ public class BusinessSectorJob extends Job{
 	@Override
 	public String toString() {
 		return "BusinessSectorJob [manager=" + manager + ", startDate=" + startDate + ", endDate=" + endDate
-				+ ", company=" + company + ", applications=" + applications + ", mentors=" + mentors + "]";
+				+ ", company=" + company + ", applications=" + applications + ", mentor=" + getMentor() + "]";
 	}
 
 	public Date getLastApplicationDay() {
@@ -145,5 +149,13 @@ public class BusinessSectorJob extends Job{
 
 	public void setInChargeOfInterviews(Boolean inChargeOfInterviews) {
 		this.inChargeOfInterviews = inChargeOfInterviews;
+	}
+
+	public BusinessSectorMentor getMentor() {
+		return mentor;
+	}
+
+	public void setMentor(BusinessSectorMentor mentor) {
+		this.mentor = mentor;
 	}
 }

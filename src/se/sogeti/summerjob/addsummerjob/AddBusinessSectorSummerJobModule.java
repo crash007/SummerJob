@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
+import org.datacontract.schemas._2004._07.sundsvall_meta_smex.MentorData;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -35,6 +36,7 @@ import se.unlogic.hierarchy.core.utils.HierarchyAnnotatedDAOFactory;
 import se.unlogic.hierarchy.foregroundmodules.rest.AnnotatedRESTModule;
 import se.unlogic.hierarchy.foregroundmodules.rest.RESTMethod;
 import se.unlogic.standardutils.numbers.NumberUtils;
+import se.unlogic.standardutils.string.StringUtils;
 import se.unlogic.standardutils.xml.XMLUtils;
 import se.unlogic.webutils.http.RequestUtils;
 import se.unlogic.webutils.http.URIParser;
@@ -153,37 +155,55 @@ public class AddBusinessSectorSummerJobModule extends AnnotatedRESTModule{
         job.setEndDate(jobEndDate);
         job.setLastApplicationDay(jobLastApplicationDay);
         
-        List<BusinessSectorMentor> mentors = new ArrayList<BusinessSectorMentor>();
-        List<String> mentorUuids = FormUtils.getMentorUuids(req.getParameterNames());
-		for(String s : mentorUuids){
-			 BusinessSectorMentor mentor = new BusinessSectorMentor();
-			 Integer mentorId = NumberUtils.toInt(req.getParameter("mentor-id-" + s));
-			 
-			 String mentorFirstname = req.getParameter("mentor-firstname_" + s);
-			 String mentorLastname = req.getParameter("mentor-lastname_" + s);
-			 String mentorPhone = req.getParameter("mentor-phone_" + s);
-			 
-			 if (mentorId != null) {
-				 mentor.setId(mentorId);
-				 
-				 if ((mentorFirstname == null && mentorLastname == null && mentorPhone == null)
-						 || (mentorFirstname.isEmpty() && mentorLastname.isEmpty() && mentorPhone.isEmpty())) {
-					 businessSectorMentorDAO.removeById(mentorId);
-					 continue;
-				 }
-			 } else if (mentorFirstname == null || mentorLastname == null || mentorPhone == null
-					 || mentorFirstname.isEmpty() || mentorLastname.isEmpty() || mentorPhone.isEmpty()) {
-				 continue;
-			 }
-			 
-			 mentor.setFirstname(mentorFirstname);
-			 mentor.setLastname(mentorLastname);
-			 mentor.setEmail(req.getParameter("mentor-email_" + s));
-			 mentor.setMobilePhone(mentorPhone);
-			 mentors.add(mentor);
-		}
-		
-		job.setMentors(mentors);
+        String mentorFirstname = req.getParameter("mentor-firstname");
+        String mentorLastname = req.getParameter("mentor-lastname");
+        String mentorPhone = req.getParameter("mentor-phone");
+        String mentorEmail = req.getParameter("mentor-email");
+        
+        if (!StringUtils.isEmpty(mentorFirstname) && !StringUtils.isEmpty(mentorLastname) 
+        		&& !StringUtils.isEmpty(mentorPhone)) {
+        	BusinessSectorMentor mentor = job.getMentor() != null ? job.getMentor() : new BusinessSectorMentor();
+        	mentor.setFirstname(mentorFirstname);
+        	mentor.setLastname(mentorLastname);
+        	mentor.setMobilePhone(mentorPhone);
+        	mentor.setEmail(mentorEmail);
+        	job.setMentor(mentor);
+        } else {
+        	job.setMentor(null);
+        }
+        
+        
+//        List<BusinessSectorMentor> mentors = new ArrayList<BusinessSectorMentor>();
+//        List<String> mentorUuids = FormUtils.getMentorUuids(req.getParameterNames());
+//		for(String s : mentorUuids){
+//			 BusinessSectorMentor mentor = new BusinessSectorMentor();
+//			 Integer mentorId = NumberUtils.toInt(req.getParameter("mentor-id-" + s));
+//			 
+//			 String mentorFirstname = req.getParameter("mentor-firstname_" + s);
+//			 String mentorLastname = req.getParameter("mentor-lastname_" + s);
+//			 String mentorPhone = req.getParameter("mentor-phone_" + s);
+//			 
+//			 if (mentorId != null) {
+//				 mentor.setId(mentorId);
+//				 
+//				 if ((mentorFirstname == null && mentorLastname == null && mentorPhone == null)
+//						 || (mentorFirstname.isEmpty() && mentorLastname.isEmpty() && mentorPhone.isEmpty())) {
+//					 businessSectorMentorDAO.removeById(mentorId);
+//					 continue;
+//				 }
+//			 } else if (mentorFirstname == null || mentorLastname == null || mentorPhone == null
+//					 || mentorFirstname.isEmpty() || mentorLastname.isEmpty() || mentorPhone.isEmpty()) {
+//				 continue;
+//			 }
+//			 
+//			 mentor.setFirstname(mentorFirstname);
+//			 mentor.setLastname(mentorLastname);
+//			 mentor.setEmail(req.getParameter("mentor-email_" + s));
+//			 mentor.setMobilePhone(mentorPhone);
+//			 mentors.add(mentor);
+//		}
+//		
+//		job.setMentors(mentors);
         
 		String corporateNumber = req.getParameter("corporate-number");
 		String company = req.getParameter("company");
