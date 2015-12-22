@@ -243,8 +243,8 @@
 						<div class="mgn-top16px row">
 							<div class="col-md-6 col-xs-12">
 								<h3>Administrera annonsen</h3>
-<!-- 								<button class="col-md-6 col-xs-12 generate-workplace-document-button btn btn-primary" id="generate-workplace-document_{id}">Generera dokument till arbetsplatsen</button> -->
-<!-- 								<div class="col-md-1"></div> -->
+								<button class="col-md-6 col-xs-12 generate-workplace-document-button btn btn-primary" id="generate-workplace-document_{id}">Generera dokument till arbetsplatsen</button>
+								<div class="col-md-1"></div>
 								<xsl:choose>
 									<xsl:when test="isOpen = 'true'">
 										<button class="col-md-3 col-xs-6 close-job-button btn btn-danger" id="close-job_{id}">Stäng annons</button>

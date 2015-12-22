@@ -12,12 +12,13 @@ import org.apache.pdfbox.pdmodel.PDDocumentCatalog;
 import org.apache.pdfbox.pdmodel.interactive.form.PDAcroForm;
 import org.apache.pdfbox.pdmodel.interactive.form.PDField;
 
+import se.sogeti.jobapplications.beans.business.BusinessSectorJob;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityJob;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityJobApplication;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityManager;
-import se.sogeti.jobapplications.beans.municipality.MunicipalityMentor;
 import se.sogeti.periodsadmin.beans.AccountingEntry;
 import se.sogeti.periodsadmin.beans.ContactPerson;
+import se.unlogic.standardutils.arrays.ArrayUtils;
 import se.unlogic.standardutils.string.StringUtils;
 
 import com.itextpdf.text.pdf.AcroFields;
@@ -208,7 +209,7 @@ public class PDFGenerator {
 	}
 
 	public static File generatePoliceDocument(String templateFilePath, String newFilePath, MunicipalityJobApplication app) throws IOException {
-		File file = new File(templateFilePath + "PM-442-5-forskoleverksamhet.pdf");;
+		File file = new File(templateFilePath + "PM-442-5-forskoleverksamhet.pdf");
 		PDDocument pdfDocument = PDDocument.load(file);
 		
 		//Personnr-fält
@@ -239,6 +240,40 @@ public class PDFGenerator {
 		pdfDocument.close();
 		
 		return policeDocument;
+	}
+	
+	public static File generateBusinessSectorJobAgreementDocument(String templateFilePath, String newFilePath, 
+			BusinessSectorJob job, String faviContactInfo) throws IOException {
+		File file = new File(templateFilePath + "overenskommelse-naringslivet.pdf");
+		PDDocument pdfDocument = PDDocument.load(file);
+		
+		setFieldValue(pdfDocument, "naringslivet-corporatenumber", job.getCorporateNumber());
+		setFieldValue(pdfDocument, "naringslivet-company", job.getCompany());
+		setFieldValue(pdfDocument, "naringslivet-address", job.getStreetAddress());
+		setFieldValue(pdfDocument, "naringslivet-zipcity", job.getZipCode() + " " + job.getCity());
+		setFieldValue(pdfDocument, "naringslivet-managername", job.getManager().getFirstname() + " " + job.getManager().getLastname());
+		setFieldValue(pdfDocument, "naringslivet-managerphone", job.getManager().getMobilePhone());
+		setFieldValue(pdfDocument, "naringslivet-manageremail", job.getManager().getEmail());
+		
+		if (job.getMentors() != null && job.getMentors().size() > 0) {
+			setFieldValue(pdfDocument, "naringslivet-contactname", job.getMentors().get(0).getFirstname() + " " + job.getMentors().get(0).getLastname());
+			setFieldValue(pdfDocument, "naringslivet-contactphone", job.getMentors().get(0).getMobilePhone());
+			setFieldValue(pdfDocument, "naringslivet-contactemail", job.getMentors().get(0).getEmail());
+		}
+		
+		setFieldValue(pdfDocument, "naringslivet-numberofworkers", job.getNumberOfWorkersNeeded().toString());
+		setFieldValue(pdfDocument, "naringslivet-dates", job.getStartDate() + " - " + job.getEndDate());
+		
+		String inChargeString = job.getInChargeOfInterviews() ? 
+				"Jag vill att kommunen gör urval av kandidater" : "Jag vill göra urval av kandidater efter kommunens gallring";
+		
+		setFieldValue(pdfDocument, "naringslivet-inchargeofinterviews", inChargeString);
+		setFieldValue(pdfDocument, "naringslivet-favicontact", faviContactInfo);
+		
+		File businessDocument = saveDocument(newFilePath, pdfDocument, job.getId() + "_overenskommelse-naringslivet.pdf");
+		pdfDocument.close();
+		
+		return businessDocument;
 	}
 	
 	public static void setFieldValue(PDDocument pdfDocument, String fieldName, String value) throws IOException {
