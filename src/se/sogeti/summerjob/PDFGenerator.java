@@ -270,7 +270,7 @@ public class PDFGenerator {
 		setFieldValue(pdfDocument, "naringslivet-inchargeofinterviews", inChargeString);
 		setFieldValue(pdfDocument, "naringslivet-favicontact", faviContactInfo);
 		
-		File businessDocument = saveDocument(newFilePath, pdfDocument, job.getId() + "overenskommelse-naringslivet.pdf");
+		File businessDocument = saveDocument(newFilePath, pdfDocument, job.getId() + "_overenskommelse-naringslivet.pdf");
 		pdfDocument.close();
 		
 		return businessDocument;

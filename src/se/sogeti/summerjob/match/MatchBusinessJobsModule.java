@@ -1,7 +1,10 @@
 package se.sogeti.summerjob.match;
 
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.sql.Date;
 import java.sql.SQLException;
@@ -19,14 +22,19 @@ import se.sogeti.jobapplications.beans.ApplicationStatus;
 import se.sogeti.jobapplications.beans.PersonApplications;
 import se.sogeti.jobapplications.beans.business.BusinessSectorJob;
 import se.sogeti.jobapplications.beans.business.BusinessSectorJobApplication;
+import se.sogeti.jobapplications.beans.municipality.MunicipalityJob;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityJobApplication;
 import se.sogeti.jobapplications.cv.CvServiceHander;
 import se.sogeti.jobapplications.daos.BusinessSectorJobApplicationDAO;
 import se.sogeti.jobapplications.daos.BusinessSectorJobDAO;
 import se.sogeti.jobapplications.daos.MunicipalityJobApplicationDAO;
 import se.sogeti.jobapplications.daos.PersonApplicationsDAO;
+import se.sogeti.periodsadmin.beans.ContactPerson;
+import se.sogeti.periodsadmin.daos.ContactPersonDAO;
+import se.sogeti.summerjob.DocxGenerator;
 import se.sogeti.summerjob.FormUtils;
 import se.sogeti.summerjob.JsonResponse;
+import se.sogeti.summerjob.PDFGenerator;
 import se.unlogic.hierarchy.core.annotations.InstanceManagerDependency;
 import se.unlogic.hierarchy.core.beans.SimpleForegroundModuleResponse;
 import se.unlogic.hierarchy.core.beans.User;
@@ -48,6 +56,7 @@ public class MatchBusinessJobsModule extends MatchCommon {
 	private BusinessSectorJobApplicationDAO businessJobApplicationDAO;
 	private PersonApplicationsDAO personApplicationsDAO;
 	private MunicipalityJobApplicationDAO municipalityJobApplicationDAO;
+	private ContactPersonDAO contactDAO;
 	
 	@InstanceManagerDependency(required=true)
 	private CvServiceHander cvServiceHandler;
@@ -61,6 +70,7 @@ public class MatchBusinessJobsModule extends MatchCommon {
 		businessJobApplicationDAO = new BusinessSectorJobApplicationDAO(dataSource, BusinessSectorJobApplication.class, daoFactory);
 		personApplicationsDAO = new PersonApplicationsDAO(dataSource, PersonApplications.class, daoFactory);
 		municipalityJobApplicationDAO = new MunicipalityJobApplicationDAO(dataSource, MunicipalityJobApplication.class, daoFactory);
+		contactDAO = new ContactPersonDAO(dataSource, ContactPerson.class, daoFactory);
 	}
 
 	@Override
@@ -77,9 +87,14 @@ public class MatchBusinessJobsModule extends MatchCommon {
 		XMLUtils.appendNewElement(doc, element, "CvBusinessApplicationUrl", cvServiceHandler.getBusinessApplicationCvUrl());
 		
 		Integer jobId=null;
+		Boolean generateWorkplaceDocuments = BooleanUtils.toBoolean(req.getParameter("generateWorkDocument"));
 		
 		if(req.getParameter("jobId")!=null){
-		 jobId = NumberUtils.toInt(req.getParameter("jobId"));
+			jobId = NumberUtils.toInt(req.getParameter("jobId"));
+		}
+		
+		if (jobId != null && generateWorkplaceDocuments) {
+			generateWorkplaceDocuments(res, jobId);
 		}
 	
 		if(jobId!=null){
@@ -351,6 +366,43 @@ public class MatchBusinessJobsModule extends MatchCommon {
 			result.putField("message", "Changed the status on this job");
 			JsonResponse.sendJsonResponse(result.toJson(), null, writer);
 		}
+	}
+	
+	public void generateWorkplaceDocuments(HttpServletResponse res, int jobId) throws IOException, SQLException {
+		BusinessSectorJob job = businessJobDAO.getById(jobId);
+		ContactPerson contact = contactDAO.getAll().get(1);
+		String faviContactInfo = contact.getName() + ", " + contact.getPhoneNumber();
+		
+		File file = null;
+		try {
+			file = PDFGenerator.generateBusinessSectorJobAgreementDocument(templateFilePath, newFilePath, job, faviContactInfo);
+		} catch (Exception e) {
+			log.error("Could not generate the desired document.", e);
+			e.printStackTrace();
+			return;
+		}
+		
+		FileInputStream inStream = new FileInputStream(file);
+		
+		String mimeType = "application/pdf";
+		res.setContentType(mimeType);
+		res.setContentLength((int) file.length());
+		
+		String headerKey = "Content-Disposition";
+		String headerValue = String.format("attachment; filename=\"%s\"", file.getName());
+		res.setHeader(headerKey, headerValue);
+		
+		OutputStream outStream = res.getOutputStream();
+		
+		byte[] buffer = new byte[4096];
+		int bytesRead = -1;
+		
+		while ((bytesRead = inStream.read(buffer)) != -1) {
+			outStream.write(buffer, 0, bytesRead);
+		}
+		
+		inStream.close();
+		outStream.close();
 	}
 }
 
