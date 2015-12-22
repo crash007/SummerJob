@@ -254,12 +254,10 @@
 	</xsl:template>
 	
 	<xsl:template match="MunicipalityJob">
-		<div class="panel panel-default">
-			<div class="panel-heading"><h3 class="panel-title">Annonsen</h3></div>
-			<div class="panel-body">
-				<div class="row">
+
+			
 					<input type="hidden" id="job-id" value="{id}"/>			
-					<div class="col-md-12">	
+					<div class="job-info">	
 						<input type="hidden" id="jobIsOpenStatus" value="{isOpen}"></input>
 						<xsl:if test="isOpen = 'false'">
 							<div class="row">
@@ -270,38 +268,63 @@
 						</xsl:if>
 						
 						<div class="row">
-					
-							<div class="col-xs-4 col-md-3 bold">Organisation</div>
-							<div class="col-md-3"><xsl:value-of select="organization"/></div>
-							<div class="col-xs-4 col-md-3 bold">Förvaltning</div>
-							<div class="col-md-3"><xsl:value-of select="administration"/></div>
-							
+							<div class="col-md-2 bold">Arbetsplats</div>
+							<div class="col-md-2 bold">Avdelning</div>							
+							<div class="col-md-2 bold">Lediga platser</div>
+							<div class="col-md-1 bold">Period</div>
 						</div>
 						
-						<div class="row">
+						<div class="row overview-row">
+							<div class="col-md-2"><xsl:value-of select="location"/></div>
+							<div class="col-md-2"><xsl:value-of select="department"/></div>
+							<div class="col-md-2" id="availableSlotsToMatch"><xsl:value-of select="openApplications"/></div>
+							<div class="col-md-2"><xsl:value-of select="Period/name"/></div>
 					
-							<div class="col-xs-4 col-md-3 bold">Arbetsplats</div>
-							<div class="col-md-3"><xsl:value-of select="location"/></div>
-							<div class="col-xs-4 col-md-3 bold">Geografisk plats</div>
-							<div class="col-md-3"><xsl:value-of select="GeoArea/name"/></div>
 						</div>
 					
-						<div class="row">
+						<div class="row  mgn-top8px collapse">
 					
 							<div class="col-xs-4 col-md-3 bold">Rubrik</div>
 							<div class="col-md-3"><xsl:value-of select="workTitle"/></div>
 						</div>	  	
 			 			
-			 			<div class="row">
+			 			<div class="row mgn-top8px collapse">
 					
 							<div class="col-xs-4 col-md-3 bold">Verksamhetsområde</div>
 							<div class="col-md-3"><xsl:value-of select="MunicipalityJobArea/name"/></div>
-							<div class="col-xs-4 col-md-3 bold">Antal platser</div>
-							<div class="col-md-3"><xsl:value-of select="numberOfWorkersNeeded"/></div>
 							
 						</div>
 						
-						<div class="row">
+						
+						<div class="row mgn-top8px collapse">
+							<div class="col-xs-4 col-md-3 bold">Antal platser</div>
+							<div class="col-md-3"><xsl:value-of select="numberOfWorkersNeeded"/></div>
+							<div class="col-xs-4 col-md-3 bold">Tillsatta platser</div>
+							<div class="col-md-3"><xsl:value-of select="matchedApplications"/></div>
+							
+						</div>
+						<div class="row mgn-top8px collapse">
+					
+							<div class="col-xs-4 col-md-3 bold">Adress</div>
+							<div class="col-md-3"><xsl:value-of select="streetAddress"/></div>
+							<div class="col-xs-4 col-md-3 bold">Geografisk plats</div>
+							<div class="col-md-3"><xsl:value-of select="GeoArea/name"/></div>		
+							
+						</div>
+						
+						
+					
+						<div class="row mgn-top8px collapse">
+							<div class="col-xs-4 col-md-3 bold">Beskrivning</div>
+							<div class="col-md-9 col-xs-12"><xsl:value-of select="workDescription"/></div>
+						</div>
+						
+						<div class="row mgn-top8px collapse">
+							<div class="col-xs-4 col-md-3 bold">Övriga krav och önskemål</div>
+							<div class="col-md-9 col-xs-12"><xsl:value-of select="freeTextRequirements"/></div>
+						</div>
+						
+						<div class="row  mgn-top8px collapse">
 					
 							<div class="col-xs-4 col-md-3 bold">Körkort</div>
 							<div class="col-md-3">
@@ -316,34 +339,15 @@
 							</div>
 							
 						</div>
-						<div class="row">
-					
-							<div class="col-xs-4 col-md-3 bold">Tillsatta platser</div>
-							<div class="col-md-3"><xsl:value-of select="matchedApplications"/></div>
-							<div class="col-xs-4 col-md-3 bold">Lediga platser</div>
-							<div class="col-md-3" id="availableSlotsToMatch"><xsl:value-of select="openApplications"/></div>
-							
-						</div>
-						<div class="row">
-					
-							<div class="col-xs-4 col-md-3 bold">Adress</div>
-							<div class="col-md-3"><xsl:value-of select="streetAddress"/></div>
-							<div class="col-xs-4 col-md-3 bold">Period</div>
-							<div class="col-md-3"><xsl:value-of select="Period/name"/></div>
-							
-						</div>	
-					
-						<div class="row mgn-top8px">
-							<div class="col-xs-4 col-md-3 bold">Beskrivning</div>
-							<div class="col-md-9 col-xs-12"><xsl:value-of select="workDescription"/></div>
+						
+						<div class="row collapse">
+							<div class="col-xs-4 col-md-3 bold">Organisation</div>
+							<div class="col-md-3"><xsl:value-of select="organization"/></div>
+							<div class="col-xs-4 col-md-3 bold">Förvaltning</div>
+							<div class="col-md-3"><xsl:value-of select="administration"/></div>							
 						</div>
 						
-						<div class="row mgn-top8px">
-							<div class="col-xs-4 col-md-3 bold">Övriga krav och önskemål</div>
-							<div class="col-md-9 col-xs-12"><xsl:value-of select="freeTextRequirements"/></div>
-						</div>
-						
-						<div>
+						<div  class="collapse">
 							<h3>Kontaktuppgifter</h3>
 							<div class="row mgn-top8px">								
 								<div class="col-xs-4 col-md-3 bold">Förnamn</div>
@@ -360,7 +364,17 @@
 							</div>
 						</div>
 						
-						<div class="mgn-top16px row">
+						<div class="row">
+							<div class="col-md-8 bold">
+								<a href="#" name="show-more-job-info">Visa mer</a>
+								<a href="#" name="show-less-job-info" style="display:none">Minska</a>
+							</div>
+						</div>
+						
+						</div>
+						
+						<div>
+						<div class="row">
 							<div class="col-md-6 col-xs-12">
 								<h3>Administrera annonsen</h3>
 								<button class="col-md-6 col-xs-12 generate-workplace-document-button btn btn-primary" id="generate-workplace-document_{id}">Generera dokument till arbetsplatsen</button>
@@ -566,9 +580,8 @@
 							</div>
 						</div>
 					</div>
-			  	</div>
-			</div>
-	  	</div>
+			  	
+	  	
 	</xsl:template>		
 
 </xsl:stylesheet>					
