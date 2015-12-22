@@ -8,7 +8,7 @@
 			var url = '<xsl:value-of select="requestinfo/uri"/>';
 			var isOpen = '<xsl:value-of select="MatchMunicipalityJob/MunicipalityJob/isOpen"/>';
 		</script>
-		
+		<h1 class="header-match">Matcha jobb med ansökningar</h1>
 		<xsl:apply-templates select="MatchMunicipalityJob"/>
 <!-- 		<xsl:apply-templates select="MatchMunicipalityApplication"/> -->
 		
@@ -255,7 +255,7 @@
 	
 	<xsl:template match="MunicipalityJob">
 
-			
+					
 					<input type="hidden" id="job-id" value="{id}"/>			
 					<div class="job-info">	
 						<input type="hidden" id="jobIsOpenStatus" value="{isOpen}"></input>
@@ -391,6 +391,7 @@
 						</div>
 						
 						<div class="row">
+							<xsl:if test="applications/MunicipalityJobApplication[status !='DENIED']">
 							<div class="col-md-6 col-xs-12">
 								<h3>Matchade sommarjobbare</h3>
 								<form id="matched-workers-form">
@@ -524,41 +525,48 @@
 									</div>
 								</form>
 							</div>
-							<div class="col-md-6 col-xs-12">
-								<h3>Personer som tackat nej</h3>
-								
-								<form id="denied-workers-form">
-									<div id="denied-applications-container">
-										<xsl:for-each select="applications/MunicipalityJobApplication">
-											<xsl:if test="status ='DENIED'">
-												<div class="denied-application">
-													<div class="row">
-														<div class="col-xs-4 col-md-3 bold">Namn</div>						
-														<div class="col-md-9 name"><xsl:value-of select="firstname"/><xsl:text> </xsl:text><xsl:value-of select="lastname"/></div>						
-													</div>
-													<div class="row">
-														<div class="col-xs-4 col-md-3 bold">Personnummer</div>
-														<div class="col-md-9 social-number"><xsl:value-of select="socialSecurityNumber"/></div>
-													</div>
-													
-													<div class="row">		
-														<div class="col-md-3">Markera</div>										
-														<div class="col-md-9">
-												          <input type="checkbox" name="application-id" value="{id}"></input>								        
+							</xsl:if>
+							
+							
+							<xsl:if test="applications/MunicipalityJobApplication[status='DENIED']">
+								<div class="col-md-6 col-xs-12">
+									<h3>Personer som tackat nej</h3>
+									
+									<form id="denied-workers-form">
+										<div id="denied-applications-container">
+											<xsl:for-each select="applications/MunicipalityJobApplication">
+												<xsl:if test="status ='DENIED'">
+													<div class="denied-application">
+														<div class="row">
+															<div class="col-xs-4 col-md-3 bold">Namn</div>						
+															<div class="col-md-9 name"><xsl:value-of select="firstname"/><xsl:text> </xsl:text><xsl:value-of select="lastname"/></div>						
+														</div>
+														<div class="row">
+															<div class="col-xs-4 col-md-3 bold">Personnummer</div>
+															<div class="col-md-9 social-number"><xsl:value-of select="socialSecurityNumber"/></div>
+														</div>
+														
+														<div class="row">		
+															<div class="col-md-3">Markera</div>										
+															<div class="col-md-9">
+													          <input type="checkbox" name="application-id" value="{id}"></input>								        
+															</div>
 														</div>
 													</div>
-												</div>
-											</xsl:if>
-										</xsl:for-each>
-									</div>
-									
-									<div class="row mgn-top8px">
-										<div class="col-md-9">
-											<button type="submit" class="btn btn-primary from-denied-to-matched-btn common-button">Ändra till matchad</button>
+												</xsl:if>
+											</xsl:for-each>
 										</div>
-									</div>
-								</form>
-							</div>
+										
+										<div class="row mgn-top8px">
+											<div class="col-md-9">
+												<button type="submit" class="btn btn-primary from-denied-to-matched-btn common-button">Ändra till matchad</button>
+											</div>
+										</div>
+									</form>
+								</div>
+							</xsl:if>
+						 
+						 
 						 </div>
 						
 						<div id="matched-application-template" class="collapse">
