@@ -463,7 +463,7 @@ public class AddMunicipalitySummerJobModule extends AnnotatedRESTModule{
 		}
 //		JsonResponse.sendJsonResponse("{\"status\":\"success\", \"message\":\"Annonsen har nu sparats. En handläggare kommer att granska annonsen innan den blir synlig för sökande.\"}", callback, writer);
 		if (jobId != null) {
-			JsonResponse.sendJsonResponse("{\"status\":\"success\", \"newText\":\"Visa översikt av kommunala sommarjobb\", \"newUrl\":\"list-summerjobs?showMunicipalityJobs=true\", \"backText\":\"Fortsätt redigera\", \"backUrl\":\"manage-municipality-job?jobId=" + jobId + "\", \"header\":\"Ändringarna har nu sparats.\", \"message\":\"Ändringarna har nu sparats.\"}", callback, writer);
+			JsonResponse.sendJsonResponse("{\"status\":\"success\", \"newText\":\"Visa översikt av kommunala sommarjobb\", \"newUrl\":\"list-summerjobs?municipality=true\", \"backText\":\"Fortsätt redigera\", \"backUrl\":\"manage-municipality-job?jobId=" + jobId + "\", \"header\":\"Ändringarna har nu sparats.\", \"message\":\"Ändringarna har nu sparats.\"}", callback, writer);
 		} else {
 			JsonResponse.sendJsonResponse("{\"status\":\"success\", \"backUrl\":\"\", \"newUrl\":\"add-municipality-job\", \"header\":\"Annonsen har nu sparats.\", \"message\":\"En handläggare kommer att granska annonsen innan den blir synlig för sökande.\"}", callback, writer);
 		}

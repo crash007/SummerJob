@@ -264,28 +264,11 @@
 				
 				<button id="save-job-options" type="button" class="btn btn-success">Spara</button>
 							
-				<a href="{listJobsURL}?showMunicipalityJobs=true" type="button" class="float-rgt mgn-lft8px btn btn-info">Gå tillbaka</a>
+				<a href="{listJobsURL}?municipality=true" type="button" class="float-rgt mgn-lft8px btn btn-info">Gå tillbaka</a>
 				<button id="mark-job-as-initiated-button" type="button" class="float-rgt mgn-lft8px btn btn-primary">Markera som påbörjad</button>
 				<a href="{editJobURL}?jobId={MunicipalityJob/id}" id="edit-job-button" type="button" class="float-rgt mgn-lft8px btn btn-warning">Redigera</a>
 			</div>
 		</div>
 	</xsl:template>
-	
-<!-- 	<xsl:template match="MunicipalityMentor"> -->
-<!-- 		<tr> -->
-<!-- 			<td> -->
-<!-- 				<xsl:value-of select="firstname"></xsl:value-of> -->
-<!-- 			</td> -->
-<!-- 			<td> -->
-<!-- 				<xsl:value-of select="lastname"></xsl:value-of> -->
-<!-- 			</td> -->
-<!-- 			<td> -->
-<!-- 				<xsl:value-of select="mobilePhone"></xsl:value-of> -->
-<!-- 			</td> -->
-<!-- 			<td> -->
-<!-- 				<xsl:value-of select="email"></xsl:value-of> -->
-<!-- 			</td> -->
-<!-- 		</tr> -->
-<!-- 	</xsl:template> -->
 	
 </xsl:stylesheet>					

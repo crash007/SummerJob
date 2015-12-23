@@ -78,8 +78,18 @@ public class ListSummerJobsAdminModule extends AnnotatedForegroundModule {
 		element.appendChild(this.moduleDescriptor.toXML(doc));
 		doc.appendChild(element);
 
-		Boolean showMunicipalityJobs = BooleanUtils.toBoolean(req.getParameter("showMunicipalityJobs"));
-		if (showMunicipalityJobs != null && showMunicipalityJobs) {
+		boolean showMunicipality=true;
+		boolean showBusiness=true;
+		
+		if(req.getParameter("municipality") !=null && req.getParameter("municipality").equalsIgnoreCase("true")){
+			showBusiness=false;
+		}
+		
+		if(req.getParameter("business") !=null && req.getParameter("business").equalsIgnoreCase("true")){
+			showMunicipality=false;
+		}
+		
+		if (showMunicipality) {
 			
 			Element municipalityJobs = doc.createElement("MunicipalityJobs");
 			
@@ -149,7 +159,9 @@ public class ListSummerJobsAdminModule extends AnnotatedForegroundModule {
 			
 			doc.getFirstChild().appendChild(municipalityJobs);
 		
-		} else {
+		} 
+
+		if(showBusiness){
 			
 			Element businessJobs = doc.createElement("BusinessJobs");
 			
