@@ -58,10 +58,6 @@ public class BusinessSectorJob extends Job{
 	@OneToMany(autoGet=false,autoAdd=true, autoUpdate=false)
 	private List<BusinessSectorJobApplication> applications;
 	
-//	@DAOManaged
-//	@XMLElement
-//	@OneToMany(autoGet=true,autoAdd=true, autoUpdate=true)
-//	private List<BusinessSectorMentor> mentors;
 	@DAOManaged(columnName="mentor_id")
 	@XMLElement
 	@ManyToOne(autoGet=true,autoAdd=true, autoUpdate=true, remoteKeyField="id")

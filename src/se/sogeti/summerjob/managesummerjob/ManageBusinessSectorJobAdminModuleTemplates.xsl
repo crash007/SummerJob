@@ -57,14 +57,14 @@
 			  	</div>
 			  	<div class="mgn-top8px row">
 			  		<div class="col-md-12">
-				  		<label>Handledare</label>
+				  		<label>Kontaktperson/Handledare</label>
 				  		<div class="row">
 			  				<div class="col-md-2 bold col-xs-2" style="font-size: 90%; padding-right: 0px;">Förnamn</div>
 			  				<div class="col-md-2 bold col-xs-2" style="font-size: 90%; padding-right: 0px;">Efternamn</div>
 			  				<div class="col-md-2 bold col-xs-3" style="font-size: 90%; padding-right: 0px;">Telefonnummer</div>
 			  				<div class="col-md-2 bold col-xs-3" style="font-size: 90%; padding-right: 0px;">E-postadress</div>
 			  			</div>
-			  			<xsl:for-each select="BusinessSectorJob/mentors/BusinessSectorMentor">
+			  			<xsl:for-each select="BusinessSectorJob/BusinessSectorMentor">
 			  				<div class="row">
 			  					<div class="col-md-2 col-xs-2" style="padding-right: 0px;"><xsl:value-of select="firstname" /></div>
 			  					<div class="col-md-2 col-xs-2" style="padding-right: 0px;"><xsl:value-of select="lastname" /></div>
