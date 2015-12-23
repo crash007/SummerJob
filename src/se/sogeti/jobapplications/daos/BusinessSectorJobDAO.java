@@ -37,8 +37,7 @@ public class BusinessSectorJobDAO extends JobDAO<BusinessSectorJob>{
 		return this.get(query);
 	}
 	
-	public java.util.List<BusinessSectorJob> getAllApproved() throws SQLException {
-		System.out.println("getAllApproved i BusinessSectorJobDAO");
+	public java.util.List<BusinessSectorJob> getAllApproved() throws SQLException {	
 		return this.getByFieldAndBoolAndLastApplicationDayNotPassed("approved", true);
 	}
 	

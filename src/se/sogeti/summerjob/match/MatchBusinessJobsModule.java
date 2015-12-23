@@ -368,19 +368,15 @@ public class MatchBusinessJobsModule extends MatchCommon {
 		}
 	}
 	
-	public void generateWorkplaceDocuments(HttpServletResponse res, int jobId) throws IOException, SQLException {
+	public void generateWorkplaceDocuments(HttpServletResponse res, int jobId) throws SQLException, IOException {
 		BusinessSectorJob job = businessJobDAO.getById(jobId);
 		ContactPerson contact = contactDAO.getAll().get(1);
 		String faviContactInfo = contact.getName() + ", " + contact.getPhoneNumber();
+		PDFGenerator pdfGenerator = new PDFGenerator();
 		
 		File file = null;
-		try {
-			file = PDFGenerator.generateBusinessSectorJobAgreementDocument(templateFilePath, newFilePath, job, faviContactInfo);
-		} catch (Exception e) {
-			log.error("Could not generate the desired document.", e);
-			e.printStackTrace();
-			return;
-		}
+		
+		file = pdfGenerator.generateBusinessSectorJobAgreementDocument(templateFilePath, newFilePath, job, faviContactInfo);
 		
 		FileInputStream inStream = new FileInputStream(file);
 		

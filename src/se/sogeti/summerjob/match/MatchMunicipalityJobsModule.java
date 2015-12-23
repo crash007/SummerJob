@@ -14,7 +14,9 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
+import javax.xml.bind.JAXBException;
 
+import org.docx4j.openpackaging.exceptions.Docx4JException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -464,19 +466,14 @@ public class MatchMunicipalityJobsModule extends MatchCommon {
 		}
 	}
 	
-	public void generateWorkplaceDocuments(HttpServletResponse res, int jobId) throws IOException, SQLException {
+	public void generateWorkplaceDocuments(HttpServletResponse res, int jobId) throws IOException, SQLException, Docx4JException, JAXBException {
 		MunicipalityJob job = municipalityJobDAO.getByIdWithApplications(jobId);
 		ContactPerson contact = contactDAO.getAll().get(0);
 		
 		File file = null;
-		try {
-			file = DocxGenerator.generateWorkplaceDocuments(templateFilePath, newFilePath, job, contact);
-		} catch (Exception e) {
-			log.error("Could not generate the desired document.", e);
-			e.printStackTrace();
-			return;
-		}
 		
+		file = DocxGenerator.generateWorkplaceDocuments(templateFilePath, newFilePath, job, contact);
+				
 		FileInputStream inStream = new FileInputStream(file);
 		
 		String mimeType = "application/docx";
@@ -500,7 +497,7 @@ public class MatchMunicipalityJobsModule extends MatchCommon {
 		outStream.close();
 	}
 	
-	public void generateEmployeeDocument(HttpServletResponse res, int jobId, int appId, String selectValue) throws IOException, SQLException {
+	public void generateEmployeeDocument(HttpServletResponse res, int jobId, int appId, String selectValue) throws IOException, Exception {
 		MunicipalityJob job = municipalityJobDAO.getById(jobId);
 		MunicipalityJobApplication app = municipalityJobApplicationDAO.getById(appId);
 		Salary salary = !isOverEighteenDuringJob(app.getBirthDate(), job.getPeriod().getEndDate()) 
@@ -511,14 +508,10 @@ public class MatchMunicipalityJobsModule extends MatchCommon {
 		ContactPerson contact = contactDAO.getAll().get(0);
 		
 		File file = null;
-		try {
-			file = generateDocumentFromSelectValue(selectValue, job, app, salary.getAmountInSEK(),
+		
+		file = generateDocumentFromSelectValue(selectValue, job, app, salary.getAmountInSEK(),
 					place.getName(), accounting, contact);
-		} catch (Exception e) {
-			log.error("Could not generate the desired document.", e);
-			e.printStackTrace();
-			return;
-		}
+		
 		
 		FileInputStream inStream = new FileInputStream(file);
 		
@@ -547,38 +540,39 @@ public class MatchMunicipalityJobsModule extends MatchCommon {
 			int salary, String placeForInfo, AccountingEntry accounting, ContactPerson contact) throws IOException, Exception {
 		
 		File file = null;
+		PDFGenerator pdfGenerator = new PDFGenerator();
 		
 		switch (value) {
 		case "ALL":			
-			file = PDFGenerator.generateEmployeeDocuments(templateFilePath, newFilePath, job, app, salary, placeForInfo, accounting, contact);
+			file = pdfGenerator.generateEmployeeDocuments(templateFilePath, newFilePath, job, app, salary, placeForInfo, accounting, contact);
 			break;
 
 		case "kallelse":
-			file = PDFGenerator.generateCallDocument(templateFilePath, newFilePath, job, app, placeForInfo, contact);
+			file = pdfGenerator.generateCallDocument(templateFilePath, newFilePath, job, app, placeForInfo, contact);
 			break;
 			
 		case "bekraftelse":
-			file = PDFGenerator.generateConfirmationDocument(templateFilePath, newFilePath, job, app, salary, accounting);
+			file = pdfGenerator.generateConfirmationDocument(templateFilePath, newFilePath, job, app, salary, accounting);
 			break;
 			
 		case "anstallningsbevis":			
-			file = PDFGenerator.generateProofOfEmployment(templateFilePath, newFilePath, job, app, salary);
+			file = pdfGenerator.generateProofOfEmployment(templateFilePath, newFilePath, job, app, salary);
 			break;
 			
 		case "tjanstgoringsrapport":
-			file = PDFGenerator.generateTimeReport(templateFilePath, newFilePath, job, app, accounting);
+			file = pdfGenerator.generateTimeReport(templateFilePath, newFilePath, job, app, accounting);
 			break;
 			
 		case "bank":
-			file = PDFGenerator.generateBankDocument(templateFilePath, newFilePath, app, contact);
+			file = pdfGenerator.generateBankDocument(templateFilePath, newFilePath, app, contact);
 			break;
 			
 		case "skattebefrielse":
-			file = PDFGenerator.generateTaxDocument(templateFilePath, newFilePath, app);
+			file = pdfGenerator.generateTaxDocument(templateFilePath, newFilePath, app);
 			break;
 			
 		case "belastningsregister":
-			file = PDFGenerator.generatePoliceDocument(templateFilePath, newFilePath, app);
+			file = pdfGenerator.generatePoliceDocument(templateFilePath, newFilePath, app);
 			break;
 			
 		default:
