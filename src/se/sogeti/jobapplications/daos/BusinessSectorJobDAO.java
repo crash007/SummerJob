@@ -20,7 +20,7 @@ public class BusinessSectorJobDAO extends JobDAO<BusinessSectorJob>{
 		// TODO Auto-generated constructor stub
 	}
 
-	private static final Field JOB_MENTORS_RELATION = ReflectionUtils.getField(BusinessSectorJob.class, "mentors");
+	private static final Field JOB_MENTORS_RELATION = ReflectionUtils.getField(BusinessSectorJob.class, "mentor");
 	private static final Field JOB_MANAGER_RELATION = ReflectionUtils.getField(BusinessSectorJob.class, "manager");
 	private static final Field JOB_DRIVERS_LICENSE_TYPE_RELATION = ReflectionUtils.getField(BusinessSectorJob.class, "driversLicenseType");
 
@@ -42,8 +42,7 @@ public class BusinessSectorJobDAO extends JobDAO<BusinessSectorJob>{
 		return this.getByFieldAndBoolAndLastApplicationDayNotPassed("approved", true);
 	}
 	
-	public java.util.List<BusinessSectorJob> getByFieldAndBoolAndLastApplicationDayNotPassed(String field, boolean param) throws SQLException {
-		System.out.println("getByFieldAndBoolAndLastApplicationDayNotPassed i BusinessSectorJobDAO");
+	public java.util.List<BusinessSectorJob> getByFieldAndBoolAndLastApplicationDayNotPassed(String field, boolean param) throws SQLException {	
 		HighLevelQuery<BusinessSectorJob> query = new HighLevelQuery<BusinessSectorJob>();
 		query.addParameter(this.getParamFactory(field, Boolean.class).getParameter(param));
 		query.addParameter(this.getParamFactory("lastApplicationDay", Date.class).getParameter(new Date(Calendar.getInstance().getTimeInMillis()), QueryOperators.BIGGER_THAN_OR_EUALS));

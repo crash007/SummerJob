@@ -109,32 +109,6 @@
 						</div>
 					</div>
 				</div>
-				<div class="mgn-top8px row">
-					<div class="col-md-2">
-						<label>Förnamn</label>
-						<div>
-							<xsl:value-of select="BusinessSectorManager/firstname"></xsl:value-of>
-						</div>
-					</div>
-					<div class="col-md-2">
-						<label>Efternamn</label>
-						<div>
-							<xsl:value-of select="BusinessSectorManager/lastname"></xsl:value-of>
-						</div>
-					</div>
-					<div class="col-md-2">
-						<label>Telefonnummer</label>
-						<div>
-							<xsl:value-of select="BusinessSectorManager/mobilePhone"></xsl:value-of>
-						</div>
-					</div>
-					<div class="col-md-3">
-						<label>E-postadress</label>
-						<div>
-							<xsl:value-of select="BusinessSectorManager/email"></xsl:value-of>
-						</div>
-					</div>
-				</div>
 			</div>
 		</div>
 		<div class="panel panel-default">
