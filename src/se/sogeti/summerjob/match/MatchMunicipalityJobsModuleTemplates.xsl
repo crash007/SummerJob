@@ -16,18 +16,50 @@
 	
 	<xsl:template match="MatchMunicipalityJob">
 		<xsl:apply-templates select="MunicipalityJob"/>		
-		<xsl:apply-templates select="Area1AndGeoArea1Candidates" />	
-		<xsl:apply-templates select="Area1AndGeoArea2Candidates"/>		
-		<xsl:apply-templates select="Area1AndGeoArea3Candidates"/>
-		<xsl:apply-templates select="AnyAreaAndGeoArea1Candidates"/>
-		<xsl:apply-templates select="AnyAreaAndGeoArea2Candidates"/>
-		<xsl:apply-templates select="AnyAreaAndGeoArea3Candidates"/>
-		<xsl:apply-templates select="Area2AndGeoArea1Candidates"/>
-		<xsl:apply-templates select="Area2AndGeoArea2Candidates"/>
-		<xsl:apply-templates select="Area2AndGeoArea3Candidates"/>
-		<xsl:apply-templates select="Area3AndGeoArea1Candidates"/>
-		<xsl:apply-templates select="Area3AndGeoArea2Candidates"/>
-		<xsl:apply-templates select="Area3AndGeoArea3Candidates"/>
+		
+		<div class="candidates">
+			<xsl:apply-templates select="Area1AndGeoArea1Candidates" />	
+			<xsl:apply-templates select="Area1AndGeoArea2Candidates"/>		
+			<xsl:apply-templates select="Area1AndGeoArea3Candidates"/>
+			<xsl:apply-templates select="AnyAreaAndGeoArea1Candidates"/>
+			<xsl:apply-templates select="AnyAreaAndGeoArea2Candidates"/>
+			<xsl:apply-templates select="AnyAreaAndGeoArea3Candidates"/>
+			<xsl:apply-templates select="Area2AndGeoArea1Candidates"/>
+			<xsl:apply-templates select="Area2AndGeoArea2Candidates"/>
+			<xsl:apply-templates select="Area2AndGeoArea3Candidates"/>
+			<xsl:apply-templates select="Area3AndGeoArea1Candidates"/>
+			<xsl:apply-templates select="Area3AndGeoArea2Candidates"/>
+			<xsl:apply-templates select="Area3AndGeoArea3Candidates"/>
+		</div>
+		
+		<footer class="footer-offset">
+			
+		    
+		    <div class="navbar navbar-fixed-bottom navbar-bottom">
+		        <div class="container">
+		            <div class="navbar-collapse" id="footer-body">
+		               <div class="row">
+							<div class="col-xs-6 col-md-2">
+								<span class="navbar-info">Arbetsplats: <xsl:value-of select="MunicipalityJob/location"/></span>
+							</div>
+							
+							<div class="col-xs-6 col-md-3">
+								<span class="navbar-info">Avdelning: <xsl:value-of select="MunicipalityJob/department"/></span>
+							</div>
+							<div class="col-xs-6 col-md-2">
+								<span class="navbar-info">Period: <xsl:value-of select="MunicipalityJob/Period/name"/></span>					
+							</div>
+							<div class="col-xs-6 col-md-2">
+								<div class="navbar-info">Kvar att matcha: <span id="availableToMatch"><xsl:value-of select="MunicipalityJob/openApplications"/></span></div>					
+							</div>
+							<div class="col-xs-offset-10 col-md-offset-0">
+								<button class="btn btn-primary match-btn">Matcha</button>					
+							</div>
+						</div>		               
+		            </div>		          
+		        </div>
+		    </div>
+		</footer>
 	</xsl:template>
 	
 	 <xsl:template name="candidatesTableTemplate">
@@ -238,16 +270,17 @@
 			</div>
 	   		
 		   		<div class="row">
-			   		<div class="col-md-8 bold">
+			   		<div class="col-md-6 bold">
 			   			<a href="#" name="show-more">Visa mer</a> 
 			   			<a href="#" name="show-less" style="display:none">Minska</a>
 			   		</div>
-				<div class="col-md-4 bold">
-					<form name="match-worker">
-						<input type="hidden" name="application-id" value="{id}"/>
-						<button type="submit" class="btn btn-primary set-matched-btn common-button">Matcha</button>
-					</form>
-				</div>
+			   		
+			   		<div class="col-md-2 bold">					
+						Välj:						
+					</div>
+					<div class="col-md-4">					
+						<input type="checkbox" name="application-id" value="{id}"/>					
+					</div>
 			</div>
 		</div>
    			
@@ -256,7 +289,7 @@
 	<xsl:template match="MunicipalityJob">
 
 					
-					<input type="hidden" id="job-id" value="{id}"/>			
+					<input type="hidden" id="job-id" name="job-id" value="{id}"/>			
 					
 					<div class="row">
 						<div class="col-md-6 col-xs-12">

@@ -257,9 +257,9 @@ public class MatchMunicipalityJobsModule extends MatchCommon {
 			result.putField("message", "parameter application-id is missing");
 			JsonResponse.sendJsonResponse(result.toJson(), null, writer);
 		}
-		
+
 	}
-	
+
 	@RESTMethod(alias="match-worker.json", method="post")
 	public void addApplicationToJob(HttpServletRequest req, HttpServletResponse res, User user, URIParser uriParser) throws IOException{
 		log.info("Request for add-worker.json");
@@ -269,72 +269,78 @@ public class MatchMunicipalityJobsModule extends MatchCommon {
 		JsonResponse.initJsonResponse(res, writer, null);
 
 		Integer jobId = NumberUtils.toInt(req.getParameter("job-id"));
-
+		String[] applicationIds = req.getParameterValues("application-id");
 
 		if(jobId!=null){
-			String[] applicationIds = req.getParameterValues("application-id");
+
 			if(applicationIds!=null){
-			for(String appIdString : applicationIds){
-				Integer applicationId = NumberUtils.toInt(appIdString);
+				
+				try {
+				
+					MunicipalityJob job = municipalityJobDAO.getById(jobId);
 
-				if(applicationId!=null){
-					try {
-						log.debug("Getting application with id: "+applicationId);
-						MunicipalityJobApplication jobApplication = municipalityJobApplicationDAO.getByIdWithPersonApplications(applicationId);
-						MunicipalityJob job = municipalityJobDAO.getById(jobId);
+					if(job != null){
 
-						if(jobApplication!=null){
-							if(job!=null){
-								jobApplication.setStatus(ApplicationStatus.MATCHED);
-								jobApplication.setJob(job);
-								jobApplication.setPersonalMentor(null);						
-								jobApplication.setCallStatus(CallStatus.NONE);
-								jobApplication.setTimeForInformation(null);
-								municipalityJobApplicationDAO.save(jobApplication);
+						for(String appIdString : applicationIds){
+							Integer applicationId = NumberUtils.toInt(appIdString);
 
-								result.putField("status", "success");
-								result.putField("message", "Added job id:"+jobId+" to job application "+applicationId);
-								JsonResponse.sendJsonResponse(result.toJson(), null, writer);
+							if(applicationId != null){
+
+								log.debug("Getting application with id: "+applicationId);
+								MunicipalityJobApplication jobApplication = municipalityJobApplicationDAO.getByIdWithPersonApplications(applicationId);								
+
+								if(jobApplication!=null){
+
+									jobApplication.setStatus(ApplicationStatus.MATCHED);
+									jobApplication.setJob(job);
+									jobApplication.setPersonalMentor(null);						
+									jobApplication.setCallStatus(CallStatus.NONE);
+									jobApplication.setTimeForInformation(null);
+									municipalityJobApplicationDAO.save(jobApplication);
+
+									result.putField("status", "success");
+									result.putField("message", "Added job id:"+jobId+" to job application "+applicationId);
+									JsonResponse.sendJsonResponse(result.toJson(), null, writer);
+
+								}else{
+									log.info("No application found with id "+applicationId);
+									result.putField("status", "error");
+									result.putField("message", "No application found for id "+applicationId);
+									JsonResponse.sendJsonResponse(result.toJson(), null, writer);
+								}
 							}else{
-								log.info("No job found with id "+jobId);
-								result.putField("status", "error");
-								result.putField("message", "No job found for id "+applicationId);
+								log.warn("application-id is null when setting matched worker, jobId:"+jobId);
+								result.putField("status", "fail");
+								result.putField("message", "application-id is missing");
 								JsonResponse.sendJsonResponse(result.toJson(), null, writer);
 							}
-						}else{
-							log.info("No application found with id "+applicationId);
-							result.putField("status", "error");
-							result.putField("message", "No application found for id "+applicationId);
-							JsonResponse.sendJsonResponse(result.toJson(), null, writer);
 						}
-
-					} catch (SQLException e) {
-						// TODO Auto-generated catch block
-						log.error("Exception when getting application",e);
+					}else{
+						log.info("No job found with id "+jobId);
 						result.putField("status", "error");
-						result.putField("message", "Error when calling db");
+						result.putField("message", "No job found for id "+jobId);
 						JsonResponse.sendJsonResponse(result.toJson(), null, writer);
 					}
-				}else{
-					log.warn("application-id is null when setting matched worker, jobId:"+jobId);
-					result.putField("status", "fail");
-					result.putField("message", "application-id is missing");
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					log.error("Exception when calling db in Match module",e);
+					result.putField("status", "error");
+					result.putField("message", "Error when calling db");
 					JsonResponse.sendJsonResponse(result.toJson(), null, writer);
 				}
-			}
 			}else{
-				log.warn("No application-id's found when setting matched worker, jobId:"+jobId);
+				log.warn("No application-id's found when setting matched workers, jobId:"+jobId);
 				result.putField("status", "fail");
 				result.putField("message", "application-id's is missing");
 				JsonResponse.sendJsonResponse(result.toJson(), null, writer);
 			}
+
 		}else{
-			log.info("job-id was null when setting matched worker.");
+			log.info("Parameter job-id is null when setting matched worker.");
 			result.putField("status", "fail");
 			result.putField("message", "job-id is missing");
 			JsonResponse.sendJsonResponse(result.toJson(), null, writer);
 		}
-
 	}
 
 
