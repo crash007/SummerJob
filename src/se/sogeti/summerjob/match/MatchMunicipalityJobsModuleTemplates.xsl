@@ -177,7 +177,7 @@
 		   			<xsl:value-of select="lastname"/>
 	   			</div>
 				
-				<div class="col-xs-4 col-md-2 bold">Personnummer</div>
+				<div class="col-xs-5 col-md-2 bold">Personnummer</div>
 				<div class="col-md-2 social-number">
 					<xsl:value-of select="socialSecurityNumber"/>	   		
 	   			</div>
@@ -452,7 +452,7 @@
 														<div class="col-md-9 name"><xsl:value-of select="firstname"/><xsl:text> </xsl:text><xsl:value-of select="lastname"/></div>						
 													</div>
 													<div class="row">
-														<div class="col-xs-4 col-md-3 bold">Personnummer</div>
+														<div class="col-xs-5 col-md-3 bold">Personnummer</div>
 														<div class="col-md-9 social-number"><xsl:value-of select="socialSecurityNumber"/></div>
 													</div>
 													<div class="row">
@@ -577,7 +577,7 @@
 															<div class="col-md-9 name"><xsl:value-of select="firstname"/><xsl:text> </xsl:text><xsl:value-of select="lastname"/></div>						
 														</div>
 														<div class="row">
-															<div class="col-xs-4 col-md-3 bold">Personnummer</div>
+															<div class="col-xs-5 col-md-3 bold">Personnummer</div>
 															<div class="col-md-9 social-number"><xsl:value-of select="socialSecurityNumber"/></div>
 														</div>
 														
@@ -611,7 +611,7 @@
 									<div class="col-md-9 name"></div>						
 								</div>
 								<div class="row">
-									<div class="col-xs-4 col-md-3 bold">Personnummer</div>
+									<div class="col-xs-5 col-md-3 bold">Personnummer</div>
 									<div class="col-md-9 social-number"></div>
 								</div>
 								<div class="row">		
