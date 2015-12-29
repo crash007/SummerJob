@@ -6,17 +6,13 @@
 
 	<xsl:template match="Document">
 		<script>
-			var url = '
-			<xsl:value-of select="requestinfo/uri" />
-			';
-			var isOpen = '
-			<xsl:value-of select="MatchMunicipalityJob/MunicipalityJob/isOpen" />
-			';
+			var url = '<xsl:value-of select="requestinfo/uri" />';
+			
+			var isOpen = '<xsl:value-of select="MatchMunicipalityJob/MunicipalityJob/isOpen" />';
 		</script>
 		<h1 class="header-match">Matcha jobb med ansökningar</h1>
 		<xsl:apply-templates select="MatchMunicipalityJob" />
-		<!-- <xsl:apply-templates select="MatchMunicipalityApplication"/> -->
-
+		
 	</xsl:template>
 
 	<xsl:template match="MatchMunicipalityJob">
@@ -340,18 +336,17 @@
 		<input type="hidden" id="job-id" name="job-id" value="{id}" />
 
 		<div class="row">
-			<div class="col-md-6 col-xs-6">
-				<button
-					class="col-md-6 col-xs-12 generate-workplace-document-button btn btn-primary"
-					id="generate-workplace-document_{id}">Generera dokument till arbetsplatsen</button>				
+			<div class="col-md-3 col-xs-10">
+				<button class="generate-workplace-document-button btn btn-primary btn-block"
+					id="generate-workplace-document_{id}">Generera dokument till arbetsplatsen</button>
+			</div>
+			<div class="col-md-3 col-xs-10 col-xs-top-margin">				
 				<xsl:choose>
 					<xsl:when test="isOpen = 'true'">
-						<button class="col-md-3 col-xs-12 close-job-button btn btn-danger mgn-top8px"
-							id="close-job_{id}">Stäng annons</button>
+						<button class="close-job-button btn btn-danger btn-block" id="close-job_{id}">Stäng annons</button>
 					</xsl:when>
 					<xsl:otherwise>
-						<button class="col-md-3 col-xs-12 open-job-button btn btn-success mgn-top8px"
-							id="open-job_{id}">Öppna annons</button>
+						<button class="open-job-button btn btn-success btn-block" id="open-job_{id}">Öppna annons</button>
 					</xsl:otherwise>
 				</xsl:choose>
 			</div>
