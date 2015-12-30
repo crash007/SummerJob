@@ -147,7 +147,7 @@
 				<div class="col-xs-1 more-information-arrow pull-right"><span class="arrow-down glyphicon glyphicon-chevron-down"></span><span class="arrow-up glyphicon glyphicon-chevron-up hidden"></span></div>
 			</div>
 			<div class="row hidden more-information">
-				<div style="margin: 8px; padding: 8px" class="well">
+				<div class="well more-information-container">
 					<div class="row">
 						<div class="col-xs-4 bold">Ansökningstyp</div>
 						<div class="col-xs-6">
@@ -216,7 +216,7 @@
 				<div class="col-xs-1 more-information-arrow pull-right"><span class="arrow-down glyphicon glyphicon-chevron-down"></span><span class="arrow-up glyphicon glyphicon-chevron-up hidden"></span></div>
 			</div>
 			<div class="row hidden more-information">
-				<div style="margin: 8px; padding: 8px" class="well">
+				<div class="more-information-container well">
 					<div class="row">
 						<div class="col-xs-4 bold">Kontrollerad av</div>
 						<div class="col-xs-6">

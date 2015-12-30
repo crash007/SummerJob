@@ -58,7 +58,7 @@
 						</div>
 						
 						<div class="row hidden more-information">
-							<div style="margin: 8px; padding: 8px" class="well">
+							<div class="more-information-container well">
 								<div class="row">
 									<div class="col-xs-2 bold">Organisation</div>
 									<div class="col-xs-3"><xsl:value-of select="organization" /></div>
@@ -118,7 +118,7 @@
 						</div>
 						
 						<div class="row hidden more-information">
-							<div style="margin: 8px; padding: 8px" class="well">
+							<div class="well more-information-container">
 								<div class="row">
 									<div class="col-xs-2 bold">Organisation</div>
 									<div class="col-xs-3"><xsl:value-of select="organization" /></div>
@@ -171,7 +171,7 @@
 							<div class="col-md-1"><a href="{matchURL}"><strong>Öppna</strong></a></div>
 						</div>
 						<div class="row hidden more-information">
-							<div style="margin: 8px; padding: 8px" class="well">
+							<div class="more-information-container well">
 								<div class="row">
 									<div class="col-xs-2 bold">Organisation</div>
 									<div class="col-xs-3"><xsl:value-of select="organization" /></div>
@@ -263,7 +263,7 @@
 						</div>
 						
 						<div class="row hidden more-information">
-							<div style="margin: 8px; padding: 8px" class="well">
+							<div class="more-information-container well">
 								<div class="row">
 									<div class="col-xs-3 bold">Sista ansökningsdag</div>
 									<div class="col-xs-3"><xsl:value-of select="lastApplicationDay" /></div>
@@ -319,7 +319,7 @@
 						</div>
 						
 						<div class="row hidden more-information">
-							<div style="margin: 8px; padding: 8px" class="well">
+							<div class="more-information-container well">
 								<div class="row">
 									<div class="col-xs-3 bold">Sista ansökningsdag</div>
 									<div class="col-xs-3"><xsl:value-of select="lastApplicationDay" /></div>
@@ -371,7 +371,7 @@
 						</div>
 						
 						<div class="row hidden more-information">
-							<div style="margin: 8px; padding: 8px" class="well">
+							<div class="more-information-container well">
 								<div class="row">
 									<div class="col-xs-3 bold">Sista ansökningsdag</div>
 									<div class="col-xs-3"><xsl:value-of select="lastApplicationDay" /></div>
@@ -427,7 +427,7 @@
 						</div>
 						
 						<div class="row hidden more-information">
-							<div style="margin: 8px; padding: 8px" class="well">
+							<div class="more-information-container well">
 								<div class="row">
 									<div class="col-xs-3 bold">Sista ansökningsdag</div>
 									<div class="col-xs-3"><xsl:value-of select="lastApplicationDay" /></div>
