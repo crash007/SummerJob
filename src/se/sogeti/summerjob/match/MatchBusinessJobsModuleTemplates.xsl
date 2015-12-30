@@ -18,6 +18,7 @@
 	<xsl:template match="MatchBusinessJob">
 		<xsl:apply-templates select="BusinessSectorJob" />
 		
+
 		<div class="candidates-wrapper">
 			<xsl:apply-templates select="GoodCandidates" />
 			<xsl:apply-templates select="BadCandidates" />
@@ -30,12 +31,14 @@
 				<div class="container">
 					<div class="navbar-collapse" id="footer-body">
 						<div class="row">
+
 							<div class="col-xs-6 col-md-3 mgn-top1px">
 								<span class="navbar-info">
 									Företag:
 									<xsl:value-of select="BusinessSectorJob/company" />
 								</span>
 							</div>
+
 
 							<div class="col-xs-6 col-md-5 mgn-top1px">
 								<span class="navbar-info">
@@ -51,6 +54,7 @@
 									</span>
 								</div>
 							</div>
+
 							<div class="col-xs-6 col-md-2 col-md-offset-0">
 								<button class="btn btn-primary match-btn pull-right btn-mgn-top">Matcha</button>
 							</div>
@@ -337,12 +341,14 @@
 
 						<div class="mgn-top12px row">
 							<div class="col-md-3 col-xs-10">
+
 								<button class="generate-workplace-document-button btn btn-primary"
 									id="generate-workplace-document_{id}">Generera dokument till arbetsplatsen</button>
 							</div>
 							<div class="col-md-3 col-xs-10 col-xs-top-margin">				
 								<xsl:choose>
 									<xsl:when test="isOpen = 'true'">
+
 										<button class="close-job-button btn btn-danger" id="close-job_{id}">Stäng annons</button>
 									</xsl:when>
 									<xsl:otherwise>
