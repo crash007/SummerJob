@@ -171,8 +171,8 @@
 				
 				<button id="save-application-options" type="button" class="btn btn-success">Spara</button>
 				
-				<a href="{/Document/ApplicationInfo/listJobApplicationsURL}" type="button" class="float-rgt mgn-lft8px btn btn-info">Gå tillbaka</a>
-				<a href="{/Document/ApplicationInfo/editBusinessAppURL}" id="edit-job-button" type="button" class="float-rgt mgn-lft8px btn btn-warning">Redigera</a>
+				<a href="{/Document/ApplicationInfo/listJobApplicationsURL}" type="button" class="pull-right mgn-lft8px btn btn-info">Gå tillbaka</a>
+				<a href="{/Document/ApplicationInfo/editBusinessAppURL}" id="edit-job-button" type="button" class="pull-right mgn-lft8px btn btn-warning">Redigera</a>
 			</div>
 		</div>
 	</xsl:template>

@@ -301,12 +301,12 @@
 						<span class="message"></span>
 					</div>				  		
 		  									
-					<button id="preview-business-job-application" type="submit" class="btn-mgn-top float-rgt mgn-lft8px btn btn-success">
+					<button id="preview-business-job-application" type="submit" class="btn-mgn-top pull-right mgn-lft8px btn btn-success">
 		  				Förhandsgranska
 		  			</button>
 					
 					<xsl:if test="BusinessSectorJobApplication">
-	  					<a href="{manageAppURL}?appId={BusinessSectorJobApplication/id}" class="btn-mgn-top float-rgt btn btn-primary">Tillbaka</a>
+	  					<a href="{manageAppURL}?appId={BusinessSectorJobApplication/id}" class="btn-mgn-top pull-right btn btn-primary">Tillbaka</a>
 	  				</xsl:if>
 					<span class="glyphicon glyphicon-ok collapse" aria-hidden="true"></span><span class="glyphicon glyphicon-remove collapse" aria-hidden="true"></span>
 				</div>
@@ -406,12 +406,12 @@
 					</div>
 					<xsl:choose>
 						<xsl:when test="BusinessSectorJobApplication">
-							<button id="submit-business-job-application" type="submit" class="btn-mgn-top float-rgt mgn-lft8px btn btn-success">
+							<button id="submit-business-job-application" type="submit" class="btn-mgn-top pull-right mgn-lft8px btn btn-success">
 		  						Spara
 		  					</button>
 						</xsl:when>
 						<xsl:otherwise>
-							<button id="submit-business-job-application" type="submit" class="btn-mgn-top float-rgt mgn-lft8px btn btn-success">
+							<button id="submit-business-job-application" type="submit" class="btn-mgn-top pull-right mgn-lft8px btn btn-success">
 		  						Skicka
 		  					</button>
 						</xsl:otherwise>

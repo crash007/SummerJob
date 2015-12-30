@@ -144,7 +144,7 @@
 						<span>(K)</span>					
 					</xsl:if>
 				</div>
-				<div class="col-xs-1 more-information-arrow float-rgt"><span class="arrow-down glyphicon glyphicon-chevron-down"></span><span class="arrow-up glyphicon glyphicon-chevron-up hidden"></span></div>
+				<div class="col-xs-1 more-information-arrow pull-right"><span class="arrow-down glyphicon glyphicon-chevron-down"></span><span class="arrow-up glyphicon glyphicon-chevron-up hidden"></span></div>
 			</div>
 			<div class="row hidden more-information">
 				<div style="margin: 8px; padding: 8px" class="well">
@@ -213,7 +213,7 @@
 						<span>(K)</span>					
 					</xsl:if>
 				</div>
-				<div class="col-xs-1 more-information-arrow float-rgt"><span class="arrow-down glyphicon glyphicon-chevron-down"></span><span class="arrow-up glyphicon glyphicon-chevron-up hidden"></span></div>
+				<div class="col-xs-1 more-information-arrow pull-right"><span class="arrow-down glyphicon glyphicon-chevron-down"></span><span class="arrow-up glyphicon glyphicon-chevron-up hidden"></span></div>
 			</div>
 			<div class="row hidden more-information">
 				<div style="margin: 8px; padding: 8px" class="well">

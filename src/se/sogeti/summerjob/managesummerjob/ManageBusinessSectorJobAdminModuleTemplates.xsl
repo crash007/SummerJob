@@ -254,9 +254,9 @@
 				
 				<button id="save-job-options" type="button" class="btn btn-success">Spara</button>
 				
-				<a href="{listJobsURL}?business=true" type="button" class="float-rgt mgn-lft8px btn btn-info">Gå tillbaka</a>
-				<button id="mark-job-as-initiated-button" type="button" class="float-rgt mgn-lft8px btn btn-primary">Markera som påbörjad</button>
-				<a href="{editURL}?jobId={BusinessSectorJob/id}" id="edit-job-button" type="button" class="float-rgt mgn-lft8px btn btn-warning">Redigera</a>
+				<a href="{listJobsURL}?business=true" type="button" class="pull-right mgn-lft8px btn btn-info">Gå tillbaka</a>
+				<button id="mark-job-as-initiated-button" type="button" class="pull-right mgn-lft8px btn btn-primary">Markera som påbörjad</button>
+				<a href="{editURL}?jobId={BusinessSectorJob/id}" id="edit-job-button" type="button" class="pull-right mgn-lft8px btn btn-warning">Redigera</a>
 			</div>
 		</div>
 	</xsl:template>

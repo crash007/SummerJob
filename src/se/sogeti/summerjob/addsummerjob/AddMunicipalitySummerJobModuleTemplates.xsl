@@ -385,11 +385,11 @@
 							<span class="message"></span>
 						</div>
 						
-			  			<button id="preview-municipality-job" type="submit" class="btn-mgn-top float-rgt mgn-lft8px btn btn-success">
+			  			<button id="preview-municipality-job" type="submit" class="btn-mgn-top pull-right mgn-lft8px btn btn-success">
 							Förhandsgranska
 			  			</button>
 			  			<xsl:if test="MunicipalityJob">
-			  				<a href="{manageJobURL}?jobId={MunicipalityJob/id}" class="btn-mgn-top float-rgt btn btn-primary">Tillbaka</a>
+			  				<a href="{manageJobURL}?jobId={MunicipalityJob/id}" class="btn-mgn-top pull-right btn btn-primary">Tillbaka</a>
 			  			</xsl:if>
 						<span class="glyphicon glyphicon-ok collapse" aria-hidden="true"></span><span class="glyphicon glyphicon-remove collapse" aria-hidden="true"></span>
 					</div>
@@ -605,7 +605,7 @@
 <!-- 								<span class="message"></span> -->
 <!-- 							</div> -->
 					
-		  			<button id="submit-municipality-job" class="btn-mgn-top float-rgt mgn-lft8px btn btn-success">
+		  			<button id="submit-municipality-job" class="btn-mgn-top pull-right mgn-lft8px btn btn-success">
 		  				<xsl:choose>
 		  					<xsl:when test="MunicipalityJob">Spara</xsl:when>
 		  					<xsl:otherwise>Skicka</xsl:otherwise>

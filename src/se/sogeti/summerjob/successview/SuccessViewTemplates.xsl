@@ -19,7 +19,7 @@
 				<p style="margin-left: 16px; margin-bottom: 16px;"><xsl:value-of select="message" /></p>
 				<xsl:if test="newUrl and newText">
 					<div class="row">
-						<a style="margin-right: 16px;" class="float-rgt btn btn-primary" href="{newUrl}"><strong><xsl:value-of select="newText" /></strong></a>
+						<a style="margin-right: 16px;" class="pull-right btn btn-primary" href="{newUrl}"><strong><xsl:value-of select="newText" /></strong></a>
 					</div>
 				</xsl:if>
 			</div>
