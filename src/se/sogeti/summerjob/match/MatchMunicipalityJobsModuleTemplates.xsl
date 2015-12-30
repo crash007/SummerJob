@@ -180,7 +180,7 @@
 	</xsl:template>
 
 	<xsl:template match="MunicipalityJobApplication">
-		<div style="margin-bottom: 8px" class="candidate">
+		<div class="mgn-btm8px candidate">
 
 			<div class="row">
 				<div class="col-xs-5 col-md-2 bold">Ranking</div>
