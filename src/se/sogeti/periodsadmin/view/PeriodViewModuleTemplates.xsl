@@ -31,7 +31,7 @@
 									</tbody>
 								</table>
 							</fieldset>
-							<input class="btn btn-primary" style="margin-top: 4px;" id="salary-save" type="submit" value="Spara"></input>
+							<input class="btn btn-primary mgn-top4px" id="salary-save" type="submit" value="Spara"></input>
 						</form>
 					</div>
 					<div id="save-salary-failed" class="alert alert-danger" role="alert">
@@ -88,7 +88,7 @@
 									</tbody>
 								</table>
 							</fieldset>
-							<input class="btn btn-primary" style="margin-top: 4px;" id="accounting-save" type="submit" value="Spara"></input>
+							<input class="btn btn-primary mgn-top4px" id="accounting-save" type="submit" value="Spara"></input>
 						</form>
 					</div>
 					<div id="save-accounting-failed" class="alert alert-danger" role="alert">
@@ -113,7 +113,7 @@
 					<div class="panel-body">
 						<form id="place-for-information-form">
 							<input type="text" class="form-control" maxlength="255" name="placeforinformation" value="{PlaceForInformation/name}"/>
-							<input class="btn btn-primary" style="margin-top: 8px;" id="place-save-changes" type="submit" value="Spara"></input>
+							<input class="btn btn-primary mgn-top8px" id="place-save-changes" type="submit" value="Spara"></input>
 						</form>
 						<div id="save-place-failed" class="alert alert-danger" role="alert">
 							<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
@@ -158,7 +158,7 @@
 									</tbody>
 								</table>
 							</fieldset>
-							<input class="btn btn-primary" style="margin-top: 4px;" id="contact-person-save" type="submit" value="Spara"></input>
+							<input class="btn btn-primary mgn-top4px" id="contact-person-save" type="submit" value="Spara"></input>
 						</form>
 					</div>
 					<div id="save-contact-failed" class="alert alert-danger" role="alert">
@@ -193,7 +193,7 @@
 										<xsl:apply-templates select="Periods/Period"/>
 									</tbody>
 								</table>
-							<input class="btn btn-primary" style="margin-top: 4px;" id="periods-save-changes" type="submit" value="Spara ändringar"></input>
+							<input class="btn btn-primary mgn-top4px" id="periods-save-changes" type="submit" value="Spara ändringar"></input>
 							</fieldset>				
 						</form>
 						<div id="save-period-failed" class="alert alert-danger" role="alert">
@@ -211,7 +211,6 @@
 			
 				<div class="panel panel-default">
 					<div class="panel-heading">
-<!-- 						<h3 style="margin-top: 24px">Lägg till ny period</h3> -->
 						<h3 class="panel-title">Lägg till ny period</h3>
 					</div>
 					<div class="panel-body">
@@ -231,7 +230,7 @@
 							</div>
 							<div class="form-group col-md-1">
 								<label></label>
-								<input class="btn btn-primary" style="margin-top: 4px;" id="period-save-new" type="submit" value="Spara"></input>
+								<input class="btn btn-primary mgn-top4px" id="period-save-new" type="submit" value="Spara"></input>
 								<span class="glyphicon glyphicon-ok collapse" aria-hidden="true"></span><span class="glyphicon glyphicon-remove collapse" aria-hidden="true"></span>
 							</div> 	
 						</form>
