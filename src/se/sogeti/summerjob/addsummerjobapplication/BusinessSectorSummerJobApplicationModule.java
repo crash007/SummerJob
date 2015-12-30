@@ -41,23 +41,23 @@ import se.unlogic.webutils.http.RequestUtils;
 import se.unlogic.webutils.http.URIParser;
 
 public class BusinessSectorSummerJobApplicationModule extends AddSummerJobApplication<BusinessSectorJobApplication>{
-	
-	
+
+
 	private BusinessSectorJobApplicationDAO jobApplicationDAO;
 	private BusinessSectorJobDAO jobDAO;
 	private DriversLicenseTypeDAO driversLicenseTypeDAO;
-	
+
 	@ModuleSetting
 	@TextFieldSettingDescriptor(description="Relativ URL till den plats där ansökan hanteras", name="ManageApplicationURL")
 	String manageApplicationURL = "manage-business-app";
 
-	
+
 	@Override
 	protected void createDAOs(DataSource dataSource) throws Exception {
 		super.createDAOs(dataSource);
-		
+
 		HierarchyAnnotatedDAOFactory hierarchyDaoFactory = new HierarchyAnnotatedDAOFactory(dataSource, systemInterface);
-		
+
 		jobApplicationDAO = new BusinessSectorJobApplicationDAO(dataSource, BusinessSectorJobApplication.class, hierarchyDaoFactory);
 		jobDAO = new BusinessSectorJobDAO(dataSource, BusinessSectorJob.class, hierarchyDaoFactory);
 		driversLicenseTypeDAO = new DriversLicenseTypeDAO(dataSource, DriversLicenseType.class, hierarchyDaoFactory);
@@ -66,17 +66,17 @@ public class BusinessSectorSummerJobApplicationModule extends AddSummerJobApplic
 	@Override
 	public ForegroundModuleResponse defaultMethod(HttpServletRequest req, HttpServletResponse res, User user,
 			URIParser uriParser) throws Throwable {
-		
+
 		Integer jobId = NumberUtils.toInt(req.getParameter("jobId"));
 		Integer appId = NumberUtils.toInt(req.getParameter("appId"));
-		
+
 		Document doc = XMLUtils.createDomDocument();
 		Element element = doc.createElement("Document");
 		element.appendChild(RequestUtils.getRequestInfoAsXML(doc, req, uriParser));
 		element.appendChild(this.sectionInterface.getSectionDescriptor().toXML(doc));
 		element.appendChild(this.moduleDescriptor.toXML(doc));
 		doc.appendChild(element);
-		
+
 		if(jobId!=null){
 			BusinessSectorJob job = jobDAO.getById(jobId);
 			log.debug(job);
@@ -84,7 +84,7 @@ public class BusinessSectorSummerJobApplicationModule extends AddSummerJobApplic
 				Element jobInfo = doc.createElement("JobInfo");
 				XMLUtils.append(doc, jobInfo, job);
 				doc.getFirstChild().appendChild(jobInfo);
-	
+
 				Element jobApplication = doc.createElement("JobApplicationForm");
 				XMLUtils.appendNewElement(doc, jobApplication, "manageAppURL", manageApplicationURL);
 				XMLUtils.appendNewElement(doc, jobApplication, "jobId", job.getId());
@@ -93,26 +93,26 @@ public class BusinessSectorSummerJobApplicationModule extends AddSummerJobApplic
 					app = jobApplicationDAO.getById(appId);
 					XMLUtils.append(doc, jobApplication, app);
 				}
-				
-	
+
+
 				XMLUtils.append(doc, jobApplication, "DriversLicenseTypes",driversLicenseTypeDAO.getAll());
-			
+
 				doc.getFirstChild().appendChild(jobApplication);
 			}
-			
+
 		} else {
 			Element jobList = doc.createElement("JobList");
 			List<BusinessSectorJob> jobs = jobDAO.getAllApproved();		
 			XMLUtils.append(doc, jobList,jobs);
 			doc.getFirstChild().appendChild(jobList);
 		}
-		
+
 		return new SimpleForegroundModuleResponse(doc);
 	}
-	
+
 	@RESTMethod(alias="save/businessapplication.json", method="post")
 	public void saveApplication(HttpServletRequest req, HttpServletResponse res, User user, URIParser uriParser) throws IOException, SQLException {
-			
+
 		MultipartRequest requestWrapper = null;
 
 		try {
@@ -126,10 +126,10 @@ public class BusinessSectorSummerJobApplicationModule extends AddSummerJobApplic
 
 			Integer jobId = NumberUtils.toInt(requestWrapper.getParameter("jobId"));
 			log.info("Start saving application for jobId: "+jobId);
-			
+
 			BusinessSectorJob job = null;
 			try {
-				job = jobDAO.getByIdWithApplications(jobId);
+				job = jobDAO.getById(jobId);
 			} catch (SQLException e1) {
 				log.error(e1);
 				JsonResponse.sendJsonResponse("{\"status\":\"error\", \"message\":\"Databasfel. Kunde inte hämta jobbet som ansökan ska tillhöra.\"}", callback, writer);
@@ -142,22 +142,24 @@ public class BusinessSectorSummerJobApplicationModule extends AddSummerJobApplic
 
 				if (appId != null) {
 					try {
-//						app = jobApplicationDAO.getByIdWithJob(appId);
 						app = jobApplicationDAO.getByIdWithJobAndPersonApplications(appId);
+						if(app==null){
+							log.warn("Ingen ansökan med id="+appId+" existerar i db.");
+							JsonResponse.sendJsonResponse("{\"status\":\"error\", \"message\":\"Ingen ansökan med id="+appId+".\"}", callback, writer);
+							return;
+						}
 					} catch (SQLException e) {
 						log.error(e);
 						JsonResponse.sendJsonResponse("{\"status\":\"error\", \"message\":\"Databasfel. Det går inte att hämta upp den ansökan som ska ändras.\"}", callback, writer);
 						return;
 					}
-				}
-
-				// If this is a new application or if getApplicationsFromJob returned null
-				if (app == null) {
+				}else{
 					app = new BusinessSectorJobApplication();
 				}
 
+
 				String socialSecurityNumber = requestWrapper.getParameter("socialSecurityNumber");
-				
+
 				if(!validateSocialSecurityNumber(writer, callback, socialSecurityNumber)){
 					return;
 				}
@@ -167,21 +169,21 @@ public class BusinessSectorSummerJobApplicationModule extends AddSummerJobApplic
 				createJobApplication(app, requestWrapper, person);
 				automaticControllAndApprove(app);
 
-			
-					Integer typeId = NumberUtils.toInt(requestWrapper.getParameter("driversLicenseType"));
-					if (typeId == null) {
-						JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Om du har körkort måste du ange en körkortstyp\"}", callback, writer);
-						return;
-					}
-					DriversLicenseType type = null;
-					try {
-						type = driversLicenseTypeDAO.getTypeById(typeId);
-						app.setDriversLicenseType(type);
-					} catch (SQLException e1) {
-						log.error(e1);
-						JsonResponse.sendJsonResponse("{\"status\":\"error\", \"message\":\"Databasfel. Kunde inte hämta körkortstypen.\"}", callback, writer);
-						return;
-					}				
+
+				Integer typeId = NumberUtils.toInt(requestWrapper.getParameter("driversLicenseType"));
+				if (typeId == null) {
+					JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Om du har körkort måste du ange en körkortstyp\"}", callback, writer);
+					return;
+				}
+				DriversLicenseType type = null;
+				try {
+					type = driversLicenseTypeDAO.getTypeById(typeId);
+					app.setDriversLicenseType(type);
+				} catch (SQLException e1) {
+					log.error(e1);
+					JsonResponse.sendJsonResponse("{\"status\":\"error\", \"message\":\"Databasfel. Kunde inte hämta körkortstypen.\"}", callback, writer);
+					return;
+				}				
 
 				if(!validatePersonalInformation(writer, callback, app)){
 					return;
@@ -196,34 +198,35 @@ public class BusinessSectorSummerJobApplicationModule extends AddSummerJobApplic
 					return;
 				}
 
-				if (app.getId() == null) {
-					if(job.getApplications() != null) {
-						job.getApplications().add(app);
-					} else {
-						List<BusinessSectorJobApplication> appliedApplications = new ArrayList<BusinessSectorJobApplication>();
-						appliedApplications.add(app);
-						job.setApplications(appliedApplications);
-					}
-				}
-				
+				//				if (app.getId() == null) {
+				//					if(job.getApplications() != null) {
+				//						job.getApplications().add(app);
+				//					} else {
+				//						List<BusinessSectorJobApplication> appliedApplications = new ArrayList<BusinessSectorJobApplication>();
+				//						appliedApplications.add(app);
+				//						job.setApplications(appliedApplications);
+				//					}
+				//				}
+				app.setJob(job);
+
 				FileItem fileItem = requestWrapper.getFile(0);
 				if (!StringUtils.isEmpty(fileItem.getName())) {
 					saveCv(app,fileItem,job.getId()+"_"+app.getSocialSecurityNumber()+"_"+fileItem.getName(),writer, callback);
 				} 
-				
+
 				if (app.getId() == null) {
 					if (user != null && user.getUsername() != null) {
 						app.setAddedByUser(user.getUsername());
 					}
 				}
-				
+
 				setPersonApplications(app);
 
 				try {
 					log.info("Påbörjar sparning av näringslivsansökan");
 					if (app.getId() == null) {
 						log.debug("Det är en ny ansökan");
-						jobDAO.save(job);
+						jobApplicationDAO.save(app);
 
 						JsonResponse.sendJsonResponse("{\"status\":\"success\", \"message\":\"Din ansökan har nu sparats.\"}", callback, writer);
 					} else {
@@ -237,7 +240,7 @@ public class BusinessSectorSummerJobApplicationModule extends AddSummerJobApplic
 					JsonResponse.sendJsonResponse("{\"status\":\"error\", \"message\":\"Databasfel. Ansökan kunde inte sparas.\"}", callback, writer);
 				}
 			} else {
-				JsonResponse.sendJsonResponse("{\"status\":\"error\", \"message\":\"Något gick fel när ansökan skulle sparas.\"}", callback, writer);
+				JsonResponse.sendJsonResponse("{\"status\":\"error\", \"message\":\"Inget jobb med det id="+jobId+".\"}", callback, writer);
 			}
 		} catch (FileUploadException e2) {
 			// TODO Auto-generated catch block
@@ -245,20 +248,4 @@ public class BusinessSectorSummerJobApplicationModule extends AddSummerJobApplic
 		}
 	}
 
-	
-
-	
-	
-//	private BusinessSectorJobApplication getApplicationFromJob(List<BusinessSectorJobApplication> applications, Integer applicationId) {
-//		if (applicationId == null || applications == null) {
-//			return null;
-//		}
-//		
-//		for (BusinessSectorJobApplication app : applications) {
-//			if (app.getId().intValue() == applicationId.intValue()) {
-//				return app;
-//			}
-//		}
-//		return null;
-//	}
 }
