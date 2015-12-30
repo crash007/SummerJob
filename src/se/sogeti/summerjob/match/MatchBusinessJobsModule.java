@@ -109,9 +109,7 @@ public class MatchBusinessJobsModule extends MatchCommon {
 				if(job.getApplications()!=null){
 					Integer matchedApplications = FormUtils.countApplications(job.getApplications(), ApplicationStatus.MATCHED);
 					job.setMatchedApplications(matchedApplications);
-					//job.setAssignedApplications(FormUtils.countApplications(job.getApplications(), ApplicationStatus.ASSIGNED));
 					job.setOpenApplications(job.getNumberOfWorkersNeeded() - matchedApplications);
-					//XMLUtils.append(doc, doc.createElement("AppointedApplications"), job.getApplications());
 					
 				}else{
 					job.setOpenApplications(job.getNumberOfWorkersNeeded());
@@ -207,55 +205,58 @@ public class MatchBusinessJobsModule extends MatchCommon {
 	@RESTMethod(alias="match-worker.json", method="post")
 	public void addApplicationToJob(HttpServletRequest req, HttpServletResponse res, User user, URIParser uriParser) throws IOException{
 		log.info("Request for add-worker.json");
-		
+
 		PrintWriter writer = res.getWriter();
 		JsonObject result = new JsonObject();
 		JsonResponse.initJsonResponse(res, writer, null);
-		Integer applicationId = NumberUtils.toInt(req.getParameter("application-id"));
-		Integer jobId = NumberUtils.toInt(req.getParameter("job-id"));
-		
-		if(applicationId!=null && jobId!=null){
-			try {
-				log.debug("Getting application with id: "+applicationId);
-				BusinessSectorJobApplication jobApplication = businessJobApplicationDAO.getByIdWithJobAndPersonApplications(applicationId);
-				BusinessSectorJob job = businessJobDAO.getByIdWithApplications(jobId);
-				
-				if(jobApplication!=null){
-					if(job!=null){
-						jobApplication.setStatus(ApplicationStatus.MATCHED);
-						jobApplication.setJob(job);
-						businessJobApplicationDAO.save(jobApplication);
-						
-						result.putField("status", "success");
-						result.putField("message", "Added job id:"+jobId+" to job application "+applicationId);
-						JsonResponse.sendJsonResponse(result.toJson(), null, writer);
-					}else{
-						log.info("No job found with id "+jobId);
+
+		String[] applicationIdStrings =req.getParameterValues("application-id");
+
+		if(applicationIdStrings!=null){
+			for(String appIdStr:applicationIdStrings){
+				Integer applicationId = NumberUtils.toInt(appIdStr);
+
+
+				if(applicationId!=null){
+					try {
+						log.debug("Getting application with id: "+applicationId);
+						BusinessSectorJobApplication jobApplication = businessJobApplicationDAO.getByIdWithJobAndPersonApplications(applicationId);
+
+
+						if(jobApplication!=null){
+
+							jobApplication.setStatus(ApplicationStatus.MATCHED);
+
+							businessJobApplicationDAO.save(jobApplication);
+
+							result.putField("status", "success");
+							result.putField("message", "Appliction with id="+applicationId+" is changed to matched");
+							JsonResponse.sendJsonResponse(result.toJson(), null, writer);
+
+						}else{
+							log.info("No application found with id "+applicationId);
+							result.putField("status", "error");
+							result.putField("message", "No application found for id "+applicationId);
+							JsonResponse.sendJsonResponse(result.toJson(), null, writer);
+						}
+
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						log.error("Exception when getting application",e);
 						result.putField("status", "error");
-						result.putField("message", "No job found for id "+applicationId);
+						result.putField("message", "Error when calling db");
 						JsonResponse.sendJsonResponse(result.toJson(), null, writer);
 					}
 				}else{
-					log.info("No application found with id "+applicationId);
-					result.putField("status", "error");
-					result.putField("message", "No application found for id "+applicationId);
+					log.info("Parameter application-id is not a number for value="+appIdStr+".");
+					result.putField("status", "fail");
+					result.putField("message", "parameter application-id is not a number for "+appIdStr+".");
 					JsonResponse.sendJsonResponse(result.toJson(), null, writer);
 				}
-				
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				log.error("Exception when getting application",e);
-				result.putField("status", "error");
-				result.putField("message", "Error when calling db");
-				JsonResponse.sendJsonResponse(result.toJson(), null, writer);
 			}
-		}else{
-			log.info("Parameter id was null for job or application.");
-			result.putField("status", "fail");
-			result.putField("message", "parameter id is missing for job or application");
-			JsonResponse.sendJsonResponse(result.toJson(), null, writer);
+
 		}
-		
+
 	}
 	
 	
@@ -327,7 +328,7 @@ public class MatchBusinessJobsModule extends MatchCommon {
 				} catch (SQLException e) {
 					log.error(e);
 					result.putField("status", "fail");
-					result.putField("message", "Could not update the ranking");
+					result.putField("message", "Could not update the ranking for application with id="+appId);
 					JsonResponse.sendJsonResponse(result.toJson(), null, writer);
 					return;
 				}
@@ -357,7 +358,7 @@ public class MatchBusinessJobsModule extends MatchCommon {
 			} catch (SQLException e){
 				log.error("Database error while trying to change status on this job.", e);
 				result.putField("status", "fail");
-				result.putField("message", "Database error while trying to close the work.");
+				result.putField("message", "Database error while changing job status.");
 				JsonResponse.sendJsonResponse(result.toJson(), null, writer);
 				return;
 			}
