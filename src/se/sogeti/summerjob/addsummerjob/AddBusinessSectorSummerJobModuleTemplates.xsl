@@ -70,7 +70,7 @@
 				    		</div>
 						</div>
 				  		
-				  		<div style="margin-top: 8px;">
+				  		<div class="mgn-top8px">
 				  			<label>Ange kontaktperson på arbetsplatsen <span style="font-weight: normal; font-size: 90%;"><i>(Förnamn, efternamn och telefonnummer krävs för att en kontaktperson ska sparas)</i></span></label>
 				  			<div class="row">
 								<div class="form-group col-md-3">
@@ -101,32 +101,6 @@
 									<p class="help-block with-errors">E-post till kontaktperson på arbetsplatsen</p>
 								</div>
 							</div>
-<!-- 				  			<div id="mentors-wrapper"> -->
-<!-- 								<xsl:for-each select="BusinessSectorJob/mentors/BusinessSectorMentor"> -->
-<!-- 									<div class="row collapse in" style="margin-bottom: 8px;"> -->
-<!-- 										<input style="display: none;" id="mentor-id-{id}" name="mentor-id-{id}" type="text" value="{id}"/> -->
-<!-- 										<div class="form-group col-md-3"> -->
-<!-- 											<label for="mentor-firstname">Förnamn</label><input type="text" class="form-control" id="mentor-firstname" name="mentor-firstname_{id}" placeholder="" value="{firstname}"/> -->
-<!-- 										</div> -->
-<!-- 										<div class="form-group col-md-3"> -->
-<!-- 											<label for="mentor-lastname">Efternamn</label><input type="text" class="form-control" id="mentor-lastname" name="mentor-lastname_{id}" placeholder="" value="{lastname}"/> -->
-<!-- 										</div> -->
-<!-- 										<div class="form-group col-md-2"> -->
-<!-- 											<label for="mentor-phone">Telefonnummer</label><input type="text" class="numberValidation form-control" id="mentor-phone" name="mentor-phone_{id}" placeholder="" value="{mobilePhone}"/> -->
-<!-- 											<p class="help-block">Endast siffror</p> -->
-<!-- 										</div> -->
-<!-- 										<div class="form-group col-md-3"> -->
-<!-- 											<label for="mentor-email">E-post</label> -->
-<!-- 											<input type="email" class="col-md-3 form-control" id="mentor-email" name="mentor-email_{id}" placeholder="" value="{email}"/> -->
-<!-- 										</div> -->
-<!-- 										<div class="form-group col-md-1"> -->
-<!-- 											<label>Ta bort</label> -->
-<!-- 											<div class="remove-mentor mgn-top8px glyphicon glyphicon-remove" aria-hidden="true"></div> -->
-<!-- 										</div> -->
-<!-- 									</div> -->
-<!-- 								</xsl:for-each> -->
-<!-- 					    	</div> -->
-<!-- 					    	<a href="#" class="add-business-mentor-btn"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Lägg till ny handledare</a> -->
 					  	</div>
 		  			</div>
 		  		</div>
@@ -171,7 +145,7 @@
 					    </div>
 				  	</div>
 				  	
-				  	<div style="margin-bottom: 8px;">
+				  	<div class="mgn-top8px">
 				  		<label>Ange chef på arbetsplatsen</label>
 				  		<div class="row">
 							<div class="form-group col-md-3">
@@ -286,12 +260,12 @@
 							<span class="message"></span>
 						</div>
 			  		
-						<button style="margin-top: 4px;" id="preview-business-sector-job" type="submit" class="float-rgt mgn-lft8px btn btn-success questions-submit">
+						<button id="preview-business-sector-job" type="submit" class="float-rgt mgn-lft8px mgn-top4px btn btn-success questions-submit">
 							Förhandsgranska
 			  			</button>
 						
 			  			<xsl:if test="BusinessSectorJob">
-			  				<a href="{manageJobURL}?jobId={BusinessSectorJob/id}" style="margin-top: 4px;" class="float-rgt btn btn-primary">Tillbaka</a>
+			  				<a href="{manageJobURL}?jobId={BusinessSectorJob/id}" class="float-rgt mgn-top4px btn btn-primary">Tillbaka</a>
 			  			</xsl:if>
 						<span class="glyphicon glyphicon-ok collapse" aria-hidden="true"></span><span class="glyphicon glyphicon-remove collapse" aria-hidden="true"></span>
 					</div>
@@ -485,57 +459,19 @@
 							<span class="message"></span>
 						</div>
 						
-			  			<button style="margin-top: 4px;" id="submit-business-sector-job" class="float-rgt mgn-lft8px btn btn-success questions-submit">
+			  			<button id="submit-business-sector-job" class="float-rgt mgn-top4px mgn-lft8px btn btn-success questions-submit">
 			  				<xsl:choose>
 			  					<xsl:when test="BusinessSectorJob">Spara</xsl:when>
 			  					<xsl:otherwise>Skicka</xsl:otherwise>
 			  				</xsl:choose>
 			  			</button>
 			  			
-			  			<button style="margin-top: 4px;" id="cancel-preview-business-sector-job" class="mgn-lft8px btn btn-warning questions-submit">Redigera</button>
-				  			
-<!-- 				  			<xsl:if test="BusinessSectorJob"> -->
-<!-- 				  				<a href="{manageJobURL}?jobId={BusinessSectorJob/id}" style="margin-top: 4px;" class="float-rgt btn btn-primary">Hantera annons</a> -->
-<!-- 				  			</xsl:if> -->
+			  			<button id="cancel-preview-business-sector-job" class="mgn-lft8px mgn-top4px btn btn-warning questions-submit">Redigera</button>				  			
 						<span class="glyphicon glyphicon-ok collapse" aria-hidden="true"></span><span class="glyphicon glyphicon-remove collapse" aria-hidden="true"></span>
 					</div>
 			  	</div>
 			</div>
 			
-<!-- 			<div class="mentor-template"> -->
-<!-- 				<div class="row collapse" style="margin-bottom: 8px;"> -->
-				
-<!-- 					<div class="form-group col-md-3"> -->
-<!-- 						<label for="mentor-firstname">Förnamn</label> -->
-<!-- 						<input type="text" class="form-control mentor-firstname" -->
-<!-- 							name="mentor-firstname" placeholder="" /> -->
-<!-- 					</div> -->
-			
-<!-- 					<div class="form-group col-md-3"> -->
-<!-- 						<label for="mentor-lastname">Efternamn</label> -->
-<!-- 						<input type="text" class="form-control mentor-lastname" -->
-<!-- 							name="mentor-lastname" placeholder="" /> -->
-<!-- 					</div> -->
-			
-<!-- 					<div class="form-group col-md-2"> -->
-<!-- 						<label for="mentor-phone">Telefonnummer</label> -->
-<!-- 						<input type="text" class="numberValidation form-control mentor-phone" name="mentor-phone" -->
-<!-- 							placeholder="" /> -->
-<!-- 						<p class="help-block">Endast siffror</p> -->
-<!-- 					</div> -->
-			
-<!-- 					<div class="form-group col-md-3"> -->
-<!-- 						<label for="mentor-email">E-post</label> -->
-<!-- 						<input type="email" class="form-control mentor-email" name="mentor-email" -->
-<!-- 							placeholder="" /> -->
-<!-- 					</div> -->
-					
-<!-- 					<div class="form-group col-md-1 remove-mentor"> -->
-<!-- 						<label>Ta bort</label> -->
-<!-- 						<div class="mgn-top8px glyphicon glyphicon-remove" aria-hidden="true"></div> -->
-<!-- 					</div> -->
-<!-- 				</div> -->
-<!-- 			</div>	 -->
 	</xsl:template>
 	
 </xsl:stylesheet>					
