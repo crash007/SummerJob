@@ -422,11 +422,11 @@
 						</div>
 					</xsl:if>
 					
-		  			<button style="margin-top: 4px;" id="preview-municipality-job-application" type="submit" class="float-rgt mgn-lft8px btn btn-success questions-submit">
+		  			<button id="preview-municipality-job-application" type="submit" class="btn-mgn-top float-rgt mgn-lft8px btn btn-success">
 		  				Förhandsgranska
 		  			</button>
 		  			<xsl:if test="MunicipalityJobApplication">
-		  					<a href="{manageAppURL}?appId={MunicipalityJobApplication/id}" style="margin-top: 4px;" class="float-rgt btn btn-primary">Tillbaka</a>
+		  					<a href="{manageAppURL}?appId={MunicipalityJobApplication/id}" class="btn-mgn-top float-rgt btn btn-primary">Tillbaka</a>
 		  			</xsl:if>
 					<span class="glyphicon glyphicon-ok collapse" aria-hidden="true"></span><span class="glyphicon glyphicon-remove collapse" aria-hidden="true"></span>
 				</div>
@@ -568,14 +568,14 @@
 					<span class="message"></span>
 				</div>
 				
-	  			<button style="margin-top: 4px;" id="submit-municipality-job-application" type="submit" class="float-rgt mgn-lft8px btn btn-success questions-submit">
+	  			<button id="submit-municipality-job-application" type="submit" class="btn-mgn-top float-rgt mgn-lft8px btn btn-success">
 	  				<xsl:choose>
 	  					<xsl:when test="MunicipalityJobApplication">Spara</xsl:when>
 	  					<xsl:otherwise>Skicka</xsl:otherwise>
 	  				</xsl:choose>
 	  			</button>
 	  			
-	  			<button style="margin-top: 4px;" id="cancel-preview-municipality-application" class="mgn-lft8px btn btn-warning questions-submit">Redigera</button>
+	  			<button id="cancel-preview-municipality-application" class="btn-mgn-top mgn-lft8px btn btn-warning">Redigera</button>
 				<span class="glyphicon glyphicon-ok collapse" aria-hidden="true"></span><span class="glyphicon glyphicon-remove collapse" aria-hidden="true"></span>
 			</div>
 	  	</div> 

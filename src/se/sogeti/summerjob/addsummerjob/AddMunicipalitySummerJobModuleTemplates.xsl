@@ -18,7 +18,7 @@
 		<h1 class="createJobHeadline">Lägg till sommarjobb inom kommunal verksamhet</h1>
 		<form role="form" method="POST" id="municipality-job-form" data-toggle="validator">
 			 
-			 <input name="jobId" style="display: none" class="form-control" type="text" value="{MunicipalityJob/id}"/>
+			 <input name="jobId" type="hidden" value="{MunicipalityJob/id}"/>
 			 
 				<div class="panel panel-default">
 				  <div class="panel-heading">
@@ -182,8 +182,8 @@
 				  			<xsl:when test="MunicipalityJob">
 				  				<xsl:variable name="numberOfWorkers" select="MunicipalityJob/numberOfWorkersNeeded"></xsl:variable>
 				  				<xsl:for-each select="Periods/Period">
-						  			<div class="period-div" id="periodnr_{id}">
-							  			<div style="margin-bottom: 0px" class="row form-group">
+						  			<div class="period-wrapper" id="periodnr_{id}">
+							  			<div class="row form-group period-container">
 						  					<xsl:choose>
 						  						<xsl:when test="selected = 'true'">
 						  							<div class="col-md-1"><input class="period-checkbox" type="checkbox" name="period_{id}" checked="checked" disabled="disabled"/></div>
@@ -208,14 +208,13 @@
 									  			</xsl:choose>
 									  		</div>		  			
 							  			</div>
-							  			<div style="margin-bottom: 8px" class="add-mentor-div hidden">
-							  				<label>Ange handledare <span style="font-weight: normal; font-size: 90%;"><i>(Förnamn, efternamn och telefonnummer krävs för att en handledare ska sparas)</i></span></label>
-<!-- 							  				<div id="mentors-wrapper"> -->
+							  			<div class="add-mentor hidden">
+							  				<label>Ange handledare <span class="mentor-description-text"><i>(Förnamn, efternamn och telefonnummer krävs för att en handledare ska sparas)</i></span></label>
 												<div class="mentors-wrapper">
 							  					<xsl:if test="selected = 'true'">
 										  			<xsl:for-each select="mentors/MunicipalityMentor">
-														<div class="row collapse in" style="margin-bottom: 8px;">
-															<input style="display: none;" id="mentor-id-{id}" name="mentor-id-{id}" type="text" value="{id}"/>
+														<div class="mgn-btm8px row collapse in">
+															<input id="mentor-id-{id}" name="mentor-id-{id}" type="hidden" value="{id}"/>
 															<div class="form-group col-md-3">
 																<label for="mentor-firstname">Förnamn</label><input type="text" class="form-control mentor-firstname" name="mentor-firstname_{id}" placeholder="" value="{firstname}"/>
 															</div>
@@ -244,8 +243,8 @@
 				  			</xsl:when>
 				  			<xsl:otherwise>
 				  				<xsl:for-each select="Periods/Period">
-						  			<div class="period-div" id="periodnr_{id}">
-							  			<div style="margin-bottom: 0px" class="row form-group">
+						  			<div class="period-wrapper" id="periodnr_{id}">
+							  			<div class="row form-group period-container">
 											<div class="col-md-1"><input class="period-checkbox" type="checkbox" name="period_{id}" /></div>
 									  		<div class="col-md-2 periodName"><xsl:value-of select="name"/></div>
 									  		<div class="col-md-2 periodStartDate"><xsl:value-of select="startDate"/></div>
@@ -255,17 +254,16 @@
 			 									<p class="help-block">Skriv ett heltal mellan 1 och 99</p>
 									  		</div>		  			
 							  			</div>
-							  			<div style="margin-bottom: 8px" class="add-mentor-div hidden">
-							  				<label>Ange handledare <span style="font-weight: normal; font-size: 90%;"><i>(Förnamn, efternamn och telefonnummer krävs för att en handledare ska sparas)</i></span></label>
-<!-- 							  				<div id="mentors-wrapper"> -->
+							  			<div class="add-mentor hidden">
+							  				<label>Ange handledare <span class="mentor-description-text"><i>(Förnamn, efternamn och telefonnummer krävs för att en handledare ska sparas)</i></span></label>
 											<div class="mentors-wrapper">
 									    	</div>
 							  				<a href="#" class="add-municipality-mentor-btn"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Lägg till handledare</a>
 							  			</div>
 						  			</div>
 						  		</xsl:for-each>
-					  			<div class="period-div" id="periodunique_1337">
-						  			<div style="margin-bottom: 0px" class="row form-group">
+					  			<div class="period-wrapper" id="periodunique_1337">
+						  			<div class="row form-group period-container">
 										<div class="col-md-1"><input class="period-checkbox" type="checkbox" name="period_unique_checkbox" /></div>
 								  		<div class="col-md-2"><input disabled="disabled" placeholder="Periodnamn" class="form-control periodName" type="text" name="unique-period-name"></input></div>
 								  		<div class="col-md-2"><input disabled="disabled" placeholder="Startdatum" class="form-control periodStartDate" type="text" name="unique-period-startdate"></input></div>
@@ -275,9 +273,8 @@
 		 									<p class="help-block">Skriv ett heltal mellan 1 och 99</p>
 								  		</div>
 						  			</div>
-						  			<div style="margin-bottom: 8px" class="add-mentor-div hidden">
-						  				<label>Ange handledare <span style="font-weight: normal; font-size: 90%;"><i>(Förnamn, efternamn och telefonnummer krävs för att en handledare ska sparas)</i></span></label>
-<!-- 						  				<div id="mentors-wrapper"> -->
+						  			<div class="add-mentor hidden">
+						  				<label>Ange handledare <span class="mentor-description-text"><i>(Förnamn, efternamn och telefonnummer krävs för att en handledare ska sparas)</i></span></label>
 										<div class="mentors-wrapper">
 								    	</div>
 						  				<a href="#" class="add-municipality-mentor-btn"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Lägg till handledare</a>
@@ -388,11 +385,11 @@
 							<span class="message"></span>
 						</div>
 						
-			  			<button style="margin-top: 4px;" id="preview-municipality-job" type="submit" class="float-rgt mgn-lft8px btn btn-success questions-submit">
+			  			<button id="preview-municipality-job" type="submit" class="btn-mgn-top float-rgt mgn-lft8px btn btn-success">
 							Förhandsgranska
 			  			</button>
 			  			<xsl:if test="MunicipalityJob">
-			  				<a href="{manageJobURL}?jobId={MunicipalityJob/id}" style="margin-top: 4px;" class="float-rgt btn btn-primary">Tillbaka</a>
+			  				<a href="{manageJobURL}?jobId={MunicipalityJob/id}" class="btn-mgn-top float-rgt btn btn-primary">Tillbaka</a>
 			  			</xsl:if>
 						<span class="glyphicon glyphicon-ok collapse" aria-hidden="true"></span><span class="glyphicon glyphicon-remove collapse" aria-hidden="true"></span>
 					</div>
@@ -513,7 +510,7 @@
 							<label>Perioder</label>
 						</div>
 						<br/>
-						<div id="preview-period-div"></div>
+						<div id="preview-period-wrapper"></div>
 					</div>
 					
 					
@@ -608,14 +605,14 @@
 <!-- 								<span class="message"></span> -->
 <!-- 							</div> -->
 					
-		  			<button style="margin-top: 4px;" id="submit-municipality-job" class="float-rgt mgn-lft8px btn btn-success questions-submit">
+		  			<button id="submit-municipality-job" class="btn-mgn-top float-rgt mgn-lft8px btn btn-success">
 		  				<xsl:choose>
 		  					<xsl:when test="MunicipalityJob">Spara</xsl:when>
 		  					<xsl:otherwise>Skicka</xsl:otherwise>
 		  				</xsl:choose>
 		  			</button>
 		  			
-		  			<button style="margin-top: 4px;" id="cancel-preview-municipality-job" class="mgn-lft8px btn btn-warning questions-submit">Redigera</button>
+		  			<button id="cancel-preview-municipality-job" class="btn-mgn-top mgn-lft8px btn btn-warning">Redigera</button>
 		  			
 					<span class="glyphicon glyphicon-ok collapse" aria-hidden="true"></span><span class="glyphicon glyphicon-remove collapse" aria-hidden="true"></span>
 				</div>
@@ -631,7 +628,7 @@
 				<div class="col-md-3"><span class="bold">Antal arbetare: </span> <span class="preview-period-numberOfWorkers"></span></div>
 			</div>
 			<br/>
-			<label>Handledare under perioden <span style="font-weight: normal; font-size: 90%;"><i>(Förnamn, efternamn och telefonnummer krävs för att en handledare ska sparas)</i></span></label>
+			<label>Handledare under perioden <span class="mentor-description-text"><i>(Förnamn, efternamn och telefonnummer krävs för att en handledare ska sparas)</i></span></label>
 			<div class="preview-mentor-body">
 				<div class="row preview-mentor-row" style="display: none">
 					<div class="col-md-2 preview-mentor-firstname"></div>

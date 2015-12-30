@@ -52,7 +52,7 @@
 								</div>
 							</div>
 							<div class="col-xs-6 col-md-2 col-md-offset-0">
-								<button class="btn btn-primary match-btn pull-right mgn-top4px">Matcha</button>
+								<button class="btn btn-primary match-btn pull-right btn-mgn-top">Matcha</button>
 							</div>
 						</div>
 					</div>
@@ -337,16 +337,16 @@
 
 						<div class="mgn-top12px row">
 							<div class="col-md-3 col-xs-10">
-								<button class="generate-workplace-document-button btn btn-primary btn-block"
+								<button class="generate-workplace-document-button btn btn-primary"
 									id="generate-workplace-document_{id}">Generera dokument till arbetsplatsen</button>
 							</div>
 							<div class="col-md-3 col-xs-10 col-xs-top-margin">				
 								<xsl:choose>
 									<xsl:when test="isOpen = 'true'">
-										<button class="close-job-button btn btn-danger btn-block" id="close-job_{id}">Stäng annons</button>
+										<button class="close-job-button btn btn-danger" id="close-job_{id}">Stäng annons</button>
 									</xsl:when>
 									<xsl:otherwise>
-										<button class="open-job-button btn btn-success btn-block" id="open-job_{id}">Öppna annons</button>
+										<button class="open-job-button btn btn-success" id="open-job_{id}">Öppna annons</button>
 									</xsl:otherwise>
 								</xsl:choose>
 							</div>

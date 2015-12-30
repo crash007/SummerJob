@@ -260,7 +260,7 @@
 							<span class="message"></span>
 						</div>
 			  		
-						<button id="preview-business-sector-job" type="submit" class="float-rgt mgn-lft8px mgn-top4px btn btn-success questions-submit">
+						<button id="preview-business-sector-job" type="submit" class="float-rgt mgn-lft8px btn-mgn-top btn btn-success">
 							Förhandsgranska
 			  			</button>
 						
@@ -459,14 +459,14 @@
 							<span class="message"></span>
 						</div>
 						
-			  			<button id="submit-business-sector-job" class="float-rgt mgn-top4px mgn-lft8px btn btn-success questions-submit">
+			  			<button id="submit-business-sector-job" class="float-rgt btn-mgn-top mgn-lft8px btn btn-success">
 			  				<xsl:choose>
 			  					<xsl:when test="BusinessSectorJob">Spara</xsl:when>
 			  					<xsl:otherwise>Skicka</xsl:otherwise>
 			  				</xsl:choose>
 			  			</button>
 			  			
-			  			<button id="cancel-preview-business-sector-job" class="mgn-lft8px mgn-top4px btn btn-warning questions-submit">Redigera</button>				  			
+			  			<button id="cancel-preview-business-sector-job" class="mgn-lft8px btn-mgn-top btn btn-warning">Redigera</button>				  			
 						<span class="glyphicon glyphicon-ok collapse" aria-hidden="true"></span><span class="glyphicon glyphicon-remove collapse" aria-hidden="true"></span>
 					</div>
 			  	</div>

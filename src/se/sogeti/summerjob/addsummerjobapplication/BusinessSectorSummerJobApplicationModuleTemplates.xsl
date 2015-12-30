@@ -301,12 +301,12 @@
 						<span class="message"></span>
 					</div>				  		
 		  									
-					<button style="margin-top: 4px;" id="preview-business-job-application" type="submit" class="float-rgt mgn-lft8px btn btn-success questions-submit">
+					<button id="preview-business-job-application" type="submit" class="btn-mgn-top float-rgt mgn-lft8px btn btn-success">
 		  				Förhandsgranska
 		  			</button>
 					
 					<xsl:if test="BusinessSectorJobApplication">
-	  					<a href="{manageAppURL}?appId={BusinessSectorJobApplication/id}" style="margin-top: 4px;" class="float-rgt btn btn-primary">Tillbaka</a>
+	  					<a href="{manageAppURL}?appId={BusinessSectorJobApplication/id}" class="btn-mgn-top float-rgt btn btn-primary">Tillbaka</a>
 	  				</xsl:if>
 					<span class="glyphicon glyphicon-ok collapse" aria-hidden="true"></span><span class="glyphicon glyphicon-remove collapse" aria-hidden="true"></span>
 				</div>
@@ -406,21 +406,18 @@
 					</div>
 					<xsl:choose>
 						<xsl:when test="BusinessSectorJobApplication">
-							<button style="margin-top: 4px;" id="submit-business-job-application" type="submit" class="float-rgt mgn-lft8px btn btn-success questions-submit">
+							<button id="submit-business-job-application" type="submit" class="btn-mgn-top float-rgt mgn-lft8px btn btn-success">
 		  						Spara
 		  					</button>
 						</xsl:when>
 						<xsl:otherwise>
-							<button style="margin-top: 4px;" id="submit-business-job-application" type="submit" class="float-rgt mgn-lft8px btn btn-success questions-submit">
+							<button id="submit-business-job-application" type="submit" class="btn-mgn-top float-rgt mgn-lft8px btn btn-success">
 		  						Skicka
 		  					</button>
 						</xsl:otherwise>
 					</xsl:choose>
 					
-					<button style="margin-top: 4px;" id="cancel-preview-business-sector-application" class="mgn-lft8px btn btn-warning questions-submit">Redigera</button>
-<!-- 						<xsl:if test="BusinessSectorJobApplication"> -->
-<!-- 		  					<a href="{manageAppURL}?appId={BusinessSectorJobApplication/id}" style="margin-top: 4px;" class="float-rgt btn btn-primary">Tillbaka</a> -->
-<!-- 		  				</xsl:if> -->
+					<button id="cancel-preview-business-sector-application" class="btn-mgn-top mgn-lft8px btn btn-warning">Redigera</button>
 					<span class="glyphicon glyphicon-ok collapse" aria-hidden="true"></span><span class="glyphicon glyphicon-remove collapse" aria-hidden="true"></span>
 				</div>
 		  	</div> 	
