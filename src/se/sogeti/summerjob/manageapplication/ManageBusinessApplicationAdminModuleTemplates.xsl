@@ -12,8 +12,8 @@
 		<xsl:apply-templates select="ApplicationInfo/BusinessSectorJobApplication"/>
 	</xsl:template>
 	
-	<xsl:template match="BusinessSectorJobApplication">
-		<div style="display: none" id="appIdDiv"><xsl:value-of select="id"></xsl:value-of></div>
+	<xsl:template match="BusinessSectorJobApplication">		
+	  	<input type="hidden" id="app-id" name="job-id" value="{id}" />
 	  	<div class="panel panel-default">
 		  	<div class="panel-heading">
 		  		<h3 class="panel-title">Personuppgifter</h3>

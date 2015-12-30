@@ -18,7 +18,7 @@
 	<xsl:template match="MatchBusinessJob">
 		<xsl:apply-templates select="BusinessSectorJob" />
 		
-		<div class="candidates">
+		<div class="candidates-wrapper">
 			<xsl:apply-templates select="GoodCandidates" />
 			<xsl:apply-templates select="BadCandidates" />
 		</div>
@@ -63,7 +63,7 @@
 
 	<xsl:template name="candidatesTableTemplate">
 		<xsl:param name="header" />
-		<div class="row" style="margin-top:2em;">
+		<div class="row candidates-container" >
 			<div class="col-xs-18 col-md-12">
 				<div class="panel panel-default">
 					<div class="panel-heading">

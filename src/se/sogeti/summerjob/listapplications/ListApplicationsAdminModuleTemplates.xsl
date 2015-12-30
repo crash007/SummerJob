@@ -17,7 +17,7 @@
 			</div>
 			<div class="panel-body">
 				<form method="POST" role="form" id="search-applications-form" data-toggle="validator">
-					<div class="form-group" style="margin-bottom: 0px">
+					<div class="form-group">
 						<div class="row">
 							<div class="col-md-3">
 								<label>Personnummer</label>

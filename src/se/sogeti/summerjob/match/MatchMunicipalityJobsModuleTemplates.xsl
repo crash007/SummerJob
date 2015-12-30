@@ -18,7 +18,7 @@
 	<xsl:template match="MatchMunicipalityJob">
 		<xsl:apply-templates select="MunicipalityJob" />
 
-		<div class="candidates">
+		<div class="candidates-wrapper">
 			<xsl:apply-templates select="Area1AndGeoArea1Candidates" />
 			<xsl:apply-templates select="Area1AndGeoArea2Candidates" />
 			<xsl:apply-templates select="Area1AndGeoArea3Candidates" />
@@ -79,11 +79,11 @@
 
 	<xsl:template name="candidatesTableTemplate">
 		<xsl:param name="header" />
-		<div class="row mgn-top16px">
+		<div class="row candidates-container">
 			<div class="col-xs-18 col-md-12">
 				<div class="panel panel-default">
 					<div class="panel-heading">
-						<h3 class="panel-title" style="margin-top: 0px">
+						<h3 class="panel-title">
 							<xsl:value-of select="$header"></xsl:value-of>
 						</h3>
 					</div>
@@ -355,7 +355,7 @@
 		<div class="job-info">
 			<div class="panel panel-default">
 				<div class="panel-heading">
-					<h3 class="panel-title" style="margin-top: 0px">Information om arbetsplatsen</h3>
+					<h3 class="panel-title">Information om arbetsplatsen</h3>
 				</div>
 				<div class="panel-body">
 
@@ -528,7 +528,7 @@
 
 								<xsl:for-each select="applications/MunicipalityJobApplication">
 									<xsl:if test="status ='MATCHED'">
-										<div style="margin-top: 8px" class="matched-application">
+										<div class="matched-application">
 											<xsl:if test="applicationType = 'REGULAR_ADMIN'">
 												<div class="row">
 													<div class="col-xs-5 col-md-3 bold">Typ</div>

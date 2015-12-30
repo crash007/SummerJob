@@ -13,9 +13,7 @@
 	</xsl:template>
 	
 	<xsl:template match="MunicipalityJobApplication">
-	
-		<div style="display: none" id="appIdDiv"><xsl:value-of select="id"></xsl:value-of></div>
-
+		<input type="hidden" id="app-id" name="job-id" value="{id}" />
 	  	<div class="panel panel-default">
 		  	<div class="panel-heading">
 		  		<h3 class="panel-title">Personuppgifter</h3>

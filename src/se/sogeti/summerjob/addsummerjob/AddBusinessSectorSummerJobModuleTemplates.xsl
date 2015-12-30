@@ -71,7 +71,7 @@
 						</div>
 				  		
 				  		<div class="mgn-top8px">
-				  			<label>Ange kontaktperson på arbetsplatsen <span style="font-weight: normal; font-size: 90%;"><i>(Förnamn, efternamn och telefonnummer krävs för att en kontaktperson ska sparas)</i></span></label>
+				  			<label>Ange kontaktperson på arbetsplatsen <span class="mentor-description-text"><i>(Förnamn, efternamn och telefonnummer krävs för att en kontaktperson ska sparas)</i></span></label>
 				  			<div class="row">
 								<div class="form-group col-md-3">
 									<label>Förnamn</label>
@@ -315,7 +315,7 @@
 					  	</div>
 					  	<div class="mgn-top8px row">
 					  		<div class="col-md-12">
-						  		<label>Kontaktperson <span style="font-weight: normal; font-size: 90%;"><i>(Förnamn, efternamn och telefonnummer krävs för att en handledare ska sparas)</i></span></label>
+						  		<label>Kontaktperson <span class="mentor-description-text"><i>(Förnamn, efternamn och telefonnummer krävs för att en handledare ska sparas)</i></span></label>
 								<div class="row">
 									<div class="col-md-2">
 										<label>Förnamn</label>

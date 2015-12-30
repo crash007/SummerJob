@@ -14,8 +14,8 @@
 	
 	<xsl:template match="MunicipalityJobInfo">
 	
-		<div style="display: none" id="jobIdDiv"><xsl:value-of select="MunicipalityJob/id"></xsl:value-of></div>
-
+		<input type="hidden" id="job-id" name="job-id" value="{MunicipalityJob/id}" />
+		
 	  	<div class="panel panel-default">
 		  	<div class="panel-heading">
 		  		<h3 class="panel-title">Plats</h3>

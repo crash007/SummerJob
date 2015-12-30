@@ -14,8 +14,8 @@
 	
 	<xsl:template match="BusinessSectorJobInfo">
 	
-		<div style="display: none" id="jobIdDiv"><xsl:value-of select="BusinessSectorJob/id"></xsl:value-of></div>
-
+		
+		<input type="hidden" id="job-id" name="job-id" value="{BusinessSectorJob/id}" />
 	  	<div class="panel panel-default">
 		  	<div class="panel-heading">
 		  		<h3 class="panel-title">Arbete</h3>
