@@ -15,11 +15,11 @@
 			</li>
 		</ul>
 	
-		<div class="tab-content">
-			<div style="padding: 16px 16px 16px 16px" id="municipality-page" class="tab-pane fade in active">
+		<div class="tab-content container">
+			<div id="municipality-page" class="tab-pane fade in active">
 				<xsl:apply-templates select="Municipality"/>
 			</div>
-			<div style="padding: 16px 16px 16px 16px" id="business-page" class="tab-pane fade">
+			<div id="business-page" class="tab-pane fade">
 				<xsl:apply-templates select="Business"/>
 			</div>
 		</div>
@@ -48,7 +48,7 @@
 				  		<div class="row">
 				  			<div class="col-md-2 bold">Arbetsplats</div>
 					  		<div class="col-md-2 bold">Avdelning</div>
-					  		<div class="col-md-3 bold">Verksamhetsområde</div>
+					  		<div class="col-md-2 bold">Verksamhetsområde</div>
 					  		<div class="col-md-2 bold">Geografiskt område</div>
 					  		<div class="col-md-1 bold">Platser</div>
 					  		<div class="col-md-1 bold">Period</div>
@@ -58,7 +58,7 @@
 					  		<div class="row overview-row">
 						  		<div class="col-md-2"><xsl:value-of select="location" /></div>
 						  		<div class="col-md-2"><xsl:value-of select="department" /></div>
-						  		<div class="col-md-3"><xsl:value-of select="MunicipalityJobArea/name" /></div>
+						  		<div class="col-md-2"><xsl:value-of select="MunicipalityJobArea/name" /></div>
 						  		<div class="col-md-2"><xsl:value-of select="GeoArea/name" /></div>
 						  		<div class="col-md-1"><xsl:value-of select="numberOfWorkersNeeded" /></div>
 						  		<div class="col-md-1"><xsl:value-of select="Period/name" /></div>
