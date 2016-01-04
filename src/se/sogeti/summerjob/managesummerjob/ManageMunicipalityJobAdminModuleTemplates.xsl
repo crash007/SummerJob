@@ -266,7 +266,7 @@
 					<div class="col-md-12">
 						<button id="save-job-options" type="button" class="btn btn-success mgn-lft8px pull-right">Spara</button>				
 						<button id="mark-job-as-initiated-button" type="button" class="pull-right mgn-lft8px btn btn-primary">Markera som påbörjad</button>
-						<a href="{editJobURL}?jobId={MunicipalityJob/id}" id="edit-job-button" type="button" class="pull-right mgn-lft8px btn btn-warning">Redigera</a>
+						<a href="{editJobURL}" id="edit-job-button" type="button" class="pull-right mgn-lft8px btn btn-warning">Redigera</a>
 						
 					</div>
 				</div>

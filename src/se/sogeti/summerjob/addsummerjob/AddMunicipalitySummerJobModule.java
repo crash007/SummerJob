@@ -21,6 +21,7 @@ import se.sogeti.jobapplications.beans.municipality.MunicipalityJob;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityJobArea;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityManager;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityMentor;
+import se.sogeti.jobapplications.cv.CvServiceHander;
 import se.sogeti.jobapplications.daos.AreaDAO;
 import se.sogeti.jobapplications.daos.ContactDetailsDAO;
 import se.sogeti.jobapplications.daos.DriversLicenseTypeDAO;
@@ -30,11 +31,14 @@ import se.sogeti.periodsadmin.beans.Period;
 import se.sogeti.periodsadmin.daos.PeriodDAO;
 import se.sogeti.summerjob.FormUtils;
 import se.sogeti.summerjob.JsonResponse;
+import se.sogeti.summerjob.listjobs.ListSummerJobsHandler;
 import se.unlogic.hierarchy.core.annotations.ModuleSetting;
 import se.unlogic.hierarchy.core.annotations.TextFieldSettingDescriptor;
 import se.unlogic.hierarchy.core.beans.SimpleForegroundModuleResponse;
 import se.unlogic.hierarchy.core.beans.User;
+import se.unlogic.hierarchy.core.interfaces.ForegroundModuleDescriptor;
 import se.unlogic.hierarchy.core.interfaces.ForegroundModuleResponse;
+import se.unlogic.hierarchy.core.interfaces.SectionInterface;
 import se.unlogic.hierarchy.core.utils.HierarchyAnnotatedDAOFactory;
 import se.unlogic.hierarchy.foregroundmodules.rest.AnnotatedRESTModule;
 import se.unlogic.hierarchy.foregroundmodules.rest.RESTMethod;
@@ -44,7 +48,7 @@ import se.unlogic.standardutils.xml.XMLUtils;
 import se.unlogic.webutils.http.RequestUtils;
 import se.unlogic.webutils.http.URIParser;
 
-public class AddMunicipalitySummerJobModule extends AnnotatedRESTModule{
+public class AddMunicipalitySummerJobModule extends AnnotatedRESTModule implements AddMunicipalityJobHandler{
 	
 	@ModuleSetting
 	@TextFieldSettingDescriptor(description="Relativ URL till sidan för att hantera jobbet", name="ManageJobURL")
@@ -429,11 +433,39 @@ public class AddMunicipalitySummerJobModule extends AnnotatedRESTModule{
 			}
 			return;
 		}
-//		JsonResponse.sendJsonResponse("{\"status\":\"success\", \"message\":\"Annonsen har nu sparats. En handläggare kommer att granska annonsen innan den blir synlig för sökande.\"}", callback, writer);
+		
 		if (jobId != null) {
 			JsonResponse.sendJsonResponse("{\"status\":\"success\", \"newText\":\"Visa översikt av kommunala sommarjobb\", \"newUrl\":\"list-summerjobs?municipality=true\", \"backText\":\"Fortsätt redigera\", \"backUrl\":\"manage-municipality-job?jobId=" + jobId + "\", \"header\":\"Ändringarna har nu sparats.\", \"message\":\"Ändringarna har nu sparats.\"}", callback, writer);
 		} else {
 			JsonResponse.sendJsonResponse("{\"status\":\"success\", \"backUrl\":\"\", \"newUrl\":\"add-municipality-job\", \"header\":\"Annonsen har nu sparats.\", \"message\":\"En handläggare kommer att granska annonsen innan den blir synlig för sökande.\"}", callback, writer);
 		}
+	}
+
+	@Override
+	public String getUrl() {
+		// TODO Auto-generated method stub
+		return this.getFullAlias();
+	}
+
+	@Override
+	public void init(ForegroundModuleDescriptor moduleDescriptor, SectionInterface sectionInterface,
+			DataSource dataSource) throws Exception {
+		
+		super.init(moduleDescriptor, sectionInterface, dataSource);
+		
+		if(!systemInterface.getInstanceHandler().addInstance(AddMunicipalityJobHandler.class, this)){
+			throw new RuntimeException("Unable to register module in global instance handler using key " +AddMunicipalityJobHandler.class.getSimpleName() + ", another instance is already registered using this key.");
+		}
+	}
+
+	@Override
+	public void unload() throws Exception {
+		
+		if(this.equals(systemInterface.getInstanceHandler().getInstance(AddMunicipalityJobHandler.class))){
+			log.info("Unloading AddMunicipalityJobHandler from instanceHandler.");
+			systemInterface.getInstanceHandler().removeInstance(AddMunicipalityJobHandler.class);
+		}	
+		
+		super.unload();
 	}
 }

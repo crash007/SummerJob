@@ -17,6 +17,7 @@ import se.sogeti.jobapplications.beans.business.BusinessSectorJob;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityJob;
 import se.sogeti.jobapplications.daos.JobDAO;
 import se.sogeti.summerjob.JsonResponse;
+import se.sogeti.summerjob.addsummerjob.AddMunicipalityJobHandler;
 import se.sogeti.summerjob.listjobs.ListSummerJobsHandler;
 import se.unlogic.hierarchy.core.annotations.InstanceManagerDependency;
 import se.unlogic.hierarchy.core.annotations.ModuleSetting;
@@ -41,9 +42,8 @@ public class ManageMunicipalityJobAdminModule extends AnnotatedRESTModule {
 	@InstanceManagerDependency(required = true)
 	private ListSummerJobsHandler listSummerJobsHandler;
 	
-	@ModuleSetting
-	@TextFieldSettingDescriptor(description="Relativ URL till sidan för att lägga till och redigera ett jobb", name="AddEditJobURL")
-	String editJobURL="add-municipality-job";
+	@InstanceManagerDependency(required=true)
+	private AddMunicipalityJobHandler addMunicipalityJobHandler;
 		
 	@Override
 	protected void createDAOs(DataSource dataSource) throws Exception {
@@ -73,8 +73,12 @@ public class ManageMunicipalityJobAdminModule extends AnnotatedRESTModule {
 		}
 		
 		MunicipalityJob job = municipalityJobDAO.getById(jobId);
-		XMLUtils.append(doc, jobElement, job);
-		XMLUtils.appendNewElement(doc, jobElement, "editJobURL", editJobURL);
+		
+		if(job!=null){
+			XMLUtils.append(doc, jobElement, job);
+			XMLUtils.appendNewElement(doc, jobElement, "editJobURL", req.getContextPath()+addMunicipalityJobHandler.getUrl()+"?jobId="+job.getId());
+		}
+				
 		XMLUtils.appendNewElement(doc, jobElement, "listJobsURL", req.getContextPath()+listSummerJobsHandler.getMunicipalityJobsUrl());
 		XMLUtils.appendNewElement(doc, jobElement, "BackURL", req.getHeader("referer"));
 		
