@@ -172,39 +172,6 @@ public class AddBusinessSectorSummerJobModule extends AnnotatedRESTModule{
         	job.setMentor(null);
         }
         
-        
-//        List<BusinessSectorMentor> mentors = new ArrayList<BusinessSectorMentor>();
-//        List<String> mentorUuids = FormUtils.getMentorUuids(req.getParameterNames());
-//		for(String s : mentorUuids){
-//			 BusinessSectorMentor mentor = new BusinessSectorMentor();
-//			 Integer mentorId = NumberUtils.toInt(req.getParameter("mentor-id-" + s));
-//			 
-//			 String mentorFirstname = req.getParameter("mentor-firstname_" + s);
-//			 String mentorLastname = req.getParameter("mentor-lastname_" + s);
-//			 String mentorPhone = req.getParameter("mentor-phone_" + s);
-//			 
-//			 if (mentorId != null) {
-//				 mentor.setId(mentorId);
-//				 
-//				 if ((mentorFirstname == null && mentorLastname == null && mentorPhone == null)
-//						 || (mentorFirstname.isEmpty() && mentorLastname.isEmpty() && mentorPhone.isEmpty())) {
-//					 businessSectorMentorDAO.removeById(mentorId);
-//					 continue;
-//				 }
-//			 } else if (mentorFirstname == null || mentorLastname == null || mentorPhone == null
-//					 || mentorFirstname.isEmpty() || mentorLastname.isEmpty() || mentorPhone.isEmpty()) {
-//				 continue;
-//			 }
-//			 
-//			 mentor.setFirstname(mentorFirstname);
-//			 mentor.setLastname(mentorLastname);
-//			 mentor.setEmail(req.getParameter("mentor-email_" + s));
-//			 mentor.setMobilePhone(mentorPhone);
-//			 mentors.add(mentor);
-//		}
-//		
-//		job.setMentors(mentors);
-        
 		String corporateNumber = req.getParameter("corporate-number");
 		String company = req.getParameter("company");
         String streetAddress = req.getParameter("street");
