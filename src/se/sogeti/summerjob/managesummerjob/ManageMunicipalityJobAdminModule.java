@@ -75,6 +75,7 @@ public class ManageMunicipalityJobAdminModule extends AnnotatedRESTModule {
 		XMLUtils.append(doc, jobElement, job);
 		XMLUtils.appendNewElement(doc, jobElement, "editJobURL", editJobURL);
 		XMLUtils.appendNewElement(doc, jobElement, "listJobsURL", listJobsURL);
+		XMLUtils.appendNewElement(doc, jobElement, "BackURL", req.getHeader("referer"));
 		
 		return new SimpleForegroundModuleResponse(doc);
 	}
@@ -105,8 +106,7 @@ public class ManageMunicipalityJobAdminModule extends AnnotatedRESTModule {
         
 		try {
 			municipalityJobDAO.save(job);
-			JsonResponse.sendJsonResponse("{\"status\":\"success\", \"message\":\"Ändringarna har nu sparats.\"}", callback, writer);
-			return;
+			JsonResponse.sendJsonResponse("{\"status\":\"success\", \"message\":\"Ändringarna har nu sparats.\"}", callback, writer);			
 		} catch (SQLException e) {
 			log.error("SQL exception", e);
 			JsonResponse.sendJsonResponse("{\"status\":\"error\", \"message\":\"Något gick fel när ändringarna skulle sparas.\"}", callback, writer);
@@ -133,8 +133,7 @@ public class ManageMunicipalityJobAdminModule extends AnnotatedRESTModule {
         
 		try {
 			municipalityJobDAO.save(job);
-			JsonResponse.sendJsonResponse("{\"status\":\"success\", \"message\":\"Annonsen kontrolleras nu av dig. \"}", callback, writer);
-			return;
+			JsonResponse.sendJsonResponse("{\"status\":\"success\", \"message\":\"Annonsen kontrolleras nu av dig. \"}", callback, writer);			
 		} catch (SQLException e) {
 			log.error("SQL exception", e);
 			JsonResponse.sendJsonResponse("{\"status\":\"error\", \"message\":\"Något gick fel när ändringarna skulle sparas.\"}", callback, writer);

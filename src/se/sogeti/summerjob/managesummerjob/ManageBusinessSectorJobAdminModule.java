@@ -74,6 +74,7 @@ public class ManageBusinessSectorJobAdminModule extends AnnotatedRESTModule {
 		XMLUtils.append(doc, jobElement, job);
 		XMLUtils.appendNewElement(doc, jobElement, "editURL", editJobURL);
 		XMLUtils.appendNewElement(doc, jobElement, "listJobsURL", listJobsURL);
+		XMLUtils.appendNewElement(doc, jobElement, "BackURL", req.getHeader("referer"));
 		
 		return new SimpleForegroundModuleResponse(doc);
 	}
