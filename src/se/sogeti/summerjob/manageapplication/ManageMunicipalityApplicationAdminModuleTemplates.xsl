@@ -119,47 +119,49 @@
 			 		</div>
 			 	</div>
 			 	
-		  		<div class="mgn-top8px row">
-			  		<div class="mgn-top8px col-md-12"><label>Önskat arbetsområde</label></div>
+		  		<div class="mgn-top8px row">			  		
 		  			<xsl:choose>
 		  				<xsl:when test="noPreferedArea = 'true'">
 		  					<div class="col-md-4">
+		  						<label>Önskat arbetsområde</label>
 		  						<div>Jag kan tänka mig jobba med vad som helst</div>
 		  					</div>
 		  				</xsl:when>
-		  				<xsl:otherwise>
-		  					<div>
-			  					<div class="col-md-4">
-								    <label style="font-size: 80%">Prio 1</label>				    
-								    <div><xsl:value-of select="preferedArea1/name"></xsl:value-of></div>
-								</div>
-								<div class="col-md-4">
-								    <label style="font-size: 80%">Prio 2</label>				    
-								    <div><xsl:value-of select="preferedArea2/name"></xsl:value-of></div>
-								</div>
-								<div class="col-md-4">
-								    <label style="font-size: 80%">Prio 3</label>				    
-								    <div><xsl:value-of select="preferedArea3/name"></xsl:value-of></div>
-								</div>
+		  				<xsl:otherwise>		  					
+		  					<div class="col-md-4">
+							    <label>Önskat arbetsområde 1</label>				    
+							    <div><xsl:value-of select="preferedArea1/name"/></div>
 							</div>
+							<div class="col-md-4">
+							    <label>Önskat arbetsområde 2</label>				    
+							    <div><xsl:value-of select="preferedArea2/name"/></div>
+							</div>
+							<div class="col-md-4">
+							    <label>Önskat arbetsområde 3</label>				    
+							    <div><xsl:value-of select="preferedArea3/name"/></div>
+							</div>						
 		  				</xsl:otherwise>
 		  			</xsl:choose>
 				</div>
+		  		
 		  		<div class="mgn-top8px row">
-		  			<div class="mgn-top8px col-md-12"><label>Önskat geografiskt område</label></div>
 		  			<div class="col-md-4">
-					    <label style="font-size: 80%">Prio 1</label>
-					    <div><xsl:value-of select="preferedGeoArea1/name"></xsl:value-of></div>    
+		  				<label>Önskat geografiskt område 1</label>
+		  				<div><xsl:value-of select="preferedGeoArea1/name"/></div>
+		  			</div>
+	  			
+		  			<div class="col-md-4 mgn-top8px ">
+					    <label>Önskat geografiskt område 2</label>
+					    <div><xsl:value-of select="preferedGeoArea2/name"/></div>    
 					</div>
-					<div class="col-md-4">
-					    <label style="font-size: 80%">Prio 2</label>
-					    <div><xsl:value-of select="preferedGeoArea2/name"></xsl:value-of></div>    
-					</div>
-					<div class="col-md-4">
-					    <label style="font-size: 80%">Prio 3</label>
-					    <div><xsl:value-of select="preferedGeoArea3/name"></xsl:value-of></div>    
+				
+				
+					<div class="col-md-4 mgn-top8px ">
+					    <label>Önskat geografiskt område 3</label>
+					    <div><xsl:value-of select="preferedGeoArea3/name"/></div>    
 					</div>
 				</div>
+			  	
 			  	<div class="mgn-top8px row">
 			  		<div class="col-md-3">
 			  			<label>Körkort</label>

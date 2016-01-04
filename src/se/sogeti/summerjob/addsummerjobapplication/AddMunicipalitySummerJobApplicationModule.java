@@ -18,7 +18,6 @@ import org.w3c.dom.Element;
 import se.sogeti.jobapplications.beans.ApplicationType;
 import se.sogeti.jobapplications.beans.DriversLicenseType;
 import se.sogeti.jobapplications.beans.GeoArea;
-import se.sogeti.jobapplications.beans.PersonApplications;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityJobApplication;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityJobArea;
 import se.sogeti.jobapplications.beans.municipality.PreferedPeriod;
@@ -26,9 +25,6 @@ import se.sogeti.jobapplications.daos.AreaDAO;
 import se.sogeti.jobapplications.daos.DriversLicenseTypeDAO;
 import se.sogeti.jobapplications.daos.GeoAreaDAO;
 import se.sogeti.jobapplications.daos.JobApplicationDAO;
-import se.sogeti.jobapplications.daos.PersonApplicationsDAO;
-import se.sogeti.periodsadmin.beans.Period;
-import se.sogeti.periodsadmin.daos.PeriodDAO;
 import se.sogeti.summerjob.JsonResponse;
 import se.sundsvall.openetown.smex.vo.Citizen;
 import se.unlogic.fileuploadutils.MultipartRequest;
@@ -51,7 +47,6 @@ public class AddMunicipalitySummerJobApplicationModule extends AddSummerJobAppli
 	
 	private JobApplicationDAO<MunicipalityJobApplication> jobApplicationDAO;
 	private AreaDAO areaDAO;
-	private PeriodDAO periodDAO;
 	private GeoAreaDAO geoAreaDAO;
 	private DriversLicenseTypeDAO driversLicenseTypeDAO;
 	
@@ -73,8 +68,7 @@ public class AddMunicipalitySummerJobApplicationModule extends AddSummerJobAppli
 		HierarchyAnnotatedDAOFactory hierarchyDaoFactory = new HierarchyAnnotatedDAOFactory(dataSource, systemInterface);
 		
 		jobApplicationDAO = new JobApplicationDAO<MunicipalityJobApplication>(dataSource, MunicipalityJobApplication.class, hierarchyDaoFactory);
-		areaDAO = new AreaDAO(dataSource, MunicipalityJobArea.class, hierarchyDaoFactory);
-		periodDAO = new PeriodDAO(dataSource, Period.class, hierarchyDaoFactory);
+		areaDAO = new AreaDAO(dataSource, MunicipalityJobArea.class, hierarchyDaoFactory);	
 		geoAreaDAO = new GeoAreaDAO(dataSource, GeoArea.class, hierarchyDaoFactory);
 		driversLicenseTypeDAO = new DriversLicenseTypeDAO(dataSource, DriversLicenseType.class, hierarchyDaoFactory);
 		
@@ -162,17 +156,18 @@ public class AddMunicipalitySummerJobApplicationModule extends AddSummerJobAppli
 	
 	
 	@RESTMethod(alias="save/municipalityapplication.json", method="post")
-	public void saveApplication(HttpServletRequest req, HttpServletResponse res, User user, URIParser uriParser) throws IOException, SQLException {
+	public void saveApplication(HttpServletRequest req, HttpServletResponse res, User user, URIParser uriParser) throws IOException {
 		log.info("saving municipality application");
 		
 		MultipartRequest requestWrapper = null;
+		PrintWriter writer = res.getWriter();
+		String callback = null; 
+		JsonResponse.initJsonResponse(res, writer, callback);
+		
 		try {
 			requestWrapper = new MultipartRequest(1024 * BinarySizes.KiloByte, 100 * BinarySizes.MegaByte, req);
-			
-			PrintWriter writer = res.getWriter();
-			String callback = requestWrapper.getParameter("callback"); 
-			JsonResponse.initJsonResponse(res, writer, callback);
-	
+			callback = requestWrapper.getParameter("callback");
+				
 			MunicipalityJobApplication exisitingApplication = jobApplicationDAO.getbySocialSecurityNumber(requestWrapper.getParameter("socialSecurityNumber"));
 			
 			if(exisitingApplication != null) {
@@ -191,9 +186,12 @@ public class AddMunicipalitySummerJobApplicationModule extends AddSummerJobAppli
 			if(!validateSocialSecurityNumber(writer, callback, socialSecurityNumber)){
 				return;
 			}
-	
+			
+			long start =System.currentTimeMillis();
+			log.debug("Calling getCitizen for social security number: "+socialSecurityNumber);
 			Citizen person = getCitizen(socialSecurityNumber);
-				
+			long end = System.currentTimeMillis();
+			log.debug("getCitizen finished in "+(end-start)+" ms.");	
 			createJobApplication(app, requestWrapper, person);
 			automaticControllAndApprove(app);
 			
@@ -238,6 +236,7 @@ public class AddMunicipalitySummerJobApplicationModule extends AddSummerJobAppli
 				app.setPreferedArea1(area1);
 				app.setPreferedArea2(area2);
 				app.setPreferedArea3(area3);
+				app.setNoPreferedArea(false);
 			} else {
 				app.setNoPreferedArea(true);
 			}
@@ -309,21 +308,21 @@ public class AddMunicipalitySummerJobApplicationModule extends AddSummerJobAppli
 				app.setApplicationType(type);
 			}
 			
-			try {
-				jobApplicationDAO.save(app);
-				if (appId != null) {
-					JsonResponse.sendJsonResponse("{\"status\":\"success\", \"message\":\"Ändringarna har nu sparats.\"}", callback, writer);
-				} else {
-					JsonResponse.sendJsonResponse("{\"status\":\"success\", \"message\":\"Din ansökan har nu sparats.\"}", callback, writer);
-				}
-			} catch (SQLException e) {
-				log.error(e);
-				JsonResponse.sendJsonResponse("{\"status\":\"error\", \"message\":\"Något gick fel när ansökan skulle sparas.\"}", callback, writer);
+		
+			jobApplicationDAO.save(app);
+			if (appId != null) {
+				JsonResponse.sendJsonResponse("{\"status\":\"success\", \"message\":\"Ändringarna har nu sparats.\"}", callback, writer);
+			} else {
+				JsonResponse.sendJsonResponse("{\"status\":\"success\", \"message\":\"Din ansökan har nu sparats.\"}", callback, writer);
 			}
+		
 		
 		} catch (FileUploadException e1) {
 			log.error(e1);
 			
+		} catch (SQLException e) {
+			log.error(e);
+			JsonResponse.sendJsonResponse("{\"status\":\"error\", \"message\":\"Något gick fel när ansökan skulle sparas.\"}", callback, writer);
 		}
 	}
 
