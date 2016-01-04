@@ -92,7 +92,7 @@ public class AddMunicipalitySummerJobModule extends AnnotatedRESTModule{
 		
 		Integer jobId = NumberUtils.toInt(req.getParameter("jobId"));
 		MunicipalityJob job = null;
-		if (jobId != null && user.isAdmin()) {
+		if (jobId != null && user!=null && user.isAdmin()) {
 			job = municipalityJobDAO.getById(jobId);
 			XMLUtils.append(doc, jobForm, job);
 			XMLUtils.appendNewElement(doc, jobForm, "manageJobURL", manageJobURL);
