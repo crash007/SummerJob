@@ -31,7 +31,9 @@ import se.unlogic.hierarchy.core.annotations.ModuleSetting;
 import se.unlogic.hierarchy.core.annotations.TextFieldSettingDescriptor;
 import se.unlogic.hierarchy.core.beans.SimpleForegroundModuleResponse;
 import se.unlogic.hierarchy.core.beans.User;
+import se.unlogic.hierarchy.core.interfaces.ForegroundModuleDescriptor;
 import se.unlogic.hierarchy.core.interfaces.ForegroundModuleResponse;
+import se.unlogic.hierarchy.core.interfaces.SectionInterface;
 import se.unlogic.hierarchy.core.utils.HierarchyAnnotatedDAOFactory;
 import se.unlogic.hierarchy.foregroundmodules.rest.AnnotatedRESTModule;
 import se.unlogic.hierarchy.foregroundmodules.rest.RESTMethod;
@@ -41,7 +43,7 @@ import se.unlogic.standardutils.xml.XMLUtils;
 import se.unlogic.webutils.http.RequestUtils;
 import se.unlogic.webutils.http.URIParser;
 
-public class AddBusinessSectorSummerJobModule extends AnnotatedRESTModule{
+public class AddBusinessSectorSummerJobModule extends AnnotatedRESTModule implements AddBusinessJobHandler{
 	
 	@ModuleSetting
 	@TextFieldSettingDescriptor(description="Relativ URL till sidan för att hantera jobbet", name="ManageJobURL")
@@ -261,5 +263,32 @@ public class AddBusinessSectorSummerJobModule extends AnnotatedRESTModule{
 			log.error("SQL exception", e);
 			JsonResponse.sendJsonResponse("{\"status\":\"error\", \"message\":\"Något gick fel när annonsen skulle sparas.\"}", callback, writer);
 		}				
+	}
+
+	@Override
+	public String getUrl() {
+		return this.getFullAlias();
+	}
+	
+	@Override
+	public void init(ForegroundModuleDescriptor moduleDescriptor, SectionInterface sectionInterface,
+			DataSource dataSource) throws Exception {
+		
+		super.init(moduleDescriptor, sectionInterface, dataSource);
+		
+		if(!systemInterface.getInstanceHandler().addInstance(AddBusinessJobHandler.class, this)){
+			throw new RuntimeException("Unable to register module in global instance handler using key " +AddBusinessJobHandler.class.getSimpleName() + ", another instance is already registered using this key.");
+		}
+	}
+
+	@Override
+	public void unload() throws Exception {
+		
+		if(this.equals(systemInterface.getInstanceHandler().getInstance(AddBusinessJobHandler.class))){
+			log.info("Unloading AddBusinessJobHandler from instanceHandler.");
+			systemInterface.getInstanceHandler().removeInstance(AddBusinessJobHandler.class);
+		}	
+		
+		super.unload();
 	}
 }
