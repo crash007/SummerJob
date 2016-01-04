@@ -90,7 +90,7 @@ public class BusinessSectorSummerJobApplicationModule extends AddSummerJobApplic
 				XMLUtils.appendNewElement(doc, jobApplication, "jobId", job.getId());
 				BusinessSectorJobApplication app = null;
 				
-				if(user!=null && user.isEnabled()){
+				if(user!=null && user.isAdmin()){
 					if (appId != null) {
 						log.info("User "+user.getUsername()+" is requesting jobapplication id "+appId);
 						app = jobApplicationDAO.getById(appId);
@@ -143,7 +143,7 @@ public class BusinessSectorSummerJobApplicationModule extends AddSummerJobApplic
 				Integer appId = NumberUtils.toInt(requestWrapper.getParameter("appId"));
 				BusinessSectorJobApplication app = null;
 
-				if (appId != null && user != null) {
+				if (appId != null && user != null && user.isAdmin()) {
 					try {
 						app = jobApplicationDAO.getByIdWithJobAndPersonApplications(appId);
 						if(app==null){

@@ -97,7 +97,7 @@ public class AddMunicipalitySummerJobApplicationModule extends AddSummerJobAppli
 		
 		MunicipalityJobApplication app = null;
 		Integer appId = NumberUtils.toInt(req.getParameter("appId"));
-		if (appId != null) {
+		if (user!=null && user.isAdmin() && appId != null) {
 			app = jobApplicationDAO.getById(appId);
 			XMLUtils.append(doc, form, app);
 		}
@@ -168,7 +168,12 @@ public class AddMunicipalitySummerJobApplicationModule extends AddSummerJobAppli
 			requestWrapper = new MultipartRequest(1024 * BinarySizes.KiloByte, 100 * BinarySizes.MegaByte, req);
 			callback = requestWrapper.getParameter("callback");
 				
-			MunicipalityJobApplication exisitingApplication = jobApplicationDAO.getbySocialSecurityNumber(requestWrapper.getParameter("socialSecurityNumber"));
+			MunicipalityJobApplication exisitingApplication = null;
+			String socialSecurityNumber = requestWrapper.getParameter("socialSecurityNumber");
+			
+			if(socialSecurityNumber != null){			
+				exisitingApplication= jobApplicationDAO.getbySocialSecurityNumber(socialSecurityNumber);			
+			}
 			
 			if(exisitingApplication != null) {
 				if ((user != null && !user.isAdmin()) || user == null){
@@ -177,30 +182,42 @@ public class AddMunicipalitySummerJobApplicationModule extends AddSummerJobAppli
 					return;
 				}
 			}
-	
+			
+			MunicipalityJobApplication app=null;
 			Integer appId = NumberUtils.toInt(requestWrapper.getParameter("appId"));
-			MunicipalityJobApplication app = appId != null ? jobApplicationDAO.getById(appId) : new MunicipalityJobApplication();
-
-			String socialSecurityNumber = requestWrapper.getParameter("socialSecurityNumber");
+			
+			if(user!=null && user.isAdmin() && appId!=null){				
+				app = jobApplicationDAO.getById(appId);
+			}else{			
+				app = new MunicipalityJobApplication();
+			}
 			
 			if(!validateSocialSecurityNumber(writer, callback, socialSecurityNumber)){
 				return;
 			}
 			
 			long start =System.currentTimeMillis();
+			
 			log.debug("Calling getCitizen for social security number: "+socialSecurityNumber);
+			
 			Citizen person = getCitizen(socialSecurityNumber);
+			
 			long end = System.currentTimeMillis();
+			
 			log.debug("getCitizen finished in "+(end-start)+" ms.");	
+			
 			createJobApplication(app, requestWrapper, person);
+			
 			automaticControllAndApprove(app);
 			
 			FileItem fileItem = requestWrapper.getFile(0);
+			
 			if (!StringUtils.isEmpty(fileItem.getName())) {
 				saveCv(app,fileItem,app.getSocialSecurityNumber()+"_"+fileItem.getName(),writer, callback);
 			}
 			
 			String preferedPeriodString = requestWrapper.getParameter("preferedPeriod");
+			
 			if (preferedPeriodString == null) {
 				JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Du måste ange en önskad arbetsperiod.\"}", callback, writer);
 				return;
