@@ -80,12 +80,14 @@ public class ManageBusinessApplicationAdminModule extends AnnotatedRESTModule {
 				return new SimpleForegroundModuleResponse(doc);
 			}
 			
-			Element jobInfo = doc.createElement("ApplicationInfo");
-			XMLUtils.append(doc, jobInfo, app);
-			doc.getFirstChild().appendChild(jobInfo);
-			XMLUtils.appendNewElement(doc, jobInfo, "listJobApplicationsURL", listJobApplicationsURL);
-			XMLUtils.appendNewElement(doc, jobInfo, "editBusinessAppURL", 
+			Element appInfoElement = doc.createElement("ApplicationInfo");
+			XMLUtils.append(doc, appInfoElement, app);
+			doc.getFirstChild().appendChild(appInfoElement);
+			XMLUtils.appendNewElement(doc, appInfoElement, "listJobApplicationsURL", listJobApplicationsURL);
+			XMLUtils.appendNewElement(doc, appInfoElement, "editAppURL", 
 					editBusinessApplicationURL + "?jobId=" + app.getJob().getId() + "&appId=" + app.getId());
+			
+			XMLUtils.appendNewElement(doc, appInfoElement, "BackURL", req.getHeader("referer"));
 			
 			Element rankingsElement = doc.createElement("Rankings");
 			for (int i = 1; i < 11; i++) {
@@ -94,7 +96,7 @@ public class ManageBusinessApplicationAdminModule extends AnnotatedRESTModule {
 				XMLUtils.appendNewElement(doc, ranking, "selected", app.getRanking().intValue() == i);
 				rankingsElement.appendChild(ranking);
 			}
-			jobInfo.appendChild(rankingsElement);
+			appInfoElement.appendChild(rankingsElement);
 		} 
 		
 		return new SimpleForegroundModuleResponse(doc);

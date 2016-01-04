@@ -249,10 +249,24 @@
 					</div>
 				</div>
 				
-				<button id="save-application-options" type="button" class="btn btn-success">Spara</button>
+				<div class="row">
+					<div class="col-md-12">
+						<button id="save-application-options" type="button" class="btn btn-success mgn-lft8px pull-right">Spara</button>
+						<a href="{/Document/ApplicationInfo/editAppURL}" id="edit-job-button" type="button" class="pull-right mgn-lft8px btn btn-warning">Redigera</a>										
+					</div>
+				</div>
 				
-				<a href="{/Document/ApplicationInfo/listJobApplicationsURL}" type="button" class="pull-right mgn-lft8px btn btn-info">Gå tillbaka</a>
-				<a href="{/Document/ApplicationInfo/editAppURL}" id="edit-job-button" type="button" class="pull-right mgn-lft8px btn btn-warning">Redigera</a>
+				<div class="row mgn-top8px">
+					<div class="col-md-12">
+						<a href="{/Document/ApplicationInfo/listJobApplicationsURL}" type="button" class="pull-right">Gå till alla ansökningar</a>						
+					</div>
+				</div>
+				
+				<div class="row">
+					<div class="col-md-12">						
+						<a href="{/Document/ApplicationInfo/BackURL}" type="button" class="pull-right">Gå tillbaka</a>
+					</div>
+				</div>				
 			</div>
 		</div>
 	</xsl:template>

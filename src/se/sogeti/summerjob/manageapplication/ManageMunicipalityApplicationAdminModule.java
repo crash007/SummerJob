@@ -87,6 +87,7 @@ public class ManageMunicipalityApplicationAdminModule extends AnnotatedRESTModul
 			XMLUtils.append(doc, appElement, app);
 			XMLUtils.appendNewElement(doc, appElement, "editAppURL", editApplicationURL + "?appId=" + app.getId());
 			XMLUtils.appendNewElement(doc, appElement, "listJobApplicationsURL", listJobApplicationsURL);
+			XMLUtils.appendNewElement(doc, appElement, "BackURL", req.getHeader("referer"));
 			
 			Element rankingsElement = doc.createElement("Rankings");
 			for (int i = 1; i < 11; i++) {
