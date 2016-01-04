@@ -89,12 +89,15 @@ public class BusinessSectorSummerJobApplicationModule extends AddSummerJobApplic
 				XMLUtils.appendNewElement(doc, jobApplication, "manageAppURL", manageApplicationURL);
 				XMLUtils.appendNewElement(doc, jobApplication, "jobId", job.getId());
 				BusinessSectorJobApplication app = null;
-				if (appId != null) {
-					app = jobApplicationDAO.getById(appId);
-					XMLUtils.append(doc, jobApplication, app);
+				
+				if(user!=null && user.isEnabled()){
+					if (appId != null) {
+						log.info("User "+user.getUsername()+" is requesting jobapplication id "+appId);
+						app = jobApplicationDAO.getById(appId);
+						XMLUtils.append(doc, jobApplication, app);
+					}
 				}
-
-
+				
 				XMLUtils.append(doc, jobApplication, "DriversLicenseTypes",driversLicenseTypeDAO.getAll());
 
 				doc.getFirstChild().appendChild(jobApplication);
@@ -140,7 +143,7 @@ public class BusinessSectorSummerJobApplicationModule extends AddSummerJobApplic
 				Integer appId = NumberUtils.toInt(requestWrapper.getParameter("appId"));
 				BusinessSectorJobApplication app = null;
 
-				if (appId != null) {
+				if (appId != null && user != null) {
 					try {
 						app = jobApplicationDAO.getByIdWithJobAndPersonApplications(appId);
 						if(app==null){
@@ -198,15 +201,6 @@ public class BusinessSectorSummerJobApplicationModule extends AddSummerJobApplic
 					return;
 				}
 
-				//				if (app.getId() == null) {
-				//					if(job.getApplications() != null) {
-				//						job.getApplications().add(app);
-				//					} else {
-				//						List<BusinessSectorJobApplication> appliedApplications = new ArrayList<BusinessSectorJobApplication>();
-				//						appliedApplications.add(app);
-				//						job.setApplications(appliedApplications);
-				//					}
-				//				}
 				app.setJob(job);
 
 				FileItem fileItem = requestWrapper.getFile(0);
