@@ -16,6 +16,8 @@ import org.w3c.dom.Element;
 import se.sogeti.jobapplications.beans.business.BusinessSectorJob;
 import se.sogeti.jobapplications.daos.JobDAO;
 import se.sogeti.summerjob.JsonResponse;
+import se.sogeti.summerjob.listjobs.ListSummerJobsHandler;
+import se.unlogic.hierarchy.core.annotations.InstanceManagerDependency;
 import se.unlogic.hierarchy.core.annotations.ModuleSetting;
 import se.unlogic.hierarchy.core.annotations.TextFieldSettingDescriptor;
 import se.unlogic.hierarchy.core.beans.SimpleForegroundModuleResponse;
@@ -39,9 +41,8 @@ public class ManageBusinessSectorJobAdminModule extends AnnotatedRESTModule {
 	@TextFieldSettingDescriptor(description="Relativ URL till sidan för att lägga till och redigera ett jobb", name="AddEditJobURL")
 	String editJobURL="add-business-sector-job";
 	
-	@ModuleSetting
-	@TextFieldSettingDescriptor(description="Relativ URL till sidan för att lista näringslivsjobb", name="ListJobsURL")
-	String listJobsURL="list-summerjobs";
+	@InstanceManagerDependency(required = true)
+	private ListSummerJobsHandler listSummerJobsHandler;
 	
 	@Override
 	protected void createDAOs(DataSource dataSource) throws Exception {
@@ -73,7 +74,7 @@ public class ManageBusinessSectorJobAdminModule extends AnnotatedRESTModule {
 		BusinessSectorJob job = businessSectorJobDAO.getById(jobId);
 		XMLUtils.append(doc, jobElement, job);
 		XMLUtils.appendNewElement(doc, jobElement, "editURL", editJobURL);
-		XMLUtils.appendNewElement(doc, jobElement, "listJobsURL", listJobsURL);
+		XMLUtils.appendNewElement(doc, jobElement, "listJobsURL", req.getContextPath()+listSummerJobsHandler.getBusinessJobsUrl());
 		XMLUtils.appendNewElement(doc, jobElement, "BackURL", req.getHeader("referer"));
 		
 		return new SimpleForegroundModuleResponse(doc);

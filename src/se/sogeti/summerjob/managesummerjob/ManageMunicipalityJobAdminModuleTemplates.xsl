@@ -273,7 +273,7 @@
 				
 				<div class="row mgn-top8px">
 					<div class="col-md-12">
-						<a href="{listJobsURL}?municipality=true" type="button" class="pull-right">Gå till alla kommunala jobb</a>
+						<a href="{listJobsURL}" type="button" class="pull-right">Gå till alla kommunala jobb</a>
 						
 					</div>
 				</div>

@@ -264,7 +264,7 @@
 				
 				<div class="row mgn-top8px">
 					<div class="col-md-12">
-						<a href="{listJobsURL}?business=true" type="button" class="pull-right">Gå till alla näringslivsjobb</a>
+						<a href="{listJobsURL}" type="button" class="pull-right">Gå till alla näringslivsjobb</a>
 						
 					</div>
 				</div>

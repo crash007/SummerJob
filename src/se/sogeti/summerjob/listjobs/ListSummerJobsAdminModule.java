@@ -16,6 +16,7 @@ import se.sogeti.jobapplications.beans.ApplicationStatus;
 import se.sogeti.jobapplications.beans.GeoArea;
 import se.sogeti.jobapplications.beans.business.BusinessSectorJob;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityJob;
+import se.sogeti.jobapplications.cv.CvServiceHander;
 import se.sogeti.jobapplications.daos.GeoAreaDAO;
 import se.sogeti.jobapplications.daos.JobDAO;
 import se.sogeti.summerjob.FormUtils;
@@ -23,7 +24,9 @@ import se.unlogic.hierarchy.core.annotations.ModuleSetting;
 import se.unlogic.hierarchy.core.annotations.TextFieldSettingDescriptor;
 import se.unlogic.hierarchy.core.beans.SimpleForegroundModuleResponse;
 import se.unlogic.hierarchy.core.beans.User;
+import se.unlogic.hierarchy.core.interfaces.ForegroundModuleDescriptor;
 import se.unlogic.hierarchy.core.interfaces.ForegroundModuleResponse;
+import se.unlogic.hierarchy.core.interfaces.SectionInterface;
 import se.unlogic.hierarchy.core.utils.HierarchyAnnotatedDAOFactory;
 import se.unlogic.hierarchy.foregroundmodules.AnnotatedForegroundModule;
 import se.unlogic.standardutils.bool.BooleanUtils;
@@ -33,7 +36,7 @@ import se.unlogic.standardutils.xml.XMLUtils;
 import se.unlogic.webutils.http.RequestUtils;
 import se.unlogic.webutils.http.URIParser;
 
-public class ListSummerJobsAdminModule extends AnnotatedForegroundModule {
+public class ListSummerJobsAdminModule extends AnnotatedForegroundModule implements ListSummerJobsHandler{
 	
 	JobDAO<MunicipalityJob> municipalityJobDAO;
 	JobDAO<BusinessSectorJob> businessSectorJobDAO;
@@ -272,5 +275,36 @@ public class ListSummerJobsAdminModule extends AnnotatedForegroundModule {
 		}
 		
 		return businessSectorJob;
+	}
+
+	@Override
+	public String getMunicipalityJobsUrl() {
+		return this.getFullAlias()+"?municipality=true";
+	}
+
+	@Override
+	public String getBusinessJobsUrl() {		
+		return this.getFullAlias()+"?business=true";
+	}
+
+	@Override
+	public void init(ForegroundModuleDescriptor moduleDescriptor, SectionInterface sectionInterface,
+			DataSource dataSource) throws Exception {
+		// TODO Auto-generated method stub
+		super.init(moduleDescriptor, sectionInterface, dataSource);
+
+		if(!systemInterface.getInstanceHandler().addInstance(ListSummerJobsHandler.class, this)){
+			throw new RuntimeException("Unable to register module in global instance handler using key " +ListSummerJobsHandler.class.getSimpleName() + ", another instance is already registered using this key.");
+		}
+	}
+
+	@Override
+	public void unload() throws Exception {
+		
+		if(this.equals(systemInterface.getInstanceHandler().getInstance(ListSummerJobsHandler.class))){
+			log.info("Unloading ListSummerJobsHandler from instanceHandler.");
+			systemInterface.getInstanceHandler().removeInstance(ListSummerJobsHandler.class);
+		}	
+		super.unload();
 	}
 }
