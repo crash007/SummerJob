@@ -21,7 +21,6 @@ import se.sogeti.jobapplications.beans.municipality.MunicipalityJob;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityJobArea;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityManager;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityMentor;
-import se.sogeti.jobapplications.cv.CvServiceHander;
 import se.sogeti.jobapplications.daos.AreaDAO;
 import se.sogeti.jobapplications.daos.ContactDetailsDAO;
 import se.sogeti.jobapplications.daos.DriversLicenseTypeDAO;
@@ -31,9 +30,8 @@ import se.sogeti.periodsadmin.beans.Period;
 import se.sogeti.periodsadmin.daos.PeriodDAO;
 import se.sogeti.summerjob.FormUtils;
 import se.sogeti.summerjob.JsonResponse;
-import se.sogeti.summerjob.listjobs.ListSummerJobsHandler;
-import se.unlogic.hierarchy.core.annotations.ModuleSetting;
-import se.unlogic.hierarchy.core.annotations.TextFieldSettingDescriptor;
+import se.sogeti.summerjob.managesummerjob.ManageMunicipalityJobHandler;
+import se.unlogic.hierarchy.core.annotations.InstanceManagerDependency;
 import se.unlogic.hierarchy.core.beans.SimpleForegroundModuleResponse;
 import se.unlogic.hierarchy.core.beans.User;
 import se.unlogic.hierarchy.core.interfaces.ForegroundModuleDescriptor;
@@ -50,9 +48,8 @@ import se.unlogic.webutils.http.URIParser;
 
 public class AddMunicipalitySummerJobModule extends AnnotatedRESTModule implements AddMunicipalityJobHandler{
 	
-	@ModuleSetting
-	@TextFieldSettingDescriptor(description="Relativ URL till sidan för att hantera jobbet", name="ManageJobURL")
-	String manageJobURL = "manage-municipality-job";
+	@InstanceManagerDependency(required=true)
+	private ManageMunicipalityJobHandler manageMunicipalityJobHandler;
 	
 	private JobDAO<MunicipalityJob> municipalityJobDAO;
 	private AreaDAO areaDAO;
@@ -99,7 +96,7 @@ public class AddMunicipalitySummerJobModule extends AnnotatedRESTModule implemen
 		if (jobId != null && user!=null && user.isAdmin()) {
 			job = municipalityJobDAO.getById(jobId);
 			XMLUtils.append(doc, jobForm, job);
-			XMLUtils.appendNewElement(doc, jobForm, "manageJobURL", manageJobURL);
+			XMLUtils.appendNewElement(doc, jobForm, "manageJobURL", req.getContextPath()+manageMunicipalityJobHandler.getUrl()+"?jobId="+job.getId());
 		} 
 		
 		
