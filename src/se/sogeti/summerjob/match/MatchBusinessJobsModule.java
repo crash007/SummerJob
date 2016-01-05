@@ -22,7 +22,6 @@ import se.sogeti.jobapplications.beans.ApplicationStatus;
 import se.sogeti.jobapplications.beans.PersonApplications;
 import se.sogeti.jobapplications.beans.business.BusinessSectorJob;
 import se.sogeti.jobapplications.beans.business.BusinessSectorJobApplication;
-import se.sogeti.jobapplications.beans.municipality.MunicipalityJob;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityJobApplication;
 import se.sogeti.jobapplications.cv.CvServiceHander;
 import se.sogeti.jobapplications.daos.BusinessSectorJobApplicationDAO;
@@ -31,14 +30,15 @@ import se.sogeti.jobapplications.daos.MunicipalityJobApplicationDAO;
 import se.sogeti.jobapplications.daos.PersonApplicationsDAO;
 import se.sogeti.periodsadmin.beans.ContactPerson;
 import se.sogeti.periodsadmin.daos.ContactPersonDAO;
-import se.sogeti.summerjob.DocxGenerator;
 import se.sogeti.summerjob.FormUtils;
 import se.sogeti.summerjob.JsonResponse;
 import se.sogeti.summerjob.PDFGenerator;
 import se.unlogic.hierarchy.core.annotations.InstanceManagerDependency;
 import se.unlogic.hierarchy.core.beans.SimpleForegroundModuleResponse;
 import se.unlogic.hierarchy.core.beans.User;
+import se.unlogic.hierarchy.core.interfaces.ForegroundModuleDescriptor;
 import se.unlogic.hierarchy.core.interfaces.ForegroundModuleResponse;
+import se.unlogic.hierarchy.core.interfaces.SectionInterface;
 import se.unlogic.hierarchy.core.utils.HierarchyAnnotatedDAOFactory;
 import se.unlogic.hierarchy.foregroundmodules.rest.RESTMethod;
 import se.unlogic.standardutils.bool.BooleanUtils;
@@ -49,7 +49,7 @@ import se.unlogic.standardutils.xml.XMLUtils;
 import se.unlogic.webutils.http.RequestUtils;
 import se.unlogic.webutils.http.URIParser;
 
-public class MatchBusinessJobsModule extends MatchCommon {
+public class MatchBusinessJobsModule extends MatchCommon implements MatchBusinessJobHandler {
 	
 
 	private BusinessSectorJobDAO businessJobDAO;
@@ -400,6 +400,33 @@ public class MatchBusinessJobsModule extends MatchCommon {
 		
 		inStream.close();
 		outStream.close();
+	}
+
+	@Override
+	public String getUrl() {
+		return this.getFullAlias();
+	}
+	
+	@Override
+	public void init(ForegroundModuleDescriptor moduleDescriptor, SectionInterface sectionInterface,
+			DataSource dataSource) throws Exception {
+		
+		super.init(moduleDescriptor, sectionInterface, dataSource);
+		
+		if(!systemInterface.getInstanceHandler().addInstance(MatchBusinessJobHandler.class, this)){
+			throw new RuntimeException("Unable to register module in global instance handler using key " +MatchBusinessJobHandler.class.getSimpleName() + ", another instance is already registered using this key.");
+		}
+	}
+
+	@Override
+	public void unload() throws Exception {
+
+		if(this.equals(systemInterface.getInstanceHandler().getInstance(MatchBusinessJobHandler.class))){
+			log.info("Unloading MatchBusinessJobHandler from instanceHandler.");
+			systemInterface.getInstanceHandler().removeInstance(MatchBusinessJobHandler.class);
+		}	
+		
+		super.unload();
 	}
 }
 

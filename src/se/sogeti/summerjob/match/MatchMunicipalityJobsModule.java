@@ -49,7 +49,9 @@ import se.sogeti.summerjob.PDFGenerator;
 import se.unlogic.hierarchy.core.annotations.InstanceManagerDependency;
 import se.unlogic.hierarchy.core.beans.SimpleForegroundModuleResponse;
 import se.unlogic.hierarchy.core.beans.User;
+import se.unlogic.hierarchy.core.interfaces.ForegroundModuleDescriptor;
 import se.unlogic.hierarchy.core.interfaces.ForegroundModuleResponse;
+import se.unlogic.hierarchy.core.interfaces.SectionInterface;
 import se.unlogic.hierarchy.core.utils.HierarchyAnnotatedDAOFactory;
 import se.unlogic.hierarchy.foregroundmodules.rest.RESTMethod;
 import se.unlogic.standardutils.bool.BooleanUtils;
@@ -60,7 +62,7 @@ import se.unlogic.standardutils.xml.XMLUtils;
 import se.unlogic.webutils.http.RequestUtils;
 import se.unlogic.webutils.http.URIParser;
 
-public class MatchMunicipalityJobsModule extends MatchCommon {
+public class MatchMunicipalityJobsModule extends MatchCommon implements MatchMunicipalityJobHandler{
 	
 	private JobDAO<MunicipalityJob> municipalityJobDAO;
 	private MunicipalityJobApplicationDAO municipalityJobApplicationDAO;
@@ -321,8 +323,7 @@ public class MatchMunicipalityJobsModule extends MatchCommon {
 						result.putField("message", "No job found for id "+jobId);
 						JsonResponse.sendJsonResponse(result.toJson(), null, writer);
 					}
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
+				} catch (SQLException e) {				
 					log.error("Exception when calling db in Match module",e);
 					result.putField("status", "error");
 					result.putField("message", "Error when calling db");
@@ -457,8 +458,7 @@ public class MatchMunicipalityJobsModule extends MatchCommon {
 					JsonResponse.sendJsonResponse(result.toJson(), null, writer);
 				}
 				
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
+			} catch (SQLException e) {				
 				log.error("Exception when getting application", e);
 				result.putField("status", "error");
 				result.putField("message", "Error when calling db");
@@ -626,6 +626,33 @@ public class MatchMunicipalityJobsModule extends MatchCommon {
 			result.putField("message", "Changed the status on this job");
 			JsonResponse.sendJsonResponse(result.toJson(), null, writer);
 		}
+	}
+
+	@Override
+	public String getUrl() {		
+		return this.getFullAlias();
+	}
+	
+	@Override
+	public void init(ForegroundModuleDescriptor moduleDescriptor, SectionInterface sectionInterface,
+			DataSource dataSource) throws Exception {
+		
+		super.init(moduleDescriptor, sectionInterface, dataSource);
+		
+		if(!systemInterface.getInstanceHandler().addInstance(MatchMunicipalityJobHandler.class, this)){
+			throw new RuntimeException("Unable to register module in global instance handler using key " +MatchMunicipalityJobHandler.class.getSimpleName() + ", another instance is already registered using this key.");
+		}
+	}
+
+	@Override
+	public void unload() throws Exception {
+
+		if(this.equals(systemInterface.getInstanceHandler().getInstance(MatchMunicipalityJobHandler.class))){
+			log.info("Unloading MatchMunicipalityJobHandler from instanceHandler.");
+			systemInterface.getInstanceHandler().removeInstance(MatchMunicipalityJobHandler.class);
+		}	
+		
+		super.unload();
 	}
 }
 

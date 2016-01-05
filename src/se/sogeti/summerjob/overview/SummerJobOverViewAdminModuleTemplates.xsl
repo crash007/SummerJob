@@ -109,7 +109,7 @@
 							<div class="col-md-2 bold">Efternamn</div>
 							<div class="col-md-2 bold">Verksamhetsområde 1</div>
 							<div class="col-md-2 bold">Område 1</div>
-							<div class="col-md-1 bold" style="padding-left: 0px; padding-right: 0px;">Datum</div>
+							<div class="col-md-1 bold" style="padding-left: 0px;">Datum</div>
 							<div class="col-md-1"></div>
 						</div>
 						<xsl:for-each select="approvedMunicipalityApplications/MunicipalityApplication">
@@ -119,7 +119,7 @@
 								<div class="col-md-2"><xsl:value-of select="lastname" /></div>
 								<div class="col-md-2"><xsl:value-of select="preferedArea1" /></div>
 								<div class="col-md-2"><xsl:value-of select="preferedGeoArea1" /></div>
-								<div class="col-md-1" style="padding-left: 0px; padding-right: 0px;"><xsl:value-of select="created" /></div>
+								<div class="col-md-1" style="padding-left: 0px;"><xsl:value-of select="created" /></div>
 								<div class="col-md-1 bold"><a href="{/Document/requestinfo/contextpath}/{/Document/Municipality/ManageMunicipalityApplicationUrl}?appId={id}">Hantera</a></div>
 							</div>
 						</xsl:for-each>

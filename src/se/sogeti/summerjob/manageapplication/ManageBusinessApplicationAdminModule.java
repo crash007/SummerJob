@@ -14,12 +14,11 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import se.sogeti.jobapplications.beans.business.BusinessSectorJobApplication;
-import se.sogeti.jobapplications.beans.municipality.MunicipalityJobApplication;
 import se.sogeti.jobapplications.cv.CvServiceHander;
 import se.sogeti.jobapplications.daos.BusinessSectorJobApplicationDAO;
-import se.sogeti.jobapplications.daos.JobApplicationDAO;
-import se.sogeti.jobapplications.daos.JobDAO;
 import se.sogeti.summerjob.JsonResponse;
+import se.sogeti.summerjob.addsummerjob.AddBusinessJobHandler;
+import se.sogeti.summerjob.match.MatchBusinessJobHandler;
 import se.unlogic.hierarchy.core.annotations.InstanceManagerDependency;
 import se.unlogic.hierarchy.core.annotations.ModuleSetting;
 import se.unlogic.hierarchy.core.annotations.TextFieldSettingDescriptor;
@@ -39,9 +38,11 @@ public class ManageBusinessApplicationAdminModule extends AnnotatedRESTModule {
 	
 	BusinessSectorJobApplicationDAO jobApplicationDAO;
 	
-	@ModuleSetting
-	@TextFieldSettingDescriptor(description="Relativ URL till sidan för att lägga till och redigera en ansökan", name="AddEditAppURL")
-	String editBusinessApplicationURL="business-sector-job";
+	@InstanceManagerDependency
+	private AddBusinessJobHandler addBusinessJobHandler;
+	
+	@InstanceManagerDependency
+	private MatchBusinessJobHandler matchBusinessJobHandler;
 	
 	@ModuleSetting
 	@TextFieldSettingDescriptor(description="Relativ URL till sidan för att lista ansökningar", name="ListAppsURL")
@@ -68,7 +69,6 @@ public class ManageBusinessApplicationAdminModule extends AnnotatedRESTModule {
 		element.appendChild(this.sectionInterface.getSectionDescriptor().toXML(doc));
 		element.appendChild(this.moduleDescriptor.toXML(doc));
 		doc.appendChild(element);
-
 		
 		XMLUtils.appendNewElement(doc, element, "CvBusinessApplicationUrl", cvServiceHandler.getBusinessApplicationCvUrl());
 		
@@ -85,7 +85,10 @@ public class ManageBusinessApplicationAdminModule extends AnnotatedRESTModule {
 			doc.getFirstChild().appendChild(appInfoElement);
 			XMLUtils.appendNewElement(doc, appInfoElement, "listJobApplicationsURL", listJobApplicationsURL);
 			XMLUtils.appendNewElement(doc, appInfoElement, "editAppURL", 
-					editBusinessApplicationURL + "?jobId=" + app.getJob().getId() + "&appId=" + app.getId());
+					addBusinessJobHandler.getUrl() + "?jobId=" + app.getJob().getId() + "&appId=" + app.getId());
+			
+			XMLUtils.appendNewElement(doc, appInfoElement, "matchURL", req.getContextPath()+matchBusinessJobHandler.getUrl()+"?jobId="+app.getJob().getId());
+			
 			
 			XMLUtils.appendNewElement(doc, appInfoElement, "BackURL", req.getHeader("referer"));
 			

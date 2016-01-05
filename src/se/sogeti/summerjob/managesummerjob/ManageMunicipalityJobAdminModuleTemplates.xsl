@@ -13,7 +13,7 @@
 	</xsl:template>
 	
 	<xsl:template match="MunicipalityJobInfo">
-	
+		<h1>Hantera kommunannons</h1>
 		<input type="hidden" id="job-id" name="job-id" value="{MunicipalityJob/id}" />
 		
 	  	<div class="panel panel-default">

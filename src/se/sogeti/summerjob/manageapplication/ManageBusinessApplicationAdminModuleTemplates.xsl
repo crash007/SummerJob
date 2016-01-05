@@ -179,16 +179,21 @@
 					</div>
 				</div>
 				
-				<div class="row mgn-top8px">
-					<div class="col-md-12">
-						<a href="{/Document/ApplicationInfo/listJobApplicationsURL}" type="button" class="pull-right">Gå till alla ansökningar</a>
-						
+				<div class="row">
+					<div class="col-md-12 mgn-top8px">						
+						<a href="{/Document/ApplicationInfo/BackURL}" type="button" class="pull-right">Tillbaka</a>
 					</div>
 				</div>
 				
 				<div class="row">
-					<div class="col-md-12">						
-						<a href="{/Document/ApplicationInfo/BackURL}" type="button" class="pull-right">Gå tillbaka</a>
+					<div class="col-md-12">
+						<a href="{/Document/ApplicationInfo/listJobApplicationsURL}" type="button" class="pull-right">Alla ansökningar</a>						
+					</div>
+				</div>
+								
+				<div class="row">
+					<div class="col-md-12">
+						<a href="{/Document/ApplicationInfo/matchURL}" type="button" class="pull-right">Matcha</a>						
 					</div>
 				</div>
 				
