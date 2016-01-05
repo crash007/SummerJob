@@ -13,15 +13,11 @@ import javax.sql.DataSource;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import se.sogeti.jobapplications.beans.Job;
-import se.sogeti.jobapplications.beans.business.BusinessSectorJob;
-import se.sogeti.jobapplications.beans.business.BusinessSectorJobApplication;
-import se.sogeti.jobapplications.beans.municipality.MunicipalityJob;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityJobApplication;
 import se.sogeti.jobapplications.cv.CvServiceHander;
 import se.sogeti.jobapplications.daos.JobApplicationDAO;
-import se.sogeti.jobapplications.daos.JobDAO;
 import se.sogeti.summerjob.JsonResponse;
+import se.sogeti.summerjob.match.MatchMunicipalityJobHandler;
 import se.unlogic.hierarchy.core.annotations.InstanceManagerDependency;
 import se.unlogic.hierarchy.core.annotations.ModuleSetting;
 import se.unlogic.hierarchy.core.annotations.TextFieldSettingDescriptor;
@@ -29,7 +25,6 @@ import se.unlogic.hierarchy.core.beans.SimpleForegroundModuleResponse;
 import se.unlogic.hierarchy.core.beans.User;
 import se.unlogic.hierarchy.core.interfaces.ForegroundModuleResponse;
 import se.unlogic.hierarchy.core.utils.HierarchyAnnotatedDAOFactory;
-import se.unlogic.hierarchy.foregroundmodules.AnnotatedForegroundModule;
 import se.unlogic.hierarchy.foregroundmodules.rest.AnnotatedRESTModule;
 import se.unlogic.hierarchy.foregroundmodules.rest.RESTMethod;
 import se.unlogic.standardutils.bool.BooleanUtils;
@@ -84,10 +79,11 @@ public class ManageMunicipalityApplicationAdminModule extends AnnotatedRESTModul
 		
 		MunicipalityJobApplication app = appDAO.getById(appId);
 		if(app!=null){
+			
 			XMLUtils.append(doc, appElement, app);
 			XMLUtils.appendNewElement(doc, appElement, "editAppURL", editApplicationURL + "?appId=" + app.getId());
 			XMLUtils.appendNewElement(doc, appElement, "listJobApplicationsURL", listJobApplicationsURL);
-			XMLUtils.appendNewElement(doc, appElement, "BackURL", req.getHeader("referer"));
+			XMLUtils.appendNewElement(doc, appElement, "BackURL", req.getHeader("referer"));			
 			
 			Element rankingsElement = doc.createElement("Rankings");
 			for (int i = 1; i < 11; i++) {

@@ -85,7 +85,7 @@ public class ManageBusinessApplicationAdminModule extends AnnotatedRESTModule {
 			doc.getFirstChild().appendChild(appInfoElement);
 			XMLUtils.appendNewElement(doc, appInfoElement, "listJobApplicationsURL", listJobApplicationsURL);
 			XMLUtils.appendNewElement(doc, appInfoElement, "editAppURL", 
-					addBusinessJobHandler.getUrl() + "?jobId=" + app.getJob().getId() + "&appId=" + app.getId());
+					req.getContextPath()+addBusinessJobHandler.getUrl() + "?jobId=" + app.getJob().getId() + "&appId=" + app.getId());
 			
 			XMLUtils.appendNewElement(doc, appInfoElement, "matchURL", req.getContextPath()+matchBusinessJobHandler.getUrl()+"?jobId="+app.getJob().getId());
 			
