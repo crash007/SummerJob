@@ -265,7 +265,7 @@
 			  			</button>
 						
 			  			<xsl:if test="BusinessSectorJob">
-			  				<a href="{manageJobURL}?jobId={BusinessSectorJob/id}" class="pull-right mgn-top4px btn btn-primary">Tillbaka</a>
+			  				<a href="{manageJobURL}" class="pull-right mgn-top4px btn btn-primary">Tillbaka</a>
 			  			</xsl:if>
 						<span class="glyphicon glyphicon-ok collapse" aria-hidden="true"></span><span class="glyphicon glyphicon-remove collapse" aria-hidden="true"></span>
 					</div>

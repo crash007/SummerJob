@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Date;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -14,7 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
-import org.datacontract.schemas._2004._07.sundsvall_meta_smex.MentorData;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -22,11 +20,11 @@ import se.sogeti.jobapplications.beans.DriversLicenseType;
 import se.sogeti.jobapplications.beans.business.BusinessSectorJob;
 import se.sogeti.jobapplications.beans.business.BusinessSectorManager;
 import se.sogeti.jobapplications.beans.business.BusinessSectorMentor;
-import se.sogeti.jobapplications.daos.ContactDetailsDAO;
 import se.sogeti.jobapplications.daos.DriversLicenseTypeDAO;
 import se.sogeti.jobapplications.daos.JobDAO;
-import se.sogeti.summerjob.FormUtils;
 import se.sogeti.summerjob.JsonResponse;
+import se.sogeti.summerjob.managesummerjob.ManageBusinessSectorJobHandler;
+import se.unlogic.hierarchy.core.annotations.InstanceManagerDependency;
 import se.unlogic.hierarchy.core.annotations.ModuleSetting;
 import se.unlogic.hierarchy.core.annotations.TextFieldSettingDescriptor;
 import se.unlogic.hierarchy.core.beans.SimpleForegroundModuleResponse;
@@ -45,13 +43,11 @@ import se.unlogic.webutils.http.URIParser;
 
 public class AddBusinessSectorSummerJobModule extends AnnotatedRESTModule implements AddBusinessJobHandler{
 	
-	@ModuleSetting
-	@TextFieldSettingDescriptor(description="Relativ URL till sidan för att hantera jobbet", name="ManageJobURL")
-	String manageJobURL = "manage-businesssector-job";
+	@InstanceManagerDependency(required = true)
+	private ManageBusinessSectorJobHandler manageBusinessJobHandler;
 	
 	private JobDAO<BusinessSectorJob> businessSectorJobDAO;
 	private DriversLicenseTypeDAO driversLicenseTypeDAO;
-	private ContactDetailsDAO<BusinessSectorMentor> businessSectorMentorDAO;
 	
 	@Override
 	protected void createDAOs(DataSource dataSource) throws Exception {
@@ -59,7 +55,7 @@ public class AddBusinessSectorSummerJobModule extends AnnotatedRESTModule implem
 		HierarchyAnnotatedDAOFactory hierarchyDaoFactory = new HierarchyAnnotatedDAOFactory(dataSource, systemInterface);
 		businessSectorJobDAO = new JobDAO<BusinessSectorJob>(dataSource, BusinessSectorJob.class, hierarchyDaoFactory);
 		driversLicenseTypeDAO = new DriversLicenseTypeDAO(dataSource, DriversLicenseType.class, hierarchyDaoFactory);
-		businessSectorMentorDAO = new ContactDetailsDAO<BusinessSectorMentor>(dataSource, BusinessSectorMentor.class, hierarchyDaoFactory);
+		
 	}
 
 	@Override
@@ -80,7 +76,7 @@ public class AddBusinessSectorSummerJobModule extends AnnotatedRESTModule implem
 		if (jobId != null && user.isAdmin()) {
 			job = businessSectorJobDAO.getById(jobId);
 			XMLUtils.append(doc, jobForm, job);
-			XMLUtils.appendNewElement(doc, jobForm, "manageJobURL", manageJobURL);
+			XMLUtils.appendNewElement(doc, jobForm, "manageJobURL", req.getContextPath()+manageBusinessJobHandler.getUrl()+"?jobId="+job.getId());
 		} 
 		
 		List<DriversLicenseType> driverslicenseTypes = driversLicenseTypeDAO.getAll();

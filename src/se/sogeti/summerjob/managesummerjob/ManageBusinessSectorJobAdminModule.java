@@ -17,13 +17,16 @@ import se.sogeti.jobapplications.beans.business.BusinessSectorJob;
 import se.sogeti.jobapplications.daos.JobDAO;
 import se.sogeti.summerjob.JsonResponse;
 import se.sogeti.summerjob.addsummerjob.AddBusinessJobHandler;
+import se.sogeti.summerjob.addsummerjob.AddMunicipalityJobHandler;
 import se.sogeti.summerjob.listjobs.ListSummerJobsHandler;
 import se.unlogic.hierarchy.core.annotations.InstanceManagerDependency;
 import se.unlogic.hierarchy.core.annotations.ModuleSetting;
 import se.unlogic.hierarchy.core.annotations.TextFieldSettingDescriptor;
 import se.unlogic.hierarchy.core.beans.SimpleForegroundModuleResponse;
 import se.unlogic.hierarchy.core.beans.User;
+import se.unlogic.hierarchy.core.interfaces.ForegroundModuleDescriptor;
 import se.unlogic.hierarchy.core.interfaces.ForegroundModuleResponse;
+import se.unlogic.hierarchy.core.interfaces.SectionInterface;
 import se.unlogic.hierarchy.core.utils.HierarchyAnnotatedDAOFactory;
 import se.unlogic.hierarchy.foregroundmodules.AnnotatedForegroundModule;
 import se.unlogic.hierarchy.foregroundmodules.rest.AnnotatedRESTModule;
@@ -34,7 +37,7 @@ import se.unlogic.standardutils.xml.XMLUtils;
 import se.unlogic.webutils.http.RequestUtils;
 import se.unlogic.webutils.http.URIParser;
 
-public class ManageBusinessSectorJobAdminModule extends AnnotatedRESTModule {
+public class ManageBusinessSectorJobAdminModule extends AnnotatedRESTModule implements ManageBusinessSectorJobHandler{
 	
 	JobDAO<BusinessSectorJob> businessSectorJobDAO;
 	
@@ -142,4 +145,33 @@ public class ManageBusinessSectorJobAdminModule extends AnnotatedRESTModule {
 			JsonResponse.sendJsonResponse("{\"status\":\"error\", \"message\":\"Något gick fel när ändringarna skulle sparas.\"}", callback, writer);
 		}				
 	}
+
+	@Override
+	public String getUrl() {
+		return this.getFullAlias();
+	}
+
+	@Override
+	public void init(ForegroundModuleDescriptor moduleDescriptor, SectionInterface sectionInterface,
+			DataSource dataSource) throws Exception {
+		
+		super.init(moduleDescriptor, sectionInterface, dataSource);
+		
+		if(!systemInterface.getInstanceHandler().addInstance(ManageBusinessSectorJobHandler.class, this)){
+			throw new RuntimeException("Unable to register module in global instance handler using key " +ManageBusinessSectorJobHandler.class.getSimpleName() + ", another instance is already registered using this key.");
+		}
+	}
+
+	@Override
+	public void unload() throws Exception {
+
+		if(this.equals(systemInterface.getInstanceHandler().getInstance(ManageBusinessSectorJobHandler.class))){
+			log.info("Unloading ManageBusinessSectorJobHandler from instanceHandler.");
+			systemInterface.getInstanceHandler().removeInstance(ManageBusinessSectorJobHandler.class);
+		}	
+		
+		super.unload();
+	}
+	
+	
 }
