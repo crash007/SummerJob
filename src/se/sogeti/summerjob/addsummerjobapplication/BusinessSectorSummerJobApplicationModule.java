@@ -30,7 +30,9 @@ import se.unlogic.hierarchy.core.annotations.ModuleSetting;
 import se.unlogic.hierarchy.core.annotations.TextFieldSettingDescriptor;
 import se.unlogic.hierarchy.core.beans.SimpleForegroundModuleResponse;
 import se.unlogic.hierarchy.core.beans.User;
+import se.unlogic.hierarchy.core.interfaces.ForegroundModuleDescriptor;
 import se.unlogic.hierarchy.core.interfaces.ForegroundModuleResponse;
+import se.unlogic.hierarchy.core.interfaces.SectionInterface;
 import se.unlogic.hierarchy.core.utils.HierarchyAnnotatedDAOFactory;
 import se.unlogic.hierarchy.foregroundmodules.rest.RESTMethod;
 import se.unlogic.standardutils.io.BinarySizes;
@@ -40,7 +42,7 @@ import se.unlogic.standardutils.xml.XMLUtils;
 import se.unlogic.webutils.http.RequestUtils;
 import se.unlogic.webutils.http.URIParser;
 
-public class BusinessSectorSummerJobApplicationModule extends AddSummerJobApplication<BusinessSectorJobApplication>{
+public class BusinessSectorSummerJobApplicationModule extends AddSummerJobApplication<BusinessSectorJobApplication> implements BusinessSectorJobApplicationHandler{
 
 
 	private BusinessSectorJobApplicationDAO jobApplicationDAO;
@@ -237,9 +239,35 @@ public class BusinessSectorSummerJobApplicationModule extends AddSummerJobApplic
 				JsonResponse.sendJsonResponse("{\"status\":\"error\", \"message\":\"Inget jobb med det id="+jobId+".\"}", callback, writer);
 			}
 		} catch (FileUploadException e2) {
-			// TODO Auto-generated catch block
-			e2.printStackTrace();
+			log.error("File upload error",e2);
 		}
+	}
+
+	@Override
+	public String getUrl() {
+		return this.getFullAlias();
+	}
+	
+	@Override
+	public void init(ForegroundModuleDescriptor moduleDescriptor, SectionInterface sectionInterface,
+			DataSource dataSource) throws Exception {
+		
+		super.init(moduleDescriptor, sectionInterface, dataSource);
+		
+		if(!systemInterface.getInstanceHandler().addInstance(BusinessSectorJobApplicationHandler.class, this)){
+			throw new RuntimeException("Unable to register module in global instance handler using key " +BusinessSectorJobApplicationHandler.class.getSimpleName() + ", another instance is already registered using this key.");
+		}
+	}
+
+	@Override
+	public void unload() throws Exception {
+		
+		if(this.equals(systemInterface.getInstanceHandler().getInstance(BusinessSectorJobApplicationHandler.class))){
+			log.info("Unloading BusinessSectorJobApplicationHandler from instanceHandler.");
+			systemInterface.getInstanceHandler().removeInstance(BusinessSectorJobApplicationHandler.class);
+		}	
+		
+		super.unload();
 	}
 
 }

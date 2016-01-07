@@ -8,11 +8,11 @@
 		
 		<h2>Sök sommarjobb inom Sundsvalls Kommun</h2>
 		<p class="lead">Vi erbjuder sommarjobb inom kommunens olika förvaltningar.</p>
-		<a href="#">Skicka in din ansökan</a>
+		<a href="{AddMunicipalityApplicationUrl}">Skicka in din ansökan</a>
 		
 		<h2>Sommarjobb inom näringslivet</h2>
 		<p class="lead">Sundsvalls kommun förmedlar sommarjobb inom näringslivet.</p>
-		<a href="" class="business-jobs-link">Listan över lediga sommarjobb</a>
+		<a href="{AddBusinessApplicationUrl}" class="business-jobs-link">Listan över lediga sommarjobb</a>
 		
 	</xsl:template>
 </xsl:stylesheet>

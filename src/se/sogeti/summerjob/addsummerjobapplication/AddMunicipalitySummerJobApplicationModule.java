@@ -32,7 +32,9 @@ import se.unlogic.hierarchy.core.annotations.ModuleSetting;
 import se.unlogic.hierarchy.core.annotations.TextFieldSettingDescriptor;
 import se.unlogic.hierarchy.core.beans.SimpleForegroundModuleResponse;
 import se.unlogic.hierarchy.core.beans.User;
+import se.unlogic.hierarchy.core.interfaces.ForegroundModuleDescriptor;
 import se.unlogic.hierarchy.core.interfaces.ForegroundModuleResponse;
+import se.unlogic.hierarchy.core.interfaces.SectionInterface;
 import se.unlogic.hierarchy.core.utils.HierarchyAnnotatedDAOFactory;
 import se.unlogic.hierarchy.foregroundmodules.rest.RESTMethod;
 import se.unlogic.standardutils.io.BinarySizes;
@@ -42,7 +44,7 @@ import se.unlogic.standardutils.xml.XMLUtils;
 import se.unlogic.webutils.http.RequestUtils;
 import se.unlogic.webutils.http.URIParser;
 
-public class AddMunicipalitySummerJobApplicationModule extends AddSummerJobApplication<MunicipalityJobApplication>{
+public class AddMunicipalitySummerJobApplicationModule extends AddSummerJobApplication<MunicipalityJobApplication> implements AddMunicipalityJobApplicationHandler{
 	
 	
 	private JobApplicationDAO<MunicipalityJobApplication> jobApplicationDAO;
@@ -343,9 +345,35 @@ public class AddMunicipalitySummerJobApplicationModule extends AddSummerJobAppli
 		}
 	}
 
-	
+	@Override
+	public String getUrl() {
+		return this.getFullAlias();
+	}
 
 	
+
+
+	@Override
+	public void init(ForegroundModuleDescriptor moduleDescriptor, SectionInterface sectionInterface,
+			DataSource dataSource) throws Exception {
+		
+		super.init(moduleDescriptor, sectionInterface, dataSource);
+		
+		if(!systemInterface.getInstanceHandler().addInstance(AddMunicipalityJobApplicationHandler.class, this)){
+			throw new RuntimeException("Unable to register module in global instance handler using key " +AddMunicipalityJobApplicationHandler.class.getSimpleName() + ", another instance is already registered using this key.");
+		}
+	}
+
+	@Override
+	public void unload() throws Exception {
+		
+		if(this.equals(systemInterface.getInstanceHandler().getInstance(AddMunicipalityJobApplicationHandler.class))){
+			log.info("Unloading AddMunicipalityJobApplicationHandler from instanceHandler.");
+			systemInterface.getInstanceHandler().removeInstance(AddMunicipalityJobApplicationHandler.class);
+		}	
+		
+		super.unload();
+	}
 
 	
 	
