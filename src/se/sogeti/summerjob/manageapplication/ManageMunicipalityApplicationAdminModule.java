@@ -17,6 +17,7 @@ import se.sogeti.jobapplications.beans.municipality.MunicipalityJobApplication;
 import se.sogeti.jobapplications.cv.CvServiceHander;
 import se.sogeti.jobapplications.daos.JobApplicationDAO;
 import se.sogeti.summerjob.JsonResponse;
+import se.sogeti.summerjob.addsummerjobapplication.AddMunicipalityJobApplicationHandler;
 import se.sogeti.summerjob.match.MatchMunicipalityJobHandler;
 import se.unlogic.hierarchy.core.annotations.InstanceManagerDependency;
 import se.unlogic.hierarchy.core.annotations.ModuleSetting;
@@ -37,9 +38,8 @@ public class ManageMunicipalityApplicationAdminModule extends AnnotatedRESTModul
 	
 	JobApplicationDAO<MunicipalityJobApplication> appDAO;
 	
-	@ModuleSetting
-	@TextFieldSettingDescriptor(description="Relativ URL till sidan för att lägga till och redigera ett jobb", name="AddEditAppURL")
-	String editApplicationURL="add-municipality-job-application";
+	@InstanceManagerDependency
+	private AddMunicipalityJobApplicationHandler addMunicipalityJobApplicationHandler;
 	
 	@ModuleSetting
 	@TextFieldSettingDescriptor(description="Relativ URL till sidan för att lista näringslivsjobb", name="ListAppsURL")
@@ -81,7 +81,11 @@ public class ManageMunicipalityApplicationAdminModule extends AnnotatedRESTModul
 		if(app!=null){
 			
 			XMLUtils.append(doc, appElement, app);
-			XMLUtils.appendNewElement(doc, appElement, "editAppURL", editApplicationURL + "?appId=" + app.getId());
+			
+			if(addMunicipalityJobApplicationHandler!=null && req!=null){
+				XMLUtils.appendNewElement(doc, appElement, "editAppURL", req.getContextPath()+addMunicipalityJobApplicationHandler.getUrl() + "?appId=" + app.getId());
+			}
+			
 			XMLUtils.appendNewElement(doc, appElement, "listJobApplicationsURL", listJobApplicationsURL);
 			XMLUtils.appendNewElement(doc, appElement, "BackURL", req.getHeader("referer"));			
 			

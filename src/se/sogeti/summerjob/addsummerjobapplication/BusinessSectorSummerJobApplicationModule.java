@@ -255,6 +255,7 @@ public class BusinessSectorSummerJobApplicationModule extends AddSummerJobApplic
 		super.init(moduleDescriptor, sectionInterface, dataSource);
 		
 		if(!systemInterface.getInstanceHandler().addInstance(BusinessSectorJobApplicationHandler.class, this)){
+			log.error("Already registered by "+systemInterface.getInstanceHandler().getInstance(BusinessSectorJobApplicationHandler.class).getClass().getSimpleName());
 			throw new RuntimeException("Unable to register module in global instance handler using key " +BusinessSectorJobApplicationHandler.class.getSimpleName() + ", another instance is already registered using this key.");
 		}
 	}
