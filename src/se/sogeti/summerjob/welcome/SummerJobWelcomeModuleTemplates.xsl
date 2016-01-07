@@ -6,13 +6,16 @@
 		<h1>Sundsvalls kommuns sommarjobbsportal</h1>
 		<p class="lead">Här kan du som är skriven i Sundsvalls kommun och går på en gymnasieskola söka sommarjobb.</p>
 		
-		<h2>Sök sommarjobb inom Sundsvalls Kommun</h2>
-		<p class="lead">Vi erbjuder sommarjobb inom kommunens olika förvaltningar.</p>
+		<h3>Sök sommarjobb inom Sundsvalls Kommun</h3>
+		<p>Vi erbjuder sommarjobb inom kommunens olika förvaltningar.</p>
 		<a href="{AddMunicipalityApplicationUrl}">Skicka in din ansökan</a>
 		
-		<h2>Sommarjobb inom näringslivet</h2>
-		<p class="lead">Sundsvalls kommun förmedlar sommarjobb inom näringslivet.</p>
+		<h3>Sommarjobb inom näringslivet</h3>
+		<p>Sundsvalls kommun förmedlar sommarjobb inom näringslivet.</p>
 		<a href="{AddBusinessApplicationUrl}" class="business-jobs-link">Listan över lediga sommarjobb</a>
 		
+		<h3>Medarbetare inom Sundsvalls kommun</h3>
+		<p>Som medarbetare inom Sundsvalls kommun kan man logga in för att lägga upp sommarjobb.</p>
+		<a href="{/Document/requestinfo/contextpath}/login">Logga in här</a>
 	</xsl:template>
 </xsl:stylesheet>
