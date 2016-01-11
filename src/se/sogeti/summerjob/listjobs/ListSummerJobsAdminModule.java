@@ -179,7 +179,7 @@ public class ListSummerJobsAdminModule extends AnnotatedForegroundModule impleme
 
 			List<BusinessSectorJob> openJobs = businessSectorJobDAO.getAllControlledAndApprovedAndOpen();
 			List<BusinessSectorJob> uncontrolledJobs = businessSectorJobDAO.getAllUncontrolled();
-			List<BusinessSectorJob> closedJobs = businessSectorJobDAO.getAllControlledAndClosed();
+			List<BusinessSectorJob> closedJobs = businessSectorJobDAO.getAllControlledAndClosedAndApproved();
 			List<BusinessSectorJob> disapprovedJobs = businessSectorJobDAO.getAllControlledAndDisapproved(null);
 			
 			if (openJobs != null) {

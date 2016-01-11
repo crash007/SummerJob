@@ -156,6 +156,10 @@ public abstract class SummerJobCommonDAO<T> extends AnnotatedDAO<T>{
 		return getByControlledAndApprovedAddedByUsername(true, null, false, null);
 	}
 	
+	public java.util.List<T> getAllControlledAndClosedAndApproved() throws SQLException {		
+		return getByControlledAndApprovedAddedByUsername(true, true, false, null);
+	}
+	
 	public java.util.List<T> getAllControlledAndApprovedAndOpen(List<OrderByCriteria<T>> orderByCriterias) throws SQLException {
 		return getByControlledAndApprovedAddedByUsername(true, true, true, null,orderByCriterias);
 	}
