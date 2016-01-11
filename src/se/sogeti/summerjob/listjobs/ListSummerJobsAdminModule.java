@@ -4,7 +4,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.print.attribute.standard.JobSheets;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
@@ -16,10 +15,12 @@ import se.sogeti.jobapplications.beans.ApplicationStatus;
 import se.sogeti.jobapplications.beans.GeoArea;
 import se.sogeti.jobapplications.beans.business.BusinessSectorJob;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityJob;
-import se.sogeti.jobapplications.cv.CvServiceHander;
 import se.sogeti.jobapplications.daos.GeoAreaDAO;
 import se.sogeti.jobapplications.daos.JobDAO;
 import se.sogeti.summerjob.FormUtils;
+import se.sogeti.summerjob.match.MatchBusinessJobHandler;
+import se.sogeti.summerjob.match.MatchMunicipalityJobHandler;
+import se.unlogic.hierarchy.core.annotations.InstanceManagerDependency;
 import se.unlogic.hierarchy.core.annotations.ModuleSetting;
 import se.unlogic.hierarchy.core.annotations.TextFieldSettingDescriptor;
 import se.unlogic.hierarchy.core.beans.SimpleForegroundModuleResponse;
@@ -29,7 +30,6 @@ import se.unlogic.hierarchy.core.interfaces.ForegroundModuleResponse;
 import se.unlogic.hierarchy.core.interfaces.SectionInterface;
 import se.unlogic.hierarchy.core.utils.HierarchyAnnotatedDAOFactory;
 import se.unlogic.hierarchy.foregroundmodules.AnnotatedForegroundModule;
-import se.unlogic.standardutils.bool.BooleanUtils;
 import se.unlogic.standardutils.dao.OrderByCriteria;
 import se.unlogic.standardutils.enums.Order;
 import se.unlogic.standardutils.xml.XMLUtils;
@@ -50,13 +50,11 @@ public class ListSummerJobsAdminModule extends AnnotatedForegroundModule impleme
 	@TextFieldSettingDescriptor(description="Relativ url till att hantera näringslivssommarjobb",name="ManageBusinessJob")
 	private String manageBusinessJobUrl="manage-businesssector-job";
 	
-	@ModuleSetting
-	@TextFieldSettingDescriptor(description="Relativ url till att matcha kandidater till näringslivssommarjobb",name="MatchBusinessJob")
-	private String matchBusinessJobUrl="match-business-jobs";
+	@InstanceManagerDependency(required=false)
+	private MatchBusinessJobHandler matchBusinessJobHandler;
 	
-	@ModuleSetting
-	@TextFieldSettingDescriptor(description="Relativ url till att matcha kandidater till kommunala jobb",name="MatchMunicipalityJob")
-	private String matchMunicipalityJobUrl="match-municipality-jobs";
+	@InstanceManagerDependency(required=false)
+	private MatchMunicipalityJobHandler matchMunicipalityJobHandler;
 	
 	@Override
 	protected void createDAOs(DataSource dataSource) throws Exception {
@@ -83,6 +81,8 @@ public class ListSummerJobsAdminModule extends AnnotatedForegroundModule impleme
 
 		boolean showMunicipality=true;
 		boolean showBusiness=true;
+		
+		String contextPath = req.getContextPath();
 		
 		if(req.getParameter("municipality") !=null && req.getParameter("municipality").equalsIgnoreCase("true")){
 			showBusiness=false;
@@ -138,25 +138,25 @@ public class ListSummerJobsAdminModule extends AnnotatedForegroundModule impleme
 			
 			if (openJobs != null) {
 				for (MunicipalityJob job : openJobs) {
-					municipalityOpen.appendChild(createMunicipalityJobElement(doc, job));
+					municipalityOpen.appendChild(createMunicipalityJobElement(doc, job, contextPath));
 				}
 			}
 			
 			if (uncontrolledJobs != null) {
 				for (MunicipalityJob job : uncontrolledJobs) {
-					municipalityUncontrolled.appendChild(createMunicipalityJobElement(doc, job));
+					municipalityUncontrolled.appendChild(createMunicipalityJobElement(doc, job, contextPath));
 				}
 			}
 			
 			if (closedJobs != null) {
 				for (MunicipalityJob job : closedJobs) {
-					municipalityFinished.appendChild(createMunicipalityJobElement(doc, job));
+					municipalityFinished.appendChild(createMunicipalityJobElement(doc, job, contextPath));
 				}
 			}
 			
 			if (disapprovedJobs != null) {
 				for (MunicipalityJob job : disapprovedJobs) {
-					municipalityDisapproved.appendChild(createMunicipalityJobElement(doc, job));
+					municipalityDisapproved.appendChild(createMunicipalityJobElement(doc, job, contextPath));
 				}
 			}
 			
@@ -184,25 +184,25 @@ public class ListSummerJobsAdminModule extends AnnotatedForegroundModule impleme
 			
 			if (openJobs != null) {
 				for (BusinessSectorJob job : openJobs) {
-					businessOpen.appendChild(createBusinessJobElement(doc, job));
+					businessOpen.appendChild(createBusinessJobElement(doc, job, contextPath));
 				}
 			}
 			
 			if (uncontrolledJobs != null) {
 				for (BusinessSectorJob job : uncontrolledJobs) {
-					businessUncontrolled.appendChild(createBusinessJobElement(doc, job));
+					businessUncontrolled.appendChild(createBusinessJobElement(doc, job,contextPath));
 				}
 			}
 			
 			if (closedJobs != null) {
 				for (BusinessSectorJob job : closedJobs) {
-					businessFinished.appendChild(createBusinessJobElement(doc, job));
+					businessFinished.appendChild(createBusinessJobElement(doc, job,contextPath));
 				}
 			}
 			
 			if (disapprovedJobs != null) {
 				for (BusinessSectorJob job : disapprovedJobs) {
-					businessDisapproved.appendChild(createBusinessJobElement(doc, job));
+					businessDisapproved.appendChild(createBusinessJobElement(doc, job,contextPath));
 				}
 			}
 			
@@ -212,7 +212,7 @@ public class ListSummerJobsAdminModule extends AnnotatedForegroundModule impleme
 		return new SimpleForegroundModuleResponse(doc);
 	}
 	
-	private Element createMunicipalityJobElement(Document doc, MunicipalityJob job) {
+	private Element createMunicipalityJobElement(Document doc, MunicipalityJob job,String contextPath) {
 		Element municipalityJob = doc.createElement("MunicipalityJob");
 		XMLUtils.appendNewElement(doc, municipalityJob, "workTitle", job.getWorkTitle());
 		XMLUtils.appendNewElement(doc, municipalityJob, "workDescription", job.getWorkDescription());
@@ -231,7 +231,10 @@ public class ListSummerJobsAdminModule extends AnnotatedForegroundModule impleme
 		XMLUtils.appendNewElement(doc, municipalityJob, "initiatedByUser", job.getInitiatedByUser());
 		XMLUtils.appendNewElement(doc, municipalityJob, "controlledDate", job.getControlledDate());
 		XMLUtils.appendNewElement(doc, municipalityJob, "url", manageMunicipalityJobUrl+"?jobId=" + job.getId());
-		XMLUtils.appendNewElement(doc, municipalityJob, "matchURL", matchMunicipalityJobUrl + "?jobId=" + job.getId());
+		
+		if(matchMunicipalityJobHandler!=null){
+		XMLUtils.appendNewElement(doc, municipalityJob, "matchURL", contextPath +matchMunicipalityJobHandler.getUrl()+ "?jobId=" + job.getId());
+		}
 		
 		if (job.getApplications() != null) {
 			Integer matchedApplications = FormUtils.countApplications(job.getApplications(), ApplicationStatus.MATCHED);			
@@ -245,7 +248,7 @@ public class ListSummerJobsAdminModule extends AnnotatedForegroundModule impleme
 		return municipalityJob;
 	}
 	
-	private Element createBusinessJobElement(Document doc, BusinessSectorJob job) throws SQLException {
+	private Element createBusinessJobElement(Document doc, BusinessSectorJob job, String contextPath) throws SQLException {
 		Element businessSectorJob = doc.createElement("BusinessJob");
 		
 		XMLUtils.appendNewElement(doc, businessSectorJob, "company", job.getCompany());
@@ -260,8 +263,10 @@ public class ListSummerJobsAdminModule extends AnnotatedForegroundModule impleme
 		XMLUtils.appendNewElement(doc, businessSectorJob, "initiatedByUser", job.getInitiatedByUser());
 		XMLUtils.appendNewElement(doc, businessSectorJob, "controlledDate", job.getControlledDate());
 		XMLUtils.appendNewElement(doc, businessSectorJob, "url", manageBusinessJobUrl+"?jobId=" + job.getId());
-		XMLUtils.appendNewElement(doc, businessSectorJob, "matchURL", matchBusinessJobUrl + "?jobId=" + job.getId());
 		
+		if(matchBusinessJobHandler!=null){
+			XMLUtils.appendNewElement(doc, businessSectorJob, "matchURL", contextPath +matchBusinessJobHandler.getUrl() + "?jobId=" + job.getId());
+		}
 		BusinessSectorJob jobWithApplications = businessSectorJobDAO.getByIdWithApplications(job.getId());
 		
 		if (jobWithApplications != null && jobWithApplications.getApplications() != null) {
