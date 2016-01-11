@@ -46,7 +46,7 @@ public class DocxGenerator {
 		Map<DataFieldName, String> addressItem = new HashMap<DataFieldName, String>();
 		addressItem.put(new DataFieldName("till_location"), job.getLocation());
 		addressItem.put(new DataFieldName("till_gatuadress"), job.getStreetAddress());
-		addressItem.put(new DataFieldName("till_pstnr_stad"), job.getCity());
+		addressItem.put(new DataFieldName("till_pstnr_stad"), job.getZipCode() + " " + job.getCity());
 		
 		org.docx4j.model.fields.merge.MailMerger.setMERGEFIELDInOutput(OutputField.KEEP_MERGEFIELD);
 		org.docx4j.model.fields.merge.MailMerger.performMerge(template, addressItem, true);
