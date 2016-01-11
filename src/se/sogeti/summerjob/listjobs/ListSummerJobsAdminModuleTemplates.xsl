@@ -212,9 +212,10 @@
 					<div class="col-md-2 bold">Arbetsplats</div>
 					<div class="col-md-2 bold">Avdelning</div>
 					<div class="col-md-2 bold">Verksamhetsområde</div>
-					<div class="col-md-2 bold">Period</div>
+					<div class="col-md-1 bold">Period</div>
 					<div class="col-md-2 bold">Antal platser</div>					
-					<div class="col-md-1 bold">Kontrollant</div>
+					<div class="col-md-2 bold">Kontrollant</div>
+					
 					<div class="col-md-1 bold"></div>
 				</div>
 				
@@ -223,10 +224,10 @@
 						<div class="col-md-2"><xsl:value-of select="location" /></div>
 						<div class="col-md-2"><xsl:value-of select="department" /></div>
 						<div class="col-md-2"><xsl:value-of select="area"/></div>
-						<div class="col-md-2"><xsl:value-of select="period" /></div>
+						<div class="col-md-1"><xsl:value-of select="period" /></div>
 						<div class="col-md-2"><xsl:value-of select="numberOfWorkersNeeded" /></div>
-						<div class="col-md-2"><xsl:value-of select="created" /></div>
-						<div class="col-md-1"><xsl:value-of select="approvedByUser" /></div>
+						
+						<div class="col-md-2"><xsl:value-of select="approvedByUser" /></div>
 						<div class="col-md-1"><a href='{url}'><strong>Hantera</strong></a></div>
 					</div>
 				</xsl:for-each>
