@@ -56,7 +56,11 @@
 							</div>
 
 							<div class="col-xs-6 col-md-2 col-md-offset-0">
-								<button class="btn btn-primary match-btn pull-right btn-mgn-top">Matcha</button>
+								<button class="btn btn-primary match-btn pull-right btn-mgn-top">
+								<xsl:if test="BusinessSectorJob/isOpen = 'false'">
+									<xsl:attribute name="class">btn btn-primary match-btn pull-right btn-mgn-top disabled</xsl:attribute>
+								</xsl:if>
+								Matcha</button>
 							</div>
 						</div>
 					</div>
