@@ -71,6 +71,7 @@
 								<button class="btn btn-primary match-btn pull-right mgn-top4px">
 								<xsl:if test="MunicipalityJob/isOpen = 'false'">
 									<xsl:attribute name="class">btn btn-primary match-btn pull-right mgn-top4px disabled</xsl:attribute>
+									<xsl:attribute name="disabled">disabled</xsl:attribute>
 								</xsl:if>
 								Matcha</button>
 							</div>
@@ -342,7 +343,13 @@
 		<div class="row">
 			<div class="col-md-3 col-xs-10">
 				<button class="generate-workplace-document-button btn btn-primary"
-					id="generate-workplace-document_{id}">Generera dokument till arbetsplatsen</button>
+					id="generate-workplace-document_{id}">
+						<xsl:if test="matchedApplications = '0'">
+							<xsl:attribute name="class">generate-workplace-document-button btn btn-primary disabled</xsl:attribute>
+							<xsl:attribute name="disabled">disabled</xsl:attribute>
+						</xsl:if>
+						Generera dokument till arbetsplatsen
+					</button>
 			</div>
 			<div class="col-md-3 col-xs-10 col-xs-top-margin">				
 				<xsl:choose>

@@ -59,6 +59,7 @@
 								<button class="btn btn-primary match-btn pull-right btn-mgn-top">
 								<xsl:if test="BusinessSectorJob/isOpen = 'false'">
 									<xsl:attribute name="class">btn btn-primary match-btn pull-right btn-mgn-top disabled</xsl:attribute>
+									<xsl:attribute name="disabled">disabled</xsl:attribute>
 								</xsl:if>
 								Matcha</button>
 							</div>
