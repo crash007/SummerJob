@@ -97,7 +97,7 @@
 	<xsl:template match="BadCandidates">
 		<xsl:call-template name="candidatesTableTemplate">
 			<xsl:with-param name="header"
-				select="'Ansökningar som ej uppfyller krav på ålder och körkort'" />
+				select="'Ansökningar som ej uppfyller krav på ålder och/eller körkort'" />
 		</xsl:call-template>
 	</xsl:template>
 

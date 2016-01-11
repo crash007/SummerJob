@@ -18,6 +18,7 @@ import se.sogeti.jobapplications.cv.CvServiceHander;
 import se.sogeti.jobapplications.daos.BusinessSectorJobApplicationDAO;
 import se.sogeti.summerjob.JsonResponse;
 import se.sogeti.summerjob.addsummerjob.AddBusinessJobHandler;
+import se.sogeti.summerjob.addsummerjobapplication.BusinessSectorJobApplicationHandler;
 import se.sogeti.summerjob.match.MatchBusinessJobHandler;
 import se.unlogic.hierarchy.core.annotations.InstanceManagerDependency;
 import se.unlogic.hierarchy.core.annotations.ModuleSetting;
@@ -39,7 +40,8 @@ public class ManageBusinessApplicationAdminModule extends AnnotatedRESTModule {
 	BusinessSectorJobApplicationDAO jobApplicationDAO;
 	
 	@InstanceManagerDependency
-	private AddBusinessJobHandler addBusinessJobHandler;
+	private BusinessSectorJobApplicationHandler addBusinessApplicationHandler;
+	
 	
 	@InstanceManagerDependency
 	private MatchBusinessJobHandler matchBusinessJobHandler;
@@ -85,7 +87,7 @@ public class ManageBusinessApplicationAdminModule extends AnnotatedRESTModule {
 			doc.getFirstChild().appendChild(appInfoElement);
 			XMLUtils.appendNewElement(doc, appInfoElement, "listJobApplicationsURL", listJobApplicationsURL);
 			XMLUtils.appendNewElement(doc, appInfoElement, "editAppURL", 
-					req.getContextPath()+addBusinessJobHandler.getUrl() + "?jobId=" + app.getJob().getId() + "&appId=" + app.getId());
+					req.getContextPath()+addBusinessApplicationHandler.getUrl() + "?jobId=" + app.getJob().getId() + "&appId=" + app.getId());
 			
 			XMLUtils.appendNewElement(doc, appInfoElement, "matchURL", req.getContextPath()+matchBusinessJobHandler.getUrl()+"?jobId="+app.getJob().getId());
 			
