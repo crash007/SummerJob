@@ -15,7 +15,7 @@
 		<a href="{AddBusinessApplicationUrl}" class="business-jobs-link">Listan över lediga sommarjobb</a>
 		
 		<h3>Medarbetare inom Sundsvalls kommun</h3>
-		<p>Som medarbetare inom Sundsvalls kommun kan man logga in för att lägga upp sommarjobb.</p>
-		<a href="{/Document/requestinfo/contextpath}/login">Logga in här</a>
+		<p>Som medarbetare inom Sundsvalls kommun kan man lägga upp nya sommarjobb.</p>
+		<a href="{/Document/requestinfo/contextpath}/login">Logga in här för att lägga upp jobb</a>
 	</xsl:template>
 </xsl:stylesheet>
