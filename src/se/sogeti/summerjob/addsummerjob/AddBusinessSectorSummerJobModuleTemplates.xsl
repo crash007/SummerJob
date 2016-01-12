@@ -48,28 +48,26 @@
 								    <p class="help-block">Skriv i heltal mellan 1 och 99</p>	    
 								</div>
 							</div>
-					  	</div>
-					  	
-						<div class="form-inline">
-							<div class="row">
-					  			<div class="form-group col-md-3">
-									<label for="startDate">Startdatum*</label>
-									<input type="text" class="form-control" data-error="ÅÅÅÅ-MM-DD" id="startDate" name="startDate" placeholder="" required="required" value="{substring(BusinessSectorJob/startDate, 1, 10)}"/>
-									<div class="help-block with-errors">Datum då tjänsten börjar</div>
-						    	</div>
-						    	<div class="form-group col-md-3">
-									<label for="date">Slutdatum*</label>
-									<input type="text" class="form-control" data-error="ÅÅÅÅ-MM-DD" id="endDate" name="endDate" placeholder="" required="required" value="{substring(BusinessSectorJob/endDate, 1, 10)}"/>
-									<div class="help-block with-errors">Datum då tjänsten slutar</div>
-						    	</div>
-						    	<div class="form-group col-md-3">
-									<label for="date">Sista ansökningsdag*</label>
-									<input type="text" class="form-control" data-error="ÅÅÅÅ-MM-DD" id="lastApplicationDay" name="lastApplicationDay" placeholder="" required="required" value="{substring(BusinessSectorJob/lastApplicationDay, 1, 10)}"/>
-									<div class="help-block with-errors"></div>
-							    </div>
-				    		</div>
-						</div>
-				  		
+					  	</div>					  	
+						
+						<div class="row">
+				  			<div class="form-group col-md-3">
+								<label for="startDate">Startdatum*</label>
+								<input type="text" class="form-control" data-error="ÅÅÅÅ-MM-DD" id="startDate" name="startDate" placeholder="" required="required" value="{substring(BusinessSectorJob/startDate, 1, 10)}"/>
+								<div class="help-block with-errors">Datum då tjänsten börjar</div>
+					    	</div>
+					    	<div class="form-group col-md-3">
+								<label for="date">Slutdatum*</label>
+								<input type="text" class="form-control" data-error="ÅÅÅÅ-MM-DD" id="endDate" name="endDate" placeholder="" required="required" value="{substring(BusinessSectorJob/endDate, 1, 10)}"/>
+								<div class="help-block with-errors">Datum då tjänsten slutar</div>
+					    	</div>
+					    	<div class="form-group col-md-3">
+								<label for="date">Sista ansökningsdag*</label>
+								<input type="text" class="form-control" data-error="ÅÅÅÅ-MM-DD" id="lastApplicationDay" name="lastApplicationDay" placeholder="" required="required" value="{substring(BusinessSectorJob/lastApplicationDay, 1, 10)}"/>
+								<div class="help-block with-errors"></div>
+						    </div>
+			    		</div>
+										  		
 				  		<div class="mgn-top8px">
 				  			<label>Ange kontaktperson på arbetsplatsen <span class="mentor-description-text"><i>(Förnamn, efternamn och telefonnummer krävs för att en kontaktperson ska sparas)</i></span></label>
 				  			<div class="row">
