@@ -262,15 +262,24 @@
 							  			</div>
 						  			</div>
 						  		</xsl:for-each>
-					  			<div class="period-wrapper" id="periodunique_1337">
+								<div class="period-wrapper" id="periodunique_1337">
 						  			<div class="row form-group period-container">
 										<div class="col-md-1"><input class="period-checkbox" type="checkbox" name="period_unique_checkbox" /></div>
-								  		<div class="col-md-2"><input disabled="disabled" placeholder="Periodnamn" class="form-control periodName" type="text" name="unique-period-name"></input></div>
-								  		<div class="col-md-2"><input disabled="disabled" placeholder="Startdatum" class="form-control periodStartDate" type="text" name="unique-period-startdate"></input></div>
-								  		<div class="col-md-2"><input disabled="disabled" placeholder="Slutdatum" class="form-control periodEndDate" type="text" name="unique-period-enddate"></input></div>
-								  		<div class="col-md-3">
+								  		<div class="col-md-2 form-group">
+								  			<input disabled="disabled" placeholder="Periodnamn" class="form-control periodName" type="text" name="unique-period-name"></input>
+								  			<p class="help-block with-errors"></p>
+								  		</div>
+								  		<div class="col-md-2 form-group">
+								  			<input disabled="disabled" placeholder="Startdatum" class="form-control periodStartDate" type="text" name="unique-period-startdate"></input>
+								  			<p class="help-block with-errors"></p>	
+								  		</div>
+								  		<div class="col-md-2 form-group">
+								  			<input disabled="disabled" placeholder="Slutdatum" class="form-control periodEndDate" type="text" name="unique-period-enddate"></input>
+								  			<p class="help-block with-errors"></p>
+								  		</div>
+								  		<div class="col-md-3 form-group">
 								  			<input class="form-control numberOfWorkersField" disabled="disabled" type="number" min="1" max="99" name="unique_numberOfWorkersNeeded" id="unique_numberOfWorkersNeeded"/>
-		 									<p class="help-block">Skriv ett heltal mellan 1 och 99</p>
+		 									<p class="help-block with-errors">Skriv ett heltal mellan 1 och 99</p>
 								  		</div>
 						  			</div>
 						  			<div class="add-mentor hidden">
