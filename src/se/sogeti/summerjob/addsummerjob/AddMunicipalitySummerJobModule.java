@@ -158,6 +158,12 @@ public class AddMunicipalitySummerJobModule extends AnnotatedRESTModule implemen
         Integer jobId = NumberUtils.toInt(req.getParameter("jobId"));
 		MunicipalityJob job = jobId != null ? municipalityJobDAO.getById(jobId) : new MunicipalityJob();
 		
+		if (job.getId() == null) {
+			if (user != null && user.getUsername() != null) {
+				job.setAddedByUser(user.getUsername());
+			}
+		}
+		
 		String organization = req.getParameter("organisation");
 		if (organization == null || organization.isEmpty()) {
 			JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Organisation saknas i annonsen.\"}", callback, writer);
@@ -273,7 +279,6 @@ public class AddMunicipalitySummerJobModule extends AnnotatedRESTModule implemen
 			return;
 		}
 		job.setGeoArea(geoArea);
-		
 		
 		List<Period> periods = periodDAO.getAll();
 		try {

@@ -197,12 +197,13 @@ public class PersonApplicationsDAO extends AnnotatedDAO<PersonApplications> {
 		 
 		 query.addRelationParameter(BusinessSectorJobApplication.class,businessJobApplicationDAO.getParamFactory("job", BusinessSectorJob.class).getParameter(job));
 		 query.addRelationParameter(BusinessSectorJobApplication.class,businessJobApplicationDAO.getParamFactory("status", ApplicationStatus.class).getParameter(ApplicationStatus.NONE));
+		 query.addRelationParameter(BusinessSectorJobApplication.class, businessJobApplicationDAO.getParamFactory("approved", Boolean.class).getParameter(true));
 		 
 		 if(job.getMustBeOverEighteen()){
 			 Calendar cal = Calendar.getInstance();
-				cal.setTime(job.getStartDate());					
-				cal.set(Calendar.YEAR,cal.get(Calendar.YEAR)-18);
-				java.sql.Date bornBefore = new java.sql.Date(cal.getTime().getTime());
+			 cal.setTime(job.getStartDate());					
+			 cal.set(Calendar.YEAR,cal.get(Calendar.YEAR)-18);
+			 java.sql.Date bornBefore = new java.sql.Date(cal.getTime().getTime());
 			 query.addRelationParameter(BusinessSectorJobApplication.class,businessJobApplicationDAO.getParamFactory("birthDate", java.sql.Date.class).getParameter(bornBefore,QueryOperators.SMALLER_THAN_OR_EUALS));
 		 }
 		 
@@ -239,8 +240,8 @@ public class PersonApplicationsDAO extends AnnotatedDAO<PersonApplications> {
 		 
 		 query.addRelationParameter(BusinessSectorJobApplication.class,businessJobApplicationDAO.getParamFactory("job", BusinessSectorJob.class).getParameter(job));
 		 query.addRelationParameter(BusinessSectorJobApplication.class,businessJobApplicationDAO.getParamFactory("status", ApplicationStatus.class).getParameter(ApplicationStatus.NONE));
+		 query.addRelationParameter(BusinessSectorJobApplication.class, businessJobApplicationDAO.getParamFactory("approved", Boolean.class).getParameter(true));
 		 
-
 		 //hämta alla municipalityapplications som inte har statusen none för denna person. Om inte null så har personen ett municipality jobb eller tackat nej till ett.
 		query.addRelationParameter(MunicipalityJobApplication.class, municipalityJobApplicationDAO.getParamFactory("status", ApplicationStatus.class).getParameter(ApplicationStatus.NONE,QueryOperators.NOT_EQUALS));
 		query.addRelationOrderByCriteria(BusinessSectorJobApplication.class, businessJobApplicationDAO.getOrderByCriteria("ranking", Order.ASC)); 

@@ -59,8 +59,7 @@
 								<button class="btn btn-primary match-btn pull-right btn-mgn-top">
 								<xsl:if test="BusinessSectorJob/isOpen = 'false'">
 									<xsl:attribute name="class">btn btn-primary match-btn pull-right btn-mgn-top disabled</xsl:attribute>
-
-									<xsl:attribute name="disabled">disabled</xsl:attribute>
+									<xsl:attribute name="disabled">true</xsl:attribute>
 								</xsl:if>
 								Matcha</button>
 							</div>
@@ -99,7 +98,7 @@
 	<xsl:template match="BadCandidates">
 		<xsl:call-template name="candidatesTableTemplate">
 			<xsl:with-param name="header"
-				select="'Ansökningar som ej uppfyller krav på ålder och/eller körkort'" />
+				select="'Ansökningar som ej uppfyller krav på ålder och körkort'" />
 		</xsl:call-template>
 	</xsl:template>
 

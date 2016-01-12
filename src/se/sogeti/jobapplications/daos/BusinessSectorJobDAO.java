@@ -55,13 +55,4 @@ public class BusinessSectorJobDAO extends JobDAO<BusinessSectorJob>{
 		query.addParameter(this.getParamFactory("lastApplicationDay", Date.class).getParameter(new Date(Calendar.getInstance().getTimeInMillis()), QueryOperators.BIGGER_THAN_OR_EUALS));
 		return this.getAll(query);
 	}
-	
-	public BusinessSectorJob getByIdWithApprovedApplications(Integer jobId, boolean approved, BusinessSectorJobApplicationDAO businessApplicationDAO) throws SQLException {
-		HighLevelQuery<BusinessSectorJob> query = new HighLevelQuery<BusinessSectorJob>();
-		query.addParameter(this.getParamFactory("id", Integer.class).getParameter(jobId));
-		query.addRelation(JOB_APPLICATIONS_RELATION);
-		query.addRelationParameter(BusinessSectorJobApplication.class, businessApplicationDAO.getParamFactory("approved", Boolean.class).getParameter(approved));
-		
-		return this.get(query);
-	}
 }
