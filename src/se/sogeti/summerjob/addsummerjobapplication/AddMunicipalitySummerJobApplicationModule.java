@@ -178,11 +178,11 @@ public class AddMunicipalitySummerJobApplicationModule extends AddSummerJobAppli
 			}
 			
 			if(exisitingApplication != null) {
-				if ((user != null && !user.isAdmin()) || user == null){
-					log.warn("Municipality application already exists for this user " + exisitingApplication.applicationBasicsToString());
-					JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"" + applicationExistsErrorMessage + "\"}", callback, writer);
-					return;
-				}
+				
+				log.warn("Municipality application already exists for this user " + exisitingApplication.applicationBasicsToString());
+				JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"" + applicationExistsErrorMessage + "\"}", callback, writer);
+				return;
+		
 			}
 			
 			MunicipalityJobApplication app=null;
