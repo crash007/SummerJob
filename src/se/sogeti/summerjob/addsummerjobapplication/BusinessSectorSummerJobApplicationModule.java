@@ -207,7 +207,10 @@ public class BusinessSectorSummerJobApplicationModule extends AddSummerJobApplic
 
 				FileItem fileItem = requestWrapper.getFile(0);
 				if (!StringUtils.isEmpty(fileItem.getName())) {
-					saveCv(app,fileItem,job.getId()+"_"+app.getSocialSecurityNumber()+"_"+fileItem.getName(),writer, callback);
+					String fileName = fileItem.getName();
+					fileName = fileName.substring(fileName.lastIndexOf('\\') + 1); // MSIE fix.
+					saveCv(app,fileItem,job.getId()+"_"+app.getSocialSecurityNumber()+"_"+fileName,writer, callback);
+//					saveCv(app,fileItem,job.getId()+"_"+app.getSocialSecurityNumber()+"_"+fileItem.getName(),writer, callback);
 				} 
 
 				if (app.getId() == null) {
