@@ -49,6 +49,7 @@ public abstract class AddSummerJobApplication<T extends JobApplication> extends 
 		String fullPath = filePath + fileName;
 		File file = new File(fullPath);
 		try {
+			log.info("Trying to save CV with filename: " + fileName);
 			fileItem.write(file);
 			log.info("Saved cv file:"+file.toString());
 			application.setCvFilename(fullPath);
