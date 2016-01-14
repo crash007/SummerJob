@@ -16,6 +16,6 @@
 		
 		<h3>Medarbetare inom Sundsvalls kommun</h3>
 		<p>Som medarbetare inom Sundsvalls kommun kan man lägga upp nya sommarjobb.</p>
-		<a href="{/Document/requestinfo/contextpath}/login">Logga in här för att lägga upp jobb</a>
+		<a href="{/Document/requestinfo/contextpath}/add-municipality-job-application">Lägg till ett jobb</a>
 	</xsl:template>
 </xsl:stylesheet>
