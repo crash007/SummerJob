@@ -127,8 +127,8 @@
 	</xsl:template>
 	
 	<xsl:template match="MunicipalityJobApplication">
-		<div>
-			<div class='row application-row municipality-application-row'>
+		<div class="application-list-row">
+			<div class='row application-info-row'>
 				<input class="applicationURL" type="hidden" value="{url}" ></input>
 				<div class="col-xs-1"><xsl:value-of select="ranking" /></div>
 				<div class="col-xs-3"><xsl:value-of select="socialSecurityNumber" /></div>
@@ -146,65 +146,65 @@
 				</div>
 				<div class="col-xs-1 more-information-arrow pull-right"><span class="arrow-down glyphicon glyphicon-chevron-down"></span><span class="arrow-up glyphicon glyphicon-chevron-up hidden"></span></div>
 			</div>
-			<div class="row hidden more-information">
-				<div class="well more-information-container">
-					<div class="row">
-						<div class="col-xs-4 bold">Ansökningstyp</div>
-						<div class="col-xs-6">
-							<xsl:choose>
-								<xsl:when test="applicationType = 'PRIO'">
-									<span class="prio bold">Prioriterad</span>
-								</xsl:when>
-								<xsl:otherwise>
-									<xsl:if test="applicationType = 'REGULAR_ADMIN'">
-										<span class="bold">Inlagd av admin</span>
-									</xsl:if>
-									<xsl:if test="applicationType = 'REGULAR'">
-										<i>Vanlig</i>
-									</xsl:if>						
-								</xsl:otherwise>
-							</xsl:choose>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-xs-4 bold">Kontrollerad av</div>
-						<div class="col-xs-6">
-							<xsl:choose>
-								<xsl:when test="controlledByUser = 'System'">
-									<i><xsl:value-of select="controlledByUser" /></i>
-								</xsl:when>
-								<xsl:otherwise>
-									<xsl:value-of select="controlledByUser" />
-								</xsl:otherwise>
-							</xsl:choose>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-xs-4 bold">Kontrolldatum</div>
-						<div class="col-xs-6"><xsl:value-of select="controlledDate" /></div>
-					</div>
-					<div class="row">
-						<div class="col-xs-4 bold">Cv</div>
-						 <xsl:if test="hasCv='true'">
-							<div class="col-xs-6"><a target="_blank" href="{/Document/requestinfo/contextpath}{/Document/CvMunicipalityApplicationUrl}?id={id}">Ladda ner</a></div>
-						</xsl:if>
-						 <xsl:if test="hasCv='false'">
-						 	<div class="col-xs-6">Cv saknas</div>
-						 </xsl:if>
-					</div>
-					<div class="row">
-						<div class="col-xs-5">
-							<a href="{url}" class="bold">Hantera ansökan</a>
-						</div>
+			<div class="hidden application-more-info-row">
+				
+				<div class="row">
+					<div class="col-xs-4 bold">Ansökningstyp</div>
+					<div class="col-xs-6">
+						<xsl:choose>
+							<xsl:when test="applicationType = 'PRIO'">
+								<span class="prio bold">Prioriterad</span>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:if test="applicationType = 'REGULAR_ADMIN'">
+									<span class="bold">Inlagd av admin</span>
+								</xsl:if>
+								<xsl:if test="applicationType = 'REGULAR'">
+									<i>Vanlig</i>
+								</xsl:if>						
+							</xsl:otherwise>
+						</xsl:choose>
 					</div>
 				</div>
+				<div class="row">
+					<div class="col-xs-4 bold">Kontrollerad av</div>
+					<div class="col-xs-6">
+						<xsl:choose>
+							<xsl:when test="controlledByUser = 'System'">
+								<i><xsl:value-of select="controlledByUser" /></i>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:value-of select="controlledByUser" />
+							</xsl:otherwise>
+						</xsl:choose>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-4 bold">Kontrolldatum</div>
+					<div class="col-xs-6"><xsl:value-of select="controlledDate" /></div>
+				</div>
+				<div class="row">
+					<div class="col-xs-4 bold">Cv</div>
+					 <xsl:if test="hasCv='true'">
+						<div class="col-xs-6"><a target="_blank" href="{/Document/requestinfo/contextpath}{/Document/CvMunicipalityApplicationUrl}?id={id}">Ladda ner</a></div>
+					</xsl:if>
+					 <xsl:if test="hasCv='false'">
+					 	<div class="col-xs-6">Cv saknas</div>
+					 </xsl:if>
+				</div>
+				<div class="row">
+					<div class="col-xs-5">
+						<a href="{url}" class="bold">Hantera ansökan</a>
+					</div>
+				</div>
+			
 			</div>
 		</div>
 	</xsl:template>
 	
 	<xsl:template match="BusinessSectorJobApplication">
-		<div>
-			<div class='row application-row business-application-row'>
+		<div class="application-list-row">
+			<div class="row application-info-row">
 				<div class="col-xs-1"><xsl:value-of select="ranking" /></div>
 				<div class="col-xs-3"><xsl:value-of select="socialSecurityNumber" /></div>
 				<div class="col-xs-6"><xsl:value-of select="name" /></div>
@@ -215,8 +215,8 @@
 				</div>
 				<div class="col-xs-1 more-information-arrow pull-right"><span class="arrow-down glyphicon glyphicon-chevron-down"></span><span class="arrow-up glyphicon glyphicon-chevron-up hidden"></span></div>
 			</div>
-			<div class="row hidden more-information">
-				<div class="more-information-container well">
+			<div class="hidden application-more-info-row">
+
 					<div class="row">
 						<div class="col-xs-4 bold">Kontrollerad av</div>
 						<div class="col-xs-6">
@@ -256,7 +256,7 @@
 							<a href="{url}" class="bold">Hantera ansökan</a>
 						</div>
 					</div>
-				</div>
+				
 			</div>
 		</div>
 	</xsl:template>
