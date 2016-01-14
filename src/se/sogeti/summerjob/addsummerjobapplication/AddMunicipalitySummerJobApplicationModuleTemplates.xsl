@@ -422,6 +422,9 @@
 						</div>
 					</xsl:if>
 					
+					<!-- Dummyfält för att förhindra att multipartrequest dör när man använder IE -->
+					<input type="hidden" name="dummy" value="1337"></input>
+					
 		  			<button id="preview-municipality-job-application" type="submit" class="btn-mgn-top pull-right mgn-lft8px btn btn-success">
 		  				Förhandsgranska
 		  			</button>

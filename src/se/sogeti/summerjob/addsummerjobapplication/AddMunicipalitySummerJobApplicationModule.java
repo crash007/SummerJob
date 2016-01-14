@@ -215,7 +215,10 @@ public class AddMunicipalitySummerJobApplicationModule extends AddSummerJobAppli
 			FileItem fileItem = requestWrapper.getFile(0);
 			
 			if (!StringUtils.isEmpty(fileItem.getName())) {
-				saveCv(app,fileItem,app.getSocialSecurityNumber()+"_"+fileItem.getName(),writer, callback);
+				String fileName = fileItem.getName();
+				fileName = fileName.substring(fileName.lastIndexOf('\\') + 1); // MSIE fix.
+				saveCv(app,fileItem,app.getSocialSecurityNumber()+"_"+fileName,writer, callback);
+//				saveCv(app,fileItem,app.getSocialSecurityNumber()+"_"+fileItem.getName(),writer, callback);
 			}
 			
 			String preferedPeriodString = requestWrapper.getParameter("preferedPeriod");
