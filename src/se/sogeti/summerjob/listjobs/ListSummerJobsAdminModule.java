@@ -176,11 +176,23 @@ public class ListSummerJobsAdminModule extends AnnotatedForegroundModule impleme
 			businessJobs.appendChild(businessUncontrolled);
 			businessJobs.appendChild(businessFinished);
 			businessJobs.appendChild(businessDisapproved);
-
-			List<BusinessSectorJob> openJobs = businessSectorJobDAO.getAllControlledAndApprovedAndOpen();
-			List<BusinessSectorJob> uncontrolledJobs = businessSectorJobDAO.getAllUncontrolled();
-			List<BusinessSectorJob> closedJobs = businessSectorJobDAO.getAllControlledAndClosedAndApproved();
-			List<BusinessSectorJob> disapprovedJobs = businessSectorJobDAO.getAllControlledAndDisapproved(null);
+			
+			List<BusinessSectorJob> openJobs = null;
+			List<BusinessSectorJob> uncontrolledJobs = null;
+			List<BusinessSectorJob> closedJobs = null;
+			List<BusinessSectorJob> disapprovedJobs = null; 
+			
+			if (user.isAdmin()) {
+				openJobs = businessSectorJobDAO.getAllControlledAndApprovedAndOpen();
+				uncontrolledJobs = businessSectorJobDAO.getAllUncontrolled();
+				closedJobs = businessSectorJobDAO.getAllControlledAndClosedAndApproved();
+				disapprovedJobs = businessSectorJobDAO.getAllControlledAndDisapproved(null);
+			} else {
+				openJobs = businessSectorJobDAO.getAllControlledAndOpenAddedByUsername(user.getUsername(), null);
+				uncontrolledJobs = businessSectorJobDAO.getAllUncontrolledAddedByUsername(user.getUsername(), null);
+				closedJobs = businessSectorJobDAO.getAllControlledAndClosedAddedByUsername(user.getUsername(), null);
+				disapprovedJobs = businessSectorJobDAO.getAllControlledAndDisapprovedAddedByUsername(user.getUsername(), null);
+			}
 			
 			if (openJobs != null) {
 				for (BusinessSectorJob job : openJobs) {

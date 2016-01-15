@@ -62,7 +62,9 @@
 						  		<div class="col-md-2"><xsl:value-of select="GeoArea/name" /></div>
 						  		<div class="col-md-1"><xsl:value-of select="numberOfWorkersNeeded" /></div>
 						  		<div class="col-md-1"><xsl:value-of select="Period/name" /></div>
-						  		<div class="col-md-1 bold"><a href="{/Document/requestinfo/contextpath}/{/Document/Municipality/ManageMunicipalityJobsUrl}?jobId={id}">Hantera</a></div>
+						  		<xsl:if test="/document/admin = 'true'">
+							  		<div class="col-md-1 bold"><a href="{/Document/requestinfo/contextpath}/{/Document/Municipality/ManageMunicipalityJobsUrl}?jobId={id}">Hantera</a></div>
+						  		</xsl:if>
 					  		</div>
 					  	</xsl:for-each>
 					</div>
@@ -89,8 +91,10 @@
 						  		<div class="col-md-2"><xsl:value-of select="GeoArea/name" /></div>
 						  		<div class="col-md-1"><xsl:value-of select="numberOfWorkersNeeded" /></div>
 						  		<div class="col-md-1"><xsl:value-of select="Period/name" /></div>
-						  		<div class="col-md-1 bold"><a href="{/Document/requestinfo/contextpath}/{/Document/Municipality/ManageMunicipalityJobsUrl}?jobId={id}">Hantera</a></div>
-						  		<div class="col-md-1 bold"><a href="{/Document/requestinfo/contextpath}/{/Document/Municipality/MatchMunicipalityJobsUrl}?jobId={id}">Matcha</a></div>
+						  		<xsl:if test="/document/admin = 'true'">
+							  		<div class="col-md-1 bold"><a href="{/Document/requestinfo/contextpath}/{/Document/Municipality/ManageMunicipalityJobsUrl}?jobId={id}">Hantera</a></div>
+							  		<div class="col-md-1 bold"><a href="{/Document/requestinfo/contextpath}/{/Document/Municipality/MatchMunicipalityJobsUrl}?jobId={id}">Matcha</a></div>
+						  		</xsl:if>
 					  		</div>
 					  	</xsl:for-each>
 			  		</div>
@@ -120,7 +124,9 @@
 								<div class="col-md-2"><xsl:value-of select="preferedArea1" /></div>
 								<div class="col-md-2"><xsl:value-of select="preferedGeoArea1" /></div>
 								<div class="col-md-1" style="padding-left: 0px;"><xsl:value-of select="created" /></div>
-								<div class="col-md-1 bold"><a href="{/Document/requestinfo/contextpath}/{/Document/Municipality/ManageMunicipalityApplicationUrl}?appId={id}">Hantera</a></div>
+								<xsl:if test="/document/admin = 'true'">
+									<div class="col-md-1 bold"><a href="{/Document/requestinfo/contextpath}/{/Document/Municipality/ManageMunicipalityApplicationUrl}?appId={id}">Hantera</a></div>
+								</xsl:if>
 							</div>
 						</xsl:for-each>
 					</div>
@@ -149,7 +155,9 @@
 								<div class="col-md-1"><xsl:value-of select="schoolType" /></div>
 								<div class="col-md-1" style="padding-left: 0px; padding-right: 0px;"><xsl:value-of select="skvCity" /></div>
 								<div class="col-md-1" style="padding-left: 0px; padding-right: 0px;"><xsl:value-of select="created" /></div>
-								<div class="col-md-1 bold"><a href="{/Document/requestinfo/contextpath}/{/Document/Municipality/ManageMunicipalityApplicationUrl}?appId={id}">Hantera</a></div>
+								<xsl:if test="/document/admin = 'true'">
+									<div class="col-md-1 bold"><a href="{/Document/requestinfo/contextpath}/{/Document/Municipality/ManageMunicipalityApplicationUrl}?appId={id}">Hantera</a></div>
+								</xsl:if>
 							</div>
 						</xsl:for-each>
 					</div>
@@ -195,7 +203,9 @@
 								<div class="col-md-1" style="padding-left: 0px;"><xsl:value-of select="substring(endDate, 1, 10)" /></div>
 								<div class="col-md-2" style="padding-left: 0px;"><xsl:value-of select="substring(lastApplicationDay, 1, 10)" /></div>
 								<div class="col-md-2"></div>
-								<div class="col-md-1 bold"><a href="{/Document/requestinfo/contextpath}/{/Document/Municipality/ManageBusinessJobsUrl}?jobId={id}">Hantera</a></div>
+								<xsl:if test="/document/admin = 'true'">
+									<div class="col-md-1 bold"><a href="{/Document/requestinfo/contextpath}/{/Document/Municipality/ManageBusinessJobsUrl}?jobId={id}">Hantera</a></div>
+								</xsl:if>
 							</div>
 						</xsl:for-each>
 					</div>
@@ -222,8 +232,10 @@
 								<div class="col-md-1" style="padding-left: 0px; padding-right: 0px;"><xsl:value-of select="substring(endDate, 1, 10)" /></div>
 								<div class="col-md-2" style="padding-left: 0px;"><xsl:value-of select="substring(lastApplicationDay, 1, 10)" /></div>
 								<div class="col-md-1"></div>
-								<div class="col-md-1 bold"><a href="{/Document/requestinfo/contextpath}/{/Document/Municipality/ManageBusinessJobsUrl}?jobId={id}">Hantera</a></div>
-								<div class="col-md-1 bold"><a href="{/Document/requestinfo/contextpath}/{/Document/Municipality/MatchBusinessJobsUrl}?jobId={id}">Matcha</a></div>
+								<xsl:if test="/document/admin = 'true'">
+									<div class="col-md-1 bold"><a href="{/Document/requestinfo/contextpath}/{/Document/Municipality/ManageBusinessJobsUrl}?jobId={id}">Hantera</a></div>
+									<div class="col-md-1 bold"><a href="{/Document/requestinfo/contextpath}/{/Document/Municipality/MatchBusinessJobsUrl}?jobId={id}">Matcha</a></div>
+								</xsl:if>
 							</div>
 						</xsl:for-each>
 					 </div>
@@ -253,7 +265,9 @@
 					  			<div class="col-md-2"><xsl:value-of select="BusinessSectorJob/company" /></div>
 					  			<div class="col-md-2"><xsl:value-of select="BusinessSectorJob/workTitle" /></div>
 								<div class="col-md-1" style="padding-left: 0px; padding-right: 0px;"><xsl:value-of select="substring(created, 1, 10)" /></div>
-					  			<div class="col-md-1 bold"><a href="{/Document/requestinfo/contextpath}/{/Document/Municipality/ManageBusinessApplicationUrl}?appId={id}">Hantera</a></div>
+								<xsl:if test="/document/admin = 'true'">
+						  			<div class="col-md-1 bold"><a href="{/Document/requestinfo/contextpath}/{/Document/Municipality/ManageBusinessApplicationUrl}?appId={id}">Hantera</a></div>
+								</xsl:if>
 				  			</div>
 				  		</xsl:for-each>
 				  	</div>
@@ -282,7 +296,9 @@
 					  			<div class="col-md-1"><xsl:value-of select="schoolType" /></div>
 					  			<div class="col-md-1" style="padding-left: 0px; padding-right: 0px;"><xsl:value-of select="skvCity" /></div>
 					  			<div class="col-md-1" style="padding-left: 0px; padding-right: 0px;"><xsl:value-of select="substring(created, 1, 10)" /></div>
-					  			<div class="col-md-1 bold"><a href="{/Document/requestinfo/contextpath}/{/Document/Municipality/ManageBusinessApplicationUrl}?appId={id}">Hantera</a></div>
+					  			<xsl:if test="/document/admin = 'true'">
+						  			<div class="col-md-1 bold"><a href="{/Document/requestinfo/contextpath}/{/Document/Municipality/ManageBusinessApplicationUrl}?appId={id}">Hantera</a></div>
+					  			</xsl:if>
 				  			</div>
 				  		</xsl:for-each>
 			  		</div>
