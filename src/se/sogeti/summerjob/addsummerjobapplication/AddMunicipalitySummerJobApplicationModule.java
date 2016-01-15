@@ -18,6 +18,7 @@ import org.w3c.dom.Element;
 import se.sogeti.jobapplications.beans.ApplicationType;
 import se.sogeti.jobapplications.beans.DriversLicenseType;
 import se.sogeti.jobapplications.beans.GeoArea;
+import se.sogeti.jobapplications.beans.municipality.MunicipalityJob;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityJobApplication;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityJobArea;
 import se.sogeti.jobapplications.beans.municipality.PreferedPeriod;
@@ -193,6 +194,9 @@ public class AddMunicipalitySummerJobApplicationModule extends AddSummerJobAppli
 				}	
 			}
 			
+			if (app == null) {
+				app = new MunicipalityJobApplication();
+			}
 			
 			if(!validateSocialSecurityNumber(writer, callback, socialSecurityNumber)){
 				return;
