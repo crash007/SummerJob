@@ -13,6 +13,8 @@
 		<h3>Sommarjobb inom näringslivet</h3>
 		<p>Sundsvalls kommun förmedlar sommarjobb inom näringslivet.</p>
 		<a href="{AddBusinessApplicationUrl}" class="business-jobs-link">Listan över lediga sommarjobb</a>
+		<p class="mgn-top8px">Är du en arbetsgivare som vill erbjuda sommarjobb inom din organisation?</p>
+		<a href="{/Document/requestinfo/contextpath}/add-business-sector-job">Lägg till ett jobb</a>
 		
 		<h3>Medarbetare inom Sundsvalls kommun</h3>
 		<p>Som medarbetare inom Sundsvalls kommun kan man lägga upp nya sommarjobb.</p>

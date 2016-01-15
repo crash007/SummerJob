@@ -53,7 +53,7 @@
 							<div class="col-md-2"><xsl:value-of select="area"/></div>
 							<div class="col-md-2"><xsl:value-of select="period" /></div>
 							<div class="col-md-2"><xsl:value-of select="numberOfWorkersNeeded" /><xsl:text> </xsl:text><span>(<xsl:value-of select="matchedApplications" />)</span></div>							
-							<xsl:if test="/document/admin = 'true'">
+							<xsl:if test="/Document/IsAdmin = 'true'">
 								<div class="col-md-1"><a href='{url}'><strong>Hantera</strong></a></div>
 								<div class="col-md-1"><a href="{matchURL}"><strong>Matcha</strong></a></div>
 							</xsl:if>
@@ -116,7 +116,7 @@
 							<div class="col-md-2"><xsl:value-of select="period" /></div>
 							<div class="col-md-2"><xsl:value-of select="numberOfWorkersNeeded" /></div>							
 							<div class="col-md-1"><xsl:value-of select="initiatedByUser" /></div>
-							<xsl:if test="/document/admin = 'true'">
+							<xsl:if test="/Document/IsAdmin = 'true'">
 								<div class="col-md-1"><a href='{url}'><strong>Hantera</strong></a></div>
 							</xsl:if>
 						</div>
@@ -171,7 +171,7 @@
 							<div class="col-md-2"><xsl:value-of select="area"/></div>
 							<div class="col-md-2"><xsl:value-of select="period" /></div>
 							<div class="col-md-2"><xsl:value-of select="numberOfWorkersNeeded" /><xsl:text> </xsl:text><span>(<xsl:value-of select="matchedApplications" />)</span></div>							
-							<xsl:if test="/document/admin = 'true'">
+							<xsl:if test="/Document/IsAdmin = 'true'">
 								<div class="col-md-1"><a href='{url}'><strong>Hantera</strong></a></div>
 								<div class="col-md-1"><a href="{matchURL}"><strong>Öppna</strong></a></div>
 							</xsl:if>
@@ -233,7 +233,7 @@
 						<div class="col-md-1"><xsl:value-of select="period" /></div>
 						<div class="col-md-2"><xsl:value-of select="numberOfWorkersNeeded" /></div>
 						<div class="col-md-2"><xsl:value-of select="approvedByUser" /></div>
-						<xsl:if test="/document/admin = 'true'">
+						<xsl:if test="/Document/IsAdmin = 'true'">
 							<div class="col-md-1"><a href='{url}'><strong>Hantera</strong></a></div>
 						</xsl:if>
 					</div>
@@ -266,7 +266,7 @@
 							<div class="col-md-2"><xsl:value-of select="numberOfWorkersNeeded" /><xsl:text> </xsl:text><span>(<xsl:value-of select="matchedApplications" />)</span></div>
 							<div class="col-md-2"><xsl:value-of select="created" /></div>
 							<div class="col-md-1"></div>
-							<xsl:if test="/document/admin = 'true'">
+							<xsl:if test="/Document/IsAdmin = 'true'">
 								<div class="col-md-1"><a href='{url}'><strong>Hantera</strong></a></div>
 								<div class="col-md-1"><a href="{matchURL}"><strong>Matcha</strong></a></div>
 							</xsl:if>
@@ -325,7 +325,7 @@
 							<div class="col-md-2"><xsl:value-of select="numberOfWorkersNeeded" /></div>
 							<div class="col-md-2"><xsl:value-of select="created" /></div>
 							<div class="col-md-2"><xsl:value-of select="initiatedByUser" /></div>
-							<xsl:if test="/document/admin = 'true'">
+							<xsl:if test="/Document/IsAdmin = 'true'">
 								<div class="col-md-1"><a href='{url}'><strong>Hantera</strong></a></div>
 							</xsl:if>
 						</div>
@@ -378,7 +378,7 @@
 							<div class="col-md-2"><xsl:value-of select="numberOfWorkersNeeded" /><xsl:text> </xsl:text><span>(<xsl:value-of select="matchedApplications" />)</span></div>
 							<div class="col-md-2"><xsl:value-of select="created" /></div>
 							<div class="col-md-1"></div>
-							<xsl:if test="/document/admin = 'true'">
+							<xsl:if test="/Document/IsAdmin = 'true'">
 								<div class="col-md-1"><a href='{url}'><strong>Hantera</strong></a></div>
 								<div class="col-md-1"><a href="{matchURL}"><strong>Öppna</strong></a></div>
 							</xsl:if>
@@ -437,7 +437,7 @@
 							<div class="col-md-2"><xsl:value-of select="numberOfWorkersNeeded" /></div>
 							<div class="col-md-2"><xsl:value-of select="created" /></div>
 							<div class="col-md-2"><xsl:value-of select="approvedByUser" /></div>
-							<xsl:if test="/document/admin = 'true'">
+							<xsl:if test="/Document/IsAdmin = 'true'">
 								<div class="col-md-1"><a href='{url}'><strong>Hantera</strong></a></div>
 							</xsl:if>
 						</div>

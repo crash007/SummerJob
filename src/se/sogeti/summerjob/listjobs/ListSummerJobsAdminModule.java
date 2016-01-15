@@ -221,6 +221,10 @@ public class ListSummerJobsAdminModule extends AnnotatedForegroundModule impleme
 			doc.getFirstChild().appendChild(businessJobs);
 		}
 		
+		if (user != null) {
+			XMLUtils.appendNewElement(doc, element, "IsAdmin", user.isAdmin());
+		}
+		
 		return new SimpleForegroundModuleResponse(doc);
 	}
 	

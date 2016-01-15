@@ -196,6 +196,11 @@ public class SummerJobOverViewAdminModule extends AnnotatedForegroundModule{
 			XMLUtils.append(doc,unapprovedBusinessApplicationsElem, unapprovedBusinessApplications);		
 			business.appendChild(unapprovedBusinessApplicationsElem);
 		}
+		
+		if (user != null) {
+			XMLUtils.appendNewElement(doc, element, "IsAdmin", user.isAdmin());
+		}
+		
 		return new SimpleForegroundModuleResponse(doc);
 	}
 
