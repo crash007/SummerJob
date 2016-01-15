@@ -166,33 +166,33 @@ public class AddMunicipalitySummerJobApplicationModule extends AddSummerJobAppli
 		String callback = null; 
 		JsonResponse.initJsonResponse(res, writer, callback);
 		
+		
 		try {
 			requestWrapper = new MultipartRequest(1024 * BinarySizes.KiloByte, 100 * BinarySizes.MegaByte, req);
 			callback = requestWrapper.getParameter("callback");
-				
-			MunicipalityJobApplication exisitingApplication = null;
+			Integer appId = NumberUtils.toInt(requestWrapper.getParameter("appId"));
 			String socialSecurityNumber = requestWrapper.getParameter("socialSecurityNumber");
 			
-			if(socialSecurityNumber != null){			
-				exisitingApplication= jobApplicationDAO.getbySocialSecurityNumber(socialSecurityNumber);			
-			}
+			MunicipalityJobApplication app = null;
 			
-			if(exisitingApplication != null) {
-				
-				log.warn("Municipality application already exists for this user " + exisitingApplication.applicationBasicsToString());
-				JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"" + applicationExistsErrorMessage + "\"}", callback, writer);
-				return;
-		
-			}
-			
-			MunicipalityJobApplication app=null;
-			Integer appId = NumberUtils.toInt(requestWrapper.getParameter("appId"));
-			
-			if(user!=null && user.isAdmin() && appId!=null){				
+			if(appId!=null && user!=null && user.isAdmin()){
 				app = jobApplicationDAO.getById(appId);
-			}else{			
-				app = new MunicipalityJobApplication();
+			}else{
+				
+				if(socialSecurityNumber != null){			
+					
+					app= jobApplicationDAO.getbySocialSecurityNumber(socialSecurityNumber);
+					
+					if(app != null) {
+						
+						log.warn("Municipality application already exists for this user " + app.applicationBasicsToString());
+						JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"" + applicationExistsErrorMessage + "\"}", callback, writer);
+						return;
+			
+					}
+				}	
 			}
+			
 			
 			if(!validateSocialSecurityNumber(writer, callback, socialSecurityNumber)){
 				return;
