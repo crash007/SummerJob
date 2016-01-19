@@ -154,15 +154,15 @@
 				  </div>
 				  <div class="panel-body">
 				  
-				  <div class="form-group">
-					  	<div class="row">
-						  	<div class="col-md-5">
-							    <label for="work-title">Rubrik*</label>				    
-							     <input type="text" class="form-control" id="work-title" name="work-title" placeholder="" required="required" value="{MunicipalityJob/workTitle}"/>
-							     <p class="help-block with-errors"></p>							    
-						  	</div>
-					  	</div>
-				  	</div>
+<!-- 				  <div class="form-group"> -->
+<!-- 					  	<div class="row"> -->
+<!-- 						  	<div class="col-md-5"> -->
+<!-- 							    <label for="work-title">Rubrik*</label>				     -->
+<!-- 							     <input type="text" class="form-control" id="work-title" name="work-title" placeholder="" required="required" value="{MunicipalityJob/workTitle}"/> -->
+<!-- 							     <p class="help-block with-errors"></p>							     -->
+<!-- 						  	</div> -->
+<!-- 					  	</div> -->
+<!-- 				  	</div> -->
 				  	<div class="form-group">
 					    <label for="work-description">Arbetsbeskrivning*</label>				    
 					    <textarea class="form-control" data-error="Beskriv vad arbetsuppgifterna kommer vara." rows="10" id="work-description" name="work-description" required="required"><xsl:value-of select="MunicipalityJob/workDescription"></xsl:value-of></textarea>							    
@@ -504,10 +504,10 @@
 				</div>
 				<div class="panel-body">
 					<div class="mgn-top8px row">
-						<div class="col-md-3 ">
-							<label>Rubrik</label>
-							<p id="preview-worktitle"></p>
-						</div>
+<!-- 						<div class="col-md-3 "> -->
+<!-- 							<label>Rubrik</label> -->
+<!-- 							<p id="preview-worktitle"></p> -->
+<!-- 						</div> -->
 						<div class="col-md-9">
 							<label>Arbetsbeskrivning</label>
 							<p id="preview-workdescription"></p>
