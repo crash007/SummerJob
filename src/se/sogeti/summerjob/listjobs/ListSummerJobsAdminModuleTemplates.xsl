@@ -68,6 +68,12 @@
 									<div class="col-xs-3"><xsl:value-of select="administration" /></div>
 								</div>
 								<div class="row">
+									<div class="col-xs-2 bold">Geografiskt område</div>
+									<div class="col-xs-3"><xsl:value-of select="geoarea" /></div>
+									<div class="col-xs-2 bold">Skapad</div>
+									<div class="col-xs-3"><xsl:value-of select="created" /></div>
+								</div>
+								<div class="row">
 									<div class="col-xs-2 bold">Godkänd av</div>
 									<div class="col-xs-3"><xsl:value-of select="approvedByUser" /></div>
 									<div class="col-xs-2 bold">Datum för kontroll</div>
@@ -78,10 +84,6 @@
 <!-- 									<div class="col-xs-3"><xsl:value-of select="workTitle" /></div> -->
 									<div class="col-xs-2 bold">Arbetsbeskrivning</div>
 									<div class="col-xs-8"><xsl:value-of select="workDescription" /></div>
-								</div>
-								<div class="row">
-									<div class="col-xs-2 bold">Skapad</div>
-									<div class="col-xs-3"><xsl:value-of select="created" /></div>
 								</div>
 							</div>
 						</div>
@@ -130,14 +132,16 @@
 									<div class="col-xs-3"><xsl:value-of select="administration" /></div>
 								</div>
 								<div class="row">
+									<div class="col-xs-2 bold">Geografiskt område</div>
+									<div class="col-xs-3"><xsl:value-of select="geoarea" /></div>
+									<div class="col-xs-2 bold">Skapad</div>
+									<div class="col-xs-3"><xsl:value-of select="created" /></div>
+								</div>
+								<div class="row">
 <!-- 									<div class="col-xs-2 bold">Rubrik</div> -->
 <!-- 									<div class="col-xs-3"><xsl:value-of select="workTitle" /></div> -->
 									<div class="col-xs-2 bold">Arbetsbeskrivning</div>
 									<div class="col-xs-8"><xsl:value-of select="workDescription" /></div>
-								</div>
-								<div class="row">
-									<div class="col-xs-2 bold">Skapad</div>
-									<div class="col-xs-3"><xsl:value-of select="created" /></div>
 								</div>
 							</div>
 						</div>
@@ -185,6 +189,12 @@
 									<div class="col-xs-3"><xsl:value-of select="administration" /></div>
 								</div>
 								<div class="row">
+									<div class="col-xs-2 bold">Geografiskt område</div>
+									<div class="col-xs-3"><xsl:value-of select="geoarea" /></div>
+									<div class="col-xs-2 bold">Skapad</div>
+									<div class="col-xs-3"><xsl:value-of select="created" /></div>
+								</div>
+								<div class="row">
 									<div class="col-xs-2 bold">Godkänd av</div>
 									<div class="col-xs-3"><xsl:value-of select="approvedByUser" /></div>
 									<div class="col-xs-2 bold">Datum för kontroll</div>
@@ -195,10 +205,6 @@
 <!-- 									<div class="col-xs-3"><xsl:value-of select="workTitle" /></div> -->
 									<div class="col-xs-2 bold">Arbetsbeskrivning</div>
 									<div class="col-xs-8"><xsl:value-of select="workDescription" /></div>
-								</div>
-								<div class="row">
-									<div class="col-xs-2 bold">Skapad</div>
-									<div class="col-xs-3"><xsl:value-of select="created" /></div>
 								</div>
 							</div>
 						</div>
