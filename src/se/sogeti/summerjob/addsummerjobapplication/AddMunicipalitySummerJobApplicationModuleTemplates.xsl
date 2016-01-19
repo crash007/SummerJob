@@ -131,12 +131,12 @@
 			 	
 			 	<div class="row">
 				 	<div class="col-md-8 col-md-push-4 form-horizontal text-left">
-				  		<h3>Beskrivning arbetsområden</h3>
+				  		<h3 class="mgn-top12px">Beskrivning arbetsområden</h3>
 				  		<xsl:for-each select="Areas/Area">
 				  			<xsl:if test="canBeChosenInApplication ='true'">
-						  		<div class="form-group">
-							    	<label class="col-sm-2"><xsl:value-of select="name"/></label>
-								    <div class="col-sm-10">
+						  		<div class="form-group mgn-btm8px">
+							    	<label class="col-sm-3"><xsl:value-of select="name"/></label>
+								    <div class="col-sm-9">
 								      <p class=""><xsl:value-of select="description"/></p>
 								    </div>
 							  	</div>
@@ -282,14 +282,14 @@
 				  	
 			  	</div>
 			  	
-			  	<div class="row">
+			  	<div class="row mgn-top16px">
 			  		<div class="col-md-8 col-md-push-4 form-horizontal text-left">
-				  		<h3>Beskrivning geografiska områden</h3>
+				  		<h3 class="mgn-top0px">Beskrivning geografiska områden</h3>
 				  		<xsl:for-each select="GeoAreas/GeoArea">
 				  			
-					  		<div class="form-group">
-						    	<label class="col-sm-2"><xsl:value-of select="name"/></label>
-							    <div class="col-sm-10">
+					  		<div class="form-group mgn-btm8px">
+						    	<label class="col-sm-3"><xsl:value-of select="name"/></label>
+							    <div class="col-sm-9">
 							      <p class=""><xsl:value-of select="description"/></p>
 							    </div>
 						  	</div>
@@ -297,61 +297,61 @@
 					  	</xsl:for-each>
 				  	</div>
 			  	
-			  	<div class="col-md-4 col-md-pull-8">
-			  		<div class="row">
-			  			<div class="form-group col-md-12">
-						    <label for="geoArea1">Önskat geografiskt område 1*</label>				    
-						    <select class="form-control" name="geoArea1" id="geoArea1" required="required">
-								<option value=""/>
-								<xsl:for-each select="GeoAreas/GeoArea">
-									<xsl:choose>
-										<xsl:when test="selectedGeoArea1 = 'true'">
-											<option value="{id}" selected="selected"><xsl:value-of select="name"/> </option>	
-										</xsl:when>
-										<xsl:otherwise>
-											<option value="{id}"><xsl:value-of select="name"/> </option>	
-										</xsl:otherwise>
-									</xsl:choose>
-					  			</xsl:for-each>
-							</select>
-							<p class="help-block with-errors"></p>
+				  	<div class="col-md-4 col-md-pull-8">
+				  		<div class="row">
+				  			<div class="form-group col-md-12">
+							    <label for="geoArea1">Önskat geografiskt område 1*</label>				    
+							    <select class="form-control" name="geoArea1" id="geoArea1" required="required">
+									<option value=""/>
+									<xsl:for-each select="GeoAreas/GeoArea">
+										<xsl:choose>
+											<xsl:when test="selectedGeoArea1 = 'true'">
+												<option value="{id}" selected="selected"><xsl:value-of select="name"/> </option>	
+											</xsl:when>
+											<xsl:otherwise>
+												<option value="{id}"><xsl:value-of select="name"/> </option>	
+											</xsl:otherwise>
+										</xsl:choose>
+						  			</xsl:for-each>
+								</select>
+								<p class="help-block with-errors"></p>
+							</div>
+							
+							<div class="form-group col-md-12">
+							    <label for="geoArea2">Önskat geografiskt område 2*</label>				    
+							    <select class="form-control" name="geoArea2" id="geoArea2" required="required">
+									<option value=""/>
+									<xsl:for-each select="GeoAreas/GeoArea">
+										<xsl:choose>
+											<xsl:when test="selectedGeoArea2 = 'true'">
+												<option value="{id}" selected="selected"><xsl:value-of select="name"/> </option>	
+											</xsl:when>
+											<xsl:otherwise>
+												<option value="{id}"><xsl:value-of select="name"/> </option>	
+											</xsl:otherwise>
+										</xsl:choose>
+						  			</xsl:for-each>
+								</select>
+								<p class="help-block with-errors"></p>
+							</div>
+							<div class="col-md-12">
+							    <label for="geoArea3">Önskat geografiskt område 3</label>				    
+							    <select class="form-control" name="geoArea3" id="geoArea3">
+									<option value=""/>
+									<xsl:for-each select="GeoAreas/GeoArea">
+										<xsl:choose>
+											<xsl:when test="selectedGeoArea3 = 'true'">
+												<option value="{id}" selected="selected"><xsl:value-of select="name"/> </option>	
+											</xsl:when>
+											<xsl:otherwise>
+												<option value="{id}"><xsl:value-of select="name"/> </option>	
+											</xsl:otherwise>
+										</xsl:choose>
+						  			</xsl:for-each>
+								</select>
+							</div>
 						</div>
-						
-						<div class="form-group col-md-12">
-						    <label for="geoArea2">Önskat geografiskt område 2*</label>				    
-						    <select class="form-control" name="geoArea2" id="geoArea2" required="required">
-								<option value=""/>
-								<xsl:for-each select="GeoAreas/GeoArea">
-									<xsl:choose>
-										<xsl:when test="selectedGeoArea2 = 'true'">
-											<option value="{id}" selected="selected"><xsl:value-of select="name"/> </option>	
-										</xsl:when>
-										<xsl:otherwise>
-											<option value="{id}"><xsl:value-of select="name"/> </option>	
-										</xsl:otherwise>
-									</xsl:choose>
-					  			</xsl:for-each>
-							</select>
-							<p class="help-block with-errors"></p>
-						</div>
-						<div class="col-md-12">
-						    <label for="geoArea3">Önskat geografiskt område 3</label>				    
-						    <select class="form-control" name="geoArea3" id="geoArea3">
-								<option value=""/>
-								<xsl:for-each select="GeoAreas/GeoArea">
-									<xsl:choose>
-										<xsl:when test="selectedGeoArea3 = 'true'">
-											<option value="{id}" selected="selected"><xsl:value-of select="name"/> </option>	
-										</xsl:when>
-										<xsl:otherwise>
-											<option value="{id}"><xsl:value-of select="name"/> </option>	
-										</xsl:otherwise>
-									</xsl:choose>
-					  			</xsl:for-each>
-							</select>
-						</div>
-					</div>
-			  	</div>
+				  	</div>
 			  	</div>
 			  	
 				<div id="driverslicense_select" class="row">
