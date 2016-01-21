@@ -21,7 +21,7 @@
 						<div class="row">
 							<div class="col-md-3">
 								<label>Personnummer</label>
-								<input type="text" name="socialSecurityNumber" value="{SocialSecurityNumber}" placeholder="" class="form-control" data-error="電電MMDDxxxx" maxlength="12" />
+								<input type="text" name="socialSecurityNumber" value="{SocialSecurityNumber}" placeholder="" class="form-control numberValidation" data-error="電電MMDDxxxx" maxlength="12" />
 								<p class="help-block with-errors">電電MMDDxxxx</p>
 							</div>
 							<div class="col-md-3">

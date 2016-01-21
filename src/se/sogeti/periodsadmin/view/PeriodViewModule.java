@@ -84,7 +84,7 @@ public class PeriodViewModule extends AnnotatedRESTModule {
 		doc.getFirstChild().appendChild(businessContact);
 		
 		Element periodsElement = doc.createElement("Periods");
-		List<Period> periodList = periodDAO.getPeriodsOrderedByDateAndIsUnique(false);
+		List<Period> periodList = periodDAO.getPeriodsByIsUnique(false);
 		
 		if(periodList != null){
 			for (Period p : periodList) {
