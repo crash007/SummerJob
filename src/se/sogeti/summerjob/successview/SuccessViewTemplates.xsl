@@ -15,11 +15,11 @@
 	
 		<div class="success-message-wrapper">
 			<div style="padding: 16px;" class="alert alert-success" role="alert">
-				<h3 style="margin-left: 16px;" class="header"><xsl:value-of select="header" /></h3>
+				<h2 style="margin-left: 16px;" class="header"><xsl:value-of select="header" /></h2>
 				<p style="margin-left: 16px; margin-bottom: 16px;"><xsl:value-of select="message" /></p>
 				<xsl:if test="newUrl and newText">
 					<div class="row">
-						<a class="mgn-top16px pull-right btn btn-primary" href="{newUrl}"><strong><xsl:value-of select="newText" /></strong></a>
+						<a class="mgn-top16px mgn-btm8px mgn-rgt32px pull-right btn btn-primary" href="{newUrl}"><strong><xsl:value-of select="newText" /></strong></a>
 					</div>
 				</xsl:if>
 			</div>

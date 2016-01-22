@@ -50,6 +50,7 @@ public class PeriodDAO extends AnnotatedDAO<Period> {
 	public List<Period> getPeriodsByIsUnique(boolean isUnique) throws SQLException {
 		HighLevelQuery<Period> query = new HighLevelQuery<Period>();
 		query.addParameter(this.getParamFactory("isUnique", Boolean.class).getParameter(isUnique));
+		query.addOrderByCriteria(this.getOrderByCriteria("id", Order.ASC));
 		return this.getAll(query);
 	}
 }

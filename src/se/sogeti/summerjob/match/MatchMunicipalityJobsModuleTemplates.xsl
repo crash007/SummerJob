@@ -403,13 +403,13 @@
 
 					</div>
 
-					<div class="row  mgn-top8px collapse">
+<!-- 					<div class="row  mgn-top8px collapse"> -->
 
-						<div class="col-xs-5 col-md-3 bold">Rubrik</div>
-						<div class="col-md-3">
-							<xsl:value-of select="workTitle" />
-						</div>
-					</div>
+<!-- 						<div class="col-xs-5 col-md-3 bold">Rubrik</div> -->
+<!-- 						<div class="col-md-3"> -->
+<!-- 							<xsl:value-of select="workTitle" /> -->
+<!-- 						</div> -->
+<!-- 					</div> -->
 
 					<div class="row mgn-top8px collapse">
 

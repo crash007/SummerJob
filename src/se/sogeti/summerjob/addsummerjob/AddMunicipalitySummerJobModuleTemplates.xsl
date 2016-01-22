@@ -97,23 +97,23 @@
 					<h3 class="panel-title">Adress till arbetsplatsen</h3>
 				</div>
 				<div class="panel-body">
-				  		<div class="row">
-						    <div class="form-group col-md-5">
-							    <label for="street">Gatuadress*</label>				    
-							    <input type="text" class="form-control" id="street" name="street" placeholder="" required="required" value="{MunicipalityJob/streetAddress}"/>
-							    <p class="help-block with-errors"></p>					    
-						    </div>
-						    <div class="form-group col-md-3">
-							    <label for="postalcode">Postnummer*</label>				    
-							    <input type="text" data-error="Ett postnummer måste ha fem siffror." class="numberValidation form-control" id="postalcode" name="postalcode" placeholder="" required="required" data-minlength="5" maxlength="5" value="{MunicipalityJob/zipCode}"/>
-							    <p class="help-block with-errors"></p>
-						    </div>
-						    <div class="form-group col-md-4">
-							    <label for="postalarea">Postort*</label>				    
-							    <input type="text" class="form-control" id="postalarea" name="postalarea" placeholder="" required="required" value="{MunicipalityJob/city}"/>
-							    <p class="help-block with-errors"></p>
-						    </div>
+			  		<div class="row">
+					    <div class="form-group col-md-5">
+						    <label for="street">Gatuadress*</label>				    
+						    <input type="text" class="form-control" id="street" name="street" placeholder="" required="required" value="{MunicipalityJob/streetAddress}"/>
+						    <p class="help-block with-errors"></p>					    
 					    </div>
+					    <div class="form-group col-md-3">
+						    <label for="postalcode">Postnummer*</label>				    
+						    <input type="text" data-error="Ett postnummer måste ha fem siffror." class="numberValidation form-control" id="postalcode" name="postalcode" placeholder="" required="required" data-minlength="5" maxlength="5" value="{MunicipalityJob/zipCode}"/>
+						    <p class="help-block with-errors"></p>
+					    </div>
+					    <div class="form-group col-md-4">
+						    <label for="postalarea">Postort*</label>				    
+						    <input type="text" class="form-control" id="postalarea" name="postalarea" placeholder="" required="required" value="{MunicipalityJob/city}"/>
+						    <p class="help-block with-errors"></p>
+					    </div>
+				    </div>
 				  	<div class="form-group">
 					  	<div class="row">
 						  	<div class="col-md-5">
@@ -123,46 +123,79 @@
 						  	</div>
 					  	</div>
 				  	</div>
-				  	<div id="geoAreaSelect" class="row">
-				  		<div class="col-md-4 form-group">
-						    <label for="geoArea">Välj geografiskt område*</label>				    
-						    <select class="form-control" data-error="Det geografiska område arbetsplatsen tillhör." name="geoArea" id="geoArea" required="required">
-						    	<option value=""/>
-								<xsl:for-each select="GeoAreas/GeoArea">
-									<option value="{id}" >
-										<xsl:if test="/Document/MunicipalityJobForm/MunicipalityJob/GeoArea/id = id">
-							    			<xsl:attribute name="selected">selected</xsl:attribute>															    			
-							    		</xsl:if>
-										<xsl:value-of select="name"></xsl:value-of>
-									</option>	   		
-								</xsl:for-each>
-							</select>
-							<p class="help-block with-errors">Det geografiska område arbetsplatsen tillhör.</p>
-						</div>
-						<div class="col-md-6">
-							<label>Området omfattar</label>
-							<xsl:for-each select="GeoAreas/GeoArea">
-								<div class="mgn-top8px" style="display: none;" id="geoarea-description_{id}"><xsl:value-of select="description"/></div>
-							</xsl:for-each>
+<!-- 				  	<div id="geoAreaSelect" class="row"> -->
+<!-- 				  		<div class="col-md-4 form-group"> -->
+<!-- 						    <label for="geoArea">Välj geografiskt område*</label>				     -->
+<!-- 						    <select class="form-control" data-error="Det geografiska område arbetsplatsen tillhör." name="geoArea" id="geoArea" required="required"> -->
+<!-- 						    	<option value=""/> -->
+<!-- 								<xsl:for-each select="GeoAreas/GeoArea"> -->
+<!-- 									<option value="{id}" > -->
+<!-- 										<xsl:if test="/Document/MunicipalityJobForm/MunicipalityJob/GeoArea/id = id"> -->
+<!-- 							    			<xsl:attribute name="selected">selected</xsl:attribute>															    			 -->
+<!-- 							    		</xsl:if> -->
+<!-- 										<xsl:value-of select="name"></xsl:value-of> -->
+<!-- 									</option>	   		 -->
+<!-- 								</xsl:for-each> -->
+<!-- 							</select> -->
+<!-- 							<p class="help-block with-errors">Det geografiska område arbetsplatsen tillhör.</p> -->
+<!-- 						</div> -->
+<!-- 						<div class="col-md-6"> -->
+<!-- 							<label>Området omfattar</label> -->
+<!-- 							<xsl:for-each select="GeoAreas/GeoArea"> -->
+<!-- 								<div class="mgn-top8px" style="display: none;" id="geoarea-description_{id}"><xsl:value-of select="description"/></div> -->
+<!-- 							</xsl:for-each> -->
+<!-- 						</div> -->
+<!-- 					</div> -->
+					<div id="geoAreaSelect" class="row">
+						<div class="col-md-8 col-md-push-4 form-horizontal text-left">
+					  		<h3 class="mgn-top0px">Beskrivning geografiska områden</h3>
+					  		<xsl:for-each select="GeoAreas/GeoArea">
+						  		<div class="form-group mgn-btm8px">
+							    	<label class="col-sm-3"><xsl:value-of select="name"/></label>
+								    <div class="col-sm-9">
+								      <p class=""><xsl:value-of select="description"/></p>
+								    </div>
+							  	</div>
+						  	</xsl:for-each>
+					  	</div>
+						
+				  		<div class="col-md-4 col-md-pull-8">
+				  			<div class="row">
+				  				<div class="form-group col-md-12">
+								    <label for="geoArea">Välj geografiskt område*</label>				    
+								    <select class="form-control" data-error="Det geografiska område arbetsplatsen tillhör." name="geoArea" id="geoArea" required="required">
+								    	<option value=""/>
+										<xsl:for-each select="GeoAreas/GeoArea">
+											<option value="{id}" >
+												<xsl:if test="/Document/MunicipalityJobForm/MunicipalityJob/GeoArea/id = id">
+									    			<xsl:attribute name="selected">selected</xsl:attribute>															    			
+									    		</xsl:if>
+												<xsl:value-of select="name"></xsl:value-of>
+											</option>	   		
+										</xsl:for-each>
+									</select>
+									<p class="help-block with-errors">Det geografiska område arbetsplatsen tillhör.</p>
+								</div>
+							</div>
 						</div>
 					</div>
-				  </div>
-			  	</div>
+				</div>
+			</div>
 			  	<div class="panel panel-default">
 				  <div class="panel-heading">
 				    <h3 class="panel-title">Arbete</h3>
 				  </div>
 				  <div class="panel-body">
 				  
-				  <div class="form-group">
-					  	<div class="row">
-						  	<div class="col-md-5">
-							    <label for="work-title">Rubrik*</label>				    
-							     <input type="text" class="form-control" id="work-title" name="work-title" placeholder="" required="required" value="{MunicipalityJob/workTitle}"/>
-							     <p class="help-block with-errors"></p>							    
-						  	</div>
-					  	</div>
-				  	</div>
+<!-- 				  <div class="form-group"> -->
+<!-- 					  	<div class="row"> -->
+<!-- 						  	<div class="col-md-5"> -->
+<!-- 							    <label for="work-title">Rubrik*</label>				     -->
+<!-- 							     <input type="text" class="form-control" id="work-title" name="work-title" placeholder="" required="required" value="{MunicipalityJob/workTitle}"/> -->
+<!-- 							     <p class="help-block with-errors"></p>							     -->
+<!-- 						  	</div> -->
+<!-- 					  	</div> -->
+<!-- 				  	</div> -->
 				  	<div class="form-group">
 					    <label for="work-description">Arbetsbeskrivning*</label>				    
 					    <textarea class="form-control" data-error="Beskriv vad arbetsuppgifterna kommer vara." rows="10" id="work-description" name="work-description" required="required"><xsl:value-of select="MunicipalityJob/workDescription"></xsl:value-of></textarea>							    
@@ -504,10 +537,10 @@
 				</div>
 				<div class="panel-body">
 					<div class="mgn-top8px row">
-						<div class="col-md-3 ">
-							<label>Rubrik</label>
-							<p id="preview-worktitle"></p>
-						</div>
+<!-- 						<div class="col-md-3 "> -->
+<!-- 							<label>Rubrik</label> -->
+<!-- 							<p id="preview-worktitle"></p> -->
+<!-- 						</div> -->
 						<div class="col-md-9">
 							<label>Arbetsbeskrivning</label>
 							<p id="preview-workdescription"></p>

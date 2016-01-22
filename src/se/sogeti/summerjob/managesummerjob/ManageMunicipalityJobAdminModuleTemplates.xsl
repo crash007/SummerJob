@@ -95,10 +95,10 @@
 			</div>
 			<div class="panel-body">
 				<div class="mgn-top8px row">
-					<div class="col-md-3 ">
-						<label>Rubrik</label>
-						<div><xsl:value-of select="MunicipalityJob/workTitle"></xsl:value-of></div>
-					</div>
+<!-- 					<div class="col-md-3 "> -->
+<!-- 						<label>Rubrik</label> -->
+<!-- 						<div><xsl:value-of select="MunicipalityJob/workTitle"></xsl:value-of></div> -->
+<!-- 					</div> -->
 					<div class="col-md-9">
 						<label>Arbetsbeskrivning</label>
 						<div><xsl:value-of select="MunicipalityJob/workDescription"></xsl:value-of></div>

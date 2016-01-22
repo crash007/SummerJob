@@ -36,7 +36,7 @@
 			    			</div>
 						</div>
 					  	<div class="form-group">
-						    <label for="work-description">Arbetsbeskrivning*</label>				    
+						    <label for="work-description">Yrkesbeskrivning*</label>				    
 						    <textarea class="form-control" rows="5" id="work-description" name="work-description" required="required"><xsl:value-of select="BusinessSectorJob/workDescription"></xsl:value-of></textarea>							    
 						    <div class="help-block with-errors">Beskriv vad arbetsuppgifterna kommer vara</div>
 					  	</div>

@@ -230,7 +230,7 @@ public class ListSummerJobsAdminModule extends AnnotatedForegroundModule impleme
 	
 	private Element createMunicipalityJobElement(Document doc, MunicipalityJob job,String contextPath) {
 		Element municipalityJob = doc.createElement("MunicipalityJob");
-		XMLUtils.appendNewElement(doc, municipalityJob, "workTitle", job.getWorkTitle());
+//		XMLUtils.appendNewElement(doc, municipalityJob, "workTitle", job.getWorkTitle());
 		XMLUtils.appendNewElement(doc, municipalityJob, "workDescription", job.getWorkDescription());
 		XMLUtils.appendNewElement(doc, municipalityJob, "area", job.getArea().getName());
 		
@@ -241,6 +241,7 @@ public class ListSummerJobsAdminModule extends AnnotatedForegroundModule impleme
 		XMLUtils.appendNewElement(doc, municipalityJob, "administration", job.getAdministration());
 		XMLUtils.appendNewElement(doc, municipalityJob, "department", job.getDepartment());
 		XMLUtils.appendNewElement(doc, municipalityJob, "location", job.getLocation());
+		XMLUtils.appendNewElement(doc, municipalityJob, "geoarea", job.getGeoArea().getName());
 		
 		XMLUtils.appendNewElement(doc, municipalityJob, "created", job.getCreated());
 		XMLUtils.appendNewElement(doc, municipalityJob, "approvedByUser", job.getApprovedByUser());
