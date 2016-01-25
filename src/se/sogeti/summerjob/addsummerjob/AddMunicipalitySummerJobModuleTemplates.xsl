@@ -46,7 +46,7 @@
 					  <div class="form-group">
 					  	<div class="row">
 			  				<div class="col-md-4">
-							    <label for="location">Ange arbetsplatsen*</label>
+							    <label for="location">Ange arbetsplats*</label>
 							    <input type="text" class="form-control" data-error="Tex Himlabadet" id="location" name="location" placeholder="" required="required" value="{MunicipalityJob/location}"/>
 							    <p class="help-block with-errors">Tex Himlabadet</p>
 						   	</div>
@@ -57,7 +57,7 @@
 					  		<div class="row">
 					  			<div class="col-md-4">
 							  		<label for="area">Ange verksamhetsområde*</label>
-							   		<select class="form-control" name="area" id="area" required="required">
+							   		<select class="form-control" name="area" id="area" required="required" data-error="Du måste göra ett val.">
 							   			<option value="" />
 								   		<xsl:for-each select="Areas/MunicipalityJobArea">
 								   			<xsl:choose>
@@ -114,40 +114,24 @@
 						    <p class="help-block with-errors"></p>
 					    </div>
 				    </div>
-				  	<div class="form-group">
+
+					<div class="form-group">
 					  	<div class="row">
-						  	<div class="col-md-5">
+					  		<div class="col-md-7 col-md-push-5 form-horizontal text-left">
+					  			<label>Beskrivning avdelning</label>
+					  			<p style="margin-top: 0px;">Om din arbetsplats har flera avdelningar så kan du välja att skriva in en avdelning, göra klart allt och sedan lägga till ett nytt kommunalt jobb för nästa avdelning. Eller så skriver du in alla avdelningars namn i rutan. När du sedan skriver antal platser så skriver du in det totala antalet platser för vardera period.</p>
+					  		</div>
+					  	
+						  	<div class="col-md-5 col-md-pull-7">
 							    <label for="department">Ange avdelning</label>				    
 							     <input type="text" class="form-control" id="department" name="department" placeholder="" value="{MunicipalityJob/department}"/>
 							    <p class="help-block">Avdelning är inte obligatorisk</p>
 						  	</div>
 					  	</div>
 				  	</div>
-<!-- 				  	<div id="geoAreaSelect" class="row"> -->
-<!-- 				  		<div class="col-md-4 form-group"> -->
-<!-- 						    <label for="geoArea">Välj geografiskt område*</label>				     -->
-<!-- 						    <select class="form-control" data-error="Det geografiska område arbetsplatsen tillhör." name="geoArea" id="geoArea" required="required"> -->
-<!-- 						    	<option value=""/> -->
-<!-- 								<xsl:for-each select="GeoAreas/GeoArea"> -->
-<!-- 									<option value="{id}" > -->
-<!-- 										<xsl:if test="/Document/MunicipalityJobForm/MunicipalityJob/GeoArea/id = id"> -->
-<!-- 							    			<xsl:attribute name="selected">selected</xsl:attribute>															    			 -->
-<!-- 							    		</xsl:if> -->
-<!-- 										<xsl:value-of select="name"></xsl:value-of> -->
-<!-- 									</option>	   		 -->
-<!-- 								</xsl:for-each> -->
-<!-- 							</select> -->
-<!-- 							<p class="help-block with-errors">Det geografiska område arbetsplatsen tillhör.</p> -->
-<!-- 						</div> -->
-<!-- 						<div class="col-md-6"> -->
-<!-- 							<label>Området omfattar</label> -->
-<!-- 							<xsl:for-each select="GeoAreas/GeoArea"> -->
-<!-- 								<div class="mgn-top8px" style="display: none;" id="geoarea-description_{id}"><xsl:value-of select="description"/></div> -->
-<!-- 							</xsl:for-each> -->
-<!-- 						</div> -->
-<!-- 					</div> -->
-					<div id="geoAreaSelect" class="row">
-						<div class="col-md-8 col-md-push-4 form-horizontal text-left">
+				  	
+					<div id="geoAreaSelect" class="row mgn-top24px">
+						<div class="col-md-7 col-md-push-5 form-horizontal text-left">
 					  		<h3 class="mgn-top0px">Beskrivning geografiska områden</h3>
 					  		<xsl:for-each select="GeoAreas/GeoArea">
 						  		<div class="form-group mgn-btm8px">
@@ -159,11 +143,11 @@
 						  	</xsl:for-each>
 					  	</div>
 						
-				  		<div class="col-md-4 col-md-pull-8">
+				  		<div class="col-md-5 col-md-pull-7">
 				  			<div class="row">
 				  				<div class="form-group col-md-12">
 								    <label for="geoArea">Välj geografiskt område*</label>				    
-								    <select class="form-control" data-error="Det geografiska område arbetsplatsen tillhör." name="geoArea" id="geoArea" required="required">
+								    <select class="form-control" data-error="Du måste göra ett val." name="geoArea" id="geoArea" required="required">
 								    	<option value=""/>
 										<xsl:for-each select="GeoAreas/GeoArea">
 											<option value="{id}" >
@@ -199,7 +183,7 @@
 				  	<div class="form-group">
 					    <label for="work-description">Arbetsbeskrivning*</label>				    
 					    <textarea class="form-control" data-error="Beskriv vad arbetsuppgifterna kommer vara." rows="10" id="work-description" name="work-description" required="required"><xsl:value-of select="MunicipalityJob/workDescription"></xsl:value-of></textarea>							    
-					    <p class="help-block with-errors">Beskriv vad arbetsuppgifterna kommer vara.</p>
+					    <p class="help-block with-errors">Beskriv kortfattat arbetsuppgifterna</p>
 				  	</div>				  	
 				  	
 				  	<div id="periods-group" class="form-group">
@@ -406,7 +390,7 @@
 				  	<div class="form-group">
 					    <label>Övriga kommentarer</label>				    
 					    <textarea class="form-control" rows="6" id="freetext" name="freetext"><xsl:value-of select="MunicipalityJob/freeText"></xsl:value-of></textarea>							    
-					    <p class="help-block">Övriga kommentarer du vill ge oss handläggare</p>
+					    <p class="help-block">Övriga kommentarer du vill ge oss handläggare, såsom fördelning av platser mellan avdelningar</p>
 				  	</div> 
 				  </div>
 			  	</div>

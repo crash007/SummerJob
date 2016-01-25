@@ -96,9 +96,9 @@
 			 	</div>
 			 	
 			 	<div class="row">
-			 		<div class="col-md-3 col-xs-12 form-group">
+			 		<div class="col-md-4 col-xs-12 form-group">
 			 			<label>Önskad arbetsperiod*</label>
-						<select class="form-control" required="required" name="preferedPeriod">
+						<select class="form-control" data-error="Perioderna kan vara 3 eller 4 veckor långa, kan också vara annan period." required="required" name="preferedPeriod">
 							<option value=""></option>
 							<option value="NONE">
 								<xsl:if test="MunicipalityJobApplication/preferedPeriod = 'NONE'">
@@ -125,7 +125,7 @@
 								Slutet av sommaren
 							</option>
 						</select>
-						<p class="help-block with-errors">Period du önskar arbeta</p> 		
+						<p class="help-block with-errors">Perioderna kan vara 3 eller 4 veckor långa, kan också vara annan period.</p> 		
 			 		</div>
 			 	</div>
 			 	

@@ -13,7 +13,7 @@
 		<h1>Lista ansökningar</h1>
 		<div class="panel panel-default">
 			<div class="panel-heading">
-				<h3 class="panel-title">Ansökningar enligt kriterier</h3>
+				<h3 class="panel-title">Sök</h3>
 			</div>
 			<div class="panel-body">
 				<form method="POST" role="form" id="search-applications-form" data-toggle="validator">

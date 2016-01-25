@@ -51,7 +51,7 @@
 					  		<div class="col-md-2 bold">Verksamhetsområde</div>
 					  		<div class="col-md-2 bold">Geografiskt område</div>
 					  		<div class="col-md-1 bold">Platser</div>
-					  		<div class="col-md-1 bold">Period</div>
+					  		<div class="col-md-1 bold pdg-lftrgt0px">Period</div>
 					  	</div>
 					  	
 					  	<xsl:for-each select="NewMunicipalityJobs/MunicipalityJob">
@@ -61,7 +61,7 @@
 						  		<div class="col-md-2"><xsl:value-of select="MunicipalityJobArea/name" /></div>
 						  		<div class="col-md-2"><xsl:value-of select="GeoArea/name" /></div>
 						  		<div class="col-md-1"><xsl:value-of select="numberOfWorkersNeeded" /></div>
-						  		<div class="col-md-1"><xsl:value-of select="Period/name" /></div>
+						  		<div class="col-md-1 pdg-lftrgt0px"><xsl:value-of select="Period/name" /></div>
 						  		<xsl:if test="/Document/IsAdmin = 'true'">
 							  		<div class="col-md-1 bold"><a href="{/Document/requestinfo/contextpath}/{/Document/Municipality/ManageMunicipalityJobsUrl}?jobId={id}">Hantera</a></div>
 						  		</xsl:if>
@@ -81,7 +81,7 @@
 						  	<div class="col-md-2 bold">Verksamhetsområde</div>
 						  	<div class="col-md-2 bold">Geografiskt område</div>
 						  	<div class="col-md-1 bold">Platser</div>
-						  	<div class="col-md-1 bold">Period</div>
+						  	<div class="col-md-1 bold pdg-lftrgt0px">Period</div>
 					  	</div>
 					  	<xsl:for-each select="approvedMunicipalityJobs/MunicipalityJob">
 					  		<div class="row overview-row">
@@ -90,7 +90,7 @@
 						  		<div class="col-md-2"><xsl:value-of select="MunicipalityJobArea/name" /></div>
 						  		<div class="col-md-2"><xsl:value-of select="GeoArea/name" /></div>
 						  		<div class="col-md-1"><xsl:value-of select="numberOfWorkersNeeded" /></div>
-						  		<div class="col-md-1"><xsl:value-of select="Period/name" /></div>
+						  		<div class="col-md-1 pdg-lftrgt0px"><xsl:value-of select="Period/name" /></div>
 						  		<xsl:if test="/Document/IsAdmin = 'true'">
 							  		<div class="col-md-1 bold"><a href="{/Document/requestinfo/contextpath}/{/Document/Municipality/ManageMunicipalityJobsUrl}?jobId={id}">Hantera</a></div>
 							  		<div class="col-md-1 bold"><a href="{/Document/requestinfo/contextpath}/{/Document/Municipality/MatchMunicipalityJobsUrl}?jobId={id}">Matcha</a></div>
