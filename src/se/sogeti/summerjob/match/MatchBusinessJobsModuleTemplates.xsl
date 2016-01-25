@@ -9,7 +9,7 @@
 			var url = '<xsl:value-of select="requestinfo/uri" />';
 			var isOpen = '<xsl:value-of select="MatchBusinessJob/BusinessSectorJob/isOpen" />';
 		</script>
-
+		<h1 class="header-match">Matcha jobb med ansökningar</h1>
 		<xsl:apply-templates select="MatchBusinessJob" />
 
 
