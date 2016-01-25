@@ -319,6 +319,14 @@
 								<xsl:value-of select="freeTextRequirements" />
 							</div>
 						</div>
+						<xsl:if test="adminNotes != ''">
+							<div class="row mgn-top8px">
+								<div class="col-xs-4 col-md-3 bold">Handläggarkommentar</div>
+								<div class="col-md-9 col-xs-12 prio">
+									<xsl:value-of select="adminNotes" />
+								</div>
+							</div>
+						</xsl:if>
 
 						<div id="jobinfo-contact">
 							<label>Kontaktuppgifter</label>

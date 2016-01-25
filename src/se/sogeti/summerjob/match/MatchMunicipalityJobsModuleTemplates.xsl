@@ -402,6 +402,17 @@
 						</div>
 
 					</div>
+					
+					<xsl:if test="adminNotes != ''">
+						<div class="row">
+							<div class="col-md-2 bold">Handläggarkommentar</div>
+						</div>
+						<div class="row overview-row">
+							<div class="col-md-6 prio">
+								<xsl:value-of select="adminNotes"></xsl:value-of>
+							</div>
+						</div>
+					</xsl:if>					
 
 <!-- 					<div class="row  mgn-top8px collapse"> -->
 
