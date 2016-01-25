@@ -132,6 +132,11 @@ public class ManageMunicipalityJobAdminModule extends AnnotatedRESTModule implem
         
         job.setInitiatedByUser(user.getUsername());
         job.setAdminNotes(req.getParameter("adminNotes"));
+        job.setApprovedByUser(null);
+        job.setApproved(false);
+        job.setIsOpen(true);
+        job.setControlled(false);
+        job.setControlledDate(null);
         job.setDescriptionForEmploymentPapers(req.getParameter("descriptionForEmploymentPapers"));
         job.setDescriptionForCallPapers(req.getParameter("descriptionForCallPapers"));
         

@@ -69,7 +69,7 @@
 			</div>
 			<div class="panel-body">
 				<div class="row">
-					<div class="col-xs-1 bold">Prio</div>
+					<div class="col-xs-1 bold">Rank</div>
 					<div class="col-xs-3 bold">Personnummer</div>
 					<div class="col-xs-3 bold">Namn</div>
 				</div>
@@ -85,7 +85,7 @@
 			</div>
 			<div class="panel-body">
 				<div class="row">
-					<div class="col-xs-1 bold">Prio</div>
+					<div class="col-xs-1 bold">Rank</div>
 					<div class="col-xs-3 bold">Personnummer</div>
 					<div class="col-xs-3 bold">Namn</div>
 				</div>
@@ -101,7 +101,7 @@
 			</div>
 			<div class="panel-body">
 				<div class="row">
-					<div class="col-xs-1 bold">Prio</div>
+					<div class="col-xs-1 bold">Rank</div>
 					<div class="col-xs-3 bold">Personnummer</div>
 					<div class="col-xs-3 bold">Namn</div>
 				</div>
@@ -117,7 +117,7 @@
 			</div>
 			<div class="panel-body">
 				<div class="row">
-					<div class="col-xs-1 bold">Prio</div>
+					<div class="col-xs-1 bold">Rank</div>
 					<div class="col-xs-3 bold">Personnummer</div>
 					<div class="col-xs-3 bold">Namn</div>
 				</div>
@@ -135,10 +135,11 @@
 				<div class="col-xs-6"><xsl:value-of select="name" /></div>
 				<div style="padding-left: 0px; padding-right: 0px;" class="col-xs-1">
 					<xsl:if test="applicationType = 'REGULAR_ADMIN'">
-						<span style="font-size: medium" class="bold">* </span>
+<!-- 						<span style="font-size: medium">(A) </span> -->
+						<span>(A) </span>
 					</xsl:if>
 					<xsl:if test="applicationType = 'PRIO'">
-						<span style="font-size: medium" class="bold prio">* </span>
+						<span class="prio">(P) </span>
 					</xsl:if>
 					<xsl:if test="controlledByUser and approved = 'false'">
 						<span>(K)</span>					
