@@ -33,7 +33,7 @@
 		<div class="row mgn-top-2em">
 			<div class="col-md-6">
 				<p>För mer information till dig som sökande eller arbetsgivare/arbetsplats.</p>
-				<a href="http://www.sundsvall.se/sommarjobb">www.sundsvall.se/sommarjobb</a>
+				<a target="_blank" href="http://www.sundsvall.se/sommarjobb">www.sundsvall.se/sommarjobb</a>
 			</div>
 		</div>
 		
