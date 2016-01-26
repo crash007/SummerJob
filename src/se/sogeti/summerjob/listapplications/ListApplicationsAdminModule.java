@@ -76,6 +76,7 @@ public class ListApplicationsAdminModule extends AnnotatedForegroundModule {
 		String socialSecurityNumber = req.getParameter("socialSecurityNumber");
 		String firstname = req.getParameter("firstname");
 		String lastname = req.getParameter("lastname");
+		String personalLetter = req.getParameter("personalLetter");
 		
 		if(socialSecurityNumber!=null){
 			XMLUtils.appendNewElement(doc, element, "SocialSecurityNumber", socialSecurityNumber);
@@ -89,16 +90,20 @@ public class ListApplicationsAdminModule extends AnnotatedForegroundModule {
 			XMLUtils.appendNewElement(doc, element, "Lastname", lastname);			
 		}
 		
-		List<MunicipalityJobApplication> approvedMunicipalityApplications = municipalityJobApplicationDAO.getAllByApprovedByDescendingOrder(socialSecurityNumber, firstname, lastname, true, true);
+		if (personalLetter != null) {
+			XMLUtils.appendNewElement(doc, element, "PersonalLetter", personalLetter);
+		}
+		
+		List<MunicipalityJobApplication> approvedMunicipalityApplications = municipalityJobApplicationDAO.getAllByApprovedByDescendingOrder(socialSecurityNumber, firstname, lastname, personalLetter, true, true);
 		createMunicipalityApplicationElements(doc, approvedMunicipalityElement, approvedMunicipalityApplications);
 		
-		List<MunicipalityJobApplication> disapprovedMunicipalityApplications = municipalityJobApplicationDAO.getAllByApprovedByDescendingOrder(socialSecurityNumber, firstname, lastname, false, true);
+		List<MunicipalityJobApplication> disapprovedMunicipalityApplications = municipalityJobApplicationDAO.getAllByApprovedByDescendingOrder(socialSecurityNumber, firstname, lastname, personalLetter, false, true);
 		createMunicipalityApplicationElements(doc, disapprovedMunicipalityElement, disapprovedMunicipalityApplications);
 		
-		List<BusinessSectorJobApplication> approvedBusinessApplications = businessApplicationDAO.getAllByApprovedWithJobByDescendingOrder(socialSecurityNumber, firstname, lastname, true, true);
+		List<BusinessSectorJobApplication> approvedBusinessApplications = businessApplicationDAO.getAllByApprovedWithJobByDescendingOrder(socialSecurityNumber, firstname, lastname, personalLetter, true, true);
 		createBusinessApplicationElements(doc, approvedBusinessElement, approvedBusinessApplications);
 		
-		List<BusinessSectorJobApplication> disapprovedBusinessApplications = businessApplicationDAO.getAllByApprovedWithJobByDescendingOrder(socialSecurityNumber, firstname, lastname, false, true);
+		List<BusinessSectorJobApplication> disapprovedBusinessApplications = businessApplicationDAO.getAllByApprovedWithJobByDescendingOrder(socialSecurityNumber, firstname, lastname, personalLetter, false, true);
 
 		createBusinessApplicationElements(doc, disapprovedBusinessElement, disapprovedBusinessApplications);
 		

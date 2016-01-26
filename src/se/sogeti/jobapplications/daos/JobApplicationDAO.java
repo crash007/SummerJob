@@ -112,7 +112,7 @@ public class JobApplicationDAO<T extends JobApplication> extends SummerJobCommon
 	 * @return
 	 * @throws SQLException
 	 */
-	public List<T> getAllByApprovedByDescendingOrder(String socialSecurityNumber, String firstname, String lastname, boolean approved, boolean orderByDescending) throws SQLException {
+	public List<T> getAllByApprovedByDescendingOrder(String socialSecurityNumber, String firstname, String lastname, String personalLetter, boolean approved, boolean orderByDescending) throws SQLException {
 		HighLevelQuery<T> query = new HighLevelQuery<T>();
 		
 		if (!StringUtils.isEmpty(socialSecurityNumber)) {
@@ -125,6 +125,10 @@ public class JobApplicationDAO<T extends JobApplication> extends SummerJobCommon
 		
 		if (!StringUtils.isEmpty(lastname)) {
 			query.addParameter(this.getParamFactory("lastname", String.class).getParameter(lastname + "%", QueryOperators.LIKE));
+		}
+		
+		if (!StringUtils.isEmpty(personalLetter)) {
+			query.addParameter(this.getParamFactory("personalLetter", String.class).getParameter("%" + personalLetter + "%", QueryOperators.LIKE));
 		}
 		
 		query.addParameter(this.getParamFactory("approved", Boolean.class).getParameter(approved));

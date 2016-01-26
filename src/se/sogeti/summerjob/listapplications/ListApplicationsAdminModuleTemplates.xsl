@@ -32,6 +32,10 @@
 								<label>Efternamn</label>
 								<input type="text" name="lastname" value="{Lastname}" placeholder="" class="form-control" data-error="Efternamn" maxlength="12" />
 							</div>
+							<div class="col-md-3">
+								<label>Fritext i personligt brev</label>
+								<input type="text" name="personalLetter" value="{PersonalLetter}" placeholder="" class="form-control" data-error="Personligt brev" />
+							</div>
 						</div>
 						<div class="row">
 							<div class="col-md-6 col-xs-6 col-sm-6">

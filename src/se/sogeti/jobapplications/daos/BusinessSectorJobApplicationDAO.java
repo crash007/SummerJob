@@ -101,7 +101,7 @@ public class BusinessSectorJobApplicationDAO extends JobApplicationDAO<BusinessS
 	 * @return
 	 * @throws SQLException
 	 */
-	public List<BusinessSectorJobApplication> getAllByApprovedWithJobByDescendingOrder(String socialSecurityNumber, String firstname, String lastname, boolean approved, boolean orderByDescending) throws SQLException {
+	public List<BusinessSectorJobApplication> getAllByApprovedWithJobByDescendingOrder(String socialSecurityNumber, String firstname, String lastname, String personalLetter, boolean approved, boolean orderByDescending) throws SQLException {
 		HighLevelQuery<BusinessSectorJobApplication> query = new HighLevelQuery<BusinessSectorJobApplication>();
 		
 		if (!StringUtils.isEmpty(socialSecurityNumber)) {
@@ -114,6 +114,10 @@ public class BusinessSectorJobApplicationDAO extends JobApplicationDAO<BusinessS
 		
 		if (!StringUtils.isEmpty(lastname)) {
 			query.addParameter(this.getParamFactory("lastname", String.class).getParameter(lastname + "%", QueryOperators.LIKE));
+		}
+		
+		if (!StringUtils.isEmpty(lastname)) {
+			query.addParameter(this.getParamFactory("personalLetter", String.class).getParameter("%" + personalLetter + "%", QueryOperators.LIKE));
 		}
 		
 		query.addParameter(this.getParamFactory("approved", Boolean.class).getParameter(approved));
