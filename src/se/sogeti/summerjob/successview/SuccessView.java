@@ -32,8 +32,19 @@ public class SuccessView extends AnnotatedForegroundModule {
 	String jobSavedMessage = "En handläggare kommer behöva granska och godkänna annonsen innan den blir synlig för sökande.";
 	
 	@ModuleSetting
-	@TextFieldSettingDescriptor(description="Meddelande efter att ansökan sparats", name="ApplicationSavedMessage")
-	String applicationSavedMessage = "Tack för visat intresse. Vi kontaktar aktuella kandidater via telefon eller e-post.";
+	@TextFieldSettingDescriptor(description="Meddelande efter att ansökan sparats, del 1", name="ApplicationSavedMessagePt1")
+	String applicationSavedMessage1 = "Om du blir erbjuden ett sommarjobb så kommer du att bli kallad till ett samtal."
+			+ " Kallelsen skickas med vanlig post. Tyvärr kan vi inte meddela om du inte erbjuds något sommarjobb."
+			+ " Har du inte fått någon kallelse innan början på juni så kommer du troligen inte att få " 
+			+ "något erbjudande.";
+	
+	@ModuleSetting
+	@TextFieldSettingDescriptor(description="Meddelande efter att ansökan sparats, del 2", name="ApplicationSavedMessagePt2")
+	String applicationSavedMessage2 = "Har du några funderingar så kontakta någon av sommarjobbshandläggarna.";
+	
+	@ModuleSetting
+	@TextFieldSettingDescriptor(description="Meddelande efter att ansökan sparats, del 3", name="ApplicationSavedMessagePt3")
+	String applicationSavedMessage3 = "Mer information och kontaktuppgifter finns på";
 
 	@Override
 	public ForegroundModuleResponse defaultMethod(HttpServletRequest req,
@@ -71,11 +82,15 @@ public class SuccessView extends AnnotatedForegroundModule {
 			XMLUtils.appendNewElement(doc, messageElement, "newText", "Skapa ny annons");
 			XMLUtils.appendNewElement(doc, messageElement, "newUrl", newBusinessURL);
 		} else if (isMunicipalityJobApplication != null && isMunicipalityJobApplication) {
-			XMLUtils.appendNewElement(doc, messageElement, "header", "Ansökan har sparats");
-			XMLUtils.appendNewElement(doc, messageElement, "message", applicationSavedMessage);
+			XMLUtils.appendNewElement(doc, messageElement, "header", "Tack för din ansökan, den har nu sparats.");
+			XMLUtils.appendNewElement(doc, messageElement, "message1", applicationSavedMessage1);
+			XMLUtils.appendNewElement(doc, messageElement, "message2", applicationSavedMessage2);
+			XMLUtils.appendNewElement(doc, messageElement, "message3", applicationSavedMessage3);
 		} else if (isMunicipalityJobApplication != null && !isMunicipalityJobApplication) {
-			XMLUtils.appendNewElement(doc, messageElement, "header", "Ansökan har sparats");
-			XMLUtils.appendNewElement(doc, messageElement, "message", applicationSavedMessage);
+			XMLUtils.appendNewElement(doc, messageElement, "header", "Tack för din ansökan, den har nu sparats.");
+			XMLUtils.appendNewElement(doc, messageElement, "message1", applicationSavedMessage1);
+			XMLUtils.appendNewElement(doc, messageElement, "message2", applicationSavedMessage2);
+			XMLUtils.appendNewElement(doc, messageElement, "message3", applicationSavedMessage3);
 		}
 		
 		doc.getFirstChild().appendChild(messageElement);
