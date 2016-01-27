@@ -269,7 +269,7 @@ public class PersonApplicationsDAO extends AnnotatedDAO<PersonApplications> {
 					 //Borde bara vara 1 ansökan per person
 					 for(BusinessSectorJobApplication app : personApplications.getBusinessApplications()){
 						 
-						if(app.getDriversLicenseType().getId()< job.getDriversLicenseType().getId() || app.getBirthDate().after(mustBeBornBeforeDate)){
+						if(app.getDriversLicenseType().getId()< job.getDriversLicenseType().getId() || job.getMustBeOverEighteen() && app.getBirthDate().after(mustBeBornBeforeDate)){
 							applications.add(app);							
 						}
 					 }					 

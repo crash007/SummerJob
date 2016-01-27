@@ -107,6 +107,11 @@
 	<xsl:template match="BusinessSectorJobApplication">
 		<div class="mgn-btm8px candidate">
 			<div class="row">
+				<div class="col-xs-4 col-md-2 bold">Rank</div>
+				<div class="col-md-4 rank"><xsl:value-of select="ranking"></xsl:value-of></div>
+			</div>
+		
+			<div class="row">
 				<div class="col-xs-4 col-md-2 bold">Namn</div>
 				<div class="col-md-4 name">
 					<xsl:value-of select="firstname" />
