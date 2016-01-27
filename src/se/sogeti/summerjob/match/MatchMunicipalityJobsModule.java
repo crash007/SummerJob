@@ -363,7 +363,7 @@ public class MatchMunicipalityJobsModule extends MatchCommon implements MatchMun
 					
 					if(jobApplication!=null){
 						log.info(jobApplication.getJob());
-						jobApplication.setStatus(ApplicationStatus.DENIED);
+						jobApplication.setStatus(ApplicationStatus.DECLINED);
 						jobApplication.setPersonalMentor(null);
 						municipalityJobApplicationDAO.save(jobApplication);
 					}else{

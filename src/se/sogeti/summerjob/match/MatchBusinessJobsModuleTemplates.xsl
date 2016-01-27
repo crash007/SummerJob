@@ -444,14 +444,14 @@
 								</div>
 							</xsl:if>
 							
-							<xsl:if test="applications/BusinessSectorJobApplication[status='DENIED']">
+							<xsl:if test="applications/BusinessSectorJobApplication[status='DECLINED']">
 								<div class="col-md-6 col-xs-12">
 									<h3>Tackat nej till detta jobb</h3>
 	
 									<form id="denied-workers-form">
 										<div id="denied-applications-container">
 											<xsl:for-each select="applications/BusinessSectorJobApplication">
-												<xsl:if test="status ='DENIED'">
+												<xsl:if test="status ='DECLINED'">
 													<div class="denied-application">
 														<div class="row">
 															<div class="col-xs-4 col-md-3 bold">Namn</div>

@@ -17,7 +17,6 @@ import se.sogeti.jobapplications.beans.GeoArea;
 import se.sogeti.jobapplications.beans.PersonApplications;
 import se.sogeti.jobapplications.beans.business.BusinessSectorJob;
 import se.sogeti.jobapplications.beans.business.BusinessSectorJobApplication;
-import se.sogeti.jobapplications.beans.municipality.MunicipalityJob;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityJobApplication;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityJobArea;
 import se.unlogic.standardutils.dao.AnnotatedDAO;

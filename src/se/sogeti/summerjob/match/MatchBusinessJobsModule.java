@@ -279,7 +279,7 @@ public class MatchBusinessJobsModule extends MatchCommon implements MatchBusines
 					
 					if(jobApplication!=null){
 						log.info(jobApplication.getJob());
-						jobApplication.setStatus(ApplicationStatus.DENIED);
+						jobApplication.setStatus(ApplicationStatus.DECLINED);
 						businessJobApplicationDAO.save(jobApplication);
 					}else{
 						log.warn("No application with id: "+id);
