@@ -265,6 +265,9 @@ public class AddMunicipalitySummerJobApplicationModule extends AddSummerJobAppli
 				app.setNoPreferedArea(false);
 			} else {
 				app.setNoPreferedArea(true);
+				app.setPreferedArea1(null);
+				app.setPreferedArea2(null);
+				app.setPreferedArea3(null);
 			}
 			
 			Integer preferedGeoArea1 = NumberUtils.toInt(requestWrapper.getParameter("geoArea1"));

@@ -4,6 +4,8 @@ import java.lang.reflect.Field;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -166,7 +168,8 @@ public class PersonApplicationsDAO extends AnnotatedDAO<PersonApplications> {
 		
 		query.disableAutoRelations(true);
 		
-		query.addRelationOrderByCriteria(MunicipalityJobApplication.class,municipalityApplicationDAO.getOrderByCriteria("ranking", Order.ASC));
+//		query.addRelationOrderByCriteria(MunicipalityJobApplication.class,municipalityApplicationDAO.getOrderByCriteria("applicationType", Order.DESC));
+//		query.addRelationOrderByCriteria(MunicipalityJobApplication.class,municipalityApplicationDAO.getOrderByCriteria("ranking", Order.ASC));
 		
 		List<PersonApplications> result = this.getAll(query);
 		
@@ -178,6 +181,9 @@ public class PersonApplicationsDAO extends AnnotatedDAO<PersonApplications> {
 					applications.addAll(personApplications.getMunicipalityApplications());
 				}
 			}
+			
+			applications = sortListByApplicationTypeAndRanking(applications);
+			
 			return applications;
 		}else{
 			return null;
@@ -221,6 +227,8 @@ public class PersonApplicationsDAO extends AnnotatedDAO<PersonApplications> {
 					 applications.addAll(personApplications.getBusinessApplications());
 				 }
 			}
+			 
+			 applications = sortListByRanking(applications);
 			 return applications;
 		 			
 		 }else{
@@ -262,17 +270,71 @@ public class PersonApplicationsDAO extends AnnotatedDAO<PersonApplications> {
 					 //Borde bara vara 1 ansökan per person
 					 for(BusinessSectorJobApplication app : personApplications.getBusinessApplications()){
 						 
-						if(app.getDriversLicenseType().getId()< job.getDriversLicenseType().getId() || app.getBirthDate().after(mustBeBornBeforeDate)){
+						if(app.getDriversLicenseType().getId()< job.getDriversLicenseType().getId() || job.getMustBeOverEighteen() && app.getBirthDate().after(mustBeBornBeforeDate)){
 							applications.add(app);							
 						}
 					 }					 
 				 }
 			}
-			 return applications;
+			 
+			applications = sortListByRanking(applications);
+			return applications;
 		 			
 		 }else{
 			 return null;
 		 }
 		
+	}
+	
+	/**
+	 * Is used to sort the list, first according to the applicationType (REGULAR/REGULAR_ADMIN AND ADMIN) and then
+	 * the ranking.
+	 * @param list
+	 * @return
+	 */
+	private List<MunicipalityJobApplication> sortListByApplicationTypeAndRanking(List<MunicipalityJobApplication> list) {
+		Collections.sort(list, new Comparator<MunicipalityJobApplication>() {
+
+			@Override
+			public int compare(MunicipalityJobApplication app1, MunicipalityJobApplication app2) {
+				int applicationValue = 0; 
+				
+				if (app1 != null && app2 != null) {
+					
+					int app1type = app1.getApplicationType().ordinal();
+					int app2type = app2.getApplicationType().ordinal();
+					
+					if (app1type <= 1 && app2type <= 1) {
+						applicationValue = 0;
+					} else if (app1type > app2type) {
+						applicationValue = -1;
+					} else if (app1type < app2type) {
+						applicationValue = 1;
+					}
+					
+					// If the applications has the same applicationtype (or is REGULAR/REGULAR_ADMIN), sort by ranking only.
+					if (applicationValue == 0) {
+						int rankingValue = app1.getRanking().compareTo(app2.getRanking());
+						return rankingValue;
+					}
+				}
+				
+				return applicationValue;
+			}
+	    });
+		
+		return list;
+	}
+	
+	private List<BusinessSectorJobApplication> sortListByRanking(List<BusinessSectorJobApplication> list) {
+		Collections.sort(list, new Comparator<BusinessSectorJobApplication>() {
+
+			@Override
+			public int compare(BusinessSectorJobApplication app1, BusinessSectorJobApplication app2) {
+				return app1.getRanking().compareTo(app2.getRanking());
+			}
+		});
+		
+		return list;
 	}
 }
