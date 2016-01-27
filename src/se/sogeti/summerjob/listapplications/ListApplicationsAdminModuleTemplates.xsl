@@ -85,7 +85,7 @@
 	</xsl:template>
 	
 	<xsl:template match="ApprovedMunicipality">
-		<div class="panel panel-default">
+		<div class="panel panel-default list-application-panel">
 			<div class="panel-heading">
 				<h3 class="panel-title">Kommunala jobbansökningar</h3>
 			</div>
@@ -101,7 +101,7 @@
 	</xsl:template>
 	
 	<xsl:template match="DisapprovedMunicipality">
-		<div class="panel panel-default">
+		<div class="panel panel-default list-application-panel">
 			<div class="panel-heading">
 				<h3 class="panel-title">Kommunala jobbansökningar</h3>
 			</div>
@@ -117,7 +117,7 @@
 	</xsl:template>
 	
 	<xsl:template match="ApprovedBusiness">
-		<div class="panel panel-default">
+		<div class="panel panel-default list-application-panel">
 			<div class="panel-heading">
 				<h3 class="panel-title">Näringslivsjobbansökningar</h3>
 			</div>
@@ -133,7 +133,7 @@
 	</xsl:template>
 	
 	<xsl:template match="DisapprovedBusiness">
-		<div class="panel panel-default">
+		<div class="panel panel-default list-application-panel">
 			<div class="panel-heading">
 				<h3 class="panel-title">Näringslivsjobbansökningar</h3>
 			</div>
