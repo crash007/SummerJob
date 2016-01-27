@@ -228,6 +228,8 @@ public class PersonApplicationsDAO extends AnnotatedDAO<PersonApplications> {
 					 applications.addAll(personApplications.getBusinessApplications());
 				 }
 			}
+			 
+			 applications = sortListByRanking(applications);
 			 return applications;
 		 			
 		 }else{
@@ -275,7 +277,9 @@ public class PersonApplicationsDAO extends AnnotatedDAO<PersonApplications> {
 					 }					 
 				 }
 			}
-			 return applications;
+			 
+			applications = sortListByRanking(applications);
+			return applications;
 		 			
 		 }else{
 			 return null;
@@ -319,6 +323,18 @@ public class PersonApplicationsDAO extends AnnotatedDAO<PersonApplications> {
 				return applicationValue;
 			}
 	    });
+		
+		return list;
+	}
+	
+	private List<BusinessSectorJobApplication> sortListByRanking(List<BusinessSectorJobApplication> list) {
+		Collections.sort(list, new Comparator<BusinessSectorJobApplication>() {
+
+			@Override
+			public int compare(BusinessSectorJobApplication app1, BusinessSectorJobApplication app2) {
+				return app1.getRanking().compareTo(app2.getRanking());
+			}
+		});
 		
 		return list;
 	}
