@@ -109,7 +109,7 @@ public class ListApplicationsAdminModule extends AnnotatedForegroundModule {
 			XMLUtils.appendNewElement(doc, element, "PersonalLetter", personalLetter);
 		}
 		
-		List<MunicipalityJobApplication> approvedMunicipalityApplications = municipalityJobApplicationDAO.getAll(socialSecurityNumber, firstname, lastname, personalLetter, true,null, Order.DESC);
+		List<MunicipalityJobApplication> approvedMunicipalityApplications = municipalityJobApplicationDAO.getAllWithJob(socialSecurityNumber, firstname, lastname, personalLetter, true,null, Order.DESC);
 		createMunicipalityApplicationElements(doc, approvedMunicipalityElement, approvedMunicipalityApplications, req.getContextPath());
 		
 		List<MunicipalityJobApplication> disapprovedMunicipalityApplications = municipalityJobApplicationDAO.getAll(socialSecurityNumber, firstname, lastname, personalLetter, false, null,Order.DESC);
