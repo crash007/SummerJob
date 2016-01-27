@@ -2,14 +2,12 @@ package se.sogeti.jobapplications.daos;
 
 import java.lang.reflect.Field;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.sql.DataSource;
 
+import se.sogeti.jobapplications.beans.ApplicationStatus;
 import se.sogeti.jobapplications.beans.JobApplication;
-import se.sogeti.jobapplications.beans.PersonApplications;
-import se.sogeti.jobapplications.beans.municipality.MunicipalityJobApplication;
 import se.unlogic.standardutils.dao.AnnotatedDAOFactory;
 import se.unlogic.standardutils.dao.HighLevelQuery;
 import se.unlogic.standardutils.dao.MySQLRowLimiter;
@@ -101,6 +99,10 @@ public class JobApplicationDAO<T extends JobApplication> extends SummerJobCommon
 		return this.get(query);
 	}
 	
+	public List<T> getAllByStatus(ApplicationStatus status) throws SQLException{
+		return getAll(null,null, null, null, null, status, Order.DESC);
+	}
+	
 	/**
 	 * socialSecurityNumber, firstname and lastname is used in a LIKE search.
 	 * socialSecurityNumber, firstname and lastname is optional.
@@ -112,7 +114,12 @@ public class JobApplicationDAO<T extends JobApplication> extends SummerJobCommon
 	 * @return
 	 * @throws SQLException
 	 */
-	public List<T> getAllByApprovedByDescendingOrder(String socialSecurityNumber, String firstname, String lastname, String personalLetter, boolean approved, boolean orderByDescending) throws SQLException {
+	public List<T> getAll(String socialSecurityNumber, String firstname, String lastname, String personalLetter, Boolean approved, ApplicationStatus status, Order order) throws SQLException {
+		HighLevelQuery<T> query = createCommonQuery(socialSecurityNumber, firstname, lastname, personalLetter, approved, status, order);
+		return this.getAll(query);
+	}
+	
+	protected HighLevelQuery<T> createCommonQuery(String socialSecurityNumber, String firstname, String lastname, String personalLetter, Boolean approved, ApplicationStatus status, Order order){
 		HighLevelQuery<T> query = new HighLevelQuery<T>();
 		
 		if (!StringUtils.isEmpty(socialSecurityNumber)) {
@@ -131,21 +138,19 @@ public class JobApplicationDAO<T extends JobApplication> extends SummerJobCommon
 			query.addParameter(this.getParamFactory("personalLetter", String.class).getParameter("%" + personalLetter + "%", QueryOperators.LIKE));
 		}
 		
-		query.addParameter(this.getParamFactory("approved", Boolean.class).getParameter(approved));
-		Order order = null;
-		if (orderByDescending) {
-			order = Order.DESC;
-		} else {
-			order = Order.ASC;
+		if(approved!=null){
+			query.addParameter(this.getParamFactory("approved", Boolean.class).getParameter(approved));
+		}
+		
+		if(status!=null){
+			query.addParameter(this.getParamFactory("status", ApplicationStatus.class).getParameter(status));
 		}
 		
 		OrderByCriteria<T> orderByRanking = this.getOrderByCriteria("ranking", Order.ASC);
 		OrderByCriteria<T> orderByCreated = this.getOrderByCriteria("created", order);
 		query.addOrderByCriteria(orderByRanking);
 		query.addOrderByCriteria(orderByCreated);
-		return this.getAll(query);
+		return query;
 	}
-	
-	
 
 }

@@ -9,12 +9,16 @@ import javax.sql.DataSource;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import se.sogeti.jobapplications.beans.ApplicationStatus;
 import se.sogeti.jobapplications.beans.JobApplication;
 import se.sogeti.jobapplications.beans.business.BusinessSectorJobApplication;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityJobApplication;
 import se.sogeti.jobapplications.cv.CvServiceHander;
 import se.sogeti.jobapplications.daos.BusinessSectorJobApplicationDAO;
 import se.sogeti.jobapplications.daos.JobApplicationDAO;
+import se.sogeti.jobapplications.daos.MunicipalityJobApplicationDAO;
+import se.sogeti.summerjob.match.MatchBusinessJobHandler;
+import se.sogeti.summerjob.match.MatchMunicipalityJobHandler;
 import se.unlogic.hierarchy.core.annotations.InstanceManagerDependency;
 import se.unlogic.hierarchy.core.annotations.ModuleSetting;
 import se.unlogic.hierarchy.core.annotations.TextFieldSettingDescriptor;
@@ -23,13 +27,14 @@ import se.unlogic.hierarchy.core.beans.User;
 import se.unlogic.hierarchy.core.interfaces.ForegroundModuleResponse;
 import se.unlogic.hierarchy.core.utils.HierarchyAnnotatedDAOFactory;
 import se.unlogic.hierarchy.foregroundmodules.AnnotatedForegroundModule;
+import se.unlogic.standardutils.enums.Order;
 import se.unlogic.standardutils.xml.XMLUtils;
 import se.unlogic.webutils.http.RequestUtils;
 import se.unlogic.webutils.http.URIParser;
 
 public class ListApplicationsAdminModule extends AnnotatedForegroundModule {
 	
-	JobApplicationDAO<MunicipalityJobApplication> municipalityJobApplicationDAO;
+	MunicipalityJobApplicationDAO municipalityJobApplicationDAO;
 	BusinessSectorJobApplicationDAO businessApplicationDAO;
 	
 	@ModuleSetting
@@ -40,6 +45,13 @@ public class ListApplicationsAdminModule extends AnnotatedForegroundModule {
 	@TextFieldSettingDescriptor(description="Relativ url till att hantera näringslivsansökningar",name="ManageBusinessApplication")
 	private String manageBusinessUrl="manage-business-app";
 	
+	@InstanceManagerDependency(required=false)
+	MatchMunicipalityJobHandler matchMunicipalityJobHandler;
+	
+	@InstanceManagerDependency(required=false)
+	MatchBusinessJobHandler matchBusinessJobHandler;
+	
+	
 	@InstanceManagerDependency(required = true)
 	private CvServiceHander cvServiceHandler;
 	
@@ -48,7 +60,7 @@ public class ListApplicationsAdminModule extends AnnotatedForegroundModule {
 		super.createDAOs(dataSource);
 		
 		HierarchyAnnotatedDAOFactory daoFactory = new HierarchyAnnotatedDAOFactory(dataSource, systemInterface);
-		municipalityJobApplicationDAO = new JobApplicationDAO<MunicipalityJobApplication>(dataSource, MunicipalityJobApplication.class, daoFactory);
+		municipalityJobApplicationDAO = new MunicipalityJobApplicationDAO(dataSource, MunicipalityJobApplication.class, daoFactory);
 		businessApplicationDAO = new BusinessSectorJobApplicationDAO(dataSource, BusinessSectorJobApplication.class, daoFactory);
 	}
 
@@ -72,6 +84,9 @@ public class ListApplicationsAdminModule extends AnnotatedForegroundModule {
 		Element approvedBusinessElement = doc.createElement("ApprovedBusiness");
 		Element disapprovedBusinessElement = doc.createElement("DisapprovedBusiness");
 		
+		Element declinedMunicipalityElement = doc.createElement("DeclinedMunicipality");
+		Element declinedBusinessElement = doc.createElement("DeclinedBusiness");
+		
 		// Dessa används för att filtrera ansökningar. Annars får vi alla ansökningar
 		String socialSecurityNumber = req.getParameter("socialSecurityNumber");
 		String firstname = req.getParameter("firstname");
@@ -94,23 +109,32 @@ public class ListApplicationsAdminModule extends AnnotatedForegroundModule {
 			XMLUtils.appendNewElement(doc, element, "PersonalLetter", personalLetter);
 		}
 		
-		List<MunicipalityJobApplication> approvedMunicipalityApplications = municipalityJobApplicationDAO.getAllByApprovedByDescendingOrder(socialSecurityNumber, firstname, lastname, personalLetter, true, true);
-		createMunicipalityApplicationElements(doc, approvedMunicipalityElement, approvedMunicipalityApplications);
+		List<MunicipalityJobApplication> approvedMunicipalityApplications = municipalityJobApplicationDAO.getAllWithJob(socialSecurityNumber, firstname, lastname, personalLetter, true,null, Order.DESC);
+		createMunicipalityApplicationElements(doc, approvedMunicipalityElement, approvedMunicipalityApplications, req.getContextPath());
 		
-		List<MunicipalityJobApplication> disapprovedMunicipalityApplications = municipalityJobApplicationDAO.getAllByApprovedByDescendingOrder(socialSecurityNumber, firstname, lastname, personalLetter, false, true);
-		createMunicipalityApplicationElements(doc, disapprovedMunicipalityElement, disapprovedMunicipalityApplications);
+		List<MunicipalityJobApplication> disapprovedMunicipalityApplications = municipalityJobApplicationDAO.getAll(socialSecurityNumber, firstname, lastname, personalLetter, false, null,Order.DESC);
+		createMunicipalityApplicationElements(doc, disapprovedMunicipalityElement, disapprovedMunicipalityApplications, req.getContextPath());
 		
-		List<BusinessSectorJobApplication> approvedBusinessApplications = businessApplicationDAO.getAllByApprovedWithJobByDescendingOrder(socialSecurityNumber, firstname, lastname, personalLetter, true, true);
-		createBusinessApplicationElements(doc, approvedBusinessElement, approvedBusinessApplications);
+		List<BusinessSectorJobApplication> approvedBusinessApplications = businessApplicationDAO.getAllWithJob(socialSecurityNumber, firstname, lastname, personalLetter, true, null, Order.DESC);
+		createBusinessApplicationElements(doc, approvedBusinessElement, approvedBusinessApplications, req.getContextPath());
 		
-		List<BusinessSectorJobApplication> disapprovedBusinessApplications = businessApplicationDAO.getAllByApprovedWithJobByDescendingOrder(socialSecurityNumber, firstname, lastname, personalLetter, false, true);
+		List<BusinessSectorJobApplication> disapprovedBusinessApplications = businessApplicationDAO.getAllWithJob(socialSecurityNumber, firstname, lastname, personalLetter, false, null, Order.DESC);
 
-		createBusinessApplicationElements(doc, disapprovedBusinessElement, disapprovedBusinessApplications);
+		//DECLINED applications
+		List<MunicipalityJobApplication> declinedMunicipalityApplications = municipalityJobApplicationDAO.getAllByStatusWithJob(ApplicationStatus.DECLINED);
+		List<BusinessSectorJobApplication> declinedBusinessApplications = businessApplicationDAO.getAllByStatusWithJob(ApplicationStatus.DECLINED);
+		
+		createMunicipalityApplicationElements(doc, declinedMunicipalityElement, declinedMunicipalityApplications, req.getContextPath());
+		createBusinessApplicationElements(doc, declinedBusinessElement, declinedBusinessApplications, req.getContextPath());
+		
+		createBusinessApplicationElements(doc, disapprovedBusinessElement, disapprovedBusinessApplications, req.getContextPath());
 		
 		doc.getFirstChild().appendChild(approvedMunicipalityElement);
 		doc.getFirstChild().appendChild(disapprovedMunicipalityElement);
 		doc.getFirstChild().appendChild(approvedBusinessElement);
 		doc.getFirstChild().appendChild(disapprovedBusinessElement);
+		doc.getFirstChild().appendChild(declinedBusinessElement);
+		doc.getFirstChild().appendChild(declinedMunicipalityElement);
 		
 		return new SimpleForegroundModuleResponse(doc);
 	}
@@ -118,7 +142,7 @@ public class ListApplicationsAdminModule extends AnnotatedForegroundModule {
 	
 
 	protected void createMunicipalityApplicationElements(Document doc, Element applicationElementList,
-			List<MunicipalityJobApplication> applications) {
+			List<MunicipalityJobApplication> applications, String contextPath) {
 		if (applications != null) {
 			
 			for (MunicipalityJobApplication app : applications) {
@@ -126,13 +150,17 @@ public class ListApplicationsAdminModule extends AnnotatedForegroundModule {
 				appendCommonElements(doc, app, appElement);
 				XMLUtils.appendNewElement(doc, appElement, "applicationType", app.getApplicationType());
 				XMLUtils.appendNewElement(doc, appElement, "url", manageMunicipalityUrl + "?appId=" + app.getId());
+				if(app.getJob()!=null){
+					log.debug("Application has a job.");
+					XMLUtils.appendNewElement(doc, appElement, "matchUrl", contextPath+ matchMunicipalityJobHandler.getUrl() + "?jobId=" + app.getJob().getId());
+				}
 				applicationElementList.appendChild(appElement);
 			}
 		}
 	}
 	
 	protected void createBusinessApplicationElements(Document doc, Element applicationElementList,
-			List<BusinessSectorJobApplication> applications) {
+			List<BusinessSectorJobApplication> applications, String contextPath) {
 		if (applications != null) {
 			
 			for (BusinessSectorJobApplication app : applications) {
@@ -144,6 +172,7 @@ public class ListApplicationsAdminModule extends AnnotatedForegroundModule {
 				if(app.getJob()!=null){
 					XMLUtils.appendNewElement(doc, appElement, "WorkTitle", app.getJob().getWorkTitle());
 					XMLUtils.appendNewElement(doc, appElement, "Company", app.getJob().getCompany());
+					XMLUtils.appendNewElement(doc, appElement, "matchUrl", contextPath+ matchBusinessJobHandler.getUrl() + "?jobId=" + app.getJob().getId());
 				}
 				
 				applicationElementList.appendChild(appElement);

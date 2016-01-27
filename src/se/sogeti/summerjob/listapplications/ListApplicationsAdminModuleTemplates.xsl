@@ -48,28 +48,46 @@
 			</div>
 		</div>
 		
+		<h2>Godkända ansökningar</h2>
+		
 		<div class="row">
 			<div class="col-md-6 col-xs-12">
 				<xsl:apply-templates select="ApprovedMunicipality"></xsl:apply-templates>
 			</div>
 			<div class="col-md-6 col-xs-12">
-				<xsl:apply-templates select="DisapprovedMunicipality"></xsl:apply-templates>
+				<xsl:apply-templates select="ApprovedBusiness"></xsl:apply-templates>
+				
 			</div>
 		</div>
+		
+		<h2>Nekade ansökningar</h2>
+		
 		<div class="row">
 			<div class="col-md-6 col-xs-12">
-				<xsl:apply-templates select="ApprovedBusiness"></xsl:apply-templates>
+				<xsl:apply-templates select="DisapprovedMunicipality"></xsl:apply-templates>
 			</div>
 			<div class="col-md-6 col-xs-12">
 				<xsl:apply-templates select="DisapprovedBusiness"></xsl:apply-templates>
 			</div>
 		</div>
+		
+		<h2>Tackat nej</h2>
+		
+		<div class="row">
+			<div class="col-md-6 col-xs-12">
+				<xsl:apply-templates select="DeclinedMunicipality"></xsl:apply-templates>
+			</div>
+			<div class="col-md-6 col-xs-12">
+				<xsl:apply-templates select="DeclinedBusiness"></xsl:apply-templates>
+			</div>
+		</div>
+		
 	</xsl:template>
 	
 	<xsl:template match="ApprovedMunicipality">
 		<div class="panel panel-default">
 			<div class="panel-heading">
-				<h3 class="panel-title">Godkända ansökningar till kommunala jobb</h3>
+				<h3 class="panel-title">Kommunala jobbansökningar</h3>
 			</div>
 			<div class="panel-body">
 				<div class="row">
@@ -85,7 +103,7 @@
 	<xsl:template match="DisapprovedMunicipality">
 		<div class="panel panel-default">
 			<div class="panel-heading">
-				<h3 class="panel-title">Nekade ansökningar till kommunala jobb</h3>
+				<h3 class="panel-title">Kommunala jobbansökningar</h3>
 			</div>
 			<div class="panel-body">
 				<div class="row">
@@ -101,7 +119,7 @@
 	<xsl:template match="ApprovedBusiness">
 		<div class="panel panel-default">
 			<div class="panel-heading">
-				<h3 class="panel-title">Godkända ansökningar till näringslivsjobb</h3>
+				<h3 class="panel-title">Näringslivsjobbansökningar</h3>
 			</div>
 			<div class="panel-body">
 				<div class="row">
@@ -117,7 +135,39 @@
 	<xsl:template match="DisapprovedBusiness">
 		<div class="panel panel-default">
 			<div class="panel-heading">
-				<h3 class="panel-title">Nekade ansökningar till näringslivsjobb</h3>
+				<h3 class="panel-title">Näringslivsjobbansökningar</h3>
+			</div>
+			<div class="panel-body">
+				<div class="row">
+					<div class="col-xs-1 bold">Rank</div>
+					<div class="col-xs-3 bold">Personnummer</div>
+					<div class="col-xs-3 bold">Namn</div>
+				</div>
+				<xsl:apply-templates select="BusinessSectorJobApplication"></xsl:apply-templates>
+			</div>
+		</div>		
+	</xsl:template>
+	
+	<xsl:template match="DeclinedMunicipality">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title">Kommunala jobbansökningar</h3>
+			</div>
+			<div class="panel-body">
+				<div class="row">
+					<div class="col-xs-1 bold">Rank</div>
+					<div class="col-xs-3 bold">Personnummer</div>
+					<div class="col-xs-3 bold">Namn</div>
+				</div>
+				<xsl:apply-templates select="MunicipalityJobApplication"></xsl:apply-templates>
+			</div>
+		</div>		
+	</xsl:template>
+	
+	<xsl:template match="DeclinedBusiness">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title">Näringslivsjobbansökningar</h3>
 			</div>
 			<div class="panel-body">
 				<div class="row">
@@ -202,7 +252,13 @@
 						<a href="{url}" class="bold">Hantera ansökan</a>
 					</div>
 				</div>
-			
+				<xsl:if test="matchUrl != ''">
+					<div class="row">
+						<div class="col-xs-5">
+							<a href="{matchUrl}" class="bold">Matcha jobbet</a>
+						</div>
+					</div>
+				</xsl:if>
 			</div>
 		</div>
 	</xsl:template>
@@ -261,6 +317,14 @@
 							<a href="{url}" class="bold">Hantera ansökan</a>
 						</div>
 					</div>
+					
+					<xsl:if test="matchUrl != ''">
+						<div class="row">
+							<div class="col-xs-5">
+								<a href="{matchUrl}" class="bold">Matcha jobbet</a>
+							</div>
+						</div>
+					</xsl:if>
 				
 			</div>
 		</div>

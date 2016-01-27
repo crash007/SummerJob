@@ -6,7 +6,9 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import se.sogeti.jobapplications.beans.ApplicationStatus;
 import se.sogeti.jobapplications.beans.business.BusinessSectorJobApplication;
+import se.sogeti.jobapplications.beans.municipality.MunicipalityJobApplication;
 import se.unlogic.standardutils.dao.AnnotatedDAOFactory;
 import se.unlogic.standardutils.dao.HighLevelQuery;
 import se.unlogic.standardutils.dao.OrderByCriteria;
@@ -38,57 +40,6 @@ public class BusinessSectorJobApplicationDAO extends JobApplicationDAO<BusinessS
         return this.get(query);
 	}
 
-//	public List<BusinessSectorJobApplication> getCandidatesFulfillingCriteras(BusinessSectorJob job) throws SQLException {
-//		 HighLevelQuery<BusinessSectorJobApplication> query = new HighLevelQuery<BusinessSectorJobApplication>();
-//		 
-//		 query.addParameter(this.getParamFactory("job", BusinessSectorJob.class).getParameter(job));
-//		 query.addParameter(this.getParamFactory("status", ApplicationStatus.class).getParameter(ApplicationStatus.NONE));
-//		 
-//		 if(job.getMustBeOverEighteen()){
-//			 Calendar cal = Calendar.getInstance();
-//				cal.setTime(job.getStartDate());					
-//				cal.set(Calendar.YEAR,cal.get(Calendar.YEAR)-18);
-//				Date bornBefore = new Date(cal.getTime().getTime());
-//			 query.addParameter(this.getParamFactory("birthDate", Date.class).getParameter(bornBefore,QueryOperators.SMALLER_THAN_OR_EUALS));
-//		 }
-//		 
-//		 query.addParameter(this.getParamFactory("driversLicenseType", DriversLicenseType.class).getParameter(job.getDriversLicenseType(),QueryOperators.BIGGER_THAN_OR_EUALS));	 
-//		 		 
-//		 query.addOrderByCriteria(this.getOrderByCriteria("ranking", Order.ASC));
-//		 return this.getAll(query);
-//		 
-//	}
-
-//	//TODO Nu är vilkoren och'ade, ska vara eller.
-//	public List<BusinessSectorJobApplication> getCandidatesNotFulfillingCriteras(BusinessSectorJob job) throws SQLException {
-//		HighLevelQuery<BusinessSectorJobApplication> query = new HighLevelQuery<BusinessSectorJobApplication>();
-//		 
-//		 query.addParameter(this.getParamFactory("job", BusinessSectorJob.class).getParameter(job));
-//		 query.addParameter(this.getParamFactory("status", ApplicationStatus.class).getParameter(ApplicationStatus.NONE));
-//		 
-//		 if(job.getMustBeOverEighteen()){
-//			 Calendar cal = Calendar.getInstance();
-//				cal.setTime(job.getStartDate());					
-//				cal.set(Calendar.YEAR,cal.get(Calendar.YEAR)-18);
-//				Date bornBefore = new Date(cal.getTime().getTime());
-//			 query.addParameter(this.getParamFactory("birthDate", Date.class).getParameter(bornBefore,QueryOperators.BIGGER_THAN));
-//		 }
-//		 
-//		 query.addParameter(this.getParamFactory("driversLicenseType", DriversLicenseType.class).getParameter(job.getDriversLicenseType(), QueryOperators.SMALLER_THAN));	 
-//		 
-//		 
-//		 query.addOrderByCriteria(this.getOrderByCriteria("ranking", Order.ASC));
-//		 return this.getAll(query);
-//	}
-	
-	public BusinessSectorJobApplication getWithJob() throws SQLException {
-        HighLevelQuery<BusinessSectorJobApplication> query = new HighLevelQuery<BusinessSectorJobApplication>();
-			
-		query.addRelation(APPLICATION_DRIVERS_LICENSE_TYPE_RELATION);
-		query.addRelation(APPLICATION_JOB_RELATION);
-		query.disableAutoRelations(true);
-        return this.get(query);
-	}
 	
 	/**
 	 * socialSecurityNumber, firstname and lastname is used in a LIKE search.
@@ -101,41 +52,20 @@ public class BusinessSectorJobApplicationDAO extends JobApplicationDAO<BusinessS
 	 * @return
 	 * @throws SQLException
 	 */
-	public List<BusinessSectorJobApplication> getAllByApprovedWithJobByDescendingOrder(String socialSecurityNumber, String firstname, String lastname, String personalLetter, boolean approved, boolean orderByDescending) throws SQLException {
+	public List<BusinessSectorJobApplication> getAllWithJob(String socialSecurityNumber, String firstname, String lastname, String personalLetter, Boolean approved,ApplicationStatus status, Order order) throws SQLException {
 		HighLevelQuery<BusinessSectorJobApplication> query = new HighLevelQuery<BusinessSectorJobApplication>();
 		
-		if (!StringUtils.isEmpty(socialSecurityNumber)) {
-			query.addParameter(this.getParamFactory("socialSecurityNumber", String.class).getParameter(socialSecurityNumber + "%", QueryOperators.LIKE));
-		}
-		
-		if (!StringUtils.isEmpty(firstname)) {
-			query.addParameter(this.getParamFactory("firstname", String.class).getParameter(firstname + "%", QueryOperators.LIKE));
-		}
-		
-		if (!StringUtils.isEmpty(lastname)) {
-			query.addParameter(this.getParamFactory("lastname", String.class).getParameter(lastname + "%", QueryOperators.LIKE));
-		}
-		
-		if (!StringUtils.isEmpty(personalLetter)) {
-			query.addParameter(this.getParamFactory("personalLetter", String.class).getParameter("%" + personalLetter + "%", QueryOperators.LIKE));
-		}
-		
-		query.addParameter(this.getParamFactory("approved", Boolean.class).getParameter(approved));
-		Order order = null;
-		if (orderByDescending) {
-			order = Order.DESC;
-		} else {
-			order = Order.ASC;
-		}
-		
-		OrderByCriteria<BusinessSectorJobApplication> orderByRanking = this.getOrderByCriteria("ranking", Order.ASC);
-		OrderByCriteria<BusinessSectorJobApplication> orderByCreated = this.getOrderByCriteria("created", order);
-		query.addOrderByCriteria(orderByRanking);
-		query.addOrderByCriteria(orderByCreated);
-		
+		query = this.createCommonQuery(socialSecurityNumber, firstname, lastname, personalLetter, approved, status, order);
 		query.addRelation(APPLICATION_DRIVERS_LICENSE_TYPE_RELATION);
 		query.addRelation(APPLICATION_JOB_RELATION);
 		query.disableAutoRelations(true);
+		return this.getAll(query);
+	}
+	
+	public List<BusinessSectorJobApplication> getAllByStatusWithJob(ApplicationStatus status) throws SQLException{
+		HighLevelQuery<BusinessSectorJobApplication> query = this.createCommonQuery(null, null, null, null, null, status, Order.DESC);
+		query.disableAutoRelations(true);
+		query.addRelation(APPLICATION_JOB_RELATION);
 		return this.getAll(query);
 	}
 

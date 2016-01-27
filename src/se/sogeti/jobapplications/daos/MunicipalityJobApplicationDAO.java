@@ -2,13 +2,15 @@ package se.sogeti.jobapplications.daos;
 
 import java.lang.reflect.Field;
 import java.sql.SQLException;
+import java.util.List;
 
 import javax.sql.DataSource;
 
-import se.sogeti.jobapplications.beans.PersonApplications;
+import se.sogeti.jobapplications.beans.ApplicationStatus;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityJobApplication;
 import se.unlogic.standardutils.dao.AnnotatedDAOFactory;
 import se.unlogic.standardutils.dao.HighLevelQuery;
+import se.unlogic.standardutils.enums.Order;
 import se.unlogic.standardutils.reflection.ReflectionUtils;
 
 public class MunicipalityJobApplicationDAO extends JobApplicationDAO<MunicipalityJobApplication>{
@@ -48,5 +50,23 @@ public class MunicipalityJobApplicationDAO extends JobApplicationDAO<Municipalit
         
         return this.get(query);
 	}
-
+	
+	public List<MunicipalityJobApplication> getAllByStatusWithJob(ApplicationStatus status) throws SQLException{
+		HighLevelQuery<MunicipalityJobApplication> query = this.createCommonQuery(null, null, null, null, null, status, Order.DESC);
+		query.disableAutoRelations(true);
+		query.addRelation(MUNICIPALITY_APPLICATION_JOB_RELATION);
+		return this.getAll(query);
+	}
+	
+	public List<MunicipalityJobApplication> getAllWithJob(String socialSecurityNumber, String firstname, String lastname, String personalLetter, Boolean approved,ApplicationStatus status, Order order) throws SQLException {
+		HighLevelQuery<MunicipalityJobApplication> query = new HighLevelQuery<MunicipalityJobApplication>();
+		
+		query = this.createCommonQuery(socialSecurityNumber, firstname, lastname, personalLetter, approved, status, order);
+		
+		query.addRelation(MUNICIPALITY_APPLICATION_JOB_RELATION);
+		query.disableAutoRelations(true);
+		return this.getAll(query);
+	}
+	
+	
 }
