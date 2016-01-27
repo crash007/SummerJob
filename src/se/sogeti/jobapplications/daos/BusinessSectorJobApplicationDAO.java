@@ -116,7 +116,7 @@ public class BusinessSectorJobApplicationDAO extends JobApplicationDAO<BusinessS
 			query.addParameter(this.getParamFactory("lastname", String.class).getParameter(lastname + "%", QueryOperators.LIKE));
 		}
 		
-		if (!StringUtils.isEmpty(lastname)) {
+		if (!StringUtils.isEmpty(personalLetter)) {
 			query.addParameter(this.getParamFactory("personalLetter", String.class).getParameter("%" + personalLetter + "%", QueryOperators.LIKE));
 		}
 		
