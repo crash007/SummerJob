@@ -364,7 +364,7 @@
 					Välj:
 				</div>
 				<div class="col-xs-5 col-md-4">
-					<input type="checkbox" name="application-id" value="{id}" />
+					<input class="notMatched" type="checkbox" name="application-id" value="{id}" />
 				</div>
 			</div>
 		</div>
