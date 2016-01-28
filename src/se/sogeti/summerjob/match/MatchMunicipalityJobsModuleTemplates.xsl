@@ -578,7 +578,7 @@
 
 
 			<div class="row">
-				<xsl:if test="applications/MunicipalityJobApplication[status !='DENIED']">
+				<xsl:if test="applications/MunicipalityJobApplication[status !='DECLINED']">
 					<div class="col-md-6 col-xs-12">
 						<h3>Matchade sommarjobbare</h3>
 						<form id="matched-workers-form">
