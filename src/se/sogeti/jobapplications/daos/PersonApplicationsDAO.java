@@ -124,6 +124,20 @@ public class PersonApplicationsDAO extends AnnotatedDAO<PersonApplications> {
 		return getCandidates(businessJobApplicationDAO, municipalityApplicationDAO,null, geoAreaQuery, bornBeforeDate, driversLicenseType);
 	}
 	
+	public List<MunicipalityJobApplication> getCandidatesByPreferedArea1WithoutGeoArea(BusinessSectorJobApplicationDAO businessJobApplicationDAO, MunicipalityJobApplicationDAO municipalityApplicationDAO, MunicipalityJobArea jobArea, Date bornBeforeDate, DriversLicenseType driversLicense) throws SQLException{				
+		QueryParameter<MunicipalityJobApplication, MunicipalityJobArea> jobAreaQuery = municipalityApplicationDAO.getParamFactory("preferedArea1", MunicipalityJobArea.class).getParameter(jobArea);
+		return getCandidates(businessJobApplicationDAO, municipalityApplicationDAO,jobAreaQuery, null, bornBeforeDate, driversLicense);
+	}
+	
+	public List<MunicipalityJobApplication> getCandidatesByPreferedArea2WithoutGeoArea(BusinessSectorJobApplicationDAO businessJobApplicationDAO, MunicipalityJobApplicationDAO municipalityApplicationDAO, MunicipalityJobArea jobArea, Date bornBeforeDate, DriversLicenseType driversLicense) throws SQLException{				
+		QueryParameter<MunicipalityJobApplication, MunicipalityJobArea> jobAreaQuery = municipalityApplicationDAO.getParamFactory("preferedArea2", MunicipalityJobArea.class).getParameter(jobArea);
+		return getCandidates(businessJobApplicationDAO, municipalityApplicationDAO,jobAreaQuery, null, bornBeforeDate, driversLicense);
+	}
+	
+	public List<MunicipalityJobApplication> getCandidatesByPreferedArea3WithoutGeoArea(BusinessSectorJobApplicationDAO businessJobApplicationDAO, MunicipalityJobApplicationDAO municipalityApplicationDAO, MunicipalityJobArea jobArea, Date bornBeforeDate, DriversLicenseType driversLicense) throws SQLException{				
+		QueryParameter<MunicipalityJobApplication, MunicipalityJobArea> jobAreaQuery = municipalityApplicationDAO.getParamFactory("preferedArea3", MunicipalityJobArea.class).getParameter(jobArea);
+		return getCandidates(businessJobApplicationDAO, municipalityApplicationDAO,jobAreaQuery, null, bornBeforeDate, driversLicense);
+	}
 	
 	public List<MunicipalityJobApplication> getCandidates(BusinessSectorJobApplicationDAO businessJobApplicationDAO, MunicipalityJobApplicationDAO municipalityApplicationDAO, QueryParameter<MunicipalityJobApplication, MunicipalityJobArea> areaQuery, QueryParameter<MunicipalityJobApplication, GeoArea> geoQueryArea,  Date bornBeforeDate, DriversLicenseType driversLicense) throws SQLException{
 
@@ -135,7 +149,10 @@ public class PersonApplicationsDAO extends AnnotatedDAO<PersonApplications> {
 			query.addRelationParameter(MunicipalityJobApplication.class, municipalityApplicationDAO.getParamFactory("noPreferedArea", Boolean.class).getParameter(true));
 		}
 		
-		query.addRelationParameter(MunicipalityJobApplication.class,geoQueryArea);
+		if (geoQueryArea != null) {
+			query.addRelationParameter(MunicipalityJobApplication.class,geoQueryArea);
+		}
+		
 		query.addRelationParameter(MunicipalityJobApplication.class,municipalityApplicationDAO.getParamFactory("approved", Boolean.class).getParameter(true));
 		
 		//hämta alla alla businessApplications som inte har statusen none för denna person. Om business applications inte är null så har personen ett business jobb.

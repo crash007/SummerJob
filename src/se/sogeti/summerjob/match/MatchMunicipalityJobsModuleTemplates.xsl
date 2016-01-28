@@ -31,6 +31,21 @@
 			<xsl:apply-templates select="Area3AndGeoArea1Candidates" />
 			<xsl:apply-templates select="Area3AndGeoArea2Candidates" />
 			<xsl:apply-templates select="Area3AndGeoArea3Candidates" />
+			
+			<xsl:if test="PreferedArea1WithoutGeoArea or PreferedArea2WithoutGeoArea or PreferedArea3WithoutGeoArea">
+				<div class="pdg-lft0px col-xs-6 withoutGeoAreaHeader mgn-btm8px">
+					<div class="pdg-lft0px col-xs-8">
+						<h2 class="mgn-top0px">Utan hänsyn till geografiskt område</h2>
+					</div>
+					<div class="col-xs-4"><div class="more-information-arrow"><span class="arrow-down glyphicon glyphicon-chevron-down collapse in"></span><span class="arrow-up glyphicon glyphicon-chevron-up collapse"></span></div></div>
+				</div>
+				<div class="withoutGeoAreaContainer collapse">
+					<xsl:apply-templates select="PreferedArea1WithoutGeoArea" />
+					<xsl:apply-templates select="PreferedArea2WithoutGeoArea" />
+					<xsl:apply-templates select="PreferedArea3WithoutGeoArea" />
+				</div>
+			</xsl:if>
+			
 		</div>
 
 		<footer class="footer-offset">
@@ -181,6 +196,27 @@
 		<xsl:call-template name="candidatesTableTemplate">
 			<xsl:with-param name="header"
 				select="'Tredjehandsval på verksamhetsområde och tredjehandsval på geografiskt område'" />
+		</xsl:call-template>
+	</xsl:template>
+	
+	<xsl:template match="PreferedArea1WithoutGeoArea">
+		<xsl:call-template name="candidatesTableTemplate">
+			<xsl:with-param name="header"
+				select="'Matchande förstahandsval på verksamhetsområde utan hänsyn till geografiskt område'" />
+		</xsl:call-template>
+	</xsl:template>
+
+	<xsl:template match="PreferedArea2WithoutGeoArea">
+		<xsl:call-template name="candidatesTableTemplate">
+			<xsl:with-param name="header"
+				select="'Matchande andrahandsvall på verksamhetsområde utan hänsyn till geografiskt område'" />
+		</xsl:call-template>
+	</xsl:template>
+
+	<xsl:template match="PreferedArea3WithoutGeoArea">
+		<xsl:call-template name="candidatesTableTemplate">
+			<xsl:with-param name="header"
+				select="'Matchande tredjehandsval på verksamhetsområde utan hänsyn till geografiskt område'" />
 		</xsl:call-template>
 	</xsl:template>
 

@@ -200,7 +200,23 @@ public class MatchMunicipalityJobsModule extends MatchCommon implements MatchMun
 			
 				List<MunicipalityJobApplication> anyAreaAndGeoArea2Candidates = personApplicationDAO.getCandidatesByNoPreferedAreaAndPreferedGeoArea2(businessJobApplicationDAO , municipalityJobApplicationDAO,job.getGeoArea(), bornBefore, job.getDriversLicenseType());				
 				XMLUtils.append(doc, matchMunicipalityJobElement, "AnyAreaAndGeoArea2Candidates", anyAreaAndGeoArea2Candidates);
-				printCandidates(job.getId(), anyAreaAndGeoArea1Candidates,"AnyAreaAndGeoArea2");
+				printCandidates(job.getId(), anyAreaAndGeoArea2Candidates,"AnyAreaAndGeoArea2");
+				
+				List<MunicipalityJobApplication> anyAreaAndGeoArea3Candidates = personApplicationDAO.getCandidatesByNoPreferedAreaAndPreferedGeoArea3(businessJobApplicationDAO , municipalityJobApplicationDAO,job.getGeoArea(), bornBefore, job.getDriversLicenseType());				
+				XMLUtils.append(doc, matchMunicipalityJobElement, "AnyAreaAndGeoArea3Candidates", anyAreaAndGeoArea3Candidates);
+				printCandidates(job.getId(), anyAreaAndGeoArea3Candidates,"AnyAreaAndGeoArea3");
+				
+				
+				
+				// Prefered Area without geoArea
+				List<MunicipalityJobApplication> area1 = personApplicationDAO.getCandidatesByPreferedArea1WithoutGeoArea(businessJobApplicationDAO, municipalityJobApplicationDAO, job.getArea(), bornBefore, job.getDriversLicenseType());
+				XMLUtils.append(doc, matchMunicipalityJobElement, "PreferedArea1WithoutGeoArea", area1);
+				
+				List<MunicipalityJobApplication> area2 = personApplicationDAO.getCandidatesByPreferedArea2WithoutGeoArea(businessJobApplicationDAO, municipalityJobApplicationDAO, job.getArea(), bornBefore, job.getDriversLicenseType());
+				XMLUtils.append(doc, matchMunicipalityJobElement, "PreferedArea2WithoutGeoArea", area2);
+				
+				List<MunicipalityJobApplication> area3 = personApplicationDAO.getCandidatesByPreferedArea3WithoutGeoArea(businessJobApplicationDAO, municipalityJobApplicationDAO, job.getArea(), bornBefore, job.getDriversLicenseType());
+				XMLUtils.append(doc, matchMunicipalityJobElement, "PreferedArea3WithoutGeoArea", area3);
 				
 			}else{
 				log.warn("No job with id "+jobId+" found.");

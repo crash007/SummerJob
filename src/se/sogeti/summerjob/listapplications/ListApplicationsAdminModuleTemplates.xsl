@@ -255,7 +255,7 @@
 				<xsl:if test="matchUrl != ''">
 					<div class="row">
 						<div class="col-xs-5">
-							<a href="{matchUrl}" class="bold">Matcha jobbet</a>
+							<a href="{matchUrl}" class="bold">Visa matchat jobb</a>
 						</div>
 					</div>
 				</xsl:if>
@@ -321,7 +321,7 @@
 					<xsl:if test="matchUrl != ''">
 						<div class="row">
 							<div class="col-xs-5">
-								<a href="{matchUrl}" class="bold">Matcha jobbet</a>
+								<a href="{matchUrl}" class="bold">Visa matchat jobb</a>
 							</div>
 						</div>
 					</xsl:if>
