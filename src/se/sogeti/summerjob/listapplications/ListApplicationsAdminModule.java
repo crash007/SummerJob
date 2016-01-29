@@ -15,7 +15,6 @@ import se.sogeti.jobapplications.beans.business.BusinessSectorJobApplication;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityJobApplication;
 import se.sogeti.jobapplications.cv.CvServiceHander;
 import se.sogeti.jobapplications.daos.BusinessSectorJobApplicationDAO;
-import se.sogeti.jobapplications.daos.JobApplicationDAO;
 import se.sogeti.jobapplications.daos.MunicipalityJobApplicationDAO;
 import se.sogeti.summerjob.match.MatchBusinessJobHandler;
 import se.sogeti.summerjob.match.MatchMunicipalityJobHandler;
@@ -109,20 +108,20 @@ public class ListApplicationsAdminModule extends AnnotatedForegroundModule {
 			XMLUtils.appendNewElement(doc, element, "PersonalLetter", personalLetter);
 		}
 		
-		List<MunicipalityJobApplication> approvedMunicipalityApplications = municipalityJobApplicationDAO.getAllWithJob(socialSecurityNumber, firstname, lastname, personalLetter, true,null, Order.DESC);
+		List<MunicipalityJobApplication> approvedMunicipalityApplications = municipalityJobApplicationDAO.getApprovedAndNotDeclinedWithJob(socialSecurityNumber, firstname, lastname, personalLetter,  Order.DESC);
 		createMunicipalityApplicationElements(doc, approvedMunicipalityElement, approvedMunicipalityApplications, req.getContextPath());
 		
 		List<MunicipalityJobApplication> disapprovedMunicipalityApplications = municipalityJobApplicationDAO.getAll(socialSecurityNumber, firstname, lastname, personalLetter, false, null,Order.DESC);
 		createMunicipalityApplicationElements(doc, disapprovedMunicipalityElement, disapprovedMunicipalityApplications, req.getContextPath());
 		
-		List<BusinessSectorJobApplication> approvedBusinessApplications = businessApplicationDAO.getAllWithJob(socialSecurityNumber, firstname, lastname, personalLetter, true, null, Order.DESC);
+		List<BusinessSectorJobApplication> approvedBusinessApplications = businessApplicationDAO.getApprovedAndNotDeclinedWithJob(socialSecurityNumber, firstname, lastname, personalLetter,  Order.DESC);
 		createBusinessApplicationElements(doc, approvedBusinessElement, approvedBusinessApplications, req.getContextPath());
 		
 		List<BusinessSectorJobApplication> disapprovedBusinessApplications = businessApplicationDAO.getAllWithJob(socialSecurityNumber, firstname, lastname, personalLetter, false, null, Order.DESC);
 
 		//DECLINED applications
-		List<MunicipalityJobApplication> declinedMunicipalityApplications = municipalityJobApplicationDAO.getAllByStatusWithJob(ApplicationStatus.DECLINED);
-		List<BusinessSectorJobApplication> declinedBusinessApplications = businessApplicationDAO.getAllByStatusWithJob(ApplicationStatus.DECLINED);
+		List<MunicipalityJobApplication> declinedMunicipalityApplications = municipalityJobApplicationDAO.getAllWithJob(socialSecurityNumber, firstname, lastname, personalLetter, null,ApplicationStatus.DECLINED, Order.DESC);
+		List<BusinessSectorJobApplication> declinedBusinessApplications = businessApplicationDAO.getAllWithJob(socialSecurityNumber, firstname, lastname, personalLetter, null, ApplicationStatus.DECLINED, Order.DESC);
 		
 		createMunicipalityApplicationElements(doc, declinedMunicipalityElement, declinedMunicipalityApplications, req.getContextPath());
 		createBusinessApplicationElements(doc, declinedBusinessElement, declinedBusinessApplications, req.getContextPath());

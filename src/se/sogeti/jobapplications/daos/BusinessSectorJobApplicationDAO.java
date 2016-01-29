@@ -8,14 +8,11 @@ import javax.sql.DataSource;
 
 import se.sogeti.jobapplications.beans.ApplicationStatus;
 import se.sogeti.jobapplications.beans.business.BusinessSectorJobApplication;
-import se.sogeti.jobapplications.beans.municipality.MunicipalityJobApplication;
 import se.unlogic.standardutils.dao.AnnotatedDAOFactory;
 import se.unlogic.standardutils.dao.HighLevelQuery;
-import se.unlogic.standardutils.dao.OrderByCriteria;
 import se.unlogic.standardutils.dao.QueryOperators;
 import se.unlogic.standardutils.enums.Order;
 import se.unlogic.standardutils.reflection.ReflectionUtils;
-import se.unlogic.standardutils.string.StringUtils;
 
 public class BusinessSectorJobApplicationDAO extends JobApplicationDAO<BusinessSectorJobApplication>{
 	
@@ -41,17 +38,17 @@ public class BusinessSectorJobApplicationDAO extends JobApplicationDAO<BusinessS
 	}
 
 	
-	/**
-	 * socialSecurityNumber, firstname and lastname is used in a LIKE search.
-	 * socialSecurityNumber, firstname and lastname is optional.
-	 * @param socialSecurityNumber
-	 * @param firstname
-	 * @param lastname
-	 * @param approved
-	 * @param orderByDescending
-	 * @return
-	 * @throws SQLException
-	 */
+	public List<BusinessSectorJobApplication> getApprovedAndNotDeclinedWithJob(String socialSecurityNumber, String firstname, String lastname, String personalLetter, Order order) throws SQLException {
+		HighLevelQuery<BusinessSectorJobApplication> query = new HighLevelQuery<BusinessSectorJobApplication>();
+		
+		query = this.createCommonQuery(socialSecurityNumber, firstname, lastname, personalLetter, true, null, order);
+		query.addParameter(this.getParamFactory("status", ApplicationStatus.class).getParameter(ApplicationStatus.DECLINED, QueryOperators.NOT_EQUALS));
+		query.addRelation(APPLICATION_DRIVERS_LICENSE_TYPE_RELATION);
+		query.addRelation(APPLICATION_JOB_RELATION);
+		query.disableAutoRelations(true);
+		return this.getAll(query);
+	}
+	
 	public List<BusinessSectorJobApplication> getAllWithJob(String socialSecurityNumber, String firstname, String lastname, String personalLetter, Boolean approved,ApplicationStatus status, Order order) throws SQLException {
 		HighLevelQuery<BusinessSectorJobApplication> query = new HighLevelQuery<BusinessSectorJobApplication>();
 		
