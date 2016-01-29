@@ -447,7 +447,7 @@
 													class="btn btn-danger remove-workers-btn common-button">Ta bort</button>
 											</div>
 											<div class="col-md-2">
-												<button type="submit" class="btn btn-warning deny-btn common-button">Neka</button>
+												<button type="submit" class="btn btn-warning deny-btn common-button">Tackat nej</button>
 											</div>
 										</div>
 									</form>
