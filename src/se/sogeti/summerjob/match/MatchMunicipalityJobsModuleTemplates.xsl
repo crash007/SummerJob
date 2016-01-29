@@ -174,7 +174,7 @@
 	<xsl:template match="Area2AndGeoArea3Candidates">
 		<xsl:call-template name="candidatesTableTemplate">
 			<xsl:with-param name="header"
-				select="'Andrahandsval på verksamhetsområde och andrahandsval på geografiskt område'" />
+				select="'Andrahandsval på verksamhetsområde och tredjehandsval på geografiskt område'" />
 		</xsl:call-template>
 	</xsl:template>
 
