@@ -11,6 +11,11 @@
 			var isOpen = '<xsl:value-of select="MatchMunicipalityJob/MunicipalityJob/isOpen" />';
 		</script>
 		<h1 class="header-match">Matcha jobb med ansökningar</h1>
+		<div class="match-fail alert alert-danger collapse" role="alert">
+			<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+			<span class="sr-only">Error:</span>
+			<span class="message">Du måste välja minst en kandidat före du kan utföra åtgärden.</span>
+		</div>
 		<xsl:apply-templates select="MatchMunicipalityJob" />
 		
 	</xsl:template>
