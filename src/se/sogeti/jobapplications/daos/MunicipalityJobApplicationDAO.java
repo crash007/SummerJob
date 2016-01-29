@@ -10,6 +10,7 @@ import se.sogeti.jobapplications.beans.ApplicationStatus;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityJobApplication;
 import se.unlogic.standardutils.dao.AnnotatedDAOFactory;
 import se.unlogic.standardutils.dao.HighLevelQuery;
+import se.unlogic.standardutils.dao.QueryOperators;
 import se.unlogic.standardutils.enums.Order;
 import se.unlogic.standardutils.reflection.ReflectionUtils;
 
@@ -55,6 +56,17 @@ public class MunicipalityJobApplicationDAO extends JobApplicationDAO<Municipalit
 		HighLevelQuery<MunicipalityJobApplication> query = this.createCommonQuery(null, null, null, null, null, status, Order.DESC);
 		query.disableAutoRelations(true);
 		query.addRelation(MUNICIPALITY_APPLICATION_JOB_RELATION);
+		return this.getAll(query);
+	}
+	
+	public List<MunicipalityJobApplication> getApprovedAndNotDeclinedWithJob(String socialSecurityNumber, String firstname, String lastname, String personalLetter, Order order) throws SQLException {
+		HighLevelQuery<MunicipalityJobApplication> query = new HighLevelQuery<MunicipalityJobApplication>();
+		
+		query = this.createCommonQuery(socialSecurityNumber, firstname, lastname, personalLetter, true, null, order);
+		query.addParameter(this.getParamFactory("status", ApplicationStatus.class).getParameter(ApplicationStatus.DECLINED, QueryOperators.NOT_EQUALS));
+		
+		query.addRelation(MUNICIPALITY_APPLICATION_JOB_RELATION);
+		query.disableAutoRelations(true);
 		return this.getAll(query);
 	}
 	

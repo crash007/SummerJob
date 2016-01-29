@@ -146,6 +146,7 @@ public class JobApplicationDAO<T extends JobApplication> extends SummerJobCommon
 			query.addParameter(this.getParamFactory("status", ApplicationStatus.class).getParameter(status));
 		}
 		
+		
 		OrderByCriteria<T> orderByRanking = this.getOrderByCriteria("ranking", Order.ASC);
 		OrderByCriteria<T> orderByCreated = this.getOrderByCriteria("created", order);
 		query.addOrderByCriteria(orderByRanking);
