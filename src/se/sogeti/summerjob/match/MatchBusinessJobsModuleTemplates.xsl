@@ -10,6 +10,11 @@
 			var isOpen = '<xsl:value-of select="MatchBusinessJob/BusinessSectorJob/isOpen" />';
 		</script>
 		<h1 class="header-match">Matcha jobb med ansökningar</h1>
+		<div class="match-fail alert alert-danger collapse" role="alert">
+			<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+			<span class="sr-only">Error:</span>
+			<span class="message">Du måste välja minst en kandidat före du kan utföra åtgärden.</span>
+		</div>
 		<xsl:apply-templates select="MatchBusinessJob" />
 
 
@@ -442,7 +447,7 @@
 													class="btn btn-danger remove-workers-btn common-button">Ta bort</button>
 											</div>
 											<div class="col-md-2">
-												<button type="submit" class="btn btn-warning deny-btn common-button">Neka</button>
+												<button type="submit" class="btn btn-warning deny-btn common-button">Tackat nej</button>
 											</div>
 										</div>
 									</form>
