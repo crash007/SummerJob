@@ -126,7 +126,12 @@
 	</xsl:template>
 	
 	<xsl:template match="JobList">
-		<h1>Lediga sommarjobb inom privata sektorn</h1>
+		<h1>Lediga sommarjobb hos privata företag</h1>
+		
+		<xsl:if test="not(BusinessSectorJob)">
+			<h2>Just nu finns det inga lediga sommarjobb att söka, men jobb kan tillkomma löpande. Återkom gärna löpande till denna sida för att se nya jobb</h2>
+		</xsl:if>
+		
 		<div id="page-tabs" class="vacancy-list mgn-top16px">
 	        <div class="content dynamic-content">
 		        <ul class="pagelist">
