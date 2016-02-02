@@ -22,7 +22,7 @@
 	</xsl:template>
 	
 	<xsl:template match="BusinessJobs">	
-		<h1>Sommarjobb inom näringslivet</h1>
+		<h1>Sommarjobb hos privata företag</h1>
 		<xsl:apply-templates select="BusinessOpen"/>
 		<xsl:apply-templates select="BusinessUncontrolled"/>
 		<xsl:apply-templates select="BusinessFinished"/>

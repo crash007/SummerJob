@@ -4,7 +4,8 @@
 	
 	<xsl:template match="Document">
 		<h1>Sundsvalls kommuns sommarjobbsportal</h1>
-		<p class="lead">Här kan du som är skriven i Sundsvalls kommun och går på en gymnasieskola söka sommarjobb.</p>
+		<p class="lead mgn-btm0px">Här kan du som är skriven i Sundsvalls kommun och går på en gymnasieskola söka sommarjobb.</p>
+		<p class="lead">Sommarjobb på privata företag kan du söka kontinuerligt fram till juni. Nya jobb kommer fortlöpande så besök sidan frekvent.</p>
 		
 		<div class="row">
 			<div class="col-md-6">
@@ -13,8 +14,8 @@
 			</div>
 			
 			<div class="col-md-6">
-				<h3>Sundsvalls kommun förmedlar även sommarjobb inom näringslivet. </h3>	
-				<a href="{AddBusinessApplicationUrl}" class="business-jobs-link">Sök jobb i näringslivet</a> 
+				<h3>Sundsvalls kommun förmedlar även sommarjobb hos privata företag</h3>	
+				<a href="{AddBusinessApplicationUrl}" class="business-jobs-link">Sök jobb hos privata företag</a> 
 			</div>
 		</div>
 		
@@ -24,7 +25,7 @@
 				<a href="{/Document/requestinfo/contextpath}/add-municipality-job">Lägg till ett jobb</a>
 			</div>
 			<div class="col-md-6">
-				<h3>Här kan du som extern arbetsgivare lägga in ett jobb(privat, landsting, myndighet)</h3>
+				<h3>Här kan du som extern arbetsgivare lägga in ett jobb (privat, landsting, myndighet)</h3>
 				<a href="{/Document/requestinfo/contextpath}/add-business-sector-job">Lägg till ett jobb</a>
 			</div>		
 		</div>

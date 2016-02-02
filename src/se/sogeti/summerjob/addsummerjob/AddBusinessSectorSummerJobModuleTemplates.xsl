@@ -16,7 +16,7 @@
 	</xsl:template>
 	
 	<xsl:template match="BusinessSectorJobForm">
-		<h1 class="createJobHeadline">Lägg till sommarjobb inom näringslivet</h1>
+		<h1 class="createJobHeadline">Lägg till sommarjobb hos privat företag</h1>
 		<form role="form" method="POST" id="business-sector-add-job-form" data-toggle="validator">
 		
 				<input name="jobId" style="display: none" class="form-control" type="text" value="{BusinessSectorJob/id}"/>
@@ -75,28 +75,28 @@
 									<label>Förnamn</label>
 									<input type="text" class="form-control" id="mentor-firstname"
 										name="mentor-firstname" placeholder="" value="{BusinessSectorJob/BusinessSectorMentor/firstname}"/>
-									<p class="help-block with-errors">Förnamn till kontaktperson på arbetsplatsen</p>
+									<p class="help-block with-errors"></p>
 								</div>
 								
 								<div class="form-group col-md-3">
 									<label>Efternamn</label>
 									<input type="text" class="form-control" id="mentor-lastname"
 										name="mentor-lastname" placeholder="" value="{BusinessSectorJob/BusinessSectorMentor/lastname}"/>
-									<p class="help-block with-errors">Efternamn till kontaktperson på arbetsplatsen</p>
+									<p class="help-block with-errors"></p>
 								</div>
 							
 								<div class="form-group col-md-3">
 									<label>Telefonnummer</label>
 									<input type="text" data-error="Ange ett telefonnummer utan bindestreck" class="numberValidation form-control" id="mentor-phone" name="mentor-phone"
 										placeholder="" value="{BusinessSectorJob/BusinessSectorMentor/mobilePhone}"/>
-									<p class="help-block with-errors">Telefonnummer till kontaktperson på arbetsplatsen</p>
+									<p class="help-block with-errors"></p>
 								</div>
 							
 								<div class="form-group col-md-3">
 									<label>E-post</label>
 									<input type="email" class="form-control" id="mentor-email" name="mentor-email"
 										placeholder="" value="{BusinessSectorJob/BusinessSectorMentor/email}" />
-									<p class="help-block with-errors">E-post till kontaktperson på arbetsplatsen</p>
+									<p class="help-block with-errors"></p>
 								</div>
 							</div>
 					  	</div>
@@ -150,28 +150,28 @@
 								<label for="manager-firstname">Förnamn*</label>
 								<input type="text" class="form-control" id="manager-firstname"
 									name="manager-firstname" placeholder="" required="required" value="{BusinessSectorJob/BusinessSectorManager/firstname}"/>
-								<p class="help-block with-errors">Förnamn till ansvarig på platsen</p>
+								<p class="help-block with-errors"></p>
 							</div>
 							
 							<div class="form-group col-md-3">
 								<label for="manager-lastname">Efternamn*</label>
 								<input type="text" class="form-control" id="manager-lastname"
 									name="manager-lastname" placeholder="" required="required" value="{BusinessSectorJob/BusinessSectorManager/lastname}"/>
-								<p class="help-block with-errors">Efternamn till ansvarig på platsen</p>
+								<p class="help-block with-errors"></p>
 							</div>
 						
 							<div class="form-group col-md-3">
 								<label for="manager-phone">Telefonnummer*</label>
 								<input type="text" data-error="Ange ett telefonnummer utan bindestreck" class="numberValidation form-control" id="manager-phone" name="manager-phone"
 									placeholder="" required="required" value="{BusinessSectorJob/BusinessSectorManager/mobilePhone}"/>
-								<p class="help-block with-errors">Telefonnummer till ansvarig på platsen</p>
+								<p class="help-block with-errors"></p>
 							</div>
 						
 							<div class="form-group col-md-3">
 								<label for="manager-email">E-post*</label>
 								<input type="email" class="form-control" id="manager-email" name="manager-email"
 									placeholder="" value="{BusinessSectorJob/BusinessSectorManager/email}" required="required"/>
-								<p class="help-block with-errors">E-post till ansvarig på platsen</p>
+								<p class="help-block with-errors"></p>
 							</div>
 						</div>
 				  	</div>

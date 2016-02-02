@@ -151,7 +151,7 @@
 											<td><input class="numberValidation form-control" name="municipality-contact-phone" type="text" value="{MunicipalityContactPerson/phoneNumber}" /></td>
 										</tr>
 										<tr>
-											<td>Näringsliv</td>
+											<td>Privat</td>
 											<td><input class="form-control" name="business-contact-name" type="text" value="{BusinessContactPerson/name}" /></td>
 											<td><input class="numberValidation form-control" name="business-contact-phone" type="text" value="{BusinessContactPerson/phoneNumber}" /></td>
 										</tr>

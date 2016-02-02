@@ -16,7 +16,7 @@
 	
 	
 	<xsl:template match="JobInfo/BusinessSectorJob">
-		<h1 class="createJobHeadline">Ansök till sommarjobb inom näringslivet</h1>
+		<h1 class="createJobHeadline">Ansök om sommarjobb hos privat företag</h1>
 	  	<div class="panel panel-default">
 		  	<div class="panel-heading">
 		  		<h3 class="panel-title">Arbete</h3>
@@ -129,7 +129,7 @@
 		<h1>Lediga sommarjobb hos privata företag</h1>
 		
 		<xsl:if test="not(BusinessSectorJob)">
-			<h2>Just nu finns det inga lediga sommarjobb att söka, men jobb kan tillkomma löpande. Återkom gärna löpande till denna sida för att se nya jobb</h2>
+			<h2>Just nu finns det inga lediga sommarjobb att söka, men jobb kan tillkomma löpande. Återkom gärna frekvent till denna sida för att se nya jobb</h2>
 		</xsl:if>
 		
 		<div id="page-tabs" class="vacancy-list mgn-top16px">

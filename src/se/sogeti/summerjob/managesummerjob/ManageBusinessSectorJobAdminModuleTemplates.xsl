@@ -14,7 +14,7 @@
 	
 	<xsl:template match="BusinessSectorJobInfo">
 	
-		<h1>Hantera näringslivsannons</h1>
+		<h1>Hantera annons för privat företag</h1>
 		
 		<input type="hidden" id="job-id" name="job-id" value="{BusinessSectorJob/id}" />
 	  	<div class="panel panel-default">
