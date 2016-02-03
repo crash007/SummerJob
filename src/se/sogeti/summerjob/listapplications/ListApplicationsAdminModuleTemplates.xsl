@@ -119,7 +119,7 @@
 	<xsl:template match="ApprovedBusiness">
 		<div class="panel panel-default list-application-panel">
 			<div class="panel-heading">
-				<h3 class="panel-title">Näringslivsjobbansökningar</h3>
+				<h3 class="panel-title">Privata jobbansökningar</h3>
 			</div>
 			<div class="panel-body">
 				<div class="row">
@@ -135,7 +135,7 @@
 	<xsl:template match="DisapprovedBusiness">
 		<div class="panel panel-default list-application-panel">
 			<div class="panel-heading">
-				<h3 class="panel-title">Näringslivsjobbansökningar</h3>
+				<h3 class="panel-title">Privata jobbansökningar</h3>
 			</div>
 			<div class="panel-body">
 				<div class="row">
@@ -167,7 +167,7 @@
 	<xsl:template match="DeclinedBusiness">
 		<div class="panel panel-default">
 			<div class="panel-heading">
-				<h3 class="panel-title">Näringslivsjobbansökningar</h3>
+				<h3 class="panel-title">Privata jobbansökningar</h3>
 			</div>
 			<div class="panel-body">
 				<div class="row">

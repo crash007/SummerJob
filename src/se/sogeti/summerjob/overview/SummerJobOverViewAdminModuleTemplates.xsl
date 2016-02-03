@@ -11,7 +11,7 @@
 				<a data-toggle="tab" href="#municipality-page">Kommunalt</a>
 			</li>
 			<li>
-				<a data-toggle="tab" href="#business-page">Näringsliv</a>
+				<a data-toggle="tab" href="#business-page">Privat</a>
 			</li>
 		</ul>
 	
@@ -168,7 +168,7 @@
 	</xsl:template>
 		
 	<xsl:template match="Business">
-		<h2>Näringslivssommarjobb</h2> 
+		<h2>Sommarjobb hos privata företag</h2> 
 		
 		<ul class="nav nav-tabs">
 			<li class="active">
