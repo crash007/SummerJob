@@ -55,6 +55,10 @@ public class BusinessSectorJob extends Job{
 	
 	@DAOManaged
 	@XMLElement
+	private String workTitle;
+	
+	@DAOManaged
+	@XMLElement
 	@OneToMany(autoGet=false,autoAdd=true, autoUpdate=false)
 	private List<BusinessSectorJobApplication> applications;
 	
@@ -120,7 +124,9 @@ public class BusinessSectorJob extends Job{
 	@Override
 	public String toString() {
 		return "BusinessSectorJob [manager=" + manager + ", startDate=" + startDate + ", endDate=" + endDate
-				+ ", company=" + company + ", applications=" + applications + ", mentor=" + getMentor() + "]";
+				+ ", company=" + company + ", lastApplicationDay=" + lastApplicationDay + ", corporateNumber="
+				+ corporateNumber + ", inChargeOfInterviews=" + inChargeOfInterviews + ", workTitle=" + workTitle
+				+ ", applications=" + applications + ", mentor=" + mentor + ", toString()=" + super.toString() + "]";
 	}
 
 	public Date getLastApplicationDay() {
@@ -153,5 +159,13 @@ public class BusinessSectorJob extends Job{
 
 	public void setMentor(BusinessSectorMentor mentor) {
 		this.mentor = mentor;
+	}
+
+	public String getWorkTitle() {
+		return workTitle;
+	}
+
+	public void setWorkTitle(String workTitle) {
+		this.workTitle = workTitle;
 	}
 }

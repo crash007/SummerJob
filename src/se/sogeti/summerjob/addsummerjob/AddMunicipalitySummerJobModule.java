@@ -265,14 +265,7 @@ public class AddMunicipalitySummerJobModule extends AnnotatedRESTModule implemen
 			return;
 		}
 		job.setWorkDescription(workDescription);
-		
-//		String workTitle = req.getParameter("work-title");
-//		if (workTitle == null || workTitle.isEmpty()) {
-//			JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Rubrik saknas i annonsen.\"}", callback, writer);
-//			return;
-//		}
-//		job.setWorkTitle(workTitle);
-		
+				
 		GeoArea geoArea = geoAreaDAO.getAreaById(NumberUtils.toInt(req.getParameter("geoArea")));
 		if (geoArea == null) {
 			JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Det angivna geografiska området hittades inte.\"}", callback, writer);

@@ -32,10 +32,6 @@ public abstract class Job implements Requirements, Elementable{
 
 	@DAOManaged
 	@XMLElement
-	private String workTitle;
-	
-	@DAOManaged
-	@XMLElement
 	private String workDescription;
 	
 	@DAOManaged
@@ -136,14 +132,6 @@ public abstract class Job implements Requirements, Elementable{
 		this.updated = updated;
 	}
 
-	public String getWorkTitle() {
-		return workTitle;
-	}
-
-	public void setWorkTitle(String workTitle) {
-		this.workTitle = workTitle;
-	}
-
 	public String getWorkDescription() {
 		return workDescription;
 	}
@@ -178,14 +166,14 @@ public abstract class Job implements Requirements, Elementable{
 	
 	@Override
 	public String toString() {
-		return "Job [id=" + id + ", created=" + created + ", updated=" + updated + ", workTitle=" + workTitle
-				+ ", workDescription=" + workDescription + ", numberOfWorkersNeeded=" + numberOfWorkersNeeded
-				+ ", approved=" + approved + ", controlledDate=" + controlledDate + ", controlled=" + controlled
-				+ ", approvedByUser=" + approvedByUser + ", addedByUser=" + addedByUser + ", mustBeOverEighteen="
-				+ mustBeOverEighteen + ", driversLicenseType=" + driversLicenseType + ", freeTextRequirements="
-				+ freeTextRequirements + ", streetAddress=" + streetAddress + ", zipCode=" + zipCode + ", city=" + city
-				+ ", initiatedByUser=" + initiatedByUser + ", adminNotes=" + adminNotes + ", openApplications="
-				+ openApplications + ", matchedApplications=" + matchedApplications + "]";
+		return "Job [id=" + id + ", created=" + created + ", updated=" + updated + ", workDescription="
+				+ workDescription + ", numberOfWorkersNeeded=" + numberOfWorkersNeeded + ", approved=" + approved
+				+ ", controlledDate=" + controlledDate + ", controlled=" + controlled + ", approvedByUser="
+				+ approvedByUser + ", addedByUser=" + addedByUser + ", mustBeOverEighteen=" + mustBeOverEighteen
+				+ ", driversLicenseType=" + driversLicenseType + ", freeTextRequirements=" + freeTextRequirements
+				+ ", freeText=" + freeText + ", streetAddress=" + streetAddress + ", zipCode=" + zipCode + ", city="
+				+ city + ", initiatedByUser=" + initiatedByUser + ", adminNotes=" + adminNotes + ", isOpen=" + isOpen
+				+ ", openApplications=" + openApplications + ", matchedApplications=" + matchedApplications + "]";
 	}
 
 	public Boolean getMustBeOverEighteen() {
