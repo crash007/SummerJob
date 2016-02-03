@@ -16,11 +16,15 @@
 		<div class="success-message-wrapper">
 			<div style="padding: 16px;" class="alert alert-success" role="alert">
 				<h2 style="margin-left: 16px;" class="header"><xsl:value-of select="header" /></h2>
-				<p style="margin-left: 16px; margin-bottom: 16px;"><xsl:value-of select="message" /></p>
-				<xsl:if test="message1 and message2 and message3">
-					<p style="margin-left: 16px; margin-bottom: 8px;"><xsl:value-of select="message1" /></p>
-					<p style="margin-left: 16px; margin-bottom: 8px;"><xsl:value-of select="message2" /></p>
-					<p style="margin-left: 16px; margin-bottom: 16px;"><xsl:value-of select="message3" /> <xsl:text> </xsl:text><a target="_blank" href="http://www.sundsvall.se/sommarjobb">www.sundsvall.se/sommarjobb</a></p>
+				<p style="margin-left: 16px; margin-bottom: 16px;"><xsl:value-of select="message1" /></p>
+				<xsl:if test="message2">
+					<p style="margin-left: 16px;" class="mgn-btm8px"><xsl:value-of select="message2" /></p>
+				</xsl:if>
+				<xsl:if test="message3">
+					<p style="margin-left: 16px;" class="mgn-btm8px"><xsl:value-of select="message3" /></p>
+				</xsl:if>
+				<xsl:if test="message4">	
+					<p style="margin-left: 16px; margin-bottom: 16px;"><xsl:value-of select="message4" /></p>
 				</xsl:if>
 				<xsl:if test="newUrl and newText">
 					<div class="row">
