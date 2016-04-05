@@ -233,14 +233,16 @@ public class PersonApplicationsDAO extends AnnotatedDAO<PersonApplications> {
 		 query.addRelationOrderByCriteria(BusinessSectorJobApplication.class,businessJobApplicationDAO.getOrderByCriteria("ranking", Order.ASC));
 		
 		 //hämta alla municipalityapplications som inte har statusen none för denna person. Om inte null så har personen ett municipality jobb eller tackat nej till ett.
-			query.addRelationParameter(MunicipalityJobApplication.class, municipalityJobApplicationDAO.getParamFactory("status", ApplicationStatus.class).getParameter(ApplicationStatus.NONE,QueryOperators.NOT_EQUALS));
-		 
+		query.addRelationParameter(MunicipalityJobApplication.class, municipalityJobApplicationDAO.getParamFactory("status", ApplicationStatus.class).getParameter(ApplicationStatus.NONE,QueryOperators.NOT_EQUALS));
+		//query.addRelationParameter(BusinessSectorJobApplication.class,businessJobApplicationDAO.getParamFactory("status", ApplicationStatus.class).getParameter(ApplicationStatus.NONE,QueryOperators.NOT_EQUALS));
+		
 		 List<PersonApplications> result = this.getAll(query);
 		 if(result!=null){
 			 List<BusinessSectorJobApplication> applications = new ArrayList<BusinessSectorJobApplication>();
 			 for(PersonApplications personApplications: result){				 
-				 log.debug(personApplications);
-				 if(personApplications.getMunicipalityApplications()==null && personApplications.getBusinessApplications()!=null){
+				 //log.debug(personApplications);
+				 if(personApplications.getMunicipalityApplications()==null && personApplications.getBusinessApplications()!=null && !hasBeenMatchWithBusinessJob(personApplications.getId(), businessJobApplicationDAO)){
+					 //log.debug(personApplications.getBusinessApplications());
 					 applications.addAll(personApplications.getBusinessApplications());
 				 }
 			}
@@ -251,6 +253,28 @@ public class PersonApplicationsDAO extends AnnotatedDAO<PersonApplications> {
 		 }else{
 			 return null;
 		 }
+	}
+	
+	public Boolean hasBeenMatchWithBusinessJob(Integer personApplicationsId, BusinessSectorJobApplicationDAO businessJobApplicationDAO) throws SQLException{
+		
+		Boolean result = false ;
+		HighLevelQuery<PersonApplications> query = new HighLevelQuery<PersonApplications>();
+		
+		query.addRelation(PersonApplicationsDAO.PERSON_APPLICATIONS_BUSINESS_APPLICATIONS);
+		query.addRelationParameter(BusinessSectorJobApplication.class,businessJobApplicationDAO.getParamFactory("status", ApplicationStatus.class).getParameter(ApplicationStatus.NONE,QueryOperators.NOT_EQUALS));
+		query.addParameter(this.getParamFactory("id", Integer.class).getParameter(personApplicationsId));
+		
+		PersonApplications personApplications = this.get(query);
+		
+		//if not null så har personen blivit matchat med ett näringslivsjobb
+		if(personApplications != null && personApplications.getBusinessApplications()!=null){
+			for(BusinessSectorJobApplication app: personApplications.getBusinessApplications()){
+				log.debug(app);
+			}
+			result = true;
+		}
+		
+		return result;
 	}
 	
 	
@@ -267,18 +291,20 @@ public class PersonApplicationsDAO extends AnnotatedDAO<PersonApplications> {
 		 query.addRelationParameter(BusinessSectorJobApplication.class, businessJobApplicationDAO.getParamFactory("approved", Boolean.class).getParameter(true));
 		 
 		 //hämta alla municipalityapplications som inte har statusen none för denna person. Om inte null så har personen ett municipality jobb eller tackat nej till ett.
-		query.addRelationParameter(MunicipalityJobApplication.class, municipalityJobApplicationDAO.getParamFactory("status", ApplicationStatus.class).getParameter(ApplicationStatus.NONE,QueryOperators.NOT_EQUALS));
-		query.addRelationOrderByCriteria(BusinessSectorJobApplication.class, businessJobApplicationDAO.getOrderByCriteria("ranking", Order.ASC)); 
+		 query.addRelationParameter(MunicipalityJobApplication.class, municipalityJobApplicationDAO.getParamFactory("status", ApplicationStatus.class).getParameter(ApplicationStatus.NONE,QueryOperators.NOT_EQUALS));
+		 query.addRelationOrderByCriteria(BusinessSectorJobApplication.class, businessJobApplicationDAO.getOrderByCriteria("ranking", Order.ASC)); 
+		 
 		 List<PersonApplications> result = this.getAll(query);
+		 
 		 if(result!=null){
 			 			 
 			 List<BusinessSectorJobApplication> applications = new ArrayList<BusinessSectorJobApplication>();
 			 
 			 Calendar cal = Calendar.getInstance();
-			cal.setTime(job.getStartDate());					
-			cal.set(Calendar.YEAR,cal.get(Calendar.YEAR)-18);
-			Date mustBeBornBeforeDate = cal.getTime();
-				
+			 cal.setTime(job.getStartDate());					
+			 cal.set(Calendar.YEAR,cal.get(Calendar.YEAR)-18);
+			 Date mustBeBornBeforeDate = cal.getTime();
+			 
 			 for(PersonApplications personApplications: result){				 
 				 
 				 log.debug(personApplications);
@@ -287,7 +313,7 @@ public class PersonApplicationsDAO extends AnnotatedDAO<PersonApplications> {
 					 //Borde bara vara 1 ansökan per person
 					 for(BusinessSectorJobApplication app : personApplications.getBusinessApplications()){
 						 
-						if(app.getDriversLicenseType().getId()< job.getDriversLicenseType().getId() || job.getMustBeOverEighteen() && app.getBirthDate().after(mustBeBornBeforeDate)){
+						if(app.getDriversLicenseType().getId()< job.getDriversLicenseType().getId() || job.getMustBeOverEighteen() && app.getBirthDate().after(mustBeBornBeforeDate) && !hasBeenMatchWithBusinessJob(personApplications.getId(), businessJobApplicationDAO)){
 							applications.add(app);							
 						}
 					 }					 
