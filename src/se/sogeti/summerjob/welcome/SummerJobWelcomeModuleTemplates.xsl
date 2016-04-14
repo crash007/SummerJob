@@ -57,7 +57,7 @@
 					</xsl:if>
 				Lägg till ett jobb</a>
 				<xsl:if test="businessJobExceeded = 'true'">
-					<p><i>Sista dagen för att lägga in sommarjobb hos privata företag har passerat.</i></p>
+					<p><i>Sista dagen för att lägga in sommarjobb som privat företag har passerat.</i></p>
 				</xsl:if>
 			</div>		
 		</div>
