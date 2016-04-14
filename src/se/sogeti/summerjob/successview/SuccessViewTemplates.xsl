@@ -23,8 +23,10 @@
 				<xsl:if test="message3">
 					<p style="margin-left: 16px;" class="mgn-btm8px"><xsl:value-of select="message3" /></p>
 				</xsl:if>
-				<xsl:if test="message4">	
-					<p style="margin-left: 16px; margin-bottom: 16px;"><xsl:value-of select="message4" /></p>
+				<xsl:if test="message4">
+					<div style="margin-left: 16px; margin-bottom: 16px;">	
+						<xsl:value-of select="message4" disable-output-escaping="yes"/>
+					</div>
 				</xsl:if>
 				<xsl:if test="newUrl and newText">
 					<div class="row">

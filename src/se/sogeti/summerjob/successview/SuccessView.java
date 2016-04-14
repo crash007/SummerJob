@@ -64,7 +64,7 @@ public class SuccessView extends AnnotatedForegroundModule {
 	
 	@ModuleSetting
 	@TextFieldSettingDescriptor(description="Meddelande efter att jobbansökan sparats, del 3", name="ApplicationSavedMessagePt3")
-	String applicationSavedMessage3 = "Mer information och kontaktuppgifter finns på <a target='_blank' href='http://www.sundsvall.se/sommarjobb'>www.sundsvall.se/sommarjobb</a>";
+	String applicationSavedMessage3 = "<p>Mer information och kontaktuppgifter finns på <a target='_blank' href='http://www.sundsvall.se/sommarjobb'>www.sundsvall.se/sommarjobb</a></p>";
 
 	@Override
 	public ForegroundModuleResponse defaultMethod(HttpServletRequest req,
