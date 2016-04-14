@@ -25,4 +25,11 @@ public class AccountingEntryDAO extends AnnotatedDAO<AccountingEntry> {
 		query.addParameter(this.getParamFactory("id", Integer.class).getParameter(id));
 		return this.get(query);
 	}
+	
+	public AccountingEntry getByIsPrio(Boolean prio) throws SQLException {
+		HighLevelQuery<AccountingEntry> query = new HighLevelQuery<AccountingEntry>();
+		query.addParameter(this.getParamFactory("isPrio", Boolean.class).getParameter(prio));
+		return this.get(query);
+	}
+	
 }

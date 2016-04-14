@@ -522,14 +522,45 @@ public class MatchMunicipalityJobsModule extends MatchCommon implements MatchMun
 	public void generateEmployeeDocument(HttpServletResponse res, int jobId, int appId, String selectValue) throws IOException, Exception {
 		MunicipalityJob job = municipalityJobDAO.getById(jobId);
 		MunicipalityJobApplication app = municipalityJobApplicationDAO.getById(appId);
-		Salary salary = !isOverEighteenDuringJob(app.getBirthDate(), job.getPeriod().getEndDate()) 
-				? salaryDAO.getById(1) : salaryDAO.getById(2);
 		
-		PlaceForInformation place = placeForInformationDAO.getAll().get(0);
-		AccountingEntry accounting = app.getApplicationType() == ApplicationType.PRIO ? accountingDAO.getById(1) : accountingDAO.getById(2);
-		ContactPerson contact = contactDAO.getAll().get(0);
+		//Todo Hårdkodat vilket id som för vilken lön. Ersätt med getByIsoverEighteen(true/false)
+		Salary salary = null; 
+		
+		if(isOverEighteenDuringJob(app.getBirthDate(), job.getPeriod().getEndDate())){
+			salary = salaryDAO.getByIsOverEighteen(true);
+		}else{
+			salary = salaryDAO.getByIsOverEighteen(false);
+		}
+		
+		if(salary ==null){
+			throw new Exception("Löneinformation saknas");
+		}
+
+		PlaceForInformation place = placeForInformationDAO.getOne();
+		
+		if(place == null){
+			throw new Exception("Plats för information saknas.");
+		}
+		
+		AccountingEntry accounting =  null; 
+		
+		if(app.getApplicationType() == ApplicationType.PRIO){
+			accounting = accountingDAO.getByIsPrio(true);
+		}else{
+			accounting = accountingDAO.getByIsPrio(false);
+		}
+		
+
+		ContactPerson contact = contactDAO.getOne();
+				
+		if(contact ==null){			
+			throw new Exception("Kontaktinformation saknas.");
+		}
 		
 		File file = null;
+		
+		log.debug(salary.getAmountInSEK());
+		log.debug(place.getName());
 		
 		file = generateDocumentFromSelectValue(selectValue, job, app, salary.getAmountInSEK(),
 					place.getName(), accounting, contact);

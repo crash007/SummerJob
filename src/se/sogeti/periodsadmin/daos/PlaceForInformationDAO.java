@@ -1,6 +1,7 @@
 package se.sogeti.periodsadmin.daos;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import javax.sql.DataSource;
 
@@ -26,4 +27,14 @@ public class PlaceForInformationDAO extends AnnotatedDAO<PlaceForInformation> {
 		query.addParameter(this.getParamFactory("id", Integer.class).getParameter(id));
 		return this.get(query);
 	}
+	
+	public PlaceForInformation getOne() throws SQLException {
+		List<PlaceForInformation> result = this.getAll();
+		if(result!=null){
+			return result.get(0);
+		}else{
+			return null;
+		}
+	}
+	
 }

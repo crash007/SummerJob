@@ -26,4 +26,10 @@ public class SalaryDAO extends AnnotatedDAO<Salary> {
 		query.addParameter(this.getParamFactory("id", Integer.class).getParameter(id));
 		return this.get(query);
 	}
+	
+	public Salary getByIsOverEighteen(Boolean overEighteen) throws SQLException {
+		HighLevelQuery<Salary> query = new HighLevelQuery<Salary>();
+		query.addParameter(this.getParamFactory("overEighteen", Boolean.class).getParameter(overEighteen));
+		return this.get(query);
+	}
 }
