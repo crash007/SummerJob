@@ -16,6 +16,7 @@ import org.w3c.dom.Element;
 import se.sogeti.jobapplications.beans.municipality.MunicipalityJobApplication;
 import se.sogeti.jobapplications.cv.CvServiceHander;
 import se.sogeti.jobapplications.daos.JobApplicationDAO;
+import se.sogeti.jobapplications.daos.MunicipalityJobApplicationDAO;
 import se.sogeti.summerjob.JsonResponse;
 import se.sogeti.summerjob.addsummerjobapplication.AddMunicipalityJobApplicationHandler;
 import se.sogeti.summerjob.match.MatchMunicipalityJobHandler;
@@ -36,7 +37,7 @@ import se.unlogic.webutils.http.URIParser;
 
 public class ManageMunicipalityApplicationAdminModule extends AnnotatedRESTModule {
 	
-	JobApplicationDAO<MunicipalityJobApplication> appDAO;
+	MunicipalityJobApplicationDAO appDAO;
 	
 	@InstanceManagerDependency
 	private AddMunicipalityJobApplicationHandler addMunicipalityJobApplicationHandler;
@@ -53,7 +54,7 @@ public class ManageMunicipalityApplicationAdminModule extends AnnotatedRESTModul
 		super.createDAOs(dataSource);
 		
 		HierarchyAnnotatedDAOFactory daoFactory = new HierarchyAnnotatedDAOFactory(dataSource, systemInterface);
-		appDAO = new JobApplicationDAO<MunicipalityJobApplication>(dataSource, MunicipalityJobApplication.class, daoFactory);
+		appDAO = new MunicipalityJobApplicationDAO(dataSource, MunicipalityJobApplication.class, daoFactory);
 	}
 
 	@Override
@@ -118,7 +119,7 @@ public class ManageMunicipalityApplicationAdminModule extends AnnotatedRESTModul
         	JsonResponse.sendJsonResponse("{\"status\":\"fail\", \"message\":\"Kunde inte hämta den aktuella ansökan för att spara ändringarna.\"}", callback, writer);
         }
         
-        MunicipalityJobApplication app = appDAO.getByIdWithPersonApplications(appId);
+        MunicipalityJobApplication app = appDAO.getByIdWithJob(appId);
         
         app.setApproved(BooleanUtils.toBoolean(req.getParameter("statusApprove")));
         app.setControlled(true);

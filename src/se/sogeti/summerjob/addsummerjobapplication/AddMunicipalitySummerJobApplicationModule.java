@@ -26,6 +26,7 @@ import se.sogeti.jobapplications.daos.AreaDAO;
 import se.sogeti.jobapplications.daos.DriversLicenseTypeDAO;
 import se.sogeti.jobapplications.daos.GeoAreaDAO;
 import se.sogeti.jobapplications.daos.JobApplicationDAO;
+import se.sogeti.jobapplications.daos.MunicipalityJobApplicationDAO;
 import se.sogeti.summerjob.JsonResponse;
 import se.sundsvall.openetown.smex.vo.Citizen;
 import se.unlogic.fileuploadutils.MultipartRequest;
@@ -46,9 +47,8 @@ import se.unlogic.webutils.http.RequestUtils;
 import se.unlogic.webutils.http.URIParser;
 
 public class AddMunicipalitySummerJobApplicationModule extends AddSummerJobApplication<MunicipalityJobApplication> implements AddMunicipalityJobApplicationHandler{
-	
-	
-	private JobApplicationDAO<MunicipalityJobApplication> jobApplicationDAO;
+
+	private MunicipalityJobApplicationDAO jobApplicationDAO;
 	private AreaDAO areaDAO;
 	private GeoAreaDAO geoAreaDAO;
 	private DriversLicenseTypeDAO driversLicenseTypeDAO;
@@ -70,7 +70,7 @@ public class AddMunicipalitySummerJobApplicationModule extends AddSummerJobAppli
 		
 		HierarchyAnnotatedDAOFactory hierarchyDaoFactory = new HierarchyAnnotatedDAOFactory(dataSource, systemInterface);
 		
-		jobApplicationDAO = new JobApplicationDAO<MunicipalityJobApplication>(dataSource, MunicipalityJobApplication.class, hierarchyDaoFactory);
+		jobApplicationDAO = new MunicipalityJobApplicationDAO(dataSource, MunicipalityJobApplication.class, hierarchyDaoFactory);
 		areaDAO = new AreaDAO(dataSource, MunicipalityJobArea.class, hierarchyDaoFactory);	
 		geoAreaDAO = new GeoAreaDAO(dataSource, GeoArea.class, hierarchyDaoFactory);
 		driversLicenseTypeDAO = new DriversLicenseTypeDAO(dataSource, DriversLicenseType.class, hierarchyDaoFactory);
@@ -100,6 +100,7 @@ public class AddMunicipalitySummerJobApplicationModule extends AddSummerJobAppli
 		
 		MunicipalityJobApplication app = null;
 		Integer appId = NumberUtils.toInt(req.getParameter("appId"));
+		
 		if (user!=null && user.isAdmin() && appId != null) {
 			app = jobApplicationDAO.getById(appId);
 			XMLUtils.append(doc, form, app);
@@ -177,7 +178,7 @@ public class AddMunicipalitySummerJobApplicationModule extends AddSummerJobAppli
 			MunicipalityJobApplication app = null;
 			
 			if(appId!=null && user!=null && user.isAdmin()){
-				app = jobApplicationDAO.getById(appId);
+				app = jobApplicationDAO.getByIdWithJob(appId);
 			}else{
 				
 				if(socialSecurityNumber != null){			
