@@ -7,6 +7,7 @@ import java.io.OutputStream;
 import java.util.Calendar;
 
 import org.apache.log4j.Logger;
+import org.apache.pdfbox.io.MemoryUsageSetting;
 import org.apache.pdfbox.multipdf.PDFMergerUtility;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDDocumentCatalog;
@@ -103,6 +104,7 @@ public class PDFGenerator {
 		setFieldValue(pdfDocument, "anstallning-streetaddress", app.getStreetAddress());
 		setFieldValue(pdfDocument, "anstallning-zipandcity", app.getZipCode() + " " + app.getCity());
 		setFieldValue(pdfDocument, "anstallning-workplace", job.getLocation());
+		setFieldValue(pdfDocument, "anstallning-department", job.getDepartment());
 		setFieldValue(pdfDocument, "anstallning-workstreetaddress", job.getStreetAddress());
 		setFieldValue(pdfDocument, "anstallning-workzipandcity", job.getZipCode() + " " + job.getCity());
 		MunicipalityManager manager = job.getManager();
