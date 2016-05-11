@@ -408,7 +408,7 @@ public class MatchMunicipalityJobsModule extends MatchCommon implements MatchMun
 	}
 	private void printCandidates(Integer jobId, List<MunicipalityJobApplication> candidates, String prio) {
 		if(candidates!=null){	
-			log.info(prio+" pick candidates for job "+jobId);
+			log.debug(prio+" pick candidates for job "+jobId);
 			for(MunicipalityJobApplication app:candidates){						
 				log.info(app);					
 			}
